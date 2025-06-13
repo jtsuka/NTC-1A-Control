@@ -59,35 +59,47 @@ void loop() {
 // =============================================================
 // 6‑byte packet reception (8‑bit checksum)
 bool receive_packet() {
-  for (uint8_t i = 0; i < 6; i++) {
+  for (uint8_t i=0;i<6;i++) {
     if (!read_byte_bitbang(packet[i])) return false;
   }
-  uint8_t sum = packet[0] + packet[1] + packet[2] + packet[3] + packet[4];
-  return ((sum & 0xFF) == packet[5]);
+
+  // ★ 先に RAW 表示
+  show_packet("RAW", packet);
+
+ uint8_t sum7 = (packet[0] & 0x7F) + (packet[1] & 0x7F) +
+               (packet[2] & 0x7F) + (packet[3] & 0x7F) +
+               (packet[4] & 0x7F);
+if ( (sum7 & 0x7F) != (packet[5] & 0x7F) ) {
+   Serial.println("CHK NG");
+    return false;
+  }
+  return true;
 }
 
 // -------------------------------------------------------------
-bool read_byte_bitbang(uint8_t &b, uint16_t timeout_ms) {
+bool read_byte_bitbang(uint8_t &b, uint16_t timeout_ms)
+{
   unsigned long t0 = millis();
-  while (digitalRead(BB_RX_PIN) == HIGH) {
-    if (millis() - t0 > timeout_ms) return false; // timeout wait start
+  while (digitalRead(BB_RX_PIN)==HIGH) {
+    if (millis()-t0 > timeout_ms) return false;  // start待ちタイムアウト
   }
-  digitalWrite(LED_PIN, HIGH);                     // ★ start bit検出 → LED ON
+  digitalWrite(LED_PIN, HIGH);           // ★ start検出
 
-  delayMicroseconds(HALF_DELAY);
-  if (digitalRead(BB_RX_PIN) != LOW) {            // ノイズ検知
+  delayMicroseconds(HALF_DELAY);         // スタート中央確認
+  if (digitalRead(BB_RX_PIN)!=LOW) {     // バウンス対策
     digitalWrite(LED_PIN, LOW);
     return false;
   }
-  delayMicroseconds(HALF_DELAY);
+
+  delayMicroseconds(BIT_DELAY + HALF_DELAY); // ← ビット0中央
 
   b = 0;
-  for (uint8_t bit = 0; bit < 8; bit++) {
-    delayMicroseconds(BIT_DELAY);
-    if (digitalRead(BB_RX_PIN)) b |= (1 << bit);
+  for (uint8_t i=0;i<8;i++) {
+    b |= (digitalRead(BB_RX_PIN) << i);       // 先に読む
+    delayMicroseconds(BIT_DELAY);             // 次のビットへ
   }
-  delayMicroseconds(BIT_DELAY);                   // stop bit
-  digitalWrite(LED_PIN, LOW);                     // ★ byte完了 → LED OFF
+  // ここは stop ビット中央
+  digitalWrite(LED_PIN, LOW);                 // 受信完了
   return true;
 }
 
