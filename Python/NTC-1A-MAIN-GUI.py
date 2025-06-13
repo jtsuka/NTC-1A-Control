@@ -174,10 +174,10 @@ def rx_worker():
                 if len(data)!=6: continue
                 chk = sum(data[:5]) & 0xFF
                 ok  = (chk == data[5])
-                out("[RX] "+" ".join(f\"{x:02X}\" for x in data)+
-                    f\" CHK:{'OK' if ok else 'NG'}\")
+                out("[RX] "+" ".join(f"{x:02X}" for x in data)+
+                    f" CHK:{'OK' if ok else 'NG'}")
             except Exception as e:
-                out(f\"[ERR] RX: {e}\")
+                out(f"[ERR] RX: {e}")
         else:
             time.sleep(0.05)
 threading.Thread(target=rx_worker,daemon=True).start()
@@ -188,6 +188,6 @@ def on_close():
     running=False
     if ser and ser.is_open: ser.close()
     root.destroy()
-root.protocol(\"WM_DELETE_WINDOW\", lambda _: on_close())
+root.protocol("WM_DELETE_WINDOW", lambda _: on_close())
 
 root.mainloop()
