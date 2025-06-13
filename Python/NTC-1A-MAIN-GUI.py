@@ -45,6 +45,13 @@ def out(msg:str):
     log.insert(tk.END, msg+"\n"); log.see(tk.END)
     with open(LOG_FILE,"a",encoding="utf-8") as f: f.write(msg+"\n")
 
+# ～～～ log テキストウィジェットを配置した直後に追記 ～～
+for i in range(6):          # 列 0-5 を可変に
+    root.grid_columnconfigure(i, weight=1)
+for i in range(10):         # 行 0-9 を可変に
+    root.grid_rowconfigure(i, weight=1)
+
+
 # ------------------ CHトグル ------------------
 def toggle_ch():
     global selected_channel
