@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  NTC-1A GUI  (8-bit checksum / 6-byte fixed packet)
+# 2025.06.13 16:20
 
 import tkinter as tk
 from tkinter import ttk
