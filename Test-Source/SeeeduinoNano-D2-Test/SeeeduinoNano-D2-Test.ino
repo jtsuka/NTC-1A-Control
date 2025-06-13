@@ -1,6 +1,7 @@
 //
-// 200m 毎に Pin2の信号をHIGH->LOWを繰り返す（信号テスト用)
-//
+// Pin D2 の信号テスト用 200ms毎にHIGH LOW
+// 2025.6.13
+
 #define TEST_PIN 2
 
 void setup() {
