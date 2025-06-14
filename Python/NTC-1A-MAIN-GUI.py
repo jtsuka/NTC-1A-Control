@@ -1,177 +1,174 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-NTC-1A MAIN – GUI Terminal
-Raspberry Pi ⇆ Seeeduino Nano (UART) ⇆ Arduino Nano Every (TC Emulator)
-8-bit binary packet, checksum verified.
-※インターバル制御および送信成功後の受信待ちを追加
-"""
+# NTC-1A GUI 完全版 - チェックサム/インターバル制御付き
+# USBシリアル → Seeeduino Nano → BitBang → TC（エミュレータ）
 
 import tkinter as tk
 from tkinter import ttk
 from functools import partial
-import serial, serial.tools.list_ports
-import threading, time
+import serial, time, threading
 
-# ---------- 設定 ----------
-BAUDRATE = 9600
-PORT = "/dev/serial0"  # 必要に応じて変更
-INTERVAL = 1.0          # パケット送信インターバル (秒)
+PORT = "/dev/ttyUSB0"  # 適宜変更
+BAUD = 9600
+SEND_INTERVAL = 0.2    # 200msインターバル
 LOG_FILE = "serial_log.txt"
-font_label = ("Noto Sans CJK JP", 14)
-font_btn = ("Noto Sans CJK JP", 18)
 
-# ---------- グローバル ----------
 selected_entry = None
-entries = {}
-running = True
-ser = None
 selected_channel = 1
+entries = {}
+ser = None
+running = True
 
-# ---------- GUI 初期化 ----------
 root = tk.Tk()
-root.title("NTC‑1A GUI")
+root.title("NTC-1A GUI")
 root.geometry("1024x600")
 root.configure(bg="black")
-# （以下略：元コードと同じ GUI 部分）
 
-# ---------- ログ出力 ----------
-def out(msg: str):
-    try:
-        log.insert(tk.END, msg + "\n")
-        log.see(tk.END)
-    except tk.TclError:
-        pass
-    with open(LOG_FILE, "a", encoding="utf-8") as f:
+font_label = ("Noto Sans CJK JP", 14)
+font_button = ("Noto Sans CJK JP", 18)
+
+# ==================== ログ出力 ====================
+log = tk.Text(root, height=8, width=60, bg="black", fg="lime", font=("Courier", 12))
+log.grid(row=1, column=3, columnspan=4, padx=5, pady=5, sticky="nsew")
+for i in range(7): root.grid_columnconfigure(i, weight=1)
+for i in range(12): root.grid_rowconfigure(i, weight=1)
+
+def out(msg):
+    log.insert(tk.END, msg + "\n")
+    log.see(tk.END)
+    with open(LOG_FILE, "a") as f:
         f.write(msg + "\n")
 
-# ---------- シリアル初期化 ----------
+# ==================== ポートオープン ====================
 def open_port():
     global ser
-    if ser and ser.is_open:
-        return ser
     try:
-        ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)
+        ser = serial.Serial(PORT, BAUD, timeout=1)
         ser.reset_input_buffer()
         ser.reset_output_buffer()
         out(f"[INFO] Port open: {PORT}")
-        return ser
     except Exception as e:
         out(f"[エラー] ポート開放失敗: {e}")
-        return None
 
-# ---------- パケット生成・送信 ----------
-def make_packet(ch, cmd, val):
-    data = [ch, cmd, val, 0, 0]
-    data.append(sum(data) & 0xFF)
-    return bytes(data)
-
-def tx_packet(pkt):
-    s = open_port()
-    if not s:
-        out("[WARN] ポート未接続")
-        return False
-    try:
-        s.write(pkt)
-        s.flush()
-        out("[TX] " + " ".join(f"{b:02X}" for b in pkt))
-        return True
-    except Exception as e:
-        out(f"[送信エラー] {e}")
-        return False
-
-# ---------- 固定長受信 ----------
-def read_exact(s, n, timeout=0.5):
-    buf = bytearray(n)
-    view = memoryview(buf)
-    idx = 0
-    t0 = time.time()
-    while idx < n and time.time() - t0 < timeout:
-        got = s.readinto(view[idx:])
-        if not got:
-            continue
-        idx += got
-    return buf if idx == n else None
-
-# ---------- 受信スレッド ----------
-def rx_worker():
-    global running, ser
-    while running:
-        s = ser
-        if s and s.is_open and s.in_waiting >= 1:
-            try:
-                b = s.read(1)
-                if not b:
-                    continue
-                v = b[0]
-                if 0x20 <= v < 0x7F:
-                    out(f"[ASCII] {chr(v)}")
-                    continue
-                # バイナリ応答なら5バイト追加して検証
-                rem = read_exact(s, 5, timeout=0.5)
-                if not rem:
-                    continue
-                data = bytes([v]) + rem
-                chk = sum(data[:5]) & 0xFF
-                ok = (chk == data[5])
-                out(f"[RX] CH{data[0]}: " + " ".join(f"{x:02X}" for x in data) + f" CHK:{'OK' if ok else 'NG'}")
-            except Exception as e:
-                out(f"[受信エラー] {e}")
-        else:
-            time.sleep(0.05)
-
-threading.Thread(target=rx_worker, daemon=True).start()
-
-# ---------- 送信コマンド処理 送信後にインターバル待機を追加 ----------
-def do_cmd(key: str):
+# ==================== チャンネル切替 ====================
+def toggle_channel():
     global selected_channel
-    out(f"[COMMAND] {key} → CH{selected_channel}")
-    cmds = []
-    if key == "SEND":
-        try:
-            t = int(entries[f"ch{selected_channel}_tension"].get())
-            cmds.append( (0x06, t) )
-        except:
-            out("[入力エラー] テンション")
-        try:
-            l = int(float(entries[f"ch{selected_channel}_length"].get()) * 10)
-            cmds.append( (0x04, l) )
-        except:
-            out("[入力エラー] 線長")
-        try:
-            c = int(entries[f"ch{selected_channel}_count"].get())
-            cmds.append( (0x05, c) )
-        except:
-            out("[入力エラー] カウント")
-    elif key == "RESET":
-        cmds.append( (0x03, 0) )
-    elif key == "STOP":
-        cmds.append( (0x07, 0) )
+    selected_channel = 1 if selected_channel == 2 else 2
+    ch_btn.config(text=f"[CH{selected_channel} 選択中]")
+    refresh_entry_colors()
 
-    # 送信と応答読み取り
-    for cmd, val in cmds:
-        pkt = make_packet(selected_channel, cmd, val)
-        if tx_packet(pkt):
-            time.sleep(0.3)  # 各パケット後の応答待ち
-    # 最後に全体インターバル
-    time.sleep(INTERVAL)
+ch_btn = tk.Button(root, text="[CH1 選択中]", font=font_label,
+                   bg="darkblue", fg="white", command=toggle_channel)
+ch_btn.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
-# ---------- GUI キー登録部分は元のまま ----------
-# tk.Button(..., command=lambda: do_cmd("SEND")) など、send に紐付け済み
+# ==================== 入力欄作成 ====================
+def create_entry(label, row, key):
+    bg = "#003300" if f"ch{selected_channel}" in key else "black"
+    tk.Label(root, text=label, font=font_label, bg=bg, fg="white").grid(row=row, column=0, sticky="e", padx=5, pady=5)
+    ent = tk.Entry(root, font=font_label, width=10, justify="right", bg=bg, fg="white")
+    ent.grid(row=row, column=1, padx=5, pady=5)
+    ent.bind("<Button-1>", lambda e, w=ent: set_selected(w))
+    entries[key] = ent
 
-# ---------- 終了・クリーンアップ ----------
+def refresh_entry_colors():
+    for key, ent in entries.items():
+        ch = 1 if "ch1" in key else 2
+        color = "#003300" if ch == selected_channel else "black"
+        if ent == selected_entry: color = "#00FF00"
+        ent.configure(bg=color)
+
+def set_selected(ent):
+    global selected_entry
+    selected_entry = ent
+    refresh_entry_colors()
+
+row = 2
+for ch in (1,2):
+    create_entry(f"CH{ch} テンション (gf)", row, f"ch{ch}_tension"); row += 1
+    create_entry(f"CH{ch} 線長 (m)",       row, f"ch{ch}_length");  row += 1
+    create_entry(f"CH{ch} カウント",        row, f"ch{ch}_count");   row += 1
+
+# ==================== テンキー ====================
+def handle_key(k):
+    global selected_entry
+    if k in ("SEND", "RESET", "STOP"): send_command(k); return
+    if not selected_entry: return
+    if k == "CLR": selected_entry.delete(0, tk.END)
+    elif k == "ENTER": selected_entry = None; refresh_entry_colors()
+    else: selected_entry.insert(tk.END, k); refresh_entry_colors()
+
+pad = tk.Frame(root, bg="black")
+pad.grid(row=2, column=3, columnspan=4, rowspan=6, sticky="nsew")
+keys = [["7","8","9","CLR"],["4","5","6","ENTER"],["1","2","3","SEND"],["0","STOP","","RESET"]]
+for r,rowv in enumerate(keys):
+    for c,k in enumerate(rowv):
+        if k:
+            b = tk.Button(pad, text=k, font=font_button, width=4, height=2, command=partial(handle_key, k))
+            b.grid(row=r, column=c, padx=5, pady=5, sticky="nsew")
+for i in range(4): pad.grid_columnconfigure(i, weight=1); pad.grid_rowconfigure(i, weight=1)
+
+# ==================== パケット送受 ====================
+def make_packet(ch, cmd, val):
+    pkt = [ch, cmd, val, 0x00, 0x00]
+    pkt.append(sum(pkt) & 0xFF)
+    return pkt
+
+def send_packet(pkt):
+    try:
+        ser.write(bytes(pkt))
+        ser.flush()
+        hexs = ' '.join(f"0x{x:02X}" for x in pkt)
+        out(f"[送信 CH{pkt[0]}] {hexs}")
+        time.sleep(SEND_INTERVAL)
+    except Exception as e:
+        out(f"[送信失敗] {e}")
+
+# ==================== コマンド実行 ====================
+def send_command(cmd):
+    ch = selected_channel
+    out(f"[COMMAND] {cmd} → CH{ch}")
+    try:
+        if cmd == "SEND":
+            t = int(entries[f"ch{ch}_tension"].get())
+            l = int(float(entries[f"ch{ch}_length"].get()) * 10)
+            c = int(entries[f"ch{ch}_count"].get())
+            send_packet(make_packet(ch, 0x06, t))
+            send_packet(make_packet(ch, 0x04, l))
+            send_packet(make_packet(ch, 0x05, c))
+        elif cmd == "RESET":
+            send_packet(make_packet(ch, 0x03, 0))
+        elif cmd == "STOP":
+            send_packet(make_packet(ch, 0x07, 0))
+    except Exception as e:
+        out(f"[エラー] 入力値不正: {e}")
+
+# ==================== 受信ループ ====================
+def receive_loop():
+    buf = bytearray()
+    global running
+    while running:
+        if ser.in_waiting:
+            b = ser.read(1)
+            if b: buf += b
+        if len(buf) >= 6:
+            pkt = list(buf[:6])
+            buf = buf[6:]
+            chk = sum(pkt[:5]) & 0xFF
+            valid = chk == pkt[5]
+            hexs = ' '.join(f"0x{x:02X}" for x in pkt)
+            out(f"[TC応答 CH{pkt[0]}] {hexs} CHK:{'OK' if valid else 'NG'}")
+        time.sleep(0.01)
+
+# ==================== アプリ終了 ====================
 def on_close():
     global running
     running = False
-    try:
-        if ser and ser.is_open:
-            ser.close()
-    except:
-        pass
+    if ser: ser.close()
     root.destroy()
 
 root.protocol("WM_DELETE_WINDOW", on_close)
 
-# ---------- メイン起動 ----------
+# ==================== 実行 ====================
 open_port()
+threading.Thread(target=receive_loop, daemon=True).start()
 root.mainloop()
