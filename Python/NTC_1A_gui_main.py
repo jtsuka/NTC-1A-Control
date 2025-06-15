@@ -90,6 +90,18 @@ root.title("NTC-1A タッチパネル操作")
 root.geometry("1024x600")
 root.configure(bg="black")
 
+# GUI 初期化の後に以下を追加
+left_frame = tk.Frame(root, bg="black")
+left_frame.grid(row=0, column=0, sticky="n")
+
+right_frame = tk.Frame(root, bg="black")
+right_frame.grid(row=0, column=1, sticky="n")
+
+# 列幅を調整（任意）
+root.grid_columnconfigure(0, weight=1)
+root.grid_columnconfigure(1, weight=1)
+
+
 # ★追加：左右に分割するフレーム
 left_frame = tk.Frame(root, bg="black")
 left_frame.grid(row=0, column=0, sticky="n")
