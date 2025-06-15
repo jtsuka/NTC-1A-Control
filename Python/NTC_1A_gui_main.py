@@ -124,6 +124,7 @@ ch_btn = tk.Button(left_frame, text="[CH1 選択中]", font=("Arial", 14),
                    bg="darkblue", fg="white", command=toggle_channel)
 ch_btn.grid(row=2, column=0, columnspan=3, padx=5, pady=5, sticky="ew")
 
+# 入力フィールド
 row = 3
 for ch in (1, 2):
     make_labeled_entry(left_frame, f"CH{ch} テンション(gf)", row, f"ch{ch}_tension", entries, entry_selected)
@@ -132,19 +133,6 @@ for ch in (1, 2):
     row += 1
     make_labeled_entry(left_frame, f"CH{ch} カウント", row, f"ch{ch}_count", entries, entry_selected)
     row += 1
-
-# 入力フィールド
-row = 2
-for ch in (1, 2):
-    make_labeled_entry(root, f"CH{ch} テンション(gf)", row, f"ch{ch}_tension", entries, entry_selected)
-    row += 1
-    make_labeled_entry(root, f"CH{ch} 線長(m)", row, f"ch{ch}_length", entries, entry_selected)
-    row += 1
-    make_labeled_entry(root, f"CH{ch} カウント", row, f"ch{ch}_count", entries, entry_selected)
-    row += 1
-
-# テンキー
-make_keypad(root, on_keypad_press)
 
 # シリアル受信スレッド起動
 start_serial_thread()
