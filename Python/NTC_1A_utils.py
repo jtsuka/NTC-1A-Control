@@ -9,8 +9,7 @@ def out(msg):
     print(msg)
     if log:
         try:
-            log.insert(tk.END, msg + "
-")
+            log.insert(tk.END, msg + " ")
             log.see(tk.END)
         except:
             pass
