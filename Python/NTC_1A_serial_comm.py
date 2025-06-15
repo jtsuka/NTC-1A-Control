@@ -2,7 +2,7 @@
 import serial, threading, time
 from utils import out
 
-PORT = "/dev/ttyU0"  # 適宜変更
+PORT = "/dev/ttyS0"  # 適宜変更
 BAUD = 9600
 ser = None
 running = True
