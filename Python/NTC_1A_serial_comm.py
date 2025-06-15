@@ -1,4 +1,5 @@
 # serial_comm.py
+# NTC_1A_serial_comm.py
 import serial, threading, time
 from NTC_1A_utils import out
 
@@ -7,10 +8,18 @@ BAUD = 9600
 ser = None
 running = True
 
-def open_port():
-    global ser
+SER_TIMEOUT = 2.0    # ★追加：初期値として2秒
+
+def set_timeout(seconds):           # ★追加
+    global SER_TIMEOUT
+    SER_TIMEOUT = seconds
+    out(f"[INFO] Timeout set: {SER_TIMEOUT:.1f} sec")
+
+def open_port(port=None):           # ★変更：ポートを引数で受け取れるように
+    global ser, PORT
+    if port: PORT = port            # ★追加：GUI選択が優先
     try:
-        ser = serial.Serial(PORT, BAUD, timeout=1)
+        ser = serial.Serial(PORT, BAUD, timeout=SER_TIMEOUT)  # ★変更
         ser.reset_input_buffer()
         ser.reset_output_buffer()
         out(f"[INFO] Port open: {PORT}")
@@ -31,7 +40,9 @@ def send_packet(ch, cmd, val):
     except Exception as e:
         out(f"[TX ERROR] {e}")
 
-def read_exact(n, timeout=0.5):
+def read_exact(n, timeout=None):    # ★変更：timeoutがNoneならSER_TIMEOUTを使用
+    if timeout is None:
+        timeout = SER_TIMEOUT
     buf = bytearray(n)
     idx = 0
     t0 = time.time()
@@ -58,8 +69,8 @@ def rx_loop():
         else:
             time.sleep(0.1)
 
-def start_serial_thread():
-    open_port()
+def start_serial_thread(port=None):      # ★変更：GUIからのポート渡しに対応
+    open_port(port)
     threading.Thread(target=rx_loop, daemon=True).start()
 
 def stop_serial():

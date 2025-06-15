@@ -1,9 +1,11 @@
 # gui_main.py
 # NTC-1A GUI – 完全版
 import tkinter as tk
-from tkinter import ttk, messagebox
-from NTC_1A_serial_comm import start_serial_thread, send_packet, stop_serial
+from tkinter import ttk, messagebox                    # ★変更：ttkを追加
+from NTC_1A_serial_comm import start_serial_thread, send_packet, stop_serial, set_timeout  # ★追加：タイムアウト変更関数 # ★追加
 from NTC_1A_utils import out, setup_log_display, make_labeled_entry, make_keypad
+from NTC_1A_serial_comm import set_timeout             # ★追加：タイムアウト変更関数
+from serial.tools import list_ports                   # ★追加：ポート一覧取得
 
 selected_channel = 1
 selected_entry = None
@@ -59,11 +61,49 @@ def handle_command(cmd):
     except ValueError:
         out("[ERROR] 数値入力エラー")
 
+# ---------------------------
+# シリアルポート選択 UI
+# ---------------------------
+def get_serial_ports():                     # ★追加
+    return [port.device for port in list_ports.comports()]
+
+def on_port_selected(event):               # ★追加
+    selected = port_combobox.get()
+    start_serial_thread(selected)
+
+# ---------------------------
+# タイムアウト秒数設定 UI
+# ---------------------------
+def update_timeout():                          # ★追加
+    try:
+        t = float(timeout_entry.get())
+        set_timeout(t)
+        messagebox.showinfo("Timeout", f"Timeout set to {t:.1f} sec")
+    except ValueError:
+        messagebox.showerror("Error", "Please enter a number")
+
+
+
 # GUI 初期化
 root = tk.Tk()
 root.title("NTC-1A タッチパネル操作")
 root.geometry("1024x600")
 root.configure(bg="black")
+
+font_label = ("Arial", 14)
+font_button = ("Arial", 18)
+
+tk.Label(root, text="Timeout(sec)", font=font_label, bg="black", fg="white").grid(row=1, column=0, padx=10, pady=5, sticky="e")  # ★追加
+timeout_entry = tk.Entry(root, font=font_label, width=10, justify="right")  # ★追加
+timeout_entry.insert(0, "2.0")                                               # ★追加
+timeout_entry.grid(row=1, column=1, padx=10, pady=5, sticky="w")             # ★追加
+tk.Button(root, text="Set", font=font_button, command=update_timeout).grid(row=1, column=2, padx=10, pady=5, sticky="w")  # ★追加
+
+tk.Label(root, text="Port", font=font_label, bg="black", fg="white").grid(row=0, column=0, padx=10, pady=5, sticky="e")  # ★追加
+port_combobox = ttk.Combobox(root, values=get_serial_ports(), font=font_label, width=25)  # ★追加
+port_combobox.grid(row=0, column=1, padx=10, pady=5, sticky="w")                          # ★追加
+port_combobox.bind("<<ComboboxSelected>>", on_port_selected)                             # ★追加
+
 
 # ログ
 log = setup_log_display(root)
