@@ -90,28 +90,48 @@ root.title("NTC-1A タッチパネル操作")
 root.geometry("1024x600")
 root.configure(bg="black")
 
+# ★追加：左右に分割するフレーム
+left_frame = tk.Frame(root, bg="black")
+left_frame.grid(row=0, column=0, sticky="n")
+
+right_frame = tk.Frame(root, bg="black")
+right_frame.grid(row=0, column=1, sticky="n")
+
 font_label = ("Arial", 14)
 font_button = ("Arial", 18)
 
-tk.Label(root, text="Timeout(sec)", font=font_label, bg="black", fg="white").grid(row=1, column=0, padx=10, pady=5, sticky="e")  # ★追加
-timeout_entry = tk.Entry(root, font=font_label, width=10, justify="right")  # ★追加
-timeout_entry.insert(0, "2.0")                                               # ★追加
-timeout_entry.grid(row=1, column=1, padx=10, pady=5, sticky="w")             # ★追加
-tk.Button(root, text="Set", font=font_button, command=update_timeout).grid(row=1, column=2, padx=10, pady=5, sticky="w")  # ★追加
+tk.Label(left_frame, text="Timeout(sec)", font=font_label, bg="black", fg="white") \
+    .grid(row=1, column=0, padx=10, pady=5, sticky="e")
+timeout_entry = tk.Entry(left_frame, font=font_label, width=10, justify="right")
+timeout_entry.insert(0, "2.0")
+timeout_entry.grid(row=1, column=1, padx=10, pady=5, sticky="w")
+tk.Button(left_frame, text="Set", font=font_button, command=update_timeout) \
+    .grid(row=1, column=2, padx=10, pady=5, sticky="w")
 
-tk.Label(root, text="Port", font=font_label, bg="black", fg="white").grid(row=0, column=0, padx=10, pady=5, sticky="e")  # ★追加
-port_combobox = ttk.Combobox(root, values=get_serial_ports(), font=font_label, width=25)  # ★追加
-port_combobox.grid(row=0, column=1, padx=10, pady=5, sticky="w")                          # ★追加
-port_combobox.bind("<<ComboboxSelected>>", on_port_selected)                             # ★追加
+tk.Label(left_frame, text="Port", font=font_label, bg="black", fg="white") \
+    .grid(row=0, column=0, padx=10, pady=5, sticky="e")  # ★変更
+port_combobox = ttk.Combobox(left_frame, values=get_serial_ports(), font=font_label, width=25)
+port_combobox.grid(row=0, column=1, padx=10, pady=5, sticky="w")
+port_combobox.bind("<<ComboboxSelected>>", on_port_selected)
 
 
 # ログ
-log = setup_log_display(root)
+log = setup_log_display(right_frame)  # ★変更
+make_keypad(right_frame, on_keypad_press)  # ★変更
 
 # CHボタン
-ch_btn = tk.Button(root, text="[CH1 選択中]", font=("Arial", 14),
+ch_btn = tk.Button(left_frame, text="[CH1 選択中]", font=("Arial", 14),
                    bg="darkblue", fg="white", command=toggle_channel)
-ch_btn.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
+ch_btn.grid(row=2, column=0, columnspan=3, padx=5, pady=5, sticky="ew")
+
+row = 3
+for ch in (1, 2):
+    make_labeled_entry(left_frame, f"CH{ch} テンション(gf)", row, f"ch{ch}_tension", entries, entry_selected)
+    row += 1
+    make_labeled_entry(left_frame, f"CH{ch} 線長(m)", row, f"ch{ch}_length", entries, entry_selected)
+    row += 1
+    make_labeled_entry(left_frame, f"CH{ch} カウント", row, f"ch{ch}_count", entries, entry_selected)
+    row += 1
 
 # 入力フィールド
 row = 2
