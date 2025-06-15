@@ -1,6 +1,6 @@
 # serial_comm.py
 import serial, threading, time
-from utils import out
+from NTC_1A_utils import out
 
 PORT = "/dev/ttyS0"  # 適宜変更
 BAUD = 9600
