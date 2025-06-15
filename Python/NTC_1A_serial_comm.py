@@ -2,7 +2,7 @@
 import serial, threading, time
 from NTC_1A_utils import out
 
-PORT = "/dev/ttyS0"  # 適宜変更
+PORT = "/dev/ttyUSB0"  # 適宜変更
 BAUD = 9600
 ser = None
 running = True
