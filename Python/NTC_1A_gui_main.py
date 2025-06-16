@@ -1,11 +1,9 @@
-# gui_main.py
-# NTC-1A GUI – 完全版
+# NTC-1A GUI – 修正済完全コード（1024x600対応、ログ幅調整済）
 import tkinter as tk
-from tkinter import ttk, messagebox                    # ★変更：ttkを追加
-from NTC_1A_serial_comm import start_serial_thread, send_packet, stop_serial, set_timeout  # ★追加：タイムアウト変更関数 # ★追加
+from tkinter import ttk, messagebox
+from serial.tools import list_ports
+from NTC_1A_serial_comm import start_serial_thread, send_packet, stop_serial, set_timeout
 from NTC_1A_utils import out, setup_log_display, make_labeled_entry, make_keypad
-from NTC_1A_serial_comm import set_timeout             # ★追加：タイムアウト変更関数
-from serial.tools import list_ports                   # ★追加：ポート一覧取得
 
 selected_channel = 1
 selected_entry = None
@@ -61,28 +59,20 @@ def handle_command(cmd):
     except ValueError:
         out("[ERROR] 数値入力エラー")
 
-# ---------------------------
-# シリアルポート選択 UI
-# ---------------------------
-def get_serial_ports():                     # ★追加
+def get_serial_ports():
     return [port.device for port in list_ports.comports()]
 
-def on_port_selected(event):               # ★追加
+def on_port_selected(event):
     selected = port_combobox.get()
     start_serial_thread(selected)
 
-# ---------------------------
-# タイムアウト秒数設定 UI
-# ---------------------------
-def update_timeout():                          # ★追加
+def update_timeout():
     try:
         t = float(timeout_entry.get())
         set_timeout(t)
         messagebox.showinfo("Timeout", f"Timeout set to {t:.1f} sec")
     except ValueError:
         messagebox.showerror("Error", "Please enter a number")
-
-
 
 # GUI 初期化
 root = tk.Tk()
@@ -91,53 +81,37 @@ root.geometry("1024x600")
 root.minsize(1024, 600)
 root.configure(bg="black")
 
-# GUI 初期化の後に以下を追加
-left_frame = tk.Frame(root, bg="black")
-left_frame.grid(row=0, column=0, sticky="n")
-
-right_frame = tk.Frame(root, bg="black")
-right_frame.grid(row=0, column=1, sticky="n")
-
-# 列幅を調整（任意）
-root.grid_columnconfigure(0, weight=1)
-root.grid_columnconfigure(1, weight=1)
-
-
-# ★追加：左右に分割するフレーム
-left_frame = tk.Frame(root, bg="black")
-left_frame.grid(row=0, column=0, sticky="n")
-
-right_frame = tk.Frame(root, bg="black")
-right_frame.grid(row=0, column=1, sticky="n")
-
 font_label = ("Arial", 14)
 font_button = ("Arial", 18)
 
-tk.Label(left_frame, text="Timeout(sec)", font=font_label, bg="black", fg="white") \
-    .grid(row=1, column=0, padx=10, pady=5, sticky="e")
-timeout_entry = tk.Entry(left_frame, font=font_label, width=10, justify="right")
-timeout_entry.insert(0, "2.0")
-timeout_entry.grid(row=1, column=1, padx=10, pady=5, sticky="w")
-tk.Button(left_frame, text="Set", font=font_button, command=update_timeout) \
-    .grid(row=1, column=2, padx=10, pady=5, sticky="w")
+left_frame = tk.Frame(root, bg="black")
+left_frame.grid(row=0, column=0, sticky="nsew")
 
+right_frame = tk.Frame(root, bg="black")
+right_frame.grid(row=0, column=1, sticky="nsew")
+
+root.grid_columnconfigure(0, weight=1)
+root.grid_columnconfigure(1, weight=1)
+
+# 左側
 tk.Label(left_frame, text="Port", font=font_label, bg="black", fg="white") \
-    .grid(row=0, column=0, padx=10, pady=5, sticky="e")  # ★変更
-port_combobox = ttk.Combobox(left_frame, values=get_serial_ports(), font=font_label, width=25)
-port_combobox.grid(row=0, column=1, padx=10, pady=5, sticky="w")
+    .grid(row=0, column=0, padx=5, pady=5, sticky="e")
+port_combobox = ttk.Combobox(left_frame, values=get_serial_ports(), font=font_label, width=20)
+port_combobox.grid(row=0, column=1, padx=5, pady=5, sticky="w")
 port_combobox.bind("<<ComboboxSelected>>", on_port_selected)
 
+tk.Label(left_frame, text="Timeout(sec)", font=font_label, bg="black", fg="white") \
+    .grid(row=1, column=0, padx=5, pady=5, sticky="e")
+timeout_entry = tk.Entry(left_frame, font=font_label, width=10, justify="right")
+timeout_entry.insert(0, "2.0")
+timeout_entry.grid(row=1, column=1, padx=5, pady=5, sticky="w")
+tk.Button(left_frame, text="Set", font=font_button, command=update_timeout) \
+    .grid(row=1, column=2, padx=5, pady=5, sticky="w")
 
-# ログ
-log = setup_log_display(right_frame)  # ★変更
-make_keypad(right_frame, on_keypad_press)  # ★変更
-
-# CHボタン
 ch_btn = tk.Button(left_frame, text="[CH1 選択中]", font=("Arial", 14),
                    bg="darkblue", fg="white", command=toggle_channel)
 ch_btn.grid(row=2, column=0, columnspan=3, padx=5, pady=5, sticky="ew")
 
-# 入力フィールド
 row = 3
 for ch in (1, 2):
     make_labeled_entry(left_frame, f"CH{ch} テンション(gf)", row, f"ch{ch}_tension", entries, entry_selected)
@@ -147,7 +121,15 @@ for ch in (1, 2):
     make_labeled_entry(left_frame, f"CH{ch} カウント", row, f"ch{ch}_count", entries, entry_selected)
     row += 1
 
-# シリアル受信スレッド起動
+# 右側（ログ + テンキー 縦並び）
+log_frame = tk.Frame(right_frame, bg="black")
+log_frame.pack(side="top", fill="x")
+keypad_frame = tk.Frame(right_frame, bg="black")
+keypad_frame.pack(side="top", fill="both", expand=True)
+
+log = setup_log_display(log_frame)
+make_keypad(keypad_frame, on_keypad_press)
+
 start_serial_thread()
 
 def on_close():
