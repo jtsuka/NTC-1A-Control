@@ -34,7 +34,7 @@ uint8_t bb_in  [6];    // TC → Pi
 
 /* ===================================================== */
 
-// 受信したらスプールにキューイングする
+// Pi→TCキュー受信
 void checkReceive() {
   static uint8_t buf[6];
   static int idx = 0;
@@ -133,6 +133,19 @@ void loop(){
       Serial.println("[TIMEOUT]");
     }
   }
+
+void bitbangWrite(uint8_t* data, uint8_t len) {
+  for (uint8_t i = 0; i < len; i++) {
+    write_bitbang_byte(data[i]);
+  }
+}
+
+bool bitbangRead(uint8_t* data, uint8_t len) {
+  for (uint8_t i = 0; i < len; i++) {
+    if (!read_bitbang_byte(data[i])) return false;
+  }
+  return true;
+}
 
 #if 0
   /* Pi→TC */
