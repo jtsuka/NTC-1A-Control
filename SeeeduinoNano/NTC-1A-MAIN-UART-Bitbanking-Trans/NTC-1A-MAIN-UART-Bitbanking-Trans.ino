@@ -115,17 +115,19 @@ void bitbangWrite(uint8_t* data, uint8_t len) {
 }
 
 bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
-  unsigned long start = millis();
+  unsigned long t0 = millis();
+
+  // ★ 応答開始待ち
+  while (digitalRead(BB_RX_PIN) == HIGH) {
+    if (millis() - t0 > timeout_ms) return false;
+  }
+
   for (uint8_t i = 0; i < len; i++) {
-     unsigned long wait = millis();
-    while (digitalRead(BB_RX_PIN) == HIGH) {
-      if (millis() - start > timeout_ms) return false;
-    }
     if (!read_bitbang_byte(data[i])) return false;
   }
+
   return true;
 }
-
 
 /* ---------- setup ---------- */
 void setup(){
@@ -203,5 +205,5 @@ bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 1500) {
       show_tc_rx(bb_in);                     // 下段更新
     }
   }
-#endif
 }
+#endif
