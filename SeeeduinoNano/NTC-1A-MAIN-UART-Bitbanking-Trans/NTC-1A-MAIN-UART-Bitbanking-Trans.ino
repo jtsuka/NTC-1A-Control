@@ -28,7 +28,7 @@ unsigned long t_start = 0;
 #define BB_RX_PIN 3
 #define BB_BAUD   300
 #define BIT_DELAY   (1000000UL / BB_BAUD)
-#define HALF_DELAY  (BIT_DELAY / 2)
+#define HALF_DELAY  (BIT_DELAY / 2 + 10)
 #define BYTE_GAP_US 500
 
 /* -------- OLED -------- */
