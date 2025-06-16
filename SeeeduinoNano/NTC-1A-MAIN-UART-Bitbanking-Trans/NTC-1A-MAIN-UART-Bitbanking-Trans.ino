@@ -166,6 +166,7 @@ void loop(){
   }
 }
 
+#if 0
 // 6バイトデータをBit‐Bang送信
 void bitbangWrite(uint8_t* data, uint8_t len) {
   for (uint8_t i = 0; i < len; i++) {
@@ -180,6 +181,7 @@ bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 1500) {
   }
   return true;
 }
+#endif
 
 
 #if 0
