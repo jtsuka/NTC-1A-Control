@@ -9,6 +9,13 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+/* ----- SpoolBuffer ---- */
+#define MAX_QUEUE 4
+uint8_t queue[MAX_QUEUE][6];
+volatile int q_head = 0;
+volatile int q_tail = 0;
+
+
 /* -------- pins & timing -------- */
 #define BB_TX_PIN 2
 #define BB_RX_PIN 3
@@ -26,6 +33,25 @@ uint8_t uart_out[6];   // Pi → TC
 uint8_t bb_in  [6];    // TC → Pi
 
 /* ===================================================== */
+
+// 受信したらスプールにキューイングする
+void checkReceive() {
+  static uint8_t buf[6];
+  static int idx = 0;
+
+  while (Serial.available()) {
+    buf[idx++] = Serial.read();
+    if (idx == 6) {
+      int next = (q_head + 1) % MAX_QUEUE;
+      if (next != q_tail) { // queue not full
+        memcpy(queue[q_head], buf, 6);
+        q_head = next;
+      }
+      idx = 0;
+    }
+  }
+}
+
 void draw_header()
 {
   oled.clearDisplay();
@@ -86,6 +112,29 @@ void setup(){
 
 /* ---------- main loop ---------- */
 void loop(){
+
+ checkReceive(); // キューバッファーのチェック
+  if (q_tail != q_head) {
+    // キューにデータがある
+    uint8_t* pkt = queue[q_tail];
+    q_tail = (q_tail + 1) % MAX_QUEUE;
+
+    // OLED表示（必要であれば）
+    show_uart_tx(pkt);
+
+    // TCにbitbang送信
+    bitbangWrite(pkt, 6);
+
+    // 応答受信（300bps用タイミングで）
+    uint8_t reply[6];
+    if (bitbangRead(reply, 6)) {
+      Serial.write(reply, 6); // PCへ返す
+    } else {
+      Serial.println("[TIMEOUT]");
+    }
+  }
+
+#if 0
   /* Pi→TC */
   if(Serial.available()>=6){
     for(uint8_t i=0;i<6;i++) uart_out[i]=Serial.read();
@@ -103,4 +152,5 @@ void loop(){
       show_tc_rx(bb_in);                     // 下段更新
     }
   }
+#endif
 }
