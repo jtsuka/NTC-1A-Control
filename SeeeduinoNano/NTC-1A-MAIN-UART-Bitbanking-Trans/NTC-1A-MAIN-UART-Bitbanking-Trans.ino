@@ -28,8 +28,9 @@ unsigned long t_start = 0;
 #define BB_RX_PIN 3
 #define BB_BAUD   300
 #define BIT_DELAY   (1000000UL / BB_BAUD)
-#define HALF_DELAY  (BIT_DELAY / 2 + 10)
+#define HALF_DELAY  ((BIT_DELAY / 2) + 20)
 #define BYTE_GAP_US 800
+#define STOPBIT_GAP_US 100
 
 /* -------- OLED -------- */
 #define OLED_W 128
@@ -97,17 +98,35 @@ void show_tc_rx(const uint8_t *buf)
 
 /* ---------- bit-bang helpers ---------- */
 void write_bitbang_byte(uint8_t b){
-  digitalWrite(BB_TX_PIN,LOW); delayMicroseconds(BIT_DELAY);
-  for(uint8_t i=0;i<8;i++){ digitalWrite(BB_TX_PIN,(b>>i)&1); delayMicroseconds(BIT_DELAY);}  
-  digitalWrite(BB_TX_PIN,HIGH); delayMicroseconds(BIT_DELAY);
+  digitalWrite(BB_TX_PIN, LOW); delayMicroseconds(BIT_DELAY);  // Start
+  for(uint8_t i = 0; i < 8; i++){
+    digitalWrite(BB_TX_PIN, (b >> i) & 1);
+    delayMicroseconds(BIT_DELAY);
+  }
+  digitalWrite(BB_TX_PIN, HIGH); delayMicroseconds(BIT_DELAY);  // Stop
+  delayMicroseconds(STOPBIT_GAP_US);  // ← ★ 追加: バイト間ギャップ
 }
 
 bool read_bitbang_byte(uint8_t &b, uint16_t to_ms=1500){
-  unsigned long t0=millis(); while(digitalRead(BB_RX_PIN)==HIGH){ if(millis()-t0>to_ms) return false; }
-  delayMicroseconds(HALF_DELAY); if(digitalRead(BB_RX_PIN)!=LOW) return false; delayMicroseconds(HALF_DELAY);
-  b=0; for(uint8_t i=0;i<8;i++){ delayMicroseconds(BIT_DELAY); if(digitalRead(BB_RX_PIN)) b|=1<<i; }
-  delayMicroseconds(BIT_DELAY); return true;  // stop bit
+  unsigned long t0 = millis();
+  while (digitalRead(BB_RX_PIN) == HIGH) {
+    if (millis() - t0 > to_ms) return false;
+  }
+  delayMicroseconds(HALF_DELAY);
+  if (digitalRead(BB_RX_PIN) != LOW) return false;
+  delayMicroseconds(HALF_DELAY);
+
+  b = 0;
+  for(uint8_t i = 0; i < 8; i++) {
+    delayMicroseconds(BIT_DELAY);
+    if (digitalRead(BB_RX_PIN)) b |= (1 << i);
+  }
+
+  delayMicroseconds(BIT_DELAY);  // Stop bit
+  delayMicroseconds(100);        // ← ★ Stopビット後の安定化待ち
+  return true;
 }
+
 
 void bitbangWrite(uint8_t* data, uint8_t len) {
   for (uint8_t i = 0; i < len; i++) {
@@ -152,6 +171,7 @@ void loop() {
         q_tail = (q_tail + 1) % MAX_QUEUE;
         show_uart_tx(current_pkt);
         bitbangWrite(current_pkt, 6);
+        delayMicroseconds(500);  // ← ★ これが無いと次のリードタイミングが間に合わない
         t_start = millis();
         state = WAITING_REPLY;
       }
