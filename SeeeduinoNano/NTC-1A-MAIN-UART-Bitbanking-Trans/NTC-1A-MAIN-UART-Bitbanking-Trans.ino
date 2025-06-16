@@ -15,6 +15,10 @@ uint8_t queue[MAX_QUEUE][6];
 volatile int q_head = 0;
 volatile int q_tail = 0;
 
+/* UART Buffer*/
+uint8_t last_reply[6];   // TCからの直近の応答バッファ
+bool show_pending = false; // OLED描画待ちフラグ
+
 
 /* -------- pins & timing -------- */
 #define BB_TX_PIN 2
@@ -161,6 +165,22 @@ void loop(){
     show_pending = false;
   }
 }
+
+// 6バイトデータをBit‐Bang送信
+void bitbangWrite(uint8_t* data, uint8_t len) {
+  for (uint8_t i = 0; i < len; i++) {
+    write_bitbang_byte(data[i]);
+  }
+}
+
+// 6バイトデータをBit‐Bang受信
+bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 1500) {
+  for (uint8_t i = 0; i < len; i++) {
+    if (!read_bitbang_byte(data[i], timeout_ms)) return false;
+  }
+  return true;
+}
+
 
 #if 0
   /* Pi→TC */
