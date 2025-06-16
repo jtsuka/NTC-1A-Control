@@ -29,6 +29,7 @@ unsigned long t_start = 0;
 #define BB_BAUD   300
 #define BIT_DELAY   (1000000UL / BB_BAUD)
 #define HALF_DELAY  (BIT_DELAY / 2)
+#define BYTE_GAP_US 300
 
 /* -------- OLED -------- */
 #define OLED_W 128
@@ -111,6 +112,7 @@ bool read_bitbang_byte(uint8_t &b, uint16_t to_ms=1500){
 void bitbangWrite(uint8_t* data, uint8_t len) {
   for (uint8_t i = 0; i < len; i++) {
     write_bitbang_byte(data[i]);
+    delayMicroseconds(BYTE_GAP_US);  // ← ★ここを追加（1ビット10msなので最低100〜300μs推奨）
   }
 }
 
