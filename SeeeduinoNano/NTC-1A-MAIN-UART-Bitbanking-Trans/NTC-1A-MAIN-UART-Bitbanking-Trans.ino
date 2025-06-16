@@ -133,6 +133,7 @@ void loop(){
       Serial.println("[TIMEOUT]");
     }
   }
+}
 
 void bitbangWrite(uint8_t* data, uint8_t len) {
   for (uint8_t i = 0; i < len; i++) {
