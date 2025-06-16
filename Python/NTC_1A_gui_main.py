@@ -88,6 +88,7 @@ def update_timeout():                          # ★追加
 root = tk.Tk()
 root.title("NTC-1A タッチパネル操作")
 root.geometry("1024x600")
+root.minsize(1024, 600)
 root.configure(bg="black")
 
 # GUI 初期化の後に以下を追加
