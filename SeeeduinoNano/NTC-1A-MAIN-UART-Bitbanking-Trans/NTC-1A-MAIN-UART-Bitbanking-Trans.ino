@@ -161,7 +161,7 @@ void loop() {
         show_tc_rx(reply_pkt);
         state = IDLE;
       } else if (millis() - t_start > 2000) {
-        Serial.println("[TIMEOUT]");
+ //       Serial.println("[TIMEOUT]"); // 不要
         state = IDLE;
       }
       break;
