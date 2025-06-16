@@ -23,7 +23,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define BB_BAUD 330
 #define BIT_DELAY (1000000UL / BB_BAUD)
 #define HALF_DELAY (BIT_DELAY / 2)
-#define BYTE_GAP_TIME 800
+#define BYTE_GAP_TIME 1000
 
 uint8_t recv_buf[6];
 
