@@ -23,7 +23,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define BB_BAUD 330
 #define BIT_DELAY (1000000UL / BB_BAUD)
 #define HALF_DELAY (BIT_DELAY / 2)
-#define BYTE_GAP_TIME 400
+#define BYTE_GAP_TIME 800
 
 uint8_t recv_buf[6];
 
@@ -95,7 +95,7 @@ void send_bitbang_byte(uint8_t b) {
   }
 
   digitalWrite(BB_TX_PIN, HIGH);
-  delayMicroseconds(BIT_DELAY * 2);
+  delayMicroseconds(BIT_DELAY * 3);
 }
 
 void display_packet(const char *label, uint8_t *buf) {
