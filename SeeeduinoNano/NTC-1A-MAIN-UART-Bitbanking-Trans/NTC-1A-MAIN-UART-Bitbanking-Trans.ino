@@ -101,6 +101,20 @@ bool read_bitbang_byte(uint8_t &b, uint16_t to_ms=1500){
   delayMicroseconds(BIT_DELAY); return true;  // stop bit
 }
 
+void bitbangWrite(uint8_t* data, uint8_t len) {
+  for (uint8_t i = 0; i < len; i++) {
+    write_bitbang_byte(data[i]);
+  }
+}
+
+bool bitbangRead(uint8_t* data, uint8_t len) {
+  for (uint8_t i = 0; i < len; i++) {
+    if (!read_bitbang_byte(data[i])) return false;
+  }
+  return true;
+}
+
+
 /* ---------- setup ---------- */
 void setup(){
   pinMode(BB_TX_PIN,OUTPUT); digitalWrite(BB_TX_PIN,HIGH);
@@ -133,19 +147,6 @@ void loop(){
       Serial.println("[TIMEOUT]");
     }
   }
-
-void bitbangWrite(uint8_t* data, uint8_t len) {
-  for (uint8_t i = 0; i < len; i++) {
-    write_bitbang_byte(data[i]);
-  }
-}
-
-bool bitbangRead(uint8_t* data, uint8_t len) {
-  for (uint8_t i = 0; i < len; i++) {
-    if (!read_bitbang_byte(data[i])) return false;
-  }
-  return true;
-}
 
 #if 0
   /* Pi→TC */
