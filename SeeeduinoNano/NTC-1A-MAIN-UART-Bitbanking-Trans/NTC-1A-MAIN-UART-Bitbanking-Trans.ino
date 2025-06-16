@@ -147,6 +147,7 @@ void loop(){
       Serial.println("[TIMEOUT]");
     }
   }
+}
 
 #if 0
   /* Pi→TC */
