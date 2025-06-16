@@ -110,6 +110,7 @@ void bitbangWrite(uint8_t* data, uint8_t len) {
 bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
   unsigned long start = millis();
   for (uint8_t i = 0; i < len; i++) {
+     unsigned long wait = millis();
     while (digitalRead(BB_RX_PIN) == HIGH) {
       if (millis() - start > timeout_ms) return false;
     }
@@ -147,9 +148,17 @@ void loop(){
     uint8_t reply[6];
     if (bitbangRead(reply, 6)) {
       Serial.write(reply, 6); // PCへ返す
+        memcpy(last_reply, reply, 6);  // グローバルに保存
+        show_pending = true;
     } else {
       Serial.println("[TIMEOUT]");
     }
+  }
+  
+  // loop()後半で描画
+  if (show_pending) {
+    show_tc_rx(last_reply);
+    show_pending = false;
   }
 }
 
