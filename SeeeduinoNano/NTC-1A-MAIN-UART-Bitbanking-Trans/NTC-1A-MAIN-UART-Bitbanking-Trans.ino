@@ -18,7 +18,10 @@ volatile int q_tail = 0;
 /* UART Buffer*/
 uint8_t last_reply[6];   // TCからの直近の応答バッファ
 bool show_pending = false; // OLED描画待ちフラグ
-
+enum RelayState { IDLE, SENDING, WAITING_REPLY };
+RelayState state = IDLE;
+uint8_t current_pkt[6], reply_pkt[6];
+unsigned long t_start = 0;
 
 /* -------- pins & timing -------- */
 #define BB_TX_PIN 2
@@ -134,37 +137,35 @@ void setup(){
 }
 
 /* ---------- main loop ---------- */
-void loop(){
 
- checkReceive(); // キューバッファーのチェック
-  if (q_tail != q_head) {
-    // キューにデータがある
-    uint8_t* pkt = queue[q_tail];
-    q_tail = (q_tail + 1) % MAX_QUEUE;
+void loop() {
+  checkReceive();
 
-    // OLED表示（必要であれば）
-    show_uart_tx(pkt);
+  switch (state) {
+    case IDLE:
+      if (q_tail != q_head) {
+        memcpy(current_pkt, queue[q_tail], 6);
+        q_tail = (q_tail + 1) % MAX_QUEUE;
+        show_uart_tx(current_pkt);
+        bitbangWrite(current_pkt, 6);
+        t_start = millis();
+        state = WAITING_REPLY;
+      }
+      break;
 
-    // TCにbitbang送信
-    bitbangWrite(pkt, 6);
-
-    // 応答受信（300bps用タイミングで）
-    uint8_t reply[6];
-    if (bitbangRead(reply, 6)) {
-      Serial.write(reply, 6); // PCへ返す
-        memcpy(last_reply, reply, 6);  // グローバルに保存
-        show_pending = true;
-    } else {
-      Serial.println("[TIMEOUT]");
-    }
-  }
-  
-  // loop()後半で描画
-  if (show_pending) {
-    show_tc_rx(last_reply);
-    show_pending = false;
+    case WAITING_REPLY:
+      if (bitbangRead(reply_pkt, 6)) {
+        Serial.write(reply_pkt, 6);
+        show_tc_rx(reply_pkt);
+        state = IDLE;
+      } else if (millis() - t_start > 2000) {
+        Serial.println("[TIMEOUT]");
+        state = IDLE;
+      }
+      break;
   }
 }
+
 
 #if 0
 // 6バイトデータをBit‐Bang送信
