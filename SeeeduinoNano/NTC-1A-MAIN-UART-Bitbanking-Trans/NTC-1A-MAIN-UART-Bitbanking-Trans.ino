@@ -107,8 +107,12 @@ void bitbangWrite(uint8_t* data, uint8_t len) {
   }
 }
 
-bool bitbangRead(uint8_t* data, uint8_t len) {
+bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
+  unsigned long start = millis();
   for (uint8_t i = 0; i < len; i++) {
+    while (digitalRead(BB_RX_PIN) == HIGH) {
+      if (millis() - start > timeout_ms) return false;
+    }
     if (!read_bitbang_byte(data[i])) return false;
   }
   return true;
