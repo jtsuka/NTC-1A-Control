@@ -29,7 +29,7 @@ unsigned long t_start = 0;
 #define BB_BAUD   300
 #define BIT_DELAY   (1000000UL / BB_BAUD)
 #define HALF_DELAY  (BIT_DELAY / 2)
-#define BYTE_GAP_US 400
+#define BYTE_GAP_US 500
 
 /* -------- OLED -------- */
 #define OLED_W 128
