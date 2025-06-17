@@ -78,11 +78,14 @@ bool receive_packet() {
     if (!detected) return false;
 
     uint8_t b = 0;
+  
+    noInterrupts();  // ★ 受信中は割り込みを無効化
     for (int bit = 0; bit < 8; bit++) {
       delayMicroseconds(BIT_DELAY - 2);   // <-タイミング調整
       b |= (digitalRead(BB_RX_PIN) << bit);
       delayMicroseconds(30);  // ★安定化対策（誤検出防止）
     }
+    interrupts();    // ★ 受信完了後に割り込み再開
 
     delayMicroseconds(BIT_DELAY + 100);  // Stop bit
     recv_buf[i] = b;
@@ -106,6 +109,8 @@ void send_packet(uint8_t *buf) {
 }
 
 void send_bitbang_byte(uint8_t b){
+  noInterrupts();  // ← ★送信中の割り込み禁止（追加）
+
   digitalWrite(BB_TX_PIN, LOW);
   delayMicroseconds(BIT_DELAY);
 
@@ -117,6 +122,8 @@ void send_bitbang_byte(uint8_t b){
   digitalWrite(BB_TX_PIN, HIGH);
   delayMicroseconds(BIT_DELAY * 2 + 300);  // ← Stop + 余白（2倍から調整）
   delayMicroseconds(200);           // ← ★安定化用の余白
+
+  interrupts();  // ← ★送信後に割り込み再開（追加）
 }
 
 void display_packet(const char *label, uint8_t *buf) {
