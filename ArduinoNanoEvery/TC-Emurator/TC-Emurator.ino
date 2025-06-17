@@ -6,8 +6,8 @@
   ▸ 上半分：受信パケット表示（RAW）
   ▸ 下半分：返信パケット表示（Echo）
 
-  更新日: 2025-06-14
-  生成時刻: 2025-06-14 19:18 JST
+  更新日: 2025-06-17
+  生成時刻: 2025-06-17 19:30 JST
 **********************************************************************/
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -24,7 +24,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 // ---- 新 ----  (約 +60 µs = 1.8 % だけ遅く)
 #define BIT_DELAY 3450                       // ★オーバーヘッド込み目安
 #define HALF_DELAY (BIT_DELAY / 2 + 30)      // ★中心取りも拡張
-#define BYTE_GAP_TIME 1000
+#define BYTE_GAP_TIME 600
 // 最速は PORTD 直接操作 (例: TX_PIN = D2 → PD2)
 #define TX_HIGH()  PORTD |=  _BV(2)
 #define TX_LOW()   PORTD &= ~_BV(2)
@@ -81,20 +81,23 @@ bool receive_packet() {
   return true;
 }
 
+/***** 2. send_packet() のギャップ位置を変更 *****/
 void send_packet(uint8_t *buf) {
   for (int i = 0; i < 6; i++) {
     send_bitbang_byte(buf[i]);
-    delayMicroseconds(BYTE_GAP_TIME);            // ★バイト間ギャップ
-
+    /* TX_PIN はすでに HIGH のままなので
+       ここで “High のまま” ギャップを取れる */
+    delayMicroseconds(BYTE_GAP_TIME);   // 600～1000 us 推奨
   }
 }
 
 void send_bitbang_byte(uint8_t b){
-  TX_LOW();  delayMicroseconds(BIT_DELAY);      // Start
+  TX_LOW();                           // Start
+  delayMicroseconds(BIT_DELAY);
 
   for(uint8_t i=0;i<8;i++){
     (b & (1<<i)) ? TX_HIGH() : TX_LOW();
-    delayMicroseconds(BIT_DELAY * 3);
+    delayMicroseconds(BIT_DELAY);
   }
 
   TX_HIGH();                                    // Stop
