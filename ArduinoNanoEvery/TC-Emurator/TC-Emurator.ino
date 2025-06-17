@@ -52,7 +52,7 @@ void loop() {
   if (receive_packet()) {
     display_packet("RAW", recv_buf);
     send_packet(recv_buf);
-    display_packet("ECHO", recv_buf);
+    delayMicroseconds(100);  // ← すぐ次のパケット受信に入らないように
   }
 }
 
