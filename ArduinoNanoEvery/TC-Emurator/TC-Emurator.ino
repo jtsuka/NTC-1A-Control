@@ -21,8 +21,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define BB_RX_PIN 3
 #define BB_TX_PIN 2
 #define BB_BAUD 300
-#define BIT_DELAY ((1000000UL / BB_BAUD) + 600)  // 3333 + 500 = 約3833 us
-#define HALF_DELAY (BIT_DELAY / 2 + 40)   // ← 前より +25くらいセンターを後ろへ
+#define BIT_DELAY ((1000000UL / BB_BAUD) + 26)  // 3333 + α
+#define HALF_DELAY (BIT_DELAY / 2 + 20)   // ← 前より +25くらいセンターを後ろへ
 #define BYTE_GAP_TIME 800
 // 最速は PORTD 直接操作 (例: TX_PIN = D2 → PD2)
 //#define TX_HIGH()  PORTD |=  _BV(2)
@@ -81,6 +81,7 @@ bool receive_packet() {
     for (int bit = 0; bit < 8; bit++) {
       delayMicroseconds(BIT_DELAY - 2);   // <-タイミング調整
       b |= (digitalRead(BB_RX_PIN) << bit);
+      delayMicroseconds(30);  // ★安定化対策（誤検出防止）
     }
 
     delayMicroseconds(BIT_DELAY + 100);  // Stop bit
@@ -100,7 +101,7 @@ void send_packet(uint8_t *buf) {
     delayMicroseconds(5);
     delayMicroseconds(BYTE_GAP_TIME);
   }
-  delayMicroseconds(BIT_DELAY * 2);  // ← ★最終送信後にも余白を確保
+  delayMicroseconds(BIT_DELAY * 2 + 300);  // ← ★最終送信後にも余白を確保
   interrupts();    // ★割り込み再開
 }
 
@@ -114,7 +115,7 @@ void send_bitbang_byte(uint8_t b){
   }
 
   digitalWrite(BB_TX_PIN, HIGH);
-  delayMicroseconds(BIT_DELAY * 2);  // ← Stop + 余白（2倍から調整）
+  delayMicroseconds(BIT_DELAY * 2 + 300);  // ← Stop + 余白（2倍から調整）
   delayMicroseconds(200);           // ← ★安定化用の余白
 }
 
