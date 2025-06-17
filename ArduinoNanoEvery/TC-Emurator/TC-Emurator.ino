@@ -48,9 +48,12 @@ void setup() {
 void loop() {
   if (receive_packet()) {
     display_packet("RAW", recv_buf);
-    delayMicroseconds(BIT_DELAY * 3);  // 約10ms = 300bps×3bit相当
+    // ★ Stopビットを含めたパケット終端が終わるのを確実に待つ
+    delayMicroseconds(BIT_DELAY * 4);  // 約13ms = 300bps×4bit相当
     send_packet(recv_buf);
-    delayMicroseconds(100);  // ← すぐ次のパケット受信に入らないように(ノイズ対策)
+
+    // ★連続受信を避ける休止
+    delayMicroseconds(500);  // ← すぐ次のパケット受信に入らないように(ノイズ対策)
   }
 }
 
