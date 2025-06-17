@@ -92,6 +92,8 @@ bool receive_packet() {
 
 /***** 2. send_packet() のギャップ位置を変更 *****/
 void send_packet(uint8_t *buf) {
+ noInterrupts();  // ★割り込み停止
+
   for (int i = 0; i < 6; i++) {
     send_bitbang_byte(buf[i]);
     digitalWrite(BB_TX_PIN, HIGH);  // 明示的に戻す
@@ -99,6 +101,7 @@ void send_packet(uint8_t *buf) {
     delayMicroseconds(BYTE_GAP_TIME);
   }
   delayMicroseconds(BIT_DELAY * 2);  // ← ★最終送信後にも余白を確保
+  interrupts();    // ★割り込み再開
 }
 
 void send_bitbang_byte(uint8_t b){
