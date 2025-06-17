@@ -79,7 +79,7 @@ bool receive_packet() {
 
     uint8_t b = 0;
     for (int bit = 0; bit < 8; bit++) {
-      delayMicroseconds(BIT_DELAY);
+      delayMicroseconds(BIT_DELAY - 2);   // <-タイミング調整
       b |= (digitalRead(BB_RX_PIN) << bit);
     }
 
