@@ -21,7 +21,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define BB_RX_PIN 3
 #define BB_TX_PIN 2
 #define BB_BAUD 300
-#define BIT_DELAY ((1000000UL / BB_BAUD) + 750)  // 3333 + 300 = 約3633µs
+#define BIT_DELAY ((1000000UL / BB_BAUD) + 400)  // 3333 + 400 = 約3733µs
 #define HALF_DELAY (BIT_DELAY / 2 + 15)      // ★中心取りも拡張
 #define BYTE_GAP_TIME 800
 // 最速は PORTD 直接操作 (例: TX_PIN = D2 → PD2)
