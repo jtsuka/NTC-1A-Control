@@ -24,7 +24,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 // ---- 新 ----  (約 +60 µs = 1.8 % だけ遅く)
 #define BIT_DELAY 3330                       // ★オーバーヘッド込み目安
 #define HALF_DELAY (BIT_DELAY / 2 + 15)      // ★中心取りも拡張
-#define BYTE_GAP_TIME 600
+#define BYTE_GAP_TIME 800
 // 最速は PORTD 直接操作 (例: TX_PIN = D2 → PD2)
 //#define TX_HIGH()  PORTD |=  _BV(2)
 //#define TX_LOW()   PORTD &= ~_BV(2)
