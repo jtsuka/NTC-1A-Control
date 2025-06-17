@@ -36,15 +36,15 @@ void setup() {
   pinMode(BB_RX_PIN, INPUT_PULLUP);
   Serial.begin(9600);
 
-  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-    while (true); // OLED初期化失敗
-  }
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0, 0);
-  display.println(F("TC Emulator 8-bit"));
-  display.display();
+  // if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+  //   while (true); // OLED初期化失敗
+  // }
+  // display.clearDisplay();
+  // display.setTextSize(1);
+  // display.setTextColor(SSD1306_WHITE);
+  // display.setCursor(0, 0);
+  // display.println(F("TC Emulator 8-bit"));
+  // display.display();
   delay(1000);
 }
 
@@ -127,17 +127,17 @@ void send_bitbang_byte(uint8_t b){
 }
 
 void display_packet(const char *label, uint8_t *buf) {
-  display.clearDisplay();
-  display.setCursor(0, 0);
-  display.print(label);
-  display.println(" Packet");
-
-  for (int i = 0; i < 6; i++) {
-    display.print("0x");
-    if (buf[i] < 0x10) display.print("0");
-    display.print(buf[i], HEX);
-    display.print(" ");
-    if (i == 2 || i == 5) display.println();
-  }
-  display.display();
+//  display.clearDisplay();
+//  display.setCursor(0, 0);
+//  display.print(label);
+//  display.println(" Packet");
+//
+//  for (int i = 0; i < 6; i++) {
+//    display.print("0x");
+//    if (buf[i] < 0x10) display.print("0");
+//    display.print(buf[i], HEX);
+//    display.print(" ");
+//    if (i == 2 || i == 5) display.println();
+//  }
+//  display.display();
 }
