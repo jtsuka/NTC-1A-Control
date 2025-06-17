@@ -48,6 +48,7 @@ void setup() {
 void loop() {
   if (receive_packet()) {
     display_packet("RAW", recv_buf);
+    delayMicroseconds(BIT_DELAY * 3);  // 約10ms = 300bps×3bit相当
     send_packet(recv_buf);
     delayMicroseconds(100);  // ← すぐ次のパケット受信に入らないように
   }
@@ -55,6 +56,8 @@ void loop() {
 
 bool receive_packet() {
   unsigned long start = millis();
+  bool success = true;
+
   noInterrupts();  // ★ 全体を保護
 
   for (int i = 0; i < 6; i++) {
@@ -62,7 +65,10 @@ bool receive_packet() {
 
     for (int retry = 0; retry < 3; retry++) {
       while (digitalRead(BB_RX_PIN) == HIGH) {
-        if (millis() - start > 1000) return false;
+        if (millis() - start > 1000) {
+          success = false;
+          goto end;  // ← breakではなく全体脱出
+        }
       }
 
       delayMicroseconds(HALF_DELAY);
@@ -73,24 +79,25 @@ bool receive_packet() {
       delayMicroseconds(HALF_DELAY);
     }
 
-    if (!detected) return false;
+    if (!detected) {
+      success = false;
+      goto end;
+    }
 
     uint8_t b = 0;
-  
-    noInterrupts();  // ★ 受信中は割り込みを無効化
     for (int bit = 0; bit < 8; bit++) {
-      delayMicroseconds(BIT_DELAY - 2);   // <-タイミング調整
+      delayMicroseconds(BIT_DELAY - 2);
       b |= (digitalRead(BB_RX_PIN) << bit);
-      delayMicroseconds(30);  // ★安定化対策（誤検出防止）
+      delayMicroseconds(30);
     }
-    interrupts();    // ★ 受信完了後に割り込み再開
 
-    delayMicroseconds(BIT_DELAY + 100);  // Stop bit
+    delayMicroseconds(BIT_DELAY + 100);
     recv_buf[i] = b;
   }
- 
-  interrupts();  // ★ 受信後に復帰
-  return true;
+
+end:
+  interrupts();  // ← 必ず戻す
+  return success;
 }
 
 /***** 2. send_packet() のギャップ位置を変更 *****/
