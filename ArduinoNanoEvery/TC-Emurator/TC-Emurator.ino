@@ -94,26 +94,24 @@ bool receive_packet() {
 void send_packet(uint8_t *buf) {
   for (int i = 0; i < 6; i++) {
     send_bitbang_byte(buf[i]);
-    digitalWrite(BB_TX_PIN, HIGH);       // HIGH に戻す
-    delayMicroseconds(5);                // 立上り猶予
-    delayMicroseconds(BYTE_GAP_TIME);    // 800 µs
+    digitalWrite(BB_TX_PIN, HIGH);  // 明示的に戻す
+    delayMicroseconds(5);
+    delayMicroseconds(BYTE_GAP_TIME);
   }
+  delayMicroseconds(BIT_DELAY * 2);  // ← ★最終送信後にも余白を確保
 }
 
 void send_bitbang_byte(uint8_t b){
-  digitalWrite(BB_TX_PIN, LOW);                // Start
+  digitalWrite(BB_TX_PIN, LOW);
   delayMicroseconds(BIT_DELAY);
 
-  for(uint8_t i=0;i<8;i++){
-    //  send_bitbang_byte() 内
-    (b & (1<<i)) ? digitalWrite(BB_TX_PIN, HIGH)
-                 : digitalWrite(BB_TX_PIN, LOW);
-    // Start/Stop も同様に digitalWrite
-    delayMicroseconds(BIT_DELAY);   // ← 1倍に戻す
+  for (uint8_t i = 0; i < 8; i++) {
+    digitalWrite(BB_TX_PIN, (b >> i) & 0x01);
+    delayMicroseconds(BIT_DELAY);
   }
 
-  digitalWrite(BB_TX_PIN, HIGH);                 // Stop
-  delayMicroseconds(BIT_DELAY * 2);              // Stop+余白
+  digitalWrite(BB_TX_PIN, HIGH);
+  delayMicroseconds(BIT_DELAY * 1.5);  // ← Stop + 余白（2倍から調整）
 }
 
 void display_packet(const char *label, uint8_t *buf) {
