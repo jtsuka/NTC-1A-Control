@@ -50,7 +50,7 @@ void loop() {
     display_packet("RAW", recv_buf);
     delayMicroseconds(BIT_DELAY * 3);  // 約10ms = 300bps×3bit相当
     send_packet(recv_buf);
-    delayMicroseconds(100);  // ← すぐ次のパケット受信に入らないように
+    delayMicroseconds(100);  // ← すぐ次のパケット受信に入らないように(ノイズ対策)
   }
 }
 
