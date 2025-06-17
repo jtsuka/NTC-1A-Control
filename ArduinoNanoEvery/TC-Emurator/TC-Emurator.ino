@@ -22,8 +22,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define BB_TX_PIN 2
 #define BB_BAUD 300
 // ---- 新 ----  (約 +60 µs = 1.8 % だけ遅く)
-#define BIT_DELAY 3460                       // ★オーバーヘッド込み目安
-#define HALF_DELAY (BIT_DELAY / 2 + 35)      // ★中心取りも拡張
+#define BIT_DELAY 3330                       // ★オーバーヘッド込み目安
+#define HALF_DELAY (BIT_DELAY / 2 + 15)      // ★中心取りも拡張
 #define BYTE_GAP_TIME 600
 // 最速は PORTD 直接操作 (例: TX_PIN = D2 → PD2)
 //#define TX_HIGH()  PORTD |=  _BV(2)
@@ -85,8 +85,7 @@ bool receive_packet() {
 void send_packet(uint8_t *buf) {
   for (int i = 0; i < 6; i++) {
     send_bitbang_byte(buf[i]);
-    /* TX_PIN はすでに HIGH のままなので
-       ここで “High のまま” ギャップを取れる */
+    digitalWrite(BB_TX_PIN, HIGH);       // ★LOW のまま残さない
     delayMicroseconds(BYTE_GAP_TIME);   // 600～1000 us 推奨
   }
 }
