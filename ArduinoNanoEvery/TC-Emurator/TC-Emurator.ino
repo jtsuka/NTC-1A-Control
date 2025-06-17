@@ -86,7 +86,8 @@ void send_packet(uint8_t *buf) {
   for (int i = 0; i < 6; i++) {
     send_bitbang_byte(buf[i]);
     digitalWrite(BB_TX_PIN, HIGH);       // ★LOW のまま残さない
-    delayMicroseconds(BYTE_GAP_TIME);   // 600～1000 us 推奨
+    digitalWrite(BB_TX_PIN, HIGH);     // ★LOW 継続を防止
+    delayMicroseconds(BYTE_GAP_TIME);  // 800 µs 推奨
   }
 }
 
@@ -95,15 +96,15 @@ void send_bitbang_byte(uint8_t b){
   delayMicroseconds(BIT_DELAY);
 
   for(uint8_t i=0;i<8;i++){
-//  send_bitbang_byte() 内
-(b & (1<<i)) ? digitalWrite(BB_TX_PIN, HIGH)
-             : digitalWrite(BB_TX_PIN, LOW);
-// Start/Stop も同様に digitalWrite
+    //  send_bitbang_byte() 内
+    (b & (1<<i)) ? digitalWrite(BB_TX_PIN, HIGH)
+                 : digitalWrite(BB_TX_PIN, LOW);
+    // Start/Stop も同様に digitalWrite
     delayMicroseconds(BIT_DELAY);   // ← 1倍に戻す
   }
 
   digitalWrite(BB_TX_PIN, HIGH);                 // Stop
-  delayMicroseconds(BIT_DELAY * 2);             // Stop+余白
+  delayMicroseconds(BIT_DELAY);                 // Stop+余白
 }
 
 void display_packet(const char *label, uint8_t *buf) {
