@@ -60,16 +60,22 @@ bool receive_packet() {
   unsigned long start = millis();
 
   for (int i = 0; i < 6; i++) {
-    // スタートビット待ち
-    while (digitalRead(BB_RX_PIN) == HIGH) {
-      if (millis() - start > 1000) return false;
+    bool detected = false;
+
+    for (int retry = 0; retry < 3; retry++) {
+      while (digitalRead(BB_RX_PIN) == HIGH) {
+        if (millis() - start > 1000) return false;
+      }
+
+      delayMicroseconds(HALF_DELAY);
+      if (digitalRead(BB_RX_PIN) == LOW) {
+        detected = true;
+        break;
+      }
+      delayMicroseconds(HALF_DELAY);
     }
 
-    // センターを狙って遅延（スタートビットの中央）
-    delayMicroseconds(HALF_DELAY);
-
-    if (digitalRead(BB_RX_PIN) != LOW) return false;
-    delayMicroseconds(HALF_DELAY);
+    if (!detected) return false;
 
     uint8_t b = 0;
     for (int bit = 0; bit < 8; bit++) {
@@ -77,10 +83,10 @@ bool receive_packet() {
       b |= (digitalRead(BB_RX_PIN) << bit);
     }
 
-    // Stop bit：1ビット分 + 余白（誤判定防止）
-    delayMicroseconds(BIT_DELAY + 100);  // ← ★ Stopビット安定化
+    delayMicroseconds(BIT_DELAY + 100);  // Stop bit
     recv_buf[i] = b;
   }
+
   return true;
 }
 
