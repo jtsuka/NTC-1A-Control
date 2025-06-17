@@ -114,7 +114,8 @@ void send_bitbang_byte(uint8_t b){
   }
 
   digitalWrite(BB_TX_PIN, HIGH);
-  delayMicroseconds(BIT_DELAY * 1.5);  // ← Stop + 余白（2倍から調整）
+  delayMicroseconds(BIT_DELAY * 2);  // ← Stop + 余白（2倍から調整）
+  delayMicroseconds(200);           // ← ★安定化用の余白
 }
 
 void display_packet(const char *label, uint8_t *buf) {
