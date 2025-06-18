@@ -39,12 +39,24 @@ def send_packet(ch, cmd, val):
         return False
 
     try:
-        resp = read_exact(6, timeout=current_timeout_value)
-        if not resp:
-            out("[TIMEOUT] No response.")
-            return False
-        out(f"[RX] {' '.join(f'{x:02X}' for x in resp)}")
-        return True
+	resp = read_exact(6, timeout=current_timeout_value)
+	if resp is None:
+    		out("[TIMEOUT] No response.")
+    		return False
+	elif len(resp) < 6:
+    		out(f"[RX ERROR] Incomplete response: {len(resp)} bytes → {' '.join(f'{x:02X}' for x in resp)}")
+    		return False
+	else:
+		# チェックサム検証
+    		calc_chk = sum(resp[:5]) & 0xFF
+    		if resp[5] != calc_chk:
+			out(f"[RX WARN] Checksum mismatch: Expected {calc_chk:02X}, Got {resp[5]:02X}")
+			out(f"[RX] {' '.join(f'{x:02X}' for x in resp)}")
+			return False
+		else:
+		        out(f"[RX] {' '.join(f'{x:02X}' for x in resp)}")
+			return True
+
     except Exception as e:
         out(f"[RX ERROR] {e}")
         return False
