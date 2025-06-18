@@ -9,6 +9,18 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+// ======== DEBUGマクロ定義（Python側への誤送信防止）========
+#define DEBUG_ENABLED 0  // 1: 有効 / 0: 無効
+
+#if DEBUG_ENABLED
+  #define DEBUG_PRINT(x)    Serial.print(x)
+  #define DEBUG_PRINTLN(x)  Serial.println(x)
+#else
+  #define DEBUG_PRINT(x)
+  #define DEBUG_PRINTLN(x)
+#endif
+
+
 /* ----- SpoolBuffer ---- */
 #define MAX_QUEUE 4
 uint8_t queue[MAX_QUEUE][6];
@@ -131,12 +143,12 @@ bool read_bitbang_byte(uint8_t &b, uint16_t to_ms=1500){
   delayMicroseconds(300);        // ← ★ Stopビット後の安定化待ち
 
   // ★ここにビット表示を追加
-  Serial.print("BYTE = 0x");
-  if (b < 0x10) Serial.print('0');
-  Serial.print(b, HEX);
-  Serial.print(" [");
-  for (int i = 7; i >= 0; i--) Serial.print((b >> i) & 1);
-  Serial.println("]");
+  DEBUG_PRINT("BYTE = 0x");
+  if (b < 0x10) DEBUG_PRINT('0');
+  DEBUG_PRINT(b, HEX);
+  DEBUG_PRINT(" [");
+  for (int i = 7; i >= 0; i--) DEBUG_PRINT((b >> i) & 1);
+  DEBUG_PRINTLN("]");
 
   return true;
 }
@@ -196,16 +208,16 @@ void loop() {
       if (bitbangRead(reply_pkt, 6)) {
             // ビット単位で受信バイトを表示
         for (int i = 0; i < 6; i++) {
-          Serial.print("BYTE[");
-          Serial.print(i);
-          Serial.print("] = 0x");
-          if (reply_pkt[i] < 0x10) Serial.print("0");
-          Serial.print(reply_pkt[i], HEX);
-          Serial.print(" [");
-          for (int b = 7; b >= 0; b--) {
-            Serial.print(bitRead(reply_pkt[i], b));
+          DEBUG_PRINT("BYTE[");
+          DEBUG_PRINT(i);
+          DEBUG_PRINT("] = 0x");
+          if (reply_pkt[i] < 0x10) DEBUG_PRINT("0");
+          DEBUG_PRINT(reply_pkt[i], HEX);
+          DEBUG_PRINT(" [");
+        for (int b = 7; b >= 0; b--) {
+          DEBUG_PRINT(bitRead(reply_pkt[i], b));
         }
-        Serial.println("]");
+      DEBUG_PRINTLN("]");
       }
     // for bit Test
 #if 0
