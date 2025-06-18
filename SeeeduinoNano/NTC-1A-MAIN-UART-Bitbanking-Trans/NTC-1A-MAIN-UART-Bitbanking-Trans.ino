@@ -10,7 +10,7 @@
 #include <Adafruit_SSD1306.h>
 
 // ======== DEBUGマクロ定義（Python側への誤送信防止）========
-#define DEBUG_ENABLED 1  // 1: 有効 / 0: 無効
+#define DEBUG_ENABLED 0  // 1: 有効 / 0: 無効
 
 #if DEBUG_ENABLED
   #define DEBUG_PRINT(...)    Serial.print(__VA_ARGS__)
