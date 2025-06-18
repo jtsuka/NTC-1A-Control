@@ -43,7 +43,7 @@ unsigned long t_start = 0;
 #define HALF_DELAY  ((BIT_DELAY / 2) + 40)
 //#define BYTE_GAP_US 800
 #define BYTE_GAP_US 1500
-#define STOPBIT_GAP_US 100
+#define STOPBIT_GAP_US 300
 
 /* -------- OLED -------- */
 #define OLED_W 128
