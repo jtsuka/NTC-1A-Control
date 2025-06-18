@@ -8,7 +8,10 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <SoftwareSerial.h>
+// #include <SoftwareSerial.h>
+#include <AltSoftSerial.h>
+AltSoftSerial mySerial;  // D4=RX, D5=TX が AltSoftSerial に対応
+
 
 // ======== SoftwareSerial for Pi接続 (D4=RX, D5=TX) ========
 #define PI_RX_PIN 4
@@ -197,16 +200,10 @@ void loop() {
 
     case WAITING_REPLY:
       if (bitbangRead(reply_pkt, 6)) {
-#if 0
-        for (int i = 0; i < 6; i++) {
-          mySerial.write(reply_pkt[i]);
-          delayMicroseconds(1200);  // ★追加：ビット幅104us×10bit＝1040μs 以上の余裕を確保
-        }
-#else
         mySerial.write(reply_pkt, 6);
         mySerial.flush();
         delay(10);
-#endif
+        // for OLED Delay
         memcpy(last_reply, reply_pkt, 6);
         drawFlag = true;
         state = IDLE;
