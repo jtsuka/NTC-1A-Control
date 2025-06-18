@@ -129,6 +129,9 @@ bool read_bitbang_byte(uint8_t &b, uint16_t to_ms=1500){
 
   delayMicroseconds(BIT_DELAY);  // Stop bit
   delayMicroseconds(100);        // ← ★ Stopビット後の安定化待ち
+
+
+
   return true;
 }
 
