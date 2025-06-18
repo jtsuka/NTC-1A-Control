@@ -130,7 +130,13 @@ bool read_bitbang_byte(uint8_t &b, uint16_t to_ms=1500){
   delayMicroseconds(BIT_DELAY);  // Stop bit
   delayMicroseconds(100);        // ← ★ Stopビット後の安定化待ち
 
-
+  // ★ここにビット表示を追加
+  Serial.print("BYTE = 0x");
+  if (b < 0x10) Serial.print('0');
+  Serial.print(b, HEX);
+  Serial.print(" [");
+  for (int i = 7; i >= 0; i--) Serial.print((b >> i) & 1);
+  Serial.println("]");
 
   return true;
 }
