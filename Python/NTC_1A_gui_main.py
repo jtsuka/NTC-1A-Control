@@ -66,13 +66,16 @@ def on_port_selected(event):
     selected = port_combobox.get()
     start_serial_thread(selected)
 
+
 def update_timeout():
     try:
         t = float(timeout_entry.get())
+        if t < 0.1:
+            raise ValueError("Timeout too short (< 0.1)")
         set_timeout(t)
         messagebox.showinfo("Timeout", f"Timeout set to {t:.1f} sec")
     except ValueError:
-        messagebox.showerror("Error", "Please enter a number")
+        messagebox.showerror("Error", "0.1以上の数値を入力してください")
 
 # GUI 初期化
 root = tk.Tk()
@@ -90,13 +93,27 @@ left_frame.grid(row=0, column=0, sticky="nsew")
 right_frame = tk.Frame(root, bg="black")
 right_frame.grid(row=0, column=1, sticky="nsew")
 
-root.grid_columnconfigure(0, weight=1)
-root.grid_columnconfigure(1, weight=1)
+root.grid_columnconfigure(0, weight=3)  # 左フレーム
+root.grid_columnconfigure(1, weight=5)  # 右フレーム（ログ＋テンキー）
+
+#上下の調整
+root.grid_rowconfigure(0, weight=1)
+left_frame.grid_rowconfigure(99, weight=1)  # 任意の空行に伸縮余地
+right_frame.grid_rowconfigure(99, weight=1)
+
 
 # 左側
 tk.Label(left_frame, text="Port", font=font_label, bg="black", fg="white") \
     .grid(row=0, column=0, padx=5, pady=5, sticky="e")
-port_combobox = ttk.Combobox(left_frame, values=get_serial_ports(), font=font_label, width=20)
+# ① コンボボックス定義
+port_combobox = ttk.Combobox(left_frame, font=font_label, width=20)
+# ② ポートリストの取得と初期化（values, current, start）
+ports = get_serial_ports()
+if ports:
+    port_combobox['values'] = ports
+    port_combobox.current(0)
+    start_serial_thread(ports[0])
+
 port_combobox.grid(row=0, column=1, padx=5, pady=5, sticky="w")
 port_combobox.bind("<<ComboboxSelected>>", on_port_selected)
 
@@ -130,10 +147,11 @@ keypad_frame.pack(side="top", fill="both", expand=True)
 log = setup_log_display(log_frame)
 make_keypad(keypad_frame, on_keypad_press)
 
-start_serial_thread()
+# start_serial_thread() ← この行は削除またはコメントアウト
 
 def on_close():
     stop_serial()
+    root.quit()      # ← 明示的にイベントループ停止
     root.destroy()
 
 root.protocol("WM_DELETE_WINDOW", on_close)
