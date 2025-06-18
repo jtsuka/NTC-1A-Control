@@ -28,10 +28,10 @@ unsigned long t_start = 0;
 #define BB_RX_PIN 3
 #define BB_BAUD   300
 #define BIT_DELAY   (1000000UL / BB_BAUD)
-#define HALF_DELAY  ((BIT_DELAY / 2) + 100)
+#define HALF_DELAY  ((BIT_DELAY / 2) + 20)
 //#define BYTE_GAP_US 800
 #define BYTE_GAP_US 1500
-#define STOPBIT_GAP_US 800
+#define STOPBIT_GAP_US 100
 
 /* -------- OLED -------- */
 #define OLED_W 128
@@ -128,7 +128,7 @@ bool read_bitbang_byte(uint8_t &b, uint16_t to_ms=1500){
   }
 
   delayMicroseconds(BIT_DELAY);  // Stop bit
-  delayMicroseconds(100);        // ← ★ Stopビット後の安定化待ち
+  delayMicroseconds(300);        // ← ★ Stopビット後の安定化待ち
 
   // ★ここにビット表示を追加
   Serial.print("BYTE = 0x");
@@ -213,7 +213,7 @@ void loop() {
 #else
         for (int i = 0; i < 6; i++) {
           Serial.write(reply_pkt[i]);
-          delayMicroseconds(300);  // ← 300～1000μsで調整候補
+          delayMicroseconds(500);  // ← 300～1000μsで調整候補
         }
 #endif
         Serial.flush();  // ← ★ 明示的にバッファ送信完了までブロック
