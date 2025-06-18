@@ -40,6 +40,10 @@ def send_packet(ch, cmd, val):
 
     try:
         resp = read_exact(6, timeout=current_timeout_value)
+        # RAWダンプをここに追加
+        if resp is not None:
+            out(f"[RAW] {' '.join(f'{x:02X}' for x in resp)}")
+            
         if resp is None:
             out("[TIMEOUT] No response.")
             return False
