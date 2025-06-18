@@ -183,7 +183,22 @@ void loop() {
       break;
 
     case WAITING_REPLY:
+    // for Bit Test 
       if (bitbangRead(reply_pkt, 6)) {
+            // ビット単位で受信バイトを表示
+        for (int i = 0; i < 6; i++) {
+          Serial.print("BYTE[");
+          Serial.print(i);
+          Serial.print("] = 0x");
+          if (reply_pkt[i] < 0x10) Serial.print("0");
+          Serial.print(reply_pkt[i], HEX);
+          Serial.print(" [");
+          for (int b = 7; b >= 0; b--) {
+            Serial.print(bitRead(reply_pkt[i], b));
+        }
+        Serial.println("]");
+      }
+    // for bit Test
 #if 0
         Serial.write(reply_pkt, 6);
 #else
