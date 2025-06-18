@@ -41,6 +41,10 @@ Adafruit_SSD1306 oled(OLED_W, OLED_H, &Wire, -1);
 uint8_t uart_out[6];   // Pi → TC
 uint8_t bb_in  [6];    // TC → Pi
 
+/* flags */
+bool drawFlag = false;
+
+
 /* ===================================================== */
 
 // Pi→TCキュー受信
@@ -188,11 +192,21 @@ void loop() {
         }
 #endif
         Serial.flush();  // ← ★ 明示的にバッファ送信完了までブロック
+#if 0
         show_tc_rx(reply_pkt);
+#else
+      memcpy(last_reply, reply_pkt, 6);  // ← 応答内容を保存
+      drawFlag = true;                   // ← 描画フラグON
+#endif
         state = IDLE;
       } else if (millis() - t_start > 2000) {
         state = IDLE;
       }
       break;
+  }
+  // OLEDは落ち着いたところで表示
+    if (drawFlag) {
+    show_tc_rx(last_reply);  // ← 表示処理は通信完了後に実行
+    drawFlag = false;
   }
 }
