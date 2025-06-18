@@ -159,6 +159,7 @@ void bitbangWrite(uint8_t* data, uint8_t len) {
     write_bitbang_byte(data[i]);
     delayMicroseconds(BYTE_GAP_US);  // ← ★ここを追加（1ビット10msなので最低100〜300μs推奨）
   }
+  delayMicroseconds(1000);  // ★最後のバイト送信後に追加ギャップ
 }
 
 bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
