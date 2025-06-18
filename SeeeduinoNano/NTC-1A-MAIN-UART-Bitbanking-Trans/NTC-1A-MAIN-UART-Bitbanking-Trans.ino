@@ -179,53 +179,20 @@ void loop() {
 
     case WAITING_REPLY:
       if (bitbangRead(reply_pkt, 6)) {
+#if 0
         Serial.write(reply_pkt, 6);
+#else
+        for (int i = 0; i < 6; i++) {
+          Serial.write(reply_pkt[i]);
+          delayMicroseconds(300);  // ← 300～1000μsで調整候補
+        }
+#endif
+        Serial.flush();  // ← ★ 明示的にバッファ送信完了までブロック
         show_tc_rx(reply_pkt);
         state = IDLE;
       } else if (millis() - t_start > 2000) {
- //       Serial.println("[TIMEOUT]"); // 不要
         state = IDLE;
       }
       break;
   }
 }
-
-
-#if 0
-// 6バイトデータをBit‐Bang送信
-void bitbangWrite(uint8_t* data, uint8_t len) {
-  for (uint8_t i = 0; i < len; i++) {
-    write_bitbang_byte(data[i]);
-  }
-}
-
-// 6バイトデータをBit‐Bang受信
-bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 1500) {
-  for (uint8_t i = 0; i < len; i++) {
-    if (!read_bitbang_byte(data[i], timeout_ms)) return false;
-  }
-  return true;
-}
-#endif
-
-
-#if 0
-  /* Pi→TC */
-  if(Serial.available()>=6){
-    for(uint8_t i=0;i<6;i++) uart_out[i]=Serial.read();
-    uint8_t sum=(uart_out[0]+uart_out[1]+uart_out[2]+uart_out[3]+uart_out[4]) & 0xFF;
-    if(sum==uart_out[5]){
-      for(uint8_t i=0;i<6;i++) write_bitbang_byte(uart_out[i]);
-      show_uart_tx(uart_out);                 // 上段更新
-    }
-  }
-  /* TC→Pi */
-  if(digitalRead(BB_RX_PIN)==LOW){
-    if(read_bitbang_byte(bb_in[0])){
-      for(uint8_t i=1;i<6;i++){ if(!read_bitbang_byte(bb_in[i])) return; }
-      Serial.write(bb_in,6); Serial.flush();
-      show_tc_rx(bb_in);                     // 下段更新
-    }
-  }
-}
-#endif
