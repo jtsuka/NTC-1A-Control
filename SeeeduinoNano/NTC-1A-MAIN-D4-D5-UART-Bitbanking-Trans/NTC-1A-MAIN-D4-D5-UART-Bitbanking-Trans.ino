@@ -34,6 +34,8 @@ SoftwareSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // SoftwareSerial: Piと通信
 uint8_t queue[MAX_QUEUE][6];
 volatile int q_head = 0;
 volatile int q_tail = 0;
+int queue_idx[MAX_QUEUE] = {0};  // 各スロットの受信バイト数を管理
+
 
 // UART Buffer
 uint8_t last_reply[6];   // TCからの直近の応答
@@ -66,7 +68,26 @@ bool drawFlag = false;
 uint8_t uart_out[6], bb_in[6];
 
 // =====================================================
+//  受信バッファもキューに変更
+void checkReceive() {
+  while (mySerial.available()) {
+    int next = (q_head + 1) % MAX_QUEUE;
 
+    // キューが満杯なら処理しない
+    if (next == q_tail) return;
+
+    uint8_t b = mySerial.read();
+    queue[q_head][queue_idx[q_head]++] = b;
+
+    // 6バイトたまったら次のキューに進める
+    if (queue_idx[q_head] == 6) {
+      queue_idx[q_head] = 0;
+      q_head = next;
+    }
+  }
+}
+
+#if 0
 void checkReceive() {
   static uint8_t buf[6];
   static int idx = 0;
@@ -83,6 +104,7 @@ void checkReceive() {
     }
   }
 }
+#endif
 
 void draw_header() {
   oled.clearDisplay();
