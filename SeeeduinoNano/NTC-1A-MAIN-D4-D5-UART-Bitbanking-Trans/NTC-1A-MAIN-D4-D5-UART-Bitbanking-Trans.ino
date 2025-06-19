@@ -8,9 +8,9 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-// #include <SoftwareSerial.h>
-#include <AltSoftSerial.h>
-AltSoftSerial mySerial;  // D4=RX, D5=TX が AltSoftSerial に対応
+#include <SoftwareSerial.h>
+//#include <AltSoftSerial.h>
+//AltSoftSerial mySerial;  // D4=RX, D5=TX が AltSoftSerial に対応
 
 
 // ======== SoftwareSerial for Pi接続 (D4=RX, D5=TX) ========
