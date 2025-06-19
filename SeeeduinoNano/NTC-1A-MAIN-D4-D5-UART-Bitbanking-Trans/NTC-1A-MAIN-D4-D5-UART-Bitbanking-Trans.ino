@@ -52,6 +52,9 @@ unsigned long t_start = 0;
 #define BYTE_GAP_US 1500
 #define STOPBIT_GAP_US 300
 
+// UART bps for Rasppary Pi
+#define UART_BPS 4800
+
 // OLED
 #define OLED_W 128
 #define OLED_H 64
@@ -173,7 +176,7 @@ bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
 void setup(){
   pinMode(BB_TX_PIN,OUTPUT); digitalWrite(BB_TX_PIN,HIGH);
   pinMode(BB_RX_PIN,INPUT_PULLUP);
-  mySerial.begin(9600);  // SoftwareSerial for Pi
+  mySerial.begin(UART_BPS);  // SoftwareSerial for Pi
 #if DEBUG_ENABLED
   Serial.begin(115200);  // USB Serial for Debug
 #endif
