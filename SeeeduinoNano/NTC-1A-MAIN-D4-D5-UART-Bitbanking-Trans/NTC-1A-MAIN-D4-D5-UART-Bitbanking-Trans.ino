@@ -229,7 +229,6 @@ void loop() {
       } else {
         Serial.println(F("[INFO] tx_queue empty"));
       }
-      }
       break;
     case WAITING_REPLY:
       if (bitbangRead(reply_pkt, 6)) {
