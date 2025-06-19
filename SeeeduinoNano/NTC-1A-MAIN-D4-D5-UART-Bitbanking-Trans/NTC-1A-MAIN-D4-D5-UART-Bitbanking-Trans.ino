@@ -190,7 +190,6 @@ bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
   for (uint8_t i = 0; i < len; i++) {
     if (!read_bitbang_byte(data[i])) return false;
   }
-  delayMicroseconds(50);  // 少し待つ
   interrupts();    // 受信終了後に再度許可
 
   delayMicroseconds(100); // stopビット終端安定化待ち
