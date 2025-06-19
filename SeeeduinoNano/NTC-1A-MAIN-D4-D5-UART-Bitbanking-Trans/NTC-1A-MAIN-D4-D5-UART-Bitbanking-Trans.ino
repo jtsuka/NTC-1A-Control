@@ -217,12 +217,12 @@ void loop() {
 
   switch (state) {
     case IDLE:
-      if (rx_tail != rx_head) {
-        memcpy(current_pkt, rx_queue[rx_tail], 6);
-        rx_tail = (rx_tail + 1) % MAX_QUEUE;
+      if (tx_tail != tx_head) {
+        memcpy(current_pkt, tx_queue[tx_tail], 6);  // ✅ tx_queue に修正
+        tx_tail = (tx_tail + 1) % MAX_QUEUE;
         show_uart_tx(current_pkt);
         bitbangWrite(current_pkt, 6);
-        delay(BB_SEND_DELAY);   // 2ms間隔を挿入（delayMicroseconds(500) → delay(2) に）
+        delay(BB_SEND_DELAY);
         t_start = millis();
         state = WAITING_REPLY;
       }
