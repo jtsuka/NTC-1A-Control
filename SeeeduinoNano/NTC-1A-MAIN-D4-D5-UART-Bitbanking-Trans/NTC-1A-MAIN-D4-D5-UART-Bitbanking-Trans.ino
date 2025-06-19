@@ -66,6 +66,10 @@ unsigned long t_start = 0;
 Adafruit_SSD1306 oled(OLED_W, OLED_H, &Wire, -1);
 #define OLED_ENABLED 0  // ← OLED描画を止めたいときは 0 に
 
+// for Debug D6 pin
+#define DEBUG_PIN 6
+
+
 // 表示フラグ
 bool oled_needs_refresh = false;
 uint8_t uart_out[6], bb_in[6];
@@ -149,8 +153,15 @@ bool read_bitbang_byte(uint8_t &b, uint16_t to_ms=1500){
   while (digitalRead(BB_RX_PIN) == HIGH) {
     if (millis() - t0 > to_ms) return false;
   }
+
+  // 同期パルス開始
+  digitalWrite(DEBUG_PIN, HIGH);
+
   delayMicroseconds(HALF_DELAY);
-  if (digitalRead(BB_RX_PIN) != LOW) return false;
+  if (digitalRead(BB_RX_PIN) != LOW){
+    digitalWrite(DEBUG_PIN, LOW);  // 中断時もLOWに戻す
+    return false;
+  }
   delayMicroseconds(HALF_DELAY);
 
   b = 0;
@@ -159,8 +170,11 @@ bool read_bitbang_byte(uint8_t &b, uint16_t to_ms=1500){
     if (digitalRead(BB_RX_PIN)) b |= (1 << i);
   }
 
-  delayMicroseconds(BIT_DELAY);
+  delayMicroseconds(BIT_DELAY); // STOP bit
   delayMicroseconds(300);
+  
+   // 同期パルス終了
+  digitalWrite(DEBUG_PIN, LOW);
 
   DEBUG_PRINT("BYTE = 0x");
   if (b < 0x10) DEBUG_PRINT('0');
@@ -197,6 +211,9 @@ bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
 
 // ---------- setup ----------
 void setup(){
+  // for Debug D6 pin 初期化
+  pinMode(DEBUG_PIN, OUTPUT);
+  digitalWrite(DEBUG_PIN, LOW);  // 初期状態はLOW
   pinMode(BB_TX_PIN,OUTPUT); digitalWrite(BB_TX_PIN,HIGH);
   pinMode(BB_RX_PIN,INPUT_PULLUP);
   pinMode(PI_RX_PIN, INPUT_PULLUP);  // ← D4 = RX にプルアップ追加
