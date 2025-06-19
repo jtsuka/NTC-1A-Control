@@ -218,6 +218,7 @@ void loop() {
   switch (state) {
     case IDLE:
       if (tx_tail != tx_head) {
+        Serial.println(F("[INFO] Sending packet from tx_queue"));
         memcpy(current_pkt, tx_queue[tx_tail], 6);  // ✅ tx_queue に修正
         tx_tail = (tx_tail + 1) % MAX_QUEUE;
         show_uart_tx(current_pkt);
@@ -225,6 +226,9 @@ void loop() {
         delay(BB_SEND_DELAY);
         t_start = millis();
         state = WAITING_REPLY;
+      } else {
+        Serial.println(F("[INFO] tx_queue empty"));
+      }
       }
       break;
     case WAITING_REPLY:
