@@ -16,7 +16,7 @@ def set_timeout(val):
 def open_port():
     global ser
     try:
-        ser = serial.Serial(PORT, BAUD, timeout=1)
+        ser = serial.Serial(PORT, BAUD, timeout=1, write_timeout=2) # 明示的な書き込み完了待ち時間
         ser.reset_input_buffer()
         ser.reset_output_buffer()
         out(f"[INFO] Port open: {PORT}")
@@ -33,6 +33,7 @@ def send_packet(ch, cmd, val):
     try:
         ser.write(bytes(pkt))
         ser.flush()
+        time.sleep(0.1)  # 100msの送信待機（2400bpsで6バイト＝25ms以上必要）
         out(f"[TX] {' '.join(f'{x:02X}' for x in pkt)}")
     except Exception as e:
         out(f"[TX ERROR] {e}")
