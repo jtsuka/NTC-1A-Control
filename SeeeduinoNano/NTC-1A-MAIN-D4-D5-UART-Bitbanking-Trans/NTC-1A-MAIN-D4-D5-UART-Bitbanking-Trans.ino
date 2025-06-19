@@ -80,10 +80,14 @@ void checkReceive() {
     uint8_t b = mySerial.read();
     rx_queue[rx_head][rx_queue_idx[rx_head]++] = b;
 
+    // checkReceive() 修正案：
     if (rx_queue_idx[rx_head] == 6) {
-      enqueue_tx_packet(rx_queue[rx_head]);  // ★checkReceiveで直接tx_queueに積む
-      rx_queue_idx[rx_head] = 0;
-      rx_head = next;
+     bool ok = enqueue_tx_packet(rx_queue[rx_head]);  // まず tx_queue へ
+      if (ok) {
+        rx_queue_idx[rx_head] = 0;
+        rx_head = next;
+      }
+    // else → tx_queueが詰まっていたら破棄される（または再試行ロジックを入れる）
     }
   }
 }
