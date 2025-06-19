@@ -2,8 +2,8 @@
 import serial, threading, time
 from NTC_1A_utils import out
 
-PORT = "/dev/ttyUSB0"
-BAUD = 300
+PORT = "/dev/ttyAMA0"
+BAUD = 1200
 ser = None
 running = True
 current_timeout_value = 2.0  # 初期値（秒）
