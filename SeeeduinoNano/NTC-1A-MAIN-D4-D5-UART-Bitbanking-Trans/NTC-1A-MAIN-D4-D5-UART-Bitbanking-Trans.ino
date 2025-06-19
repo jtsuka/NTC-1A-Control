@@ -55,6 +55,7 @@ unsigned long t_start = 0;
 #define HALF_DELAY  ((BIT_DELAY / 2) + 40)
 #define BYTE_GAP_US 1500
 #define STOPBIT_GAP_US 300
+#define BB_SEND_DELAY 2
 
 // UART bps for Rasppary Pi
 #define UART_BPS 300
@@ -66,7 +67,7 @@ Adafruit_SSD1306 oled(OLED_W, OLED_H, &Wire, -1);
 #define OLED_ENABLED 0  // ← OLED描画を止めたいときは 0 に
 
 // 表示フラグ
-bool drawFlag = false;
+bool oled_needs_refresh = false;
 uint8_t uart_out[6], bb_in[6];
 
 // =====================================================
@@ -80,22 +81,10 @@ void checkReceive() {
     rx_queue[rx_head][rx_queue_idx[rx_head]++] = b;
 
     if (rx_queue_idx[rx_head] == 6) {
+      enqueue_tx_packet(rx_queue[rx_head]);  // ★checkReceiveで直接tx_queueに積む
       rx_queue_idx[rx_head] = 0;
       rx_head = next;
     }
-  }
-}
-
-// 受信キュー処理
-void enqueue_rx_byte(uint8_t b) {
-  int next = (rx_head + 1) % MAX_QUEUE;
-  if (next == rx_tail) return; // バッファ満杯
-
-  rx_queue[rx_head][rx_queue_idx[rx_head]++] = b;
-
-  if (rx_queue_idx[rx_head] == 6) {
-    rx_queue_idx[rx_head] = 0;
-    rx_head = next;
   }
 }
 
@@ -106,26 +95,6 @@ bool enqueue_tx_packet(const uint8_t *pkt) {
   tx_head = next;
   return true;
 }
-
-
-#if 0
-void checkReceive() {
-  static uint8_t buf[6];
-  static int idx = 0;
-
-  while (mySerial.available()) {
-    buf[idx++] = mySerial.read();
-    if (idx == 6) {
-      int next = (q_head + 1) % MAX_QUEUE;
-      if (next != q_tail) {
-        memcpy(queue[q_head], buf, 6);
-        q_head = next;
-      }
-      idx = 0;
-    }
-  }
-}
-#endif
 
 void draw_header() {
   oled.clearDisplay();
@@ -249,7 +218,7 @@ void loop() {
         rx_tail = (rx_tail + 1) % MAX_QUEUE;
         show_uart_tx(current_pkt);
         bitbangWrite(current_pkt, 6);
-        delay(2);   // 2ms間隔を挿入（delayMicroseconds(500) → delay(2) に）
+        delay(BB_SEND_DELAY);   // 2ms間隔を挿入（delayMicroseconds(500) → delay(2) に）
         t_start = millis();
         state = WAITING_REPLY;
       }
@@ -263,7 +232,7 @@ void loop() {
         delay(10);
         // for OLED Delay
         memcpy(last_reply, reply_pkt, 6);
-        drawFlag = true;
+        oled_needs_refresh = true;
         state = IDLE;
       } else if (millis() - t_start > 2000) {
         state = IDLE;
@@ -271,8 +240,8 @@ void loop() {
       break;
   }
 
-  if (drawFlag) {
+  if (oled_needs_refresh) {
     show_tc_rx(last_reply);
-    drawFlag = false;
+    oled_needs_refresh = false;
   }
 }
