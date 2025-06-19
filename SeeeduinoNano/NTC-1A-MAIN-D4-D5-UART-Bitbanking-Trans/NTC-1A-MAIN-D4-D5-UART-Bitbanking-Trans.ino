@@ -192,7 +192,7 @@ bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
   }
   interrupts();    // 受信終了後に再度許可
 
-  delayMicroseconds(100); // stopビット終端安定化待ち
+  delayMicroseconds(300); // stopビット終端安定化待ち
 
   return true;
 }
