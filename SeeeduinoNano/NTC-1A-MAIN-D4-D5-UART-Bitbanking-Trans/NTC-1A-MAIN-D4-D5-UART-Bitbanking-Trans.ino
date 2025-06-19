@@ -53,7 +53,7 @@ unsigned long t_start = 0;
 #define STOPBIT_GAP_US 300
 
 // UART bps for Rasppary Pi
-#define UART_BPS 4800
+#define UART_BPS 2400
 
 // OLED
 #define OLED_W 128
