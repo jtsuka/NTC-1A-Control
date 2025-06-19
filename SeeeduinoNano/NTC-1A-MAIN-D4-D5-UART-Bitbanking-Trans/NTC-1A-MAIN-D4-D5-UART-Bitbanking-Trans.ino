@@ -58,7 +58,7 @@ unsigned long t_start = 0;
 #define BB_SEND_DELAY 2
 
 // UART bps for Rasppary Pi
-#define UART_BPS 300
+#define UART_BPS 1200
 
 // OLED
 #define OLED_W 128
