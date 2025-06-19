@@ -31,11 +31,13 @@ SoftwareSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // SoftwareSerial: Piと通信
 
 // ----- SpoolBuffer -----
 #define MAX_QUEUE 4
-uint8_t queue[MAX_QUEUE][6];
-volatile int q_head = 0;
-volatile int q_tail = 0;
-int queue_idx[MAX_QUEUE] = {0};  // 各スロットの受信バイト数を管理
+uint8_t rx_queue[MAX_QUEUE][6];  // 受信専用バッファ
+uint8_t tx_queue[MAX_QUEUE][6];  // 送信専用バッファ
 
+volatile int rx_head = 0, rx_tail = 0;
+volatile int tx_head = 0, tx_tail = 0;
+
+int rx_queue_idx[MAX_QUEUE] = {0};  // 受信キューのバイトカウンタ
 
 // UART Buffer
 uint8_t last_reply[6];   // TCからの直近の応答
@@ -71,21 +73,40 @@ uint8_t uart_out[6], bb_in[6];
 //  受信バッファもキューに変更
 void checkReceive() {
   while (mySerial.available()) {
-    int next = (q_head + 1) % MAX_QUEUE;
-
-    // キューが満杯なら処理しない
-    if (next == q_tail) return;
+    int next = (rx_head + 1) % MAX_QUEUE;
+    if (next == rx_tail) return;
 
     uint8_t b = mySerial.read();
-    queue[q_head][queue_idx[q_head]++] = b;
+    rx_queue[rx_head][rx_queue_idx[rx_head]++] = b;
 
-    // 6バイトたまったら次のキューに進める
-    if (queue_idx[q_head] == 6) {
-      queue_idx[q_head] = 0;
-      q_head = next;
+    if (rx_queue_idx[rx_head] == 6) {
+      rx_queue_idx[rx_head] = 0;
+      rx_head = next;
     }
   }
 }
+
+// 受信キュー処理
+void enqueue_rx_byte(uint8_t b) {
+  int next = (rx_head + 1) % MAX_QUEUE;
+  if (next == rx_tail) return; // バッファ満杯
+
+  rx_queue[rx_head][rx_queue_idx[rx_head]++] = b;
+
+  if (rx_queue_idx[rx_head] == 6) {
+    rx_queue_idx[rx_head] = 0;
+    rx_head = next;
+  }
+}
+
+bool enqueue_tx_packet(const uint8_t *pkt) {
+  int next = (tx_head + 1) % MAX_QUEUE;
+  if (next == tx_tail) return false;  // バッファ満杯
+  memcpy(tx_queue[tx_head], pkt, 6);
+  tx_head = next;
+  return true;
+}
+
 
 #if 0
 void checkReceive() {
@@ -223,17 +244,16 @@ void loop() {
 
   switch (state) {
     case IDLE:
-      if (q_tail != q_head) {
-        memcpy(current_pkt, queue[q_tail], 6);
-        q_tail = (q_tail + 1) % MAX_QUEUE;
+      if (rx_tail != rx_head) {
+        memcpy(current_pkt, rx_queue[rx_tail], 6);
+        rx_tail = (rx_tail + 1) % MAX_QUEUE;
         show_uart_tx(current_pkt);
         bitbangWrite(current_pkt, 6);
-        delay(2);  // 2ms間隔を挿入（delayMicroseconds(500) → delay(2) に）
+        delay(2);   // 2ms間隔を挿入（delayMicroseconds(500) → delay(2) に）
         t_start = millis();
         state = WAITING_REPLY;
       }
       break;
-
     case WAITING_REPLY:
       if (bitbangRead(reply_pkt, 6)) {
         noInterrupts();
