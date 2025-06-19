@@ -233,19 +233,23 @@ void loop() {
       }
       break;
     case WAITING_REPLY:
-      if (bitbangRead(reply_pkt, 6)) {
-        noInterrupts();
+     // SoftwareSerialを一時停止して割り込み源を除去
+      mySerial.end();
+      noInterrupts();
+      bool success = bitbangRead(reply_pkt, 6);
+      interrupts();
+      mySerial.begin(UART_BPS);  // 割り込み再開
+
+      if (success) {
         mySerial.write(reply_pkt, 6);
         mySerial.flush();
-        interrupts();
-        delay(10);
-        // for OLED Delay
+        delay(10);  // OLED表示などへの考慮
         memcpy(last_reply, reply_pkt, 6);
         oled_needs_refresh = true;
         state = IDLE;
       } else if (millis() - t_start > 2000) {
-        state = IDLE;
-      }
+       state = IDLE;
+     }
       break;
   }
 
