@@ -59,6 +59,7 @@ unsigned long t_start = 0;
 #define OLED_W 128
 #define OLED_H 64
 Adafruit_SSD1306 oled(OLED_W, OLED_H, &Wire, -1);
+#define OLED_ENABLED 0  // ← OLED描画を止めたいときは 0 に
 
 // 表示フラグ
 bool drawFlag = false;
@@ -101,15 +102,19 @@ void print_hex_row(uint8_t y, const uint8_t *buf) {
 }
 
 void show_uart_tx(const uint8_t *buf) {
+#if OLED_ENABLED
   oled.fillRect(0, 8, OLED_W, 16, BLACK);
   print_hex_row(8, buf);
   oled.display();
+#endif
 }
 
 void show_tc_rx(const uint8_t *buf) {
+#if OLED_ENABLED
   oled.fillRect(0, 40, OLED_W, 16, BLACK);
   print_hex_row(40, buf);
   oled.display();
+#endif
 }
 
 // ---------- bit-bang helpers ----------
@@ -176,17 +181,23 @@ bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
 void setup(){
   pinMode(BB_TX_PIN,OUTPUT); digitalWrite(BB_TX_PIN,HIGH);
   pinMode(BB_RX_PIN,INPUT_PULLUP);
+  pinMode(PI_RX_PIN, INPUT_PULLUP);  // ← D4 = RX にプルアップ追加
   mySerial.begin(UART_BPS);  // SoftwareSerial for Pi
 #if DEBUG_ENABLED
   Serial.begin(115200);  // USB Serial for Debug
 #endif
+#if OLED_ENABLED
   oled.begin(SSD1306_SWITCHCAPVCC,0x3C);
   draw_header();
+#endif
 }
 
 // ---------- main loop ----------
 void loop() {
-  checkReceive();
+  // IDEL 時だけ、レシーブチェック
+  if (state == IDLE) {
+    checkReceive();
+  }
 
   switch (state) {
     case IDLE:
@@ -195,7 +206,7 @@ void loop() {
         q_tail = (q_tail + 1) % MAX_QUEUE;
         show_uart_tx(current_pkt);
         bitbangWrite(current_pkt, 6);
-        delayMicroseconds(500);
+        delay(2);  // 2ms間隔を挿入（delayMicroseconds(500) → delay(2) に）
         t_start = millis();
         state = WAITING_REPLY;
       }
@@ -203,8 +214,10 @@ void loop() {
 
     case WAITING_REPLY:
       if (bitbangRead(reply_pkt, 6)) {
+        noInterrupts();
         mySerial.write(reply_pkt, 6);
         mySerial.flush();
+        interrupts();
         delay(10);
         // for OLED Delay
         memcpy(last_reply, reply_pkt, 6);
