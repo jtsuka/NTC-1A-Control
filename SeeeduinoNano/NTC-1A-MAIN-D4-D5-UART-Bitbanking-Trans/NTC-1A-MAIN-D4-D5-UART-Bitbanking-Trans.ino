@@ -52,7 +52,7 @@ unsigned long t_start = 0;
 #define BB_RX_PIN 3
 #define BB_BAUD   300
 #define BIT_DELAY   (1000000UL / BB_BAUD)
-#define HALF_DELAY  ((BIT_DELAY / 2) + 40)
+#define HALF_DELAY  ((BIT_DELAY / 2) + 50)
 #define BYTE_GAP_US 1500
 #define STOPBIT_GAP_US 300
 #define BB_SEND_DELAY 2
@@ -190,7 +190,10 @@ bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
   for (uint8_t i = 0; i < len; i++) {
     if (!read_bitbang_byte(data[i])) return false;
   }
+  delayMicroseconds(50);  // 少し待つ
   interrupts();    // 受信終了後に再度許可
+
+  delayMicroseconds(100); // stopビット終端安定化待ち
 
   return true;
 }
