@@ -1,8 +1,8 @@
 /**********************************************************************
-  NTC-1A MAIN – Seeeduino Nano  (SoftwareSerial: D4,D5 ⇆ Pi UART / Bit-Bang: D2,D3 ⇆ TC)
+  NTC-1A MAIN - Seeeduino Nano  (SoftwareSerial: D4,D5 <-> Pi UART / Bit-Bang: D2,D3 <-> TC)
   TX:D2  RX:D3   OLED 128×64
-  ▸ 上半分 = Pi→TC 送信パケット
-  ▸ 下半分 = TC→Pi 受信パケット
+  > 上半分 = Pi→TC 送信パケット
+  > 下半分 = TC→Pi 受信パケット
 **********************************************************************/
 
 #include <Wire.h>
@@ -186,9 +186,11 @@ bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
     if (millis() - t0 > timeout_ms) return false;
   }
 
+  noInterrupts();  // 割り込み禁止（受信直前）
   for (uint8_t i = 0; i < len; i++) {
     if (!read_bitbang_byte(data[i])) return false;
   }
+  interrupts();    // 受信終了後に再度許可
 
   return true;
 }
