@@ -81,11 +81,22 @@ uint8_t uart_out[6], bb_in[6];
 // =====================================================
 //  受信バッファもキューに変更
 void checkReceive() {
+  // for Debug
+  // checkReceive() の先頭あたりに追加
+  static byte idx_dbg = 0;
+
   while (mySerial.available()) {
+    // for Debug
+    uint8_t b = mySerial.read();
+    Serial.print("RX["); Serial.print(idx_dbg++); Serial.print("]=");
+    Serial.println(b, HEX);
+    // for Debug
+
     int next = (rx_head + 1) % MAX_QUEUE;
     if (next == rx_tail) return;
 
-    uint8_t b = mySerial.read();
+//    for Debug
+//    uint8_t b = mySerial.read();
     rx_queue[rx_head][rx_queue_idx[rx_head]++] = b;
 
     // checkReceive() 修正案：
@@ -220,6 +231,11 @@ bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
 
 // ---------- setup ----------
 void setup(){
+  Serial.begin(115200);     // ★ USBシリアルを必ず初期化する
+
+  pinMode(DEBUG_PIN, OUTPUT);
+  digitalWrite(DEBUG_PIN, LOW);
+
   // for Debug D6 pin 初期化
   pinMode(DEBUG_PIN, OUTPUT);
   digitalWrite(DEBUG_PIN, LOW);  // 初期状態はLOW
