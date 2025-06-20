@@ -9,7 +9,7 @@
 #define STOPBIT_GAP_US 300
 #define BYTE_GAP_US 1500
 
-const uint8_t test_packet[6] = {0x01, 0x06, 0x05, 0x00, 0x00, 0x0C}; // CRC付き固定パケット
+const uint8_t test_packet[6] = {0x55, 0x55, 0x55, 0x55, 0x55, 0x55};
 
 void write_bitbang_byte(uint8_t b) {
   // Start bit
@@ -33,6 +33,10 @@ void bitbangWritePacket(const uint8_t* data, uint8_t len) {
     write_bitbang_byte(data[i]);
     delayMicroseconds(BYTE_GAP_US);
   }
+  // ** Stopビット混入防止：1msだけLOWにする
+  digitalWrite(BB_TX_PIN, LOW);
+  delayMicroseconds(1000);
+  digitalWrite(BB_TX_PIN, HIGH);
 }
 
 void setup() {
