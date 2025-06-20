@@ -70,10 +70,11 @@ void setup() {
 }
 
 void loop() {
+#if 0
   Serial.print("Pin D3 = ");
   Serial.println(digitalRead(RX_PIN));
   delay(100);
-#if 0
+#else
   Serial.println("======================================");
   Serial.println(" DELAY(us) |  Success/Trials");
   Serial.println("--------------------------------------");
