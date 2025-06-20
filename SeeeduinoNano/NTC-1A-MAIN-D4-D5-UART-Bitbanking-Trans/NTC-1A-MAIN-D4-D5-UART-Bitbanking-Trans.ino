@@ -191,11 +191,16 @@ bool read_bitbang_byte(uint8_t &b, uint16_t to_ms=1500){
 }
 
 void bitbangWrite(uint8_t* data, uint8_t len) {
+
+  digitalWrite(DEBUG_PIN, HIGH);   // ★ 送信開始フラグを立てる
+
   for (uint8_t i = 0; i < len; i++) {
     write_bitbang_byte(data[i]);
     delayMicroseconds(BYTE_GAP_US);
   }
   delayMicroseconds(1000);
+
+  digitalWrite(DEBUG_PIN, LOW);    // ★ 送信完了フラグを下げる
 }
 
 bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
