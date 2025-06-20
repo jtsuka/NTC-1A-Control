@@ -34,9 +34,9 @@ void bitbangWritePacket(const uint8_t* data, uint8_t len) {
   }
 
   // Stopビット混入防止
-  digitalWrite(BB_TX_PIN, LOW);
-  delayMicroseconds(1000);
-  digitalWrite(BB_TX_PIN, HIGH);
+//  digitalWrite(BB_TX_PIN, LOW);
+//  delayMicroseconds(1000);
+//  digitalWrite(BB_TX_PIN, HIGH);
 }
 
 void setup() {
