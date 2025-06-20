@@ -12,7 +12,7 @@
 #define MIN_DELAY 1900
 #define MAX_DELAY 2200
 #define STEP 10
-#define LSB_FIRST 0  // ← 0 にすると MSBファースト読みになる
+#define LSB_FIRST 1  // ← 0 にすると MSBファースト読みになる
 
 uint8_t packet[PACKET_LEN];
 
