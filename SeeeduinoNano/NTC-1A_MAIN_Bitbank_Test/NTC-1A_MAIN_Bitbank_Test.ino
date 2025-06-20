@@ -41,6 +41,10 @@ void setup() {
 }
 
 void loop() {
-  bitbangWritePacket(test_packet, 6);
-  delay(500);  // 500msごとに送信
+  static bool sent = false;
+  if (!sent) {
+    bitbangWritePacket(test_packet, 6);  // ← 1回だけ送信
+    sent = true;
+  }
+  delay(1000);  // 長めに待つ（Nano側が受信終えるまで）
 }
