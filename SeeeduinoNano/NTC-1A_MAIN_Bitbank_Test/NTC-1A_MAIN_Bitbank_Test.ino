@@ -1,8 +1,10 @@
 /**********************************************************************
   NTC-1A 固定パケット送信機 – Seeeduino Nano
-  TCへ 300bps ビットバンギング送信を繰り返し実施（検証用）
+  TCへ 300bps ビットバンギング送信（REPEAT_SEND定義で切替）
   TX:D2  RX:D3 （BB通信）
 **********************************************************************/
+
+#define REPEAT_SEND 1  // ← 1で1秒ごと送信、0で起動時に1回だけ送信
 
 #define BB_TX_PIN 2
 #define BIT_DELAY 3333
@@ -12,18 +14,15 @@
 const uint8_t test_packet[6] = {0x55, 0x55, 0x55, 0x55, 0x55, 0x55};
 
 void write_bitbang_byte(uint8_t b) {
-  // Start bit
   digitalWrite(BB_TX_PIN, LOW);
   delayMicroseconds(BIT_DELAY);
 
-  // データビット（8ビット）
   for (uint8_t i = 0; i < 8; i++) {
     bool bit_val = (b >> i) & 1;
     digitalWrite(BB_TX_PIN, bit_val);
     delayMicroseconds(BIT_DELAY);
   }
 
-  // Stop bit
   digitalWrite(BB_TX_PIN, HIGH);
   delayMicroseconds(BIT_DELAY + STOPBIT_GAP_US);
 }
@@ -33,7 +32,8 @@ void bitbangWritePacket(const uint8_t* data, uint8_t len) {
     write_bitbang_byte(data[i]);
     delayMicroseconds(BYTE_GAP_US);
   }
-  // ** Stopビット混入防止：1msだけLOWにする
+
+  // Stopビット混入防止
   digitalWrite(BB_TX_PIN, LOW);
   delayMicroseconds(1000);
   digitalWrite(BB_TX_PIN, HIGH);
@@ -41,14 +41,19 @@ void bitbangWritePacket(const uint8_t* data, uint8_t len) {
 
 void setup() {
   pinMode(BB_TX_PIN, OUTPUT);
-  digitalWrite(BB_TX_PIN, HIGH);  // アイドル時はHIGH
+  digitalWrite(BB_TX_PIN, HIGH);  // アイドルHIGH
 }
 
 void loop() {
+#if REPEAT_SEND
+  bitbangWritePacket(test_packet, 6);
+  delay(1000);  // 毎秒送信
+#else
   static bool sent = false;
   if (!sent) {
-    bitbangWritePacket(test_packet, 6);  // ← 1回だけ送信
+    bitbangWritePacket(test_packet, 6);
     sent = true;
   }
-  delay(1000);  // 長めに待つ（Nano側が受信終えるまで）
+  delay(1000);  // 念のため遅延
+#endif
 }
