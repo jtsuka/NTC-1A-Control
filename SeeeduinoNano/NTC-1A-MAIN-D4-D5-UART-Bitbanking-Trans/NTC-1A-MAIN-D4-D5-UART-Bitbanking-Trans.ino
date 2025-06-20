@@ -8,9 +8,9 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-//#include <SoftwareSerial.h>
+#include <SoftwareSerial.h>
 // 変更後
-#include <NeoSWSerial.h>
+//#include <NeoSWSerial.h>
 
 //#include <AltSoftSerial.h>
 //AltSoftSerial mySerial;  // D4=RX, D5=TX が AltSoftSerial に対応
@@ -19,8 +19,8 @@
 // ======== SoftwareSerial for Pi接続 (D4=RX, D5=TX) ========
 #define PI_RX_PIN 4
 #define PI_TX_PIN 5
-//SoftwareSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // SoftwareSerial: Piと通信
-NeoSWSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // D4/D5
+SoftwareSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // SoftwareSerial: Piと通信
+//NeoSWSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // D4/D5
 
 // ======== DEBUGマクロ定義（Pi混線防止のため無効推奨）========
 #define DEBUG_ENABLED 0
