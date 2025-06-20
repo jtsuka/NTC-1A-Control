@@ -12,6 +12,7 @@
 #define MIN_DELAY 1400
 #define MAX_DELAY 2100
 #define STEP 50
+#define LSB_FIRST 1  // ← 0 にすると MSBファースト読みになる
 
 uint8_t packet[PACKET_LEN];
 
@@ -23,12 +24,17 @@ bool receive_packet(uint16_t half_delay) {
     uint8_t b = 0;
     for (uint8_t bit = 0; bit < 8; bit++) {
       delayMicroseconds(half_delay * 2);
-      b |= (digitalRead(RX_PIN) << bit);
+#if LSB_FIRST
+      b |= (digitalRead(RX_PIN) << bit);     // LSBファースト
+#else
+      b <<= 1;
+      b |= digitalRead(RX_PIN);              // MSBファースト
+#endif
     }
     packet[i] = b;
     delayMicroseconds(half_delay * 2);  // Stop bit
 
-    // ← デバッグ出力追加
+    // デバッグ出力
     Serial.print("Byte ");
     Serial.print(i);
     Serial.print(": 0x");
@@ -39,6 +45,7 @@ bool receive_packet(uint16_t half_delay) {
     Serial.println("]");
   }
 
+  // CRC（単純加算チェックサム）
   uint8_t sum = 0;
   for (uint8_t i = 0; i < PACKET_LEN - 1; i++) sum += packet[i];
   bool valid = ((sum & 0xFF) == packet[PACKET_LEN - 1]);
