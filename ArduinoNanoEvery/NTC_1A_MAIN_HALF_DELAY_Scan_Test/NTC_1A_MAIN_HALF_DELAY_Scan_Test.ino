@@ -17,35 +17,49 @@
 uint8_t packet[PACKET_LEN];
 
 bool receive_packet(uint16_t half_delay) {
-  // Start bit待ち
-  unsigned long timeout = millis();
-  while (digitalRead(RX_PIN) == HIGH) {
-    if (millis() - timeout > 1000) return false;
-  }
-
+  while (digitalRead(RX_PIN) == HIGH);  // Start bit待ち
   delayMicroseconds(half_delay);
 
   for (uint8_t i = 0; i < PACKET_LEN; i++) {
     uint8_t b = 0;
+    Serial.print("Byte ");
+    Serial.print(i);
+    Serial.print(" bits: ");
+
     for (uint8_t bit = 0; bit < 8; bit++) {
       delayMicroseconds(half_delay * 2);
+      int val = digitalRead(RX_PIN);
 #if LSB_FIRST
-      b |= (digitalRead(RX_PIN) << bit);
+      b |= (val << bit);     // LSBファースト
 #else
       b <<= 1;
-      b |= digitalRead(RX_PIN);
+      b |= val;              // MSBファースト
 #endif
+      Serial.print(val);     // 各ビット出力（0または1）
     }
-    packet[i] = b;
 
-    // 停止ビットの代わりに HIGHを待つ
-    delayMicroseconds(half_delay * 2);  // または BIT_DELAY
+    Serial.println();        // 改行（次のByteへ）
+
+    packet[i] = b;
+    delayMicroseconds(half_delay * 2);  // Stop bit
   }
 
-  // CRC計算
+  // CRCチェック（加算チェックサム）
   uint8_t sum = 0;
-  for (uint8_t i = 0; i < PACKET_LEN - 1; i++) sum += packet[i];
-  return ((sum & 0xFF) == packet[PACKET_LEN - 1]);
+  for (uint8_t i = 0; i < PACKET_LEN - 1; i++) {
+    sum += packet[i];
+  }
+  bool valid = ((sum & 0xFF) == packet[PACKET_LEN - 1]);
+
+  Serial.print("CRC ");
+  Serial.print(valid ? "OK" : "FAIL");
+  Serial.print(" (Expected: ");
+  Serial.print(sum & 0xFF, HEX);
+  Serial.print(", Got: ");
+  Serial.print(packet[PACKET_LEN - 1], HEX);
+  Serial.println(")");
+
+  return valid;
 }
 
 void setup() {
