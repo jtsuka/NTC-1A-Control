@@ -245,7 +245,13 @@ void loop() {
         memcpy(current_pkt, tx_queue[tx_tail], 6);  // ✅ tx_queue に修正
         tx_tail = (tx_tail + 1) % MAX_QUEUE;
         show_uart_tx(current_pkt);
+        /* --- 対策A：NeoSWSerial の割り込みを一時停止 --- */
+        mySerial.end();                 // ❶ 割り込み源を断つ
+     
         bitbangWrite(current_pkt, 6);
+
+        mySerial.begin(UART_BPS);       // ❷ 1200 bps 割り込みを復活
+
         delay(BB_SEND_DELAY);
         t_start = millis();
         state = WAITING_REPLY;
