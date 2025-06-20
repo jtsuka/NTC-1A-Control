@@ -12,7 +12,7 @@
 #define MIN_DELAY 1900
 #define MAX_DELAY 2200
 #define STEP 10
-#define LSB_FIRST 1  // ← 0 にすると MSBファースト読みになる
+#define LSB_FIRST 0  // ← 0 にすると MSBファースト読みになる
 
 uint8_t packet[PACKET_LEN];
 
@@ -70,7 +70,7 @@ void setup() {
 }
 
 void loop() {
-#if 0
+#if 1
 Serial.print("Pin D3 = ");
 Serial.println(digitalRead(RX_PIN));
 delay(100);
