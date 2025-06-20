@@ -9,9 +9,9 @@
 #define RX_PIN 3
 #define PACKET_LEN 6
 #define TRIALS 10
-#define MIN_DELAY 1400
-#define MAX_DELAY 2100
-#define STEP 50
+#define MIN_DELAY 1900
+#define MAX_DELAY 2200
+#define STEP 10
 #define LSB_FIRST 1  // ← 0 にすると MSBファースト読みになる
 
 uint8_t packet[PACKET_LEN];
