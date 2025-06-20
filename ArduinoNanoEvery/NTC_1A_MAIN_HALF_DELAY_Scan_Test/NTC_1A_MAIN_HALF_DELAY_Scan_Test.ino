@@ -16,14 +16,8 @@
 uint8_t packet[PACKET_LEN];
 
 bool receive_packet(uint16_t half_delay) {
-  // スタートビット待機
-  while (digitalRead(RX_PIN) == HIGH);
-
-  // ** スタートビット検出したらログを出す
-  Serial.print("Signal detected at HALF_DELAY = ");
-  Serial.println(half_delay);
-
-  delayMicroseconds(half_delay);  // 以降は通常通りでもOK
+  while (digitalRead(RX_PIN) == HIGH);  // Start bit待ち
+  delayMicroseconds(half_delay);
 
   for (uint8_t i = 0; i < PACKET_LEN; i++) {
     uint8_t b = 0;
@@ -32,13 +26,32 @@ bool receive_packet(uint16_t half_delay) {
       b |= (digitalRead(RX_PIN) << bit);
     }
     packet[i] = b;
-    delayMicroseconds(half_delay * 2); // STOP bit
+    delayMicroseconds(half_delay * 2);  // Stop bit
+
+    // ← デバッグ出力追加
+    Serial.print("Byte ");
+    Serial.print(i);
+    Serial.print(": 0x");
+    if (b < 0x10) Serial.print("0");
+    Serial.print(b, HEX);
+    Serial.print(" [");
+    for (int j = 7; j >= 0; j--) Serial.print((b >> j) & 1);
+    Serial.println("]");
   }
 
-  // チェックサム検証（単純加算）
   uint8_t sum = 0;
   for (uint8_t i = 0; i < PACKET_LEN - 1; i++) sum += packet[i];
-  return (sum & 0xFF) == packet[PACKET_LEN - 1];
+  bool valid = ((sum & 0xFF) == packet[PACKET_LEN - 1]);
+
+  Serial.print("CRC ");
+  Serial.print(valid ? "OK" : "FAIL");
+  Serial.print(" (Expected: ");
+  Serial.print(sum & 0xFF, HEX);
+  Serial.print(", Got: ");
+  Serial.print(packet[PACKET_LEN - 1], HEX);
+  Serial.println(")");
+
+  return valid;
 }
 
 void setup() {
