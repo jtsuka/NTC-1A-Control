@@ -10,7 +10,7 @@
 #define PACKET_LEN 6
 #define TRIALS 10
 #define MIN_DELAY 1400
-#define MAX_DELAY 1900
+#define MAX_DELAY 2000
 #define STEP 50
 
 uint8_t packet[PACKET_LEN];
