@@ -12,12 +12,19 @@
 const uint8_t test_packet[6] = {0x01, 0x06, 0x05, 0x00, 0x00, 0x0C}; // CRC付き固定パケット
 
 void write_bitbang_byte(uint8_t b) {
-  digitalWrite(BB_TX_PIN, LOW); delayMicroseconds(BIT_DELAY);  // Start bit
+  // Start bit
+  digitalWrite(BB_TX_PIN, LOW);
+  delayMicroseconds(BIT_DELAY);
+
+  // データビット（8ビット）
   for (uint8_t i = 0; i < 8; i++) {
-    digitalWrite(BB_TX_PIN, (b >> i) & 1);
+    bool bit_val = (b >> i) & 1;
+    digitalWrite(BB_TX_PIN, bit_val);
     delayMicroseconds(BIT_DELAY);
   }
-  digitalWrite(BB_TX_PIN, HIGH);  // Stop bit
+
+  // Stop bit
+  digitalWrite(BB_TX_PIN, HIGH);
   delayMicroseconds(BIT_DELAY + STOPBIT_GAP_US);
 }
 
