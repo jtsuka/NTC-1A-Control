@@ -16,8 +16,14 @@
 uint8_t packet[PACKET_LEN];
 
 bool receive_packet(uint16_t half_delay) {
-  while (digitalRead(RX_PIN) == HIGH);  // Start bit待ち
-  delayMicroseconds(half_delay);
+  // スタートビット待機
+  while (digitalRead(RX_PIN) == HIGH);
+
+  // ** スタートビット検出したらログを出す
+  Serial.print("Signal detected at HALF_DELAY = ");
+  Serial.println(half_delay);
+
+  delayMicroseconds(half_delay);  // 以降は通常通りでもOK
 
   for (uint8_t i = 0; i < PACKET_LEN; i++) {
     uint8_t b = 0;
@@ -26,7 +32,7 @@ bool receive_packet(uint16_t half_delay) {
       b |= (digitalRead(RX_PIN) << bit);
     }
     packet[i] = b;
-    delayMicroseconds(half_delay * 2);  // Stop bit
+    delayMicroseconds(half_delay * 2); // STOP bit
   }
 
   // チェックサム検証（単純加算）
