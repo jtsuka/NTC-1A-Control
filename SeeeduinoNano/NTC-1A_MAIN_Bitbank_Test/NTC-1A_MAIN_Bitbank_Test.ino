@@ -11,7 +11,7 @@
 #define STOPBIT_GAP_US 300
 #define BYTE_GAP_US 1500
 
-const uint8_t test_packet[6] = {0x55, 0x55, 0x55, 0x55, 0x55, 0x55};
+const uint8_t test_packet[6] = { 0x01, 0x06, 0x05, 0x00, 0x00, 0x0C };
 
 void write_bitbang_byte(uint8_t b) {
   digitalWrite(BB_TX_PIN, LOW);
