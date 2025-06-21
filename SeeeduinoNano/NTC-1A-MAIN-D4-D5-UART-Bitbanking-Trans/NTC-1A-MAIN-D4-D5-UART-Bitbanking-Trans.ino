@@ -340,6 +340,7 @@ void loop() {
         Serial.println(F("[INFO] tx_queue empty"));
       }
       break;
+#endif
     case WAITING_REPLY:
      // SoftwareSerialを一時停止して割り込み源を除去
       mySerial.end();
