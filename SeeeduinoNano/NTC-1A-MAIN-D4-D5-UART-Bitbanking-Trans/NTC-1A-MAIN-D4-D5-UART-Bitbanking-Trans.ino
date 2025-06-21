@@ -17,8 +17,8 @@ AltSoftSerial mySerial;  // D8=RX, D9=TX が AltSoftSerial に対応
 
 
 // ======== SoftwareSerial for Pi接続 (D4=RX, D5=TX) ========
-#define PI_RX_PIN 4
-#define PI_TX_PIN 5
+// #define PI_RX_PIN 4
+// #define PI_TX_PIN 5
 //SoftwareSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // SoftwareSerial: Piと通信
 //NeoSWSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // D4/D5
 
