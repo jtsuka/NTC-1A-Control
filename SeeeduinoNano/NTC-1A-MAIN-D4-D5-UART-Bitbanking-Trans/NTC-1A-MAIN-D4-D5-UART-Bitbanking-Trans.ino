@@ -8,18 +8,18 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
 // 変更後
 //#include <NeoSWSerial.h>
 
-//#include <AltSoftSerial.h>
-//AltSoftSerial mySerial;  // D4=RX, D5=TX が AltSoftSerial に対応
+#include <AltSoftSerial.h>
+AltSoftSerial mySerial;  // D8=RX, D9=TX が AltSoftSerial に対応
 
 
 // ======== SoftwareSerial for Pi接続 (D4=RX, D5=TX) ========
 #define PI_RX_PIN 4
 #define PI_TX_PIN 5
-SoftwareSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // SoftwareSerial: Piと通信
+//SoftwareSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // SoftwareSerial: Piと通信
 //NeoSWSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // D4/D5
 
 // ======== DEBUGマクロ定義（Pi混線防止のため無効推奨）========
@@ -268,18 +268,16 @@ bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
 
 // ---------- setup ----------
 void setup(){
-  Serial.begin(115200);     // ★ USBシリアルを必ず初期化する
-
-  pinMode(DEBUG_PIN, OUTPUT);
-  digitalWrite(DEBUG_PIN, LOW);
+//  Serial.begin(115200);     // ★ USBシリアルを必ず初期化する
 
   // for Debug D6 pin 初期化
   pinMode(DEBUG_PIN, OUTPUT);
   digitalWrite(DEBUG_PIN, LOW);  // 初期状態はLOW
-  pinMode(BB_TX_PIN,OUTPUT); digitalWrite(BB_TX_PIN,HIGH);
-  pinMode(BB_RX_PIN,INPUT_PULLUP);
-  pinMode(PI_RX_PIN, INPUT_PULLUP);  // ← D4 = RX にプルアップ追加
-  mySerial.begin(UART_BPS);  // SoftwareSerial for Pi
+//  pinMode(BB_TX_PIN,OUTPUT); digitalWrite(BB_TX_PIN,HIGH);
+//  pinMode(BB_RX_PIN,INPUT_PULLUP);
+//  pinMode(PI_RX_PIN, INPUT_PULLUP);  // ← D4 = RX にプルアップ追加
+//  mySerial.begin(UART_BPS);  // SoftwareSerial for Pi
+  mySerial.begin(UART_BPS);  // AltSoftSerial for Pi
 #if DEBUG_ENABLED
   Serial.begin(115200);  // USB Serial for Debug
 #endif
