@@ -274,13 +274,13 @@ void setup(){
   digitalWrite(DEBUG_PIN, LOW);  // 初期状態はLOW
 
   // AltSoftSerial の RX ピン D8 に pull-up 抵抗を有効化
-  pinMode(8, INPUT_PULLUP);   // ← ★ 追加（重要）
+//  pinMode(8, INPUT_PULLUP);   // ← ★ 追加（重要）
 
-//  pinMode(BB_TX_PIN,OUTPUT); digitalWrite(BB_TX_PIN,HIGH);
-//  pinMode(BB_RX_PIN,INPUT_PULLUP);
-//a  pinMode(PI_RX_PIN, INPUT_PULLUP);  // ← D4 = RX にプルアップ追加
-//  mySerial.begin(UART_BPS);  // SoftwareSerial for Pi
-  mySerial.begin(UART_BPS);  // AltSoftSerial for Pi
+  pinMode(BB_TX_PIN,OUTPUT); digitalWrite(BB_TX_PIN,HIGH);
+  pinMode(BB_RX_PIN,INPUT_PULLUP);
+  pinMode(PI_RX_PIN, INPUT_PULLUP);  // ← D4 = RX にプルアップ追加
+  mySerial.begin(UART_BPS);  // SoftwareSerial for Pi
+//  mySerial.begin(UART_BPS);  // AltSoftSerial for Pi
 #if DEBUG_ENABLED
   Serial.begin(115200);  // USB Serial for Debug
 #endif
