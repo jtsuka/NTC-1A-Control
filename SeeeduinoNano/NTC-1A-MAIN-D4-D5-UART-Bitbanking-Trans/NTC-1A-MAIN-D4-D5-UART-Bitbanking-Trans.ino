@@ -11,14 +11,14 @@
 #include <SoftwareSerial.h>
 // 変更後
 //#include <NeoSWSerial.h>
-//#include <AltSoftSerial.h>
-//AltSoftSerial mySerial;  // D8=RX, D9=TX が AltSoftSerial に対応
+#include <AltSoftSerial.h>
+AltSoftSerial mySerial;  // D8=RX, D9=TX が AltSoftSerial に対応
 
 
 // ======== SoftwareSerial for Pi接続 (D4=RX, D5=TX) ========
-#define PI_RX_PIN 4
-#define PI_TX_PIN 5
-SoftwareSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // SoftwareSerial: Piと通信
+//#define PI_RX_PIN 4
+//#define PI_TX_PIN 5
+//SoftwareSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // SoftwareSerial: Piと通信
 //NeoSWSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // D4/D5
 
 // ======== DEBUGマクロ定義（Pi混線防止のため無効推奨）========
@@ -272,9 +272,13 @@ void setup(){
   // for Debug D6 pin 初期化
   pinMode(DEBUG_PIN, OUTPUT);
   digitalWrite(DEBUG_PIN, LOW);  // 初期状態はLOW
+
+  // AltSoftSerial の RX ピン D8 に pull-up 抵抗を有効化
+  pinMode(8, INPUT_PULLUP);   // ← ★ 追加（重要）
+
 //  pinMode(BB_TX_PIN,OUTPUT); digitalWrite(BB_TX_PIN,HIGH);
 //  pinMode(BB_RX_PIN,INPUT_PULLUP);
-//  pinMode(PI_RX_PIN, INPUT_PULLUP);  // ← D4 = RX にプルアップ追加
+//a  pinMode(PI_RX_PIN, INPUT_PULLUP);  // ← D4 = RX にプルアップ追加
 //  mySerial.begin(UART_BPS);  // SoftwareSerial for Pi
   mySerial.begin(UART_BPS);  // AltSoftSerial for Pi
 #if DEBUG_ENABLED
