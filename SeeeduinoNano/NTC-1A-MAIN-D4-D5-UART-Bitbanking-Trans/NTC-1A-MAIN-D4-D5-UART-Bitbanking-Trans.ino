@@ -8,7 +8,7 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
 // 変更後
 //#include <NeoSWSerial.h>
 #include <AltSoftSerial.h>
