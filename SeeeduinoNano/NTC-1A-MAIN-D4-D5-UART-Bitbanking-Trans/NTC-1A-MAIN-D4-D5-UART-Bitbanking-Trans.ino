@@ -8,9 +8,9 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-//#include <SoftwareSerial.h>
+#include <SoftwareSerial.h>
 // 変更後
-#include <NeoSWSerial.h>
+//#include <NeoSWSerial.h>
 
 //#include <AltSoftSerial.h>
 //AltSoftSerial mySerial;  // D4=RX, D5=TX が AltSoftSerial に対応
@@ -19,8 +19,8 @@
 // ======== SoftwareSerial for Pi接続 (D4=RX, D5=TX) ========
 #define PI_RX_PIN 4
 #define PI_TX_PIN 5
-//SoftwareSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // SoftwareSerial: Piと通信
-NeoSWSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // D4/D5
+SoftwareSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // SoftwareSerial: Piと通信
+//NeoSWSerial mySerial(PI_RX_PIN, PI_TX_PIN);  // D4/D5
 
 // ======== DEBUGマクロ定義（Pi混線防止のため無効推奨）========
 #define DEBUG_ENABLED 1
@@ -80,6 +80,7 @@ uint8_t uart_out[6], bb_in[6];
 
 // =====================================================
 //  受信バッファもキューに変更
+#if 1
 void checkReceive() {
   static byte idx_dbg = 0;
 
@@ -114,8 +115,7 @@ void checkReceive() {
     }
   }
 }
-
-#if 0
+#lese
 void checkReceive() {
   // for Debug
   // checkReceive() の先頭あたりに追加
@@ -297,6 +297,7 @@ void loop() {
   }
 
   switch (state) {
+#if 0
     case IDLE:
       if (tx_tail != tx_head) {
         Serial.println(F("[INFO] TXキューからパケット送信準備"));
@@ -319,7 +320,7 @@ void loop() {
         Serial.println(F("[INFO] tx_queue empty（送信保留中）"));
       }
       break;
-#if 0
+#else
     case IDLE:
       if (tx_tail != tx_head) {
         Serial.println(F("[INFO] Sending packet from tx_queue"));
