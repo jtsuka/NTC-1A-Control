@@ -115,7 +115,7 @@ void checkReceive() {
     }
   }
 }
-#lese
+#else
 void checkReceive() {
   // for Debug
   // checkReceive() の先頭あたりに追加
