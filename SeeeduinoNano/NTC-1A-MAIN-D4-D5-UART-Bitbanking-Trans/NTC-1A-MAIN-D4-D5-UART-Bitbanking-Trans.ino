@@ -79,7 +79,6 @@ uint8_t uart_out[6], bb_in[6];
 
 // =====================================================
 //  受信バッファもキューに変更
-#if 1
 void checkReceive() {
   static byte idx_dbg = 0;
 
@@ -114,38 +113,6 @@ void checkReceive() {
     }
   }
 }
-#else
-void checkReceive() {
-  // for Debug
-  // checkReceive() の先頭あたりに追加
-  static byte idx_dbg = 0;
-
-  while (mySerial.available()) {
-    // for Debug
-    uint8_t b = mySerial.read();
-    Serial.print("RX["); Serial.print(idx_dbg++); Serial.print("]=");
-    Serial.println(b, HEX);
-    // for Debug
-
-    int next = (rx_head + 1) % MAX_QUEUE;
-    if (next == rx_tail) return;
-
-//    for Debug
-//    uint8_t b = mySerial.read();
-    rx_queue[rx_head][rx_queue_idx[rx_head]++] = b;
-
-    // checkReceive() 修正案：
-    if (rx_queue_idx[rx_head] == 6) {
-     bool ok = enqueue_tx_packet(rx_queue[rx_head]);  // まず tx_queue へ
-      if (ok) {
-        rx_queue_idx[rx_head] = 0;
-        rx_head = next;
-      }
-    // else → tx_queueが詰まっていたら破棄される（または再試行ロジックを入れる）
-    }
-  }
-}
-#endif
 
 bool enqueue_tx_packet(const uint8_t *pkt) {
   int next = (tx_head + 1) % MAX_QUEUE;
@@ -274,7 +241,7 @@ void setup(){
   digitalWrite(DEBUG_PIN, LOW);  // 初期状態はLOW
 
   // AltSoftSerial の RX ピン D8 に pull-up 抵抗を有効化
-//  pinMode(8, INPUT_PULLUP);   // ← ★ 追加（重要）
+  // pinMode(8, INPUT_PULLUP);   // ← ★ 追加（重要）
 
   pinMode(BB_TX_PIN,OUTPUT); digitalWrite(BB_TX_PIN,HIGH);
   pinMode(BB_RX_PIN,INPUT_PULLUP);
@@ -298,30 +265,6 @@ void loop() {
   }
 
   switch (state) {
-#if 0
-    case IDLE:
-      if (tx_tail != tx_head) {
-        Serial.println(F("[INFO] TXキューからパケット送信準備"));
-        memcpy(current_pkt, tx_queue[tx_tail], 6);
-          tx_tail = (tx_tail + 1) % MAX_QUEUE;
-
-        Serial.print(F("[SEND] "));
-        for (int i = 0; i < 6; i++) {
-          Serial.print(current_pkt[i], HEX); Serial.print(' ');
-         }
-        Serial.println();
-
-        mySerial.end();
-        bitbangWrite(current_pkt, 6);
-        mySerial.begin(UART_BPS);
-
-        t_start = millis();
-        state = WAITING_REPLY;
-      } else {
-        Serial.println(F("[INFO] tx_queue empty（送信保留中）"));
-      }
-      break;
-#else
     case IDLE:
       if (tx_tail != tx_head) {
         Serial.println(F("[INFO] Sending packet from tx_queue"));
@@ -342,7 +285,6 @@ void loop() {
         Serial.println(F("[INFO] tx_queue empty"));
       }
       break;
-#endif
     case WAITING_REPLY:
      // SoftwareSerialを一時停止して割り込み源を除去
       mySerial.end();
