@@ -28,6 +28,12 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 uint8_t recv_buf[6];
 
 void setup() {
+  // for D4, D5 vs D8, D9 双方のテストを行うため
+  pinMode(4, OUTPUT); digitalWrite(4, LOW);
+  pinMode(5, OUTPUT); digitalWrite(5, LOW);
+  pinMode(8, OUTPUT); digitalWrite(8, LOW);
+  pinMode(9, OUTPUT); digitalWrite(9, LOW);
+
   pinMode(BB_TX_PIN, OUTPUT);
   digitalWrite(BB_TX_PIN, HIGH);
   pinMode(BB_RX_PIN, INPUT_PULLUP);

@@ -236,6 +236,12 @@ bool bitbangRead(uint8_t* data, uint8_t len, uint16_t timeout_ms = 2000) {
 void setup(){
 //  Serial.begin(115200);     // ★ USBシリアルを必ず初期化する
 
+  // for D4, D5 vs D8, D9 pin Test
+  pinMode(4, OUTPUT); digitalWrite(4, LOW);
+  pinMode(5, OUTPUT); digitalWrite(5, LOW);
+  pinMode(8, OUTPUT); digitalWrite(8, LOW);
+  pinMode(9, OUTPUT); digitalWrite(9, LOW);
+
   // for Debug D6 pin 初期化
   pinMode(DEBUG_PIN, OUTPUT);
   digitalWrite(DEBUG_PIN, LOW);  // 初期状態はLOW
