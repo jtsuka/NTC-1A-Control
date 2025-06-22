@@ -83,7 +83,7 @@ void handle_uart_receive() {
 }
 
 void bitbang_send_packet(uint8_t *data) {
-  digitalWrite(DEBUG_PIN, HIGH); delay(100); digitalWrite(DEBUG_PIN, LOW);
+  digitalWrite(DEBUG_LED_PIN, HIGH); delay(100); digitalWrite(DEBUG_LED_PIN, LOW);
   for (uint8_t i = 0; i < PACKET_SIZE; i++) {
     bitbang_send_byte(data[i]);
   }
