@@ -48,6 +48,19 @@ void setup() {
   display.display();
 }
 
+// ==== スタートビット検出（LOW待ち）関数 ====
+bool bitbang_detect_start_bit(uint16_t timeout_ms = 1000) {
+  uint32_t start_time = millis();
+  while (digitalRead(BITBANG_RX_PIN) == HIGH) {
+    if (millis() - start_time > timeout_ms) {
+      return false;  // タイムアウト
+    }
+  }
+  // LOW検出（スタートビット）成功
+  return true;
+}
+
+
 void loop() {
   handle_uart_receive();
 
@@ -80,18 +93,6 @@ void loop() {
       display.display();
     }
   }
-}
-
-// ==== スタートビット検出（LOW待ち）関数 ====
-bool bitbang_detect_start_bit(uint16_t timeout_ms = 1000) {
-  uint32_t start_time = millis();
-  while (digitalRead(BITBANG_RX_PIN) == HIGH) {
-    if (millis() - start_time > timeout_ms) {
-      return false;  // タイムアウト
-    }
-  }
-  // LOW検出（スタートビット）成功
-  return true;
 }
 
 void handle_uart_receive() {
