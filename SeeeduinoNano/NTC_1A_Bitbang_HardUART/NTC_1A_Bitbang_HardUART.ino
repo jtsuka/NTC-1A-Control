@@ -3,7 +3,7 @@
   - Seeeduino Nano用（ATmega328P）
   - D2 = BitBang TX, D3 = BitBang RX
   - D6 = デバッグLED
-  - UART = Serial1 (ピン0: RX, 1: TX)
+  - UART = Serial (ピン0: RX, 1: TX)
   - OLED = I2C (0x3C)
 **********************************************************************/
 
@@ -159,8 +159,8 @@ void handle_uart_receive() {
   static uint8_t buf[PACKET_SIZE];
   static uint8_t idx = 0;
 
-  while (Serial1.available()) {
-    uint8_t b = Serial1.read();
+  while (Serial.available()) {
+    uint8_t b = Serial.read();
     buf[idx++] = b;
 
     if (idx == PACKET_SIZE) {
@@ -175,8 +175,8 @@ void setup() {
   pinMode(DEBUG_PIN, OUTPUT);
   pinMode(BB_TX_PIN, OUTPUT); digitalWrite(BB_TX_PIN, HIGH);
   pinMode(BB_RX_PIN, INPUT_PULLUP);
-  Serial.begin(115200);       // USB debug
-  Serial1.begin(UART_BAUD);   // Hardware UART
+//  Serial.begin(115200);       // USB debug
+  Serial.begin(UART_BAUD);   // Hardware UART
   init_oled();
   delay(200);
 }
@@ -199,9 +199,9 @@ void loop() {
       if (millis() - last_exec_time > 50) {
         if (bitbangRead(reply_packet, PACKET_SIZE)) {
           show_packet("RECV:", reply_packet);
-          Serial1.write(reply_packet, PACKET_SIZE);
+          Serial.write(reply_packet, PACKET_SIZE);
         } else {
-          Serial.println("[TIMEOUT]");
+//          Serial.println("[TIMEOUT]");
         }
         state = IDLE;
       }
