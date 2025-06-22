@@ -1,210 +1,111 @@
-/**********************************************************************
-  BitBang + UART + OLED + Pseudo Threading
-  - Seeeduino Nano用（ATmega328P）
-  - D2 = BitBang TX, D3 = BitBang RX
-  - D6 = デバッグLED
-  - UART = Serial (ピン0: RX, 1: TX)
-  - OLED = I2C (0x3C)
-**********************************************************************/
+/*
+  BitBang_UART_OLED_NonBlocking.ino
+  Seeeduino Nano (ATmega328P) 用
+  - ハードウェアUARTは Serial を使用（Serial1 は未対応）
+  - ビットバンキング通信（D2: TX, D3: RX）
+  - OLED表示（I2C: A4/A5）
+  - 擬似スレッドによるUART受信とBitBang送信の分離
+  - MSB/LSB切り替えは #define で切替
+*/
 
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-// ==================== 設定 ====================
-#define OLED_ENABLED     1
-#define OLED_ADDR        0x3C
-#define OLED_WIDTH       128
-#define OLED_HEIGHT      64
-#define DEBUG_PIN        6
+#define OLED_RESET -1
+Adafruit_SSD1306 display(128, 64, &Wire, OLED_RESET);
 
-// UART
-#define UART_BAUD        1200
-#define MAX_QUEUE        4
-#define PACKET_SIZE      6
+#define BITBANG_TX_PIN 2
+#define BITBANG_RX_PIN 3
+#define DEBUG_LED_PIN 6
 
-// BitBang通信
-#define BB_TX_PIN        2
-#define BB_RX_PIN        3
-#define BB_BAUD          300
-#define BIT_DELAY_US     (1000000UL / BB_BAUD)
-#define HALF_DELAY_US    (BIT_DELAY_US / 2)
-#define BYTE_GAP_US      1500
+#define UART_BAUD 1200
+#define PACKET_SIZE 6
 
-// ビット順切り替え（再コンパイルで変更）
-#define LSB_FIRST        1
+#define USE_MSB_FIRST  // ← 切り替えはここ（MSB or LSB）
 
-// ==================== グローバル ====================
-Adafruit_SSD1306 display(OLED_WIDTH, OLED_HEIGHT, &Wire, -1);
+uint8_t uart_buffer[PACKET_SIZE];
+uint8_t uart_index = 0;
+bool packet_ready = false;
 
-uint8_t uart_rx_queue[MAX_QUEUE][PACKET_SIZE];
-volatile int uart_rx_head = 0;
-volatile int uart_rx_tail = 0;
+uint8_t reply_packet[PACKET_SIZE] = {0x11, 0x22, 0x33, 0x00, 0x00, 0x66};
 
-uint8_t current_packet[PACKET_SIZE];
-uint8_t reply_packet[PACKET_SIZE];
-unsigned long last_exec_time = 0;
+void setup() {
+  pinMode(BITBANG_TX_PIN, OUTPUT);
+  pinMode(BITBANG_RX_PIN, INPUT_PULLUP);
+  pinMode(DEBUG_LED_PIN, OUTPUT);
+  digitalWrite(DEBUG_LED_PIN, LOW);
 
-enum State { IDLE, SENDING, WAIT_REPLY };
-State state = IDLE;
+  Serial.begin(UART_BAUD);  // Seeeduino Nano: Serial = HW UART
 
-// ==================== キュー処理 ====================
-bool enqueue_uart_packet(uint8_t *data) {
-  int next = (uart_rx_head + 1) % MAX_QUEUE;
-  if (next == uart_rx_tail) return false;
-  memcpy(uart_rx_queue[uart_rx_head], data, PACKET_SIZE);
-  uart_rx_head = next;
-  return true;
-}
-
-bool dequeue_uart_packet(uint8_t *data) {
-  if (uart_rx_head == uart_rx_tail) return false;
-  memcpy(data, uart_rx_queue[uart_rx_tail], PACKET_SIZE);
-  uart_rx_tail = (uart_rx_tail + 1) % MAX_QUEUE;
-  return true;
-}
-
-// ==================== BitBang送信 ====================
-void write_bitbang_byte(uint8_t b) {
-  digitalWrite(BB_TX_PIN, LOW);
-  delayMicroseconds(BIT_DELAY_US);
-
-#if LSB_FIRST
-  for (uint8_t i = 0; i < 8; i++) {
-    digitalWrite(BB_TX_PIN, (b >> i) & 1);
-    delayMicroseconds(BIT_DELAY_US);
-  }
-#else
-  for (int8_t i = 7; i >= 0; i--) {
-    digitalWrite(BB_TX_PIN, (b >> i) & 1);
-    delayMicroseconds(BIT_DELAY_US);
-  }
-#endif
-
-  digitalWrite(BB_TX_PIN, HIGH);
-  delayMicroseconds(BIT_DELAY_US);
-}
-
-void bitbangWrite(uint8_t *data, uint8_t len) {
-  for (uint8_t i = 0; i < len; i++) {
-    write_bitbang_byte(data[i]);
-    delayMicroseconds(BYTE_GAP_US);
-  }
-}
-
-// ==================== BitBang受信 ====================
-bool read_bitbang_byte(uint8_t &b, uint16_t timeout_ms = 2000) {
-  unsigned long t0 = millis();
-  while (digitalRead(BB_RX_PIN) == HIGH) {
-    if (millis() - t0 > timeout_ms) return false;
-  }
-
-  delayMicroseconds(HALF_DELAY_US);
-  if (digitalRead(BB_RX_PIN) != LOW) return false;
-  delayMicroseconds(HALF_DELAY_US);
-
-  b = 0;
-#if LSB_FIRST
-  for (uint8_t i = 0; i < 8; i++) {
-    delayMicroseconds(BIT_DELAY_US);
-    if (digitalRead(BB_RX_PIN)) b |= (1 << i);
-  }
-#else
-  for (int8_t i = 7; i >= 0; i--) {
-    delayMicroseconds(BIT_DELAY_US);
-    if (digitalRead(BB_RX_PIN)) b |= (1 << i);
-  }
-#endif
-
-  delayMicroseconds(BIT_DELAY_US); // STOP
-  return true;
-}
-
-bool bitbangRead(uint8_t *buf, uint8_t len, uint16_t timeout_ms = 2000) {
-  for (uint8_t i = 0; i < len; i++) {
-    if (!read_bitbang_byte(buf[i], timeout_ms)) return false;
-  }
-  return true;
-}
-
-// ==================== OLED ====================
-void init_oled() {
-#if OLED_ENABLED
-  display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
+  Wire.begin();
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(0, 0);
-  display.println("BitBang UART Ready");
+  display.println(F("BitBang+UART Ready"));
   display.display();
-#endif
 }
 
-void show_packet(const char *label, const uint8_t *pkt) {
-#if OLED_ENABLED
-  display.clearDisplay();
-  display.setCursor(0, 0);
-  display.print(label);
-  for (uint8_t i = 0; i < PACKET_SIZE; i++) {
-    display.print(" ");
-    if (pkt[i] < 0x10) display.print('0');
-    display.print(pkt[i], HEX);
+void loop() {
+  handle_uart_receive();
+
+  if (packet_ready) {
+    digitalWrite(DEBUG_LED_PIN, HIGH);
+    display.clearDisplay();
+    display.setCursor(0, 0);
+    display.println(F("RX Packet:"));
+    for (uint8_t i = 0; i < PACKET_SIZE; i++) {
+      display.print(uart_buffer[i], HEX); display.print(" ");
+    }
+    display.display();
+    delay(200);
+    bitbang_send_packet(reply_packet);
+    digitalWrite(DEBUG_LED_PIN, LOW);
+    uart_index = 0;
+    packet_ready = false;
   }
-  display.display();
-#endif
 }
 
-// ==================== UART受信 ====================
 void handle_uart_receive() {
-  static uint8_t buf[PACKET_SIZE];
-  static uint8_t idx = 0;
-
   while (Serial.available()) {
     uint8_t b = Serial.read();
-    buf[idx++] = b;
-
-    if (idx == PACKET_SIZE) {
-      enqueue_uart_packet(buf);
-      idx = 0;
+    if (uart_index < PACKET_SIZE) {
+      uart_buffer[uart_index++] = b;
+      if (uart_index == PACKET_SIZE) {
+        packet_ready = true;
+      }
+    } else {
+      uart_index = 0;
     }
   }
 }
 
-// ==================== セットアップ ====================
-void setup() {
-  pinMode(DEBUG_PIN, OUTPUT);
-  pinMode(BB_TX_PIN, OUTPUT); digitalWrite(BB_TX_PIN, HIGH);
-  pinMode(BB_RX_PIN, INPUT_PULLUP);
-//  Serial.begin(115200);       // USB debug
-  Serial.begin(UART_BAUD);   // Hardware UART
-  init_oled();
-  delay(200);
+void bitbang_send_packet(uint8_t *data) {
+  for (uint8_t i = 0; i < PACKET_SIZE; i++) {
+    bitbang_send_byte(data[i]);
+  }
 }
 
-// ==================== メインループ ====================
-void loop() {
-  handle_uart_receive();
-
-  switch (state) {
-    case IDLE:
-      if (dequeue_uart_packet(current_packet)) {
-        show_packet("SEND:", current_packet);
-        bitbangWrite(current_packet, PACKET_SIZE);
-        last_exec_time = millis();
-        state = WAIT_REPLY;
-      }
-      break;
-
-    case WAIT_REPLY:
-      if (millis() - last_exec_time > 50) {
-        if (bitbangRead(reply_packet, PACKET_SIZE)) {
-          show_packet("RECV:", reply_packet);
-          Serial.write(reply_packet, PACKET_SIZE);
-        } else {
-//          Serial.println("[TIMEOUT]");
-        }
-        state = IDLE;
-      }
-      break;
+void bitbang_send_byte(uint8_t b) {
+  digitalWrite(BITBANG_TX_PIN, LOW);
+  delayMicroseconds(bit_duration());
+#ifdef USE_MSB_FIRST
+  for (int i = 7; i >= 0; i--) {
+    digitalWrite(BITBANG_TX_PIN, (b >> i) & 0x01);
+    delayMicroseconds(bit_duration());
   }
+#else
+  for (int i = 0; i < 8; i++) {
+    digitalWrite(BITBANG_TX_PIN, (b >> i) & 0x01);
+    delayMicroseconds(bit_duration());
+  }
+#endif
+  digitalWrite(BITBANG_TX_PIN, HIGH);
+  delayMicroseconds(bit_duration());
+}
+
+int bit_duration() {
+  return 1000000 / 300;  // 300bps に対応
 }
