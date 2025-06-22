@@ -66,6 +66,32 @@ void loop() {
     uart_index = 0;
     packet_ready = false;
   }
+
+  
+  if (bitbang_detect_start_bit()) {
+    uint8_t recv_buf[PACKET_SIZE];
+    if (bitbang_receive_packet(recv_buf)) {
+      display.clearDisplay();
+      display.setCursor(0, 0);
+      display.println(F("RECV:"));
+      for (uint8_t i = 0; i < PACKET_SIZE; i++) {
+        display.print(recv_buf[i], HEX); display.print(" ");
+      }
+      display.display();
+    }
+  }
+}
+
+// ==== スタートビット検出（LOW待ち）関数 ====
+bool bitbang_detect_start_bit(uint16_t timeout_ms = 1000) {
+  uint32_t start_time = millis();
+  while (digitalRead(BITBANG_RX_PIN) == HIGH) {
+    if (millis() - start_time > timeout_ms) {
+      return false;  // タイムアウト
+    }
+  }
+  // LOW検出（スタートビット）成功
+  return true;
 }
 
 void handle_uart_receive() {
@@ -106,6 +132,48 @@ void bitbang_send_byte(uint8_t b) {
   digitalWrite(BITBANG_TX_PIN, HIGH);
   delayMicroseconds(bit_duration());
 }
+
+// ==== BitBang 6バイトパケット受信 ====
+bool bitbang_receive_packet(uint8_t *buffer) {
+  for (int i = 0; i < PACKET_SIZE; i++) {
+    buffer[i] = bitbang_receive_byte();
+  }
+  return true;  // チェックサム検証などがあればここに追加
+}
+
+// ==== BitBang 1バイト受信（ビット順切り替え対応） ====
+uint8_t bitbang_receive_byte() {
+  uint8_t received = 0;
+
+  // スタートビット待ち（LOWを検出）
+  while (digitalRead(BITBANG_RX_PIN) == HIGH);
+
+  // 受信中断防止：割り込み無効
+  noInterrupts();
+
+  delayMicroseconds(bit_duration() + bit_duration()/2);  // 1.5ビット分待つ
+
+#ifdef USE_MSB_FIRST
+  for (int i = 7; i >= 0; i--) {
+    received |= (digitalRead(BITBANG_RX_PIN) << i);
+    delayMicroseconds(bit_duration());
+  }
+#else
+  for (int i = 0; i < 8; i++) {
+    received |= (digitalRead(BITBANG_RX_PIN) << i);
+    delayMicroseconds(bit_duration());
+  }
+#endif
+
+  // ストップビットを読み飛ばす
+  delayMicroseconds(bit_duration());
+
+  // 割り込み再有効化
+  interrupts();
+
+  return received;
+}
+
 
 int bit_duration() {
   return 1000000 / 300;  // 300bps に対応
