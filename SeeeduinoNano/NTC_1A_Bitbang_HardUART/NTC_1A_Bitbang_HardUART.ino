@@ -28,6 +28,10 @@ uint8_t uart_buffer[PACKET_SIZE];
 uint8_t uart_index = 0;
 bool packet_ready = false;
 
+// functions
+bool bitbang_detect_start_bit(uint16_t);
+
+// values
 uint8_t reply_packet[PACKET_SIZE] = {0x11, 0x22, 0x33, 0x00, 0x00, 0x66};
 
 void setup() {
