@@ -29,7 +29,7 @@ uint8_t uart_index = 0;
 bool packet_ready = false;
 
 // functions
-bool bitbang_detect_start_bit(uint16_t);
+bool bitbang_detect_start_bit(uint16_t timeout_ms = 1000);
 
 // values
 uint8_t reply_packet[PACKET_SIZE] = {0x11, 0x22, 0x33, 0x00, 0x00, 0x66};
