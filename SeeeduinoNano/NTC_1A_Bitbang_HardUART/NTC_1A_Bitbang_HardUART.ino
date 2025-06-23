@@ -22,7 +22,7 @@ Adafruit_SSD1306 display(128, 64, &Wire, OLED_RESET);
 #define UART_BAUD 1200
 #define PACKET_SIZE 6
 
-#define USE_MSB_FIRST  // ← 切り替えはここ（MSB or LSB）
+#define USE_MSB_FIRST  1 // ← 切り替えはここ（MSB or LSB）
 
 uint8_t uart_buffer[PACKET_SIZE];
 uint8_t uart_index = 0;
@@ -80,7 +80,7 @@ void loop() {
     packet_ready = false;
   }
 
-  
+// bitbang Start bit   
   if (bitbang_detect_start_bit()) {
     uint8_t recv_buf[PACKET_SIZE];
     if (bitbang_receive_packet(recv_buf)) {
@@ -95,6 +95,7 @@ void loop() {
   }
 }
 
+// UART 受信
 void handle_uart_receive() {
   while (Serial.available()) {
     uint8_t b = Serial.read();
@@ -109,6 +110,7 @@ void handle_uart_receive() {
   }
 }
 
+// bitbang 送信パケット
 void bitbang_send_packet(uint8_t *data) {
   digitalWrite(DEBUG_LED_PIN, HIGH); delay(100); digitalWrite(DEBUG_LED_PIN, LOW);
   for (uint8_t i = 0; i < PACKET_SIZE; i++) {
@@ -116,6 +118,7 @@ void bitbang_send_packet(uint8_t *data) {
   }
 }
 
+// bitbang 送信バイト
 void bitbang_send_byte(uint8_t b) {
   digitalWrite(BITBANG_TX_PIN, LOW);
   delayMicroseconds(bit_duration());
