@@ -4,8 +4,7 @@
   - ハードウェアUARTは Serial を使用（Serial1 は未対応）
   - ビットバンキング通信（D2: TX, D3: RX）
   - OLED表示（I2C: A4/A5）
-  - 擬似スレッドによるUART受信とBitBang送信の分離
-  - MSB/LSB切り替えは #define で切替
+  - セーフモード（D10 = LOW でUART停止）
 */
 
 #include <Wire.h>
@@ -18,11 +17,12 @@ Adafruit_SSD1306 display(128, 64, &Wire, OLED_RESET);
 #define BITBANG_TX_PIN 2
 #define BITBANG_RX_PIN 3
 #define DEBUG_LED_PIN 6
+#define SAFE_MODE_PIN 10
 
 #define UART_BAUD 1200
 #define PACKET_SIZE 6
 
-#define USE_MSB_FIRST  1 // ← 切り替えはここ（MSB or LSB）
+#define USE_MSB_FIRST 1
 
 uint8_t uart_buffer[PACKET_SIZE];
 uint8_t uart_index = 0;
@@ -34,9 +34,11 @@ void setup() {
   pinMode(BITBANG_TX_PIN, OUTPUT);
   pinMode(BITBANG_RX_PIN, INPUT_PULLUP);
   pinMode(DEBUG_LED_PIN, OUTPUT);
+  pinMode(SAFE_MODE_PIN, INPUT_PULLUP);  // ← セーフモード入力
+
   digitalWrite(DEBUG_LED_PIN, LOW);
 
-  Serial.begin(UART_BAUD);  // Seeeduino Nano: Serial = HW UART
+  Serial.begin(UART_BAUD);
 
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
@@ -48,21 +50,11 @@ void setup() {
   display.display();
 }
 
-// ==== スタートビット検出（LOW待ち）関数 ====
-bool bitbang_detect_start_bit(uint16_t timeout_ms = 1000) {
-  uint32_t start_time = millis();
-  while (digitalRead(BITBANG_RX_PIN) == HIGH) {
-    if (millis() - start_time > timeout_ms) {
-      return false;  // タイムアウト
-    }
-  }
-  // LOW検出（スタートビット）成功
-  return true;
-}
-
-
 void loop() {
-  handle_uart_receive();
+  // セーフモードが OFF のときのみUART受信処理を行う
+  if (digitalRead(SAFE_MODE_PIN) == HIGH) {
+    handle_uart_receive();
+  }
 
   if (packet_ready) {
     digitalWrite(DEBUG_LED_PIN, HIGH);
@@ -80,7 +72,6 @@ void loop() {
     packet_ready = false;
   }
 
-// bitbang Start bit   
   if (bitbang_detect_start_bit()) {
     uint8_t recv_buf[PACKET_SIZE];
     if (bitbang_receive_packet(recv_buf)) {
@@ -95,7 +86,16 @@ void loop() {
   }
 }
 
-// UART 受信
+bool bitbang_detect_start_bit(uint16_t timeout_ms = 1000) {
+  uint32_t start_time = millis();
+  while (digitalRead(BITBANG_RX_PIN) == HIGH) {
+    if (millis() - start_time > timeout_ms) {
+      return false;
+    }
+  }
+  return true;
+}
+
 void handle_uart_receive() {
   while (Serial.available()) {
     uint8_t b = Serial.read();
@@ -110,7 +110,6 @@ void handle_uart_receive() {
   }
 }
 
-// bitbang 送信パケット
 void bitbang_send_packet(uint8_t *data) {
   digitalWrite(DEBUG_LED_PIN, HIGH); delay(100); digitalWrite(DEBUG_LED_PIN, LOW);
   for (uint8_t i = 0; i < PACKET_SIZE; i++) {
@@ -118,7 +117,6 @@ void bitbang_send_packet(uint8_t *data) {
   }
 }
 
-// bitbang 送信バイト
 void bitbang_send_byte(uint8_t b) {
   digitalWrite(BITBANG_TX_PIN, LOW);
   delayMicroseconds(bit_duration());
@@ -137,25 +135,18 @@ void bitbang_send_byte(uint8_t b) {
   delayMicroseconds(bit_duration());
 }
 
-// ==== BitBang 6バイトパケット受信 ====
 bool bitbang_receive_packet(uint8_t *buffer) {
   for (int i = 0; i < PACKET_SIZE; i++) {
     buffer[i] = bitbang_receive_byte();
   }
-  return true;  // チェックサム検証などがあればここに追加
+  return true;
 }
 
-// ==== BitBang 1バイト受信（ビット順切り替え対応） ====
 uint8_t bitbang_receive_byte() {
   uint8_t received = 0;
-
-  // スタートビット待ち（LOWを検出）
   while (digitalRead(BITBANG_RX_PIN) == HIGH);
-
-  // 受信中断防止：割り込み無効
   noInterrupts();
-
-  delayMicroseconds(bit_duration() + bit_duration()/2);  // 1.5ビット分待つ
+  delayMicroseconds(bit_duration() + bit_duration() / 2);
 
 #ifdef USE_MSB_FIRST
   for (int i = 7; i >= 0; i--) {
@@ -169,16 +160,11 @@ uint8_t bitbang_receive_byte() {
   }
 #endif
 
-  // ストップビットを読み飛ばす
   delayMicroseconds(bit_duration());
-
-  // 割り込み再有効化
   interrupts();
-
   return received;
 }
 
-
 int bit_duration() {
-  return 1000000 / 300;  // 300bps に対応
+  return 1000000 / 300;
 }
