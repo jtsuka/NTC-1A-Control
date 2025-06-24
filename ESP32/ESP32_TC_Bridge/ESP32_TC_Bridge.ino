@@ -25,6 +25,9 @@ TaskHandle_t task_bb_rx, task_bb_tx;
 QueueHandle_t queue_uart_rx, queue_bb_rx;
 Adafruit_SSD1306 display(128, 64, &Wire, -1);
 
+// FreeRTOSクリティカルセクション用ミューテックス
+portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
+
 void showOLED(const char* label, const uint8_t* data) {
   display.clearDisplay();
   display.setCursor(0, 0);
@@ -41,14 +44,14 @@ void showOLED(const char* label, const uint8_t* data) {
 
 // ---------------- BitBang送受信 ----------------
 void sendBitBangByte(uint8_t b) {
-  portENTER_CRITICAL();
+  portENTER_CRITICAL(&mux);
   digitalWrite(BITBANG_TX_PIN, LOW); delayMicroseconds(BIT_DURATION_US);
   for (uint8_t j = 0; j < 8; j++) {
     digitalWrite(BITBANG_TX_PIN, (b >> j) & 0x01);
     delayMicroseconds(BIT_DURATION_US);
   }
   digitalWrite(BITBANG_TX_PIN, HIGH); delayMicroseconds(BIT_DURATION_US);
-  portEXIT_CRITICAL();
+  portEXIT_CRITICAL(&mux);
 }
 
 void sendBitBangPacket(const uint8_t* data) {
@@ -99,9 +102,9 @@ void task_bb_rx_func(void* pv) {
   uint8_t buf[PACKET_SIZE];
   while (1) {
     if (digitalRead(BITBANG_RX_PIN) == LOW) {
-      portENTER_CRITICAL();
+      portENTER_CRITICAL(&mux);
       for (int i = 0; i < PACKET_SIZE; i++) buf[i] = receiveBitBangByte();
-      portEXIT_CRITICAL();
+      portEXIT_CRITICAL(&mux);
       xQueueSend(queue_bb_rx, buf, portMAX_DELAY);
       xTaskNotifyGive(task_uart_tx);
       showOLED("BB RX->", buf);
