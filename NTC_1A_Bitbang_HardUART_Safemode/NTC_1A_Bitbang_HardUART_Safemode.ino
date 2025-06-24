@@ -2,6 +2,7 @@
   NTC-1A MAIN - Seeeduino Nano  (UART + BitBang送受信 + OLED + セーフモード制御)
   TX:D2  RX:D3   OLED 128×64 (I2C A4/A5)  SAFE_MODE_PIN = D10
 
+  - ハードウェアUARTは Serial を使用（Serial1 は未対応）
   - PiからのUART受信（通常パケット/セーフモードコマンド）
   - TCとのBitBang通信（330bps）
   - セーフモード：D10ピンを一時的に HIGH/LOW に出力（INPUT_PULLUPに戻す）
