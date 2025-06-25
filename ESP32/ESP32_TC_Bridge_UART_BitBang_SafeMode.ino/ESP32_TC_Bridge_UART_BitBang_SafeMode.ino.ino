@@ -16,13 +16,14 @@
 
 #define USE_BITBANG 0
 
-#define TC_UART_TX_PIN 6
-#define TC_UART_RX_PIN 7
+// 正確なGPIO番号を使って定義
+#define TC_UART_TX_PIN 43
+#define TC_UART_RX_PIN 44
 #define PI_UART_TX_PIN 1
-#define PI_UART_RX_PIN 2
-#define I2C_SDA        4
-#define I2C_SCL        5
-#define SAFE_MODE_PIN  2
+#define PI_UART_RX_PIN 0
+#define I2C_SDA        5
+#define I2C_SCL        6
+#define SAFE_MODE_PIN  2 // GPIO2 = セーフモード切り替え用
 #define OLED_ADDR      0x3C
 #define UART_BAUD      115200
 #define PACKET_SIZE    6
