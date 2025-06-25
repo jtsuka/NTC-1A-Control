@@ -25,7 +25,7 @@
 #define I2C_SCL        6
 #define SAFE_MODE_PIN  2 // GPIO2 = セーフモード切り替え用
 #define OLED_ADDR      0x3C
-#define UART_BAUD      115200
+#define UART_BAUD      1200
 #define PACKET_SIZE    6
 #define BIT_DURATION_US 3333
 
@@ -111,7 +111,7 @@ void task_pi_tx(void* pv) {
     }
     if (xQueueReceive(queue_tc_rx, pkt, 0) == pdTRUE) {
       SerialPI.write(pkt, PACKET_SIZE);
-      showOLED("TC→Pi", pkt);
+      showOLED("TC->Pi", pkt);
     }
     vTaskDelay(1);
   }
