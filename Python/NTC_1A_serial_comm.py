@@ -8,6 +8,10 @@ ser = None
 running = True
 current_timeout_value = 2.0  # 初期値（秒）
 
+def send_packet_raw(byte_list):
+    if ser and ser.is_open:
+        ser.write(bytes(byte_list))
+
 def set_timeout(val):
     global current_timeout_value
     current_timeout_value = val

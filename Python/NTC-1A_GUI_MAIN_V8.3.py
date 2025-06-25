@@ -74,6 +74,20 @@ for ch in (1, 2):
     make_labeled_entry(f"CH{ch} 長さ(m)", f"ch{ch}_length", row); row += 1
     make_labeled_entry(f"CH{ch} カウント(m)", f"ch{ch}_count", row); row += 1
 
+# セーフモードボタン（行番号を一時的に増やして配置）
+safe_btn_row = row + 1
+
+tk.Button(left_frame, text="SAFE MODE ON", font=font_button,
+          command=lambda: send_safe_mode(True),
+          bg="darkred", fg="white", width=18) \
+    .grid(row=safe_btn_row, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
+
+tk.Button(left_frame, text="SAFE MODE OFF", font=font_button,
+          command=lambda: send_safe_mode(False),
+          bg="darkgreen", fg="white", width=18) \
+    .grid(row=safe_btn_row + 1, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
+
+
 # ------------------- テンキー -------------------
 key_labels = [
     ("7", 0, 0), ("8", 0, 1), ("9", 0, 2), ("CLR", 0, 3),
@@ -141,6 +155,16 @@ def handle_command(cmd):
             send_packet(ch, 0x07, 0)
     except Exception as e:
         out(f"[ERROR] コマンド送信失敗: {e}")
+
+# セーフモードON/OFF送信関数
+def send_safe_mode(on: bool):
+    try:
+        from NTC_1A_serial_comm import send_packet_raw  # 必要に応じて
+        cmd = [0xF0, 0x01 if on else 0x00]
+        send_packet_raw(cmd)
+        out(f"[INFO] SAFE_MODE {'ON' if on else 'OFF'} を送信")
+    except Exception as e:
+        out(f"[ERROR] セーフモード送信失敗: {e}")
 
 # テンキーグリッド設定
 for i in range(4):
