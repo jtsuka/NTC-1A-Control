@@ -4,14 +4,15 @@
   - UART送受信（GPIO4, GPIO5）
   - OLED表示（SSD1306 I2C）
   - FreeRTOS + Queue + TaskNotify + Mutex 構成
+  - チェックサム検証
+  - 特殊コマンドによる中継停止/再開
+  - 2025.06.25 19:30 ベータバージョン B-1.0
 *********************************************************************/
 
-#include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_SSD1306.h>
 #include <freertos/semphr.h>
 
-// ---------------- ピン定義 ----------------
 #define BITBANG_TX_PIN 2
 #define BITBANG_RX_PIN 3
 #define UART_TX_PIN    4
@@ -19,21 +20,35 @@
 #define I2C_SDA        6
 #define I2C_SCL        7
 #define OLED_ADDR      0x3C
+#define UART_BAUD      115200
 #define PACKET_SIZE    6
 #define BIT_DURATION_US 3333
-#define UART_BAUD      115200
 
-// ---------------- FreeRTOS ----------------
-TaskHandle_t task_uart_rx, task_uart_tx, task_bb_rx, task_bb_tx;
+// 特殊コマンド
+const uint8_t CMD_STOP[6]  = {0x01, 0x06, 0x05, 0x00, 0x00, 0x0C};
+const uint8_t CMD_RESUME[6]= {0x01, 0x06, 0x05, 0xFF, 0xFF, 0x17};
+
+TaskHandle_t task_uart_rx, task_uart_tx;
+TaskHandle_t task_bb_rx, task_bb_tx;
 QueueHandle_t queue_uart_rx, queue_bb_rx;
-SemaphoreHandle_t oled_mutex;
+Adafruit_SSD1306 display(128, 64, &Wire, -1);
+SemaphoreHandle_t xMutex;
 bool stopFlag = false;
 
-// ---------------- OLED ----------------
-Adafruit_SSD1306 display(128, 64, &Wire, -1);
+// Utility
+bool isChecksumValid(const uint8_t* data) {
+  uint8_t sum = 0;
+  for (int i = 0; i < PACKET_SIZE - 1; i++) sum += data[i];
+  return (sum == data[PACKET_SIZE - 1]);
+}
 
-void showOLED(const char* label, const uint8_t* data, bool error = false) {
-  if (xSemaphoreTake(oled_mutex, pdMS_TO_TICKS(20)) == pdTRUE) {
+bool isPacketEqual(const uint8_t* a, const uint8_t* b) {
+  for (int i = 0; i < PACKET_SIZE; i++) if (a[i] != b[i]) return false;
+  return true;
+}
+
+void showOLED(const char* label, const uint8_t* data) {
+  if (xSemaphoreTake(xMutex, (TickType_t)10) == pdTRUE) {
     display.clearDisplay();
     display.setCursor(0, 0);
     display.setTextSize(1);
@@ -44,27 +59,12 @@ void showOLED(const char* label, const uint8_t* data, bool error = false) {
       if (data[i] < 0x10) display.print("0");
       display.print(data[i], HEX);
     }
-    if (error) display.print(" ERR");
     display.display();
-    xSemaphoreGive(oled_mutex);
+    xSemaphoreGive(xMutex);
   }
 }
 
-// ---------------- チェックサム ----------------
-bool verifyChecksum(const uint8_t* packet) {
-  uint8_t sum = 0;
-  for (int i = 0; i < PACKET_SIZE - 1; i++) sum += packet[i];
-  return (sum == packet[PACKET_SIZE - 1]);
-}
-
-bool isStopPacket(const uint8_t* packet) {
-  const uint8_t stop_cmd[6] = { 0x01, 0x06, 0x05, 0x00, 0x00, 0x0C };
-  for (int i = 0; i < PACKET_SIZE; i++)
-    if (packet[i] != stop_cmd[i]) return false;
-  return true;
-}
-
-// ---------------- BitBang送受信 ----------------
+// BitBang I/O
 void sendBitBangByte(uint8_t b) {
   digitalWrite(BITBANG_TX_PIN, LOW); delayMicroseconds(BIT_DURATION_US);
   for (uint8_t j = 0; j < 8; j++) {
@@ -90,72 +90,74 @@ uint8_t receiveBitBangByte() {
   return value;
 }
 
-// ---------------- タスク実装 ----------------
+// UART -> BitBang
 void task_uart_rx_func(void* pv) {
   Serial1.begin(UART_BAUD, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
   uint8_t buf[PACKET_SIZE];
-  while (!stopFlag) {
+  while (1) {
     if (Serial1.available() >= PACKET_SIZE) {
       Serial1.readBytes(buf, PACKET_SIZE);
-      if (isStopPacket(buf)) { stopFlag = true; showOLED("STOP CMD", buf); continue; }
-      if (verifyChecksum(buf)) {
-        xQueueSend(queue_uart_rx, buf, portMAX_DELAY);
-        xTaskNotifyGive(task_bb_tx);
-        showOLED("UART→", buf);
-      } else {
-        showOLED("UART CRC", buf, true);
+      if (isPacketEqual(buf, CMD_STOP)) {
+        stopFlag = true; showOLED("CMD:STOP", buf); continue;
+      } else if (isPacketEqual(buf, CMD_RESUME)) {
+        stopFlag = false; showOLED("CMD:RESUME", buf); continue;
+      } else if (!isChecksumValid(buf)) {
+        showOLED("UART NG", buf); continue;
       }
+      xQueueSend(queue_uart_rx, buf, portMAX_DELAY);
+      xTaskNotifyGive(task_bb_tx);
+      showOLED("UART->", buf);
     }
-    vTaskDelay(pdMS_TO_TICKS(5));
+    vTaskDelay(2 / portTICK_PERIOD_MS);
   }
-  vTaskDelete(NULL);
 }
 
 void task_bb_tx_func(void* pv) {
   uint8_t packet[PACKET_SIZE];
-  while (!stopFlag) {
+  while (1) {
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    if (stopFlag) continue;
     if (xQueueReceive(queue_uart_rx, packet, 0) == pdTRUE) {
       sendBitBangPacket(packet);
-      showOLED("BB TX→", packet);
+      showOLED("BB TX->", packet);
     }
   }
-  vTaskDelete(NULL);
 }
 
+// BitBang -> UART
 void task_bb_rx_func(void* pv) {
   pinMode(BITBANG_RX_PIN, INPUT_PULLUP);
   uint8_t buf[PACKET_SIZE];
-  while (!stopFlag) {
+  while (1) {
     if (digitalRead(BITBANG_RX_PIN) == LOW) {
       for (int i = 0; i < PACKET_SIZE; i++) buf[i] = receiveBitBangByte();
-      if (isStopPacket(buf)) { stopFlag = true; showOLED("STOP CMD", buf); continue; }
-      if (verifyChecksum(buf)) {
-        xQueueSend(queue_bb_rx, buf, portMAX_DELAY);
-        xTaskNotifyGive(task_uart_tx);
-        showOLED("BB RX→", buf);
-      } else {
-        showOLED("BB CRC", buf, true);
+      if (isPacketEqual(buf, CMD_STOP)) {
+        stopFlag = true; showOLED("CMD:STOP", buf); continue;
+      } else if (isPacketEqual(buf, CMD_RESUME)) {
+        stopFlag = false; showOLED("CMD:RESUME", buf); continue;
+      } else if (!isChecksumValid(buf)) {
+        showOLED("BB NG", buf); continue;
       }
+      xQueueSend(queue_bb_rx, buf, portMAX_DELAY);
+      xTaskNotifyGive(task_uart_tx);
+      showOLED("BB RX->", buf);
     }
-    vTaskDelay(pdMS_TO_TICKS(1));
+    vTaskDelay(1 / portTICK_PERIOD_MS);
   }
-  vTaskDelete(NULL);
 }
 
 void task_uart_tx_func(void* pv) {
   uint8_t packet[PACKET_SIZE];
-  while (!stopFlag) {
+  while (1) {
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    if (stopFlag) continue;
     if (xQueueReceive(queue_bb_rx, packet, 0) == pdTRUE) {
       Serial1.write(packet, PACKET_SIZE);
-      showOLED("UART←", packet);
+      showOLED("UART TX->", packet);
     }
   }
-  vTaskDelete(NULL);
 }
 
-// ---------------- 初期化 ----------------
 void setup() {
   Serial.begin(115200);
   pinMode(BITBANG_TX_PIN, OUTPUT); digitalWrite(BITBANG_TX_PIN, HIGH);
@@ -163,10 +165,9 @@ void setup() {
   Wire.begin(I2C_SDA, I2C_SCL);
   display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
   display.clearDisplay(); display.display();
-  oled_mutex = xSemaphoreCreateMutex();
-
-  queue_uart_rx = xQueueCreate(4, PACKET_SIZE);
-  queue_bb_rx   = xQueueCreate(4, PACKET_SIZE);
+  xMutex = xSemaphoreCreateMutex();
+  queue_uart_rx = xQueueCreate(5, sizeof(uint8_t) * PACKET_SIZE);
+  queue_bb_rx   = xQueueCreate(5, sizeof(uint8_t) * PACKET_SIZE);
 
   xTaskCreatePinnedToCore(task_uart_rx_func, "UART_RX", 2048, NULL, 1, &task_uart_rx, 1);
   xTaskCreatePinnedToCore(task_bb_tx_func,   "BB_TX",   2048, NULL, 1, &task_bb_tx,   0);
@@ -174,8 +175,4 @@ void setup() {
   xTaskCreatePinnedToCore(task_uart_tx_func, "UART_TX", 2048, NULL, 1, &task_uart_tx, 1);
 }
 
-void loop() {
-  if (stopFlag) {
-    vTaskDelay(pdMS_TO_TICKS(1000)); // 無限待機
-  }
-}
+void loop() {}
