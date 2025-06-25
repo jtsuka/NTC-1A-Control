@@ -22,12 +22,12 @@
 #define PI_UART_RX_PIN 44  // ラズパイから受信
 
 // TCとの通信（UART1）
-#define TC_UART_TX_PIN 1   // TCへ送信
-#define TC_UART_RX_PIN 0   // TCから受信
+#define TC_UART_TX_PIN 3   // TCへ送信
+#define TC_UART_RX_PIN 2   // TCから受信
 
 #define LED_PIN 21  // XIAO ESP32S3 の内蔵LED
-#define I2C_SDA        5
-#define I2C_SCL        6
+#define I2C_SDA 4  // D4 (Grove SDA)
+#define I2C_SCL 5  // D5 (Grove SCL)
 #define SAFE_MODE_PIN  2 // GPIO2 = セーフモード切り替え用
 #define OLED_ADDR      0x3C
 #define UART_BAUD_PI   9600
