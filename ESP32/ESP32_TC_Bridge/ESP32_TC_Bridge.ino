@@ -175,4 +175,8 @@ void setup() {
   xTaskCreatePinnedToCore(task_uart_tx_func, "UART_TX", 2048, NULL, 1, &task_uart_tx, 1);
 }
 
-void loop() {}
+// 将来の監視処理の為にVtaskDelay()をloop()に設定
+void loop() {
+  // 監視処理など（今は未使用）
+  vTaskDelay(pdMS_TO_TICKS(100));  // 負荷を抑えつつ柔軟に対応
+}
