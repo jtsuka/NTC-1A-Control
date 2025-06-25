@@ -21,6 +21,7 @@
 #define TC_UART_RX_PIN 44
 #define PI_UART_TX_PIN 1
 #define PI_UART_RX_PIN 0
+#define LED_PIN 21  // XIAO ESP32S3 の内蔵LED
 #define I2C_SDA        5
 #define I2C_SCL        6
 #define SAFE_MODE_PIN  2 // GPIO2 = セーフモード切り替え用
@@ -118,6 +119,8 @@ void task_pi_tx(void* pv) {
 }
 
 void setup() {
+  pinMode(LED_PIN, OUTPUT);
+
   pinMode(SAFE_MODE_PIN, INPUT_PULLUP);
   Wire.begin(I2C_SDA, I2C_SCL);
   display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
@@ -139,5 +142,9 @@ void setup() {
 // 将来の監視処理の為にVtaskDelay()をloop()に設定
 void loop() {
   // 監視処理など（今は未使用）
-  vTaskDelay(pdMS_TO_TICKS(100));  // 負荷を抑えつつ柔軟に対応
+  static bool led_state = false;
+  digitalWrite(LED_PIN, led_state);
+  led_state = !led_state;
+
+  vTaskDelay(pdMS_TO_TICKS(500));  // 負荷を抑えつつ柔軟に対応
 }
