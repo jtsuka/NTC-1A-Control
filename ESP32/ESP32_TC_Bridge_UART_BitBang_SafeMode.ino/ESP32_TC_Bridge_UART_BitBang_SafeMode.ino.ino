@@ -17,16 +17,21 @@
 #define USE_BITBANG 0
 
 // 正確なGPIO番号を使って定義
-#define TC_UART_TX_PIN 43
-#define TC_UART_RX_PIN 44
-#define PI_UART_TX_PIN 1
-#define PI_UART_RX_PIN 0
+// ラズパイとの通信（UART2）
+#define PI_UART_TX_PIN 43  // ラズパイへ送信
+#define PI_UART_RX_PIN 44  // ラズパイから受信
+
+// TCとの通信（UART1）
+#define TC_UART_TX_PIN 1   // TCへ送信
+#define TC_UART_RX_PIN 0   // TCから受信
+
 #define LED_PIN 21  // XIAO ESP32S3 の内蔵LED
 #define I2C_SDA        5
 #define I2C_SCL        6
 #define SAFE_MODE_PIN  2 // GPIO2 = セーフモード切り替え用
 #define OLED_ADDR      0x3C
-#define UART_BAUD      1200
+#define UART_BAUD_PI   9600
+#define UART_BAUD_TC   300
 #define PACKET_SIZE    6
 #define BIT_DURATION_US 3333
 
@@ -126,14 +131,23 @@ void setup() {
   display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
   display.clearDisplay(); display.display();
 
-  SerialPI.begin(UART_BAUD, SERIAL_8N1, PI_UART_RX_PIN, PI_UART_TX_PIN);
-  SerialTC.begin(UART_BAUD, SERIAL_8N1, TC_UART_RX_PIN, TC_UART_TX_PIN);
+  SerialPI.begin(UART_BAUD_PI, SERIAL_8N1, PI_UART_RX_PIN, PI_UART_TX_PIN);
+  SerialPI.println("SerialPI reday");
+  SerialTC.begin(UART_BAUD_TC, SERIAL_8N1, TC_UART_RX_PIN, TC_UART_TX_PIN);
 
   xMutex = xSemaphoreCreateMutex();
   queue_pi_rx = xQueueCreate(5, PACKET_SIZE);
   queue_tc_rx = xQueueCreate(5, PACKET_SIZE);
 
-  xTaskCreatePinnedToCore(task_pi_rx, "pi_rx", 2048, NULL, 1, NULL, 1);
+//  xTaskCreatePinnedToCore(task_pi_rx, "pi_rx", 2048, NULL, 1, NULL, 1);
+  BaseType_t res = xTaskCreatePinnedToCore(task_pi_rx, "pi_rx", 2048, NULL, 1, NULL, 1);
+  if (res != pdPASS) {
+    display.clearDisplay();
+   display.setCursor(0, 0);
+   display.print("pi_rx Task Fail");
+   display.display();
+  }
+
   xTaskCreatePinnedToCore(task_tc_rx, "tc_rx", 2048, NULL, 1, NULL, 1);
   xTaskCreatePinnedToCore(task_tc_tx, "tc_tx", 2048, NULL, 1, NULL, 0);
   xTaskCreatePinnedToCore(task_pi_tx, "pi_tx", 2048, NULL, 1, NULL, 0);
