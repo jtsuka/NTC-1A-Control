@@ -7,6 +7,16 @@
   - チェックサム検証 + セーフモード制御 (GPIO3)
   2025.06.16 GPIO Pin No. Fix
 *********************************************************************/
+/*********************************************************************
+  XIAO ESP32S3 + Grove Shield – UART<->UART/BitBang中継スケッチ
+  - UART中継 (J1=GPIO44/43: Pi 、J4=GPIO0/1: TC)
+  - BitBang送信/受信対応（オプション）
+  - OLED表示（J2=GPIO5(SDA)/GPIO6(SCL)）
+  - FreeRTOS + Queue + TaskNotify + Mutex 構成
+  - チェックサム検証
+  - セーフモード制御 (D2=GPIO2)
+  - 2025.06.25 UART-BitBang 切替対応版
+*********************************************************************/
 
 #include <Wire.h>
 #include <Adafruit_SSD1306.h>
@@ -14,22 +24,23 @@
 #include <HardwareSerial.h>
 
 #define USE_BITBANG 0
-#define PI_UART_TX_PIN 1   // Grove UART TX
-#define PI_UART_RX_PIN 2   // Grove UART RX
-#define TC_UART_TX_PIN 6   // Grove A2 TX
-#define TC_UART_RX_PIN 7   // Grove A2 RX
-#define I2C_SDA        5   // Grove I2C SDA
-#define I2C_SCL        4   // Grove I2C SCL
-#define SAFE_MODE_PIN  3   // Grove A0
-#define LED_PIN       21   // Onboard LED
 
-#define OLED_ADDR      0x3C
+// Grove port 配置対応 (ESP32S3 GPIO)
+#define PI_UART_TX_PIN 43  // Grove J1: Pi へTX
+#define PI_UART_RX_PIN 44  // Grove J1: Pi からRX
+#define TC_UART_TX_PIN 1   // Grove J4: TC へTX
+#define TC_UART_RX_PIN 0   // Grove J4: TC からRX
+#define I2C_SDA        5   // Grove J2: OLED SDA
+#define I2C_SCL        6   // Grove J2: OLED SCL
+#define SAFE_MODE_PIN  2   // GPIO2 = セーフモード切替
+#define LED_PIN       21   // 内蔵LED
+
 #define UART_BAUD_PI   1200
 #define UART_BAUD_TC   300
 #define PACKET_SIZE    6
 
 Adafruit_SSD1306 display(128, 64, &Wire, -1);
-SemaphoreHandle_t xMutex, stopMutex;
+SemaphoreHandle_t xMutex, xStopFlagMutex;
 HardwareSerial SerialTC(1);
 HardwareSerial SerialPI(2);
 QueueHandle_t queue_pi_rx, queue_tc_rx;
@@ -42,7 +53,7 @@ bool isChecksumValid(const uint8_t* data) {
 }
 
 void showOLED(const char* label, const uint8_t* data) {
-  if (xSemaphoreTake(xMutex, 10) == pdTRUE) {
+  if (xSemaphoreTake(xMutex, (TickType_t)10) == pdTRUE) {
     display.clearDisplay();
     display.setCursor(0, 0);
     display.setTextSize(1);
@@ -85,14 +96,17 @@ void task_tc_rx(void* pv) {
 void task_tc_tx(void* pv) {
   uint8_t pkt[PACKET_SIZE];
   while (1) {
+    bool flag = false;
+    xSemaphoreTake(xStopFlagMutex, portMAX_DELAY);
+    flag = stopFlag;
+    xSemaphoreGive(xStopFlagMutex);
+    if (flag || !digitalRead(SAFE_MODE_PIN)) {
+      vTaskDelay(10);
+      continue;
+    }
     if (xQueueReceive(queue_pi_rx, pkt, 0) == pdTRUE) {
-      if (xSemaphoreTake(stopMutex, portMAX_DELAY) == pdTRUE) {
-        if (!stopFlag && digitalRead(SAFE_MODE_PIN)) {
-          SerialTC.write(pkt, PACKET_SIZE);
-          showOLED("Pi->TC", pkt);
-        }
-        xSemaphoreGive(stopMutex);
-      }
+      SerialTC.write(pkt, PACKET_SIZE);
+      showOLED("Pi->TC", pkt);
     }
     vTaskDelay(1);
   }
@@ -101,14 +115,17 @@ void task_tc_tx(void* pv) {
 void task_pi_tx(void* pv) {
   uint8_t pkt[PACKET_SIZE];
   while (1) {
+    bool flag = false;
+    xSemaphoreTake(xStopFlagMutex, portMAX_DELAY);
+    flag = stopFlag;
+    xSemaphoreGive(xStopFlagMutex);
+    if (flag || !digitalRead(SAFE_MODE_PIN)) {
+      vTaskDelay(10);
+      continue;
+    }
     if (xQueueReceive(queue_tc_rx, pkt, 0) == pdTRUE) {
-      if (xSemaphoreTake(stopMutex, portMAX_DELAY) == pdTRUE) {
-        if (!stopFlag && digitalRead(SAFE_MODE_PIN)) {
-          SerialPI.write(pkt, PACKET_SIZE);
-          showOLED("TC->Pi", pkt);
-        }
-        xSemaphoreGive(stopMutex);
-      }
+      SerialPI.write(pkt, PACKET_SIZE);
+      showOLED("TC->Pi", pkt);
     }
     vTaskDelay(1);
   }
@@ -117,16 +134,15 @@ void task_pi_tx(void* pv) {
 void setup() {
   pinMode(LED_PIN, OUTPUT);
   pinMode(SAFE_MODE_PIN, INPUT_PULLUP);
-
   Wire.begin(I2C_SDA, I2C_SCL);
-  display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   display.clearDisplay(); display.display();
 
   SerialPI.begin(UART_BAUD_PI, SERIAL_8N1, PI_UART_RX_PIN, PI_UART_TX_PIN);
   SerialTC.begin(UART_BAUD_TC, SERIAL_8N1, TC_UART_RX_PIN, TC_UART_TX_PIN);
 
   xMutex = xSemaphoreCreateMutex();
-  stopMutex = xSemaphoreCreateMutex();
+  xStopFlagMutex = xSemaphoreCreateMutex();
   queue_pi_rx = xQueueCreate(5, PACKET_SIZE);
   queue_tc_rx = xQueueCreate(5, PACKET_SIZE);
 
@@ -137,8 +153,8 @@ void setup() {
 }
 
 void loop() {
-  static bool led = false;
-  digitalWrite(LED_PIN, led);
-  led = !led;
+  static bool led_state = false;
+  digitalWrite(LED_PIN, led_state);
+  led_state = !led_state;
   vTaskDelay(pdMS_TO_TICKS(500));
 }
