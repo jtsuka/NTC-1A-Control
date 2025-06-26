@@ -85,6 +85,7 @@ void task_pi_rx(void* pv) {
       }
       Serial.println();
       vTaskDelay(1);
+    }
   }
 }
 
