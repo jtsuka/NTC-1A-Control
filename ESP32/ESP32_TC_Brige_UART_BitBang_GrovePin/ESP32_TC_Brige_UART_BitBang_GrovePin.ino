@@ -1,6 +1,6 @@
 /*********************************************************************
   XIAO ESP32S3 + Grove Shield – UART<->UART/BitBang 中継スケッチ
-  - UART中継 (GPIO6,7⇔TC / GPIO1,2⇀Pi)
+  - UART中継 (GPIO6,7<->TC / GPIO1,2<->Pi)
   - OLED表示 (SSD1306 I2C: GPIO5=SDA, GPIO4=SCL)
   - BitBang送信/受信対応 (オプション)
   - FreeRTOS + Queue + TaskNotify + Mutex 構成
