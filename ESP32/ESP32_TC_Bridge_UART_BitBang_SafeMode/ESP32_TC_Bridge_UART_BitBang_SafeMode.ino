@@ -102,11 +102,21 @@ void task_tc_tx(void* pv) {
   while (1) {
     if (!getStopFlag()) {
       if (xQueueReceive(queue_pi_rx, pkt, 0) == pdTRUE) {
+        Serial.print("[TC_TX] Received from Pi: ");
+        for (int i = 0; i < PACKET_SIZE; i++) {
+          if (pkt[i] < 0x10) Serial.print("0");
+          Serial.print(pkt[i], HEX);
+          Serial.print(" ");
+        }
+        Serial.println();
+
 #if USE_BITBANG
         // BitBang送信未実装
 #else
+        Serial.println("[TC_TX] Sending to TC...");
         SerialTC.write(pkt, PACKET_SIZE);
 #endif
+
         showOLED("Pi->TC", pkt);
       }
     }
