@@ -78,12 +78,29 @@ void task_pi_rx(void* pv) {
   while (1) {
     if (SerialPI.available() >= PACKET_SIZE) {
       SerialPI.readBytes(buf, PACKET_SIZE);
+      Serial.print("Pi RX: ");
+      for (int i = 0; i < PACKET_SIZE; i++) {
+        Serial.print(buf[i], HEX);
+        Serial.print(" ");
+      }
+      Serial.println();
+      vTaskDelay(1);
+  }
+}
+
+#if 0
+void task_pi_rx(void* pv) {
+  uint8_t buf[PACKET_SIZE];
+  while (1) {
+    if (SerialPI.available() >= PACKET_SIZE) {
+      SerialPI.readBytes(buf, PACKET_SIZE);
       if (!isChecksumValid(buf)) continue;
       xQueueSend(queue_pi_rx, buf, portMAX_DELAY);
     }
     vTaskDelay(1);
   }
 }
+#endif
 
 void task_tc_rx(void* pv) {
   uint8_t buf[PACKET_SIZE];
