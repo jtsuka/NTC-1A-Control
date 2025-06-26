@@ -140,6 +140,7 @@ void task_pi_tx(void* pv) {
 void setup() {
   Serial.begin(115200);
   while (!Serial);  // USB接続が安定するまで待つ（特にMac/Linuxで有効）
+  Serial.println("Ready!");
 
   pinMode(LED_PIN, OUTPUT);
   pinMode(SAFE_MODE_PIN, INPUT_PULLUP);
