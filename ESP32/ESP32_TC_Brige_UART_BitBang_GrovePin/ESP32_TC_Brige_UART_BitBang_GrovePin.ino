@@ -18,8 +18,8 @@
 #define PI_UART_RX_PIN 2   // Grove UART RX
 #define TC_UART_TX_PIN 6   // Grove A2 TX
 #define TC_UART_RX_PIN 7   // Grove A2 RX
-#define I2C_SDA        5   // Grove I2C SDA
-#define I2C_SCL        4   // Grove I2C SCL
+#define I2C_SDA        6   // Grove I2C SDA
+#define I2C_SCL        5   // Grove I2C SCL
 #define SAFE_MODE_PIN  3   // Grove A0
 #define LED_PIN       21   // Onboard LED
 
