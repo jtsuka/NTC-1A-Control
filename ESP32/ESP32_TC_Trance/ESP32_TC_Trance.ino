@@ -10,15 +10,14 @@
 #include <freertos/semphr.h>
 #include <HardwareSerial.h>
 
-// Groveポート対応GPIO定義
-#define PI_UART_TX_PIN 43  // Grove J1: Pi TX
-#define PI_UART_RX_PIN 44  // Grove J1: Pi RX
-#define TC_UART_TX_PIN 1   // Grove J4: TC TX
-#define TC_UART_RX_PIN 0   // Grove J4: TC RX
-#define SAFE_MODE_PIN   2  // GPIO2 = セーフモード
-#define LED_PIN        21  // 内蔵LED
+#define PI_UART_TX_PIN 43
+#define PI_UART_RX_PIN 44
+#define TC_UART_TX_PIN 1
+#define TC_UART_RX_PIN 0
+#define SAFE_MODE_PIN   2
+#define LED_PIN        21
 
-#define UART_BAUD_PI   9600
+#define UART_BAUD_PI   1200
 #define UART_BAUD_TC    300
 #define PACKET_SIZE       6
 
@@ -36,6 +35,17 @@ bool isChecksumValid(const uint8_t* data) {
   return (sum == data[PACKET_SIZE - 1]);
 }
 
+// ===== HEX配列表示ユーティリティ =====
+void printHex(const char* label, const uint8_t* data) {
+  Serial.print(label);
+  for (int i = 0; i < PACKET_SIZE; i++) {
+    Serial.print(" ");
+    if (data[i] < 0x10) Serial.print("0");
+    Serial.print(data[i], HEX);
+  }
+  Serial.println();
+}
+
 // ===== Pi→中継機 受信スレッド（UART2） =====
 void task_pi_rx(void* pv) {
   uint8_t buf[PACKET_SIZE];
@@ -43,6 +53,7 @@ void task_pi_rx(void* pv) {
     if (SerialPI.available() >= PACKET_SIZE) {
       SerialPI.readBytes(buf, PACKET_SIZE);
       if (!isChecksumValid(buf)) continue;
+      printHex("[PI->Relay]", buf);
       xQueueSend(queue_pi_rx, buf, portMAX_DELAY);
     }
     vTaskDelay(1);
@@ -56,6 +67,7 @@ void task_tc_rx(void* pv) {
     if (SerialTC.available() >= PACKET_SIZE) {
       SerialTC.readBytes(buf, PACKET_SIZE);
       if (!isChecksumValid(buf)) continue;
+      printHex("[TC->Relay]", buf);
       xQueueSend(queue_tc_rx, buf, portMAX_DELAY);
     }
     vTaskDelay(1);
@@ -76,7 +88,7 @@ void task_tc_tx(void* pv) {
     }
     if (xQueueReceive(queue_pi_rx, pkt, 0) == pdTRUE) {
       SerialTC.write(pkt, PACKET_SIZE);
-      // OLED表示は除去
+      printHex("[Relay->TC]", pkt);
     }
     vTaskDelay(1);
   }
@@ -96,7 +108,7 @@ void task_pi_tx(void* pv) {
     }
     if (xQueueReceive(queue_tc_rx, pkt, 0) == pdTRUE) {
       SerialPI.write(pkt, PACKET_SIZE);
-      // OLED表示は除去
+      printHex("[Relay->PI]", pkt);
     }
     vTaskDelay(1);
   }
@@ -107,6 +119,7 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   pinMode(SAFE_MODE_PIN, INPUT_PULLUP);
 
+  Serial.begin(115200); // USBシリアル（ログ用）
   SerialPI.begin(UART_BAUD_PI, SERIAL_8N1, PI_UART_RX_PIN, PI_UART_TX_PIN);
   SerialTC.begin(UART_BAUD_TC, SERIAL_8N1, TC_UART_RX_PIN, TC_UART_TX_PIN);
 
@@ -118,6 +131,8 @@ void setup() {
   xTaskCreatePinnedToCore(task_tc_rx, "tc_rx", 2048, NULL, 1, NULL, 1);
   xTaskCreatePinnedToCore(task_tc_tx, "tc_tx", 2048, NULL, 1, NULL, 0);
   xTaskCreatePinnedToCore(task_pi_tx, "pi_tx", 2048, NULL, 1, NULL, 0);
+
+  Serial.println("=== UART Relay Ready ===");
 }
 
 // ===== LED点滅（動作確認用） =====
