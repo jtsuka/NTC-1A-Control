@@ -39,15 +39,15 @@ void setup() {
   pinMode(BB_RX_PIN, INPUT_PULLUP);
   Serial.begin(9600);
 
-  // if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-  //   while (true); // OLED初期化失敗
-  // }
-  // display.clearDisplay();
-  // display.setTextSize(1);
-  // display.setTextColor(SSD1306_WHITE);
-  // display.setCursor(0, 0);
-  // display.println(F("TC Emulator 8-bit"));
-  // display.display();
+   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+     while (true); // OLED初期化失敗
+   }
+   display.clearDisplay();
+   display.setTextSize(1);
+   display.setTextColor(SSD1306_WHITE);
+   display.setCursor(0, 0);
+   display.println(F("TC Emulator 8-bit"));
+   display.display();
   delay(1000);
 }
 
