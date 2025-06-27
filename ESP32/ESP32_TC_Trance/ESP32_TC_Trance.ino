@@ -50,7 +50,6 @@ void printHex(const char* label, const uint8_t* data) {
 // ===== Pi→中継機 受信スレッド（UART2） =====
 void task_pi_rx(void* pv) {
   uint8_t buf[PACKET_SIZE];
-
   static bool first = true;
     if (first) {
     Serial.println("[START] task_pi_rx launched");
@@ -58,6 +57,12 @@ void task_pi_rx(void* pv) {
   }
 
   while (1) {
+    // スレッドチェック
+    if (first) {
+      Serial.println("[START] task_pi_rx launched");
+      first = false;
+    }
+
     if (SerialPI.available() >= PACKET_SIZE) {
       SerialPI.readBytes(buf, PACKET_SIZE);
       if (!isChecksumValid(buf)) continue;
@@ -71,13 +76,14 @@ void task_pi_rx(void* pv) {
 // ===== TC→中継機 受信スレッド（UART1） =====
 void task_tc_rx(void* pv) {
   uint8_t buf[PACKET_SIZE];
-
   static bool first = true;
-  if (first) {
-    Serial.println("[START] task_tc_rx launched");
-    first = false;
-  }
+
   while (1) {
+    // スレッドチェック
+    if (first) {
+      Serial.println("[START] task_tc_rx launched");
+      first = false;
+    }
     if (SerialTC.available() >= PACKET_SIZE) {
       SerialTC.readBytes(buf, PACKET_SIZE);
       if (!isChecksumValid(buf)) continue;
@@ -91,14 +97,14 @@ void task_tc_rx(void* pv) {
 // ===== Pi→TC 送信スレッド（中継） =====
 void task_tc_tx(void* pv) {
   uint8_t pkt[PACKET_SIZE];
-
   static bool first = true;
-  if (first) {
-    Serial.println("[START] task_tc_tx launched");
-    first = false;
-  }
 
   while (1) {
+    // スレッドチェック
+    if (first) {
+      Serial.println("[START] task_tc_tx launched");
+      first = false;
+    }
     bool flag = false;
     xSemaphoreTake(xStopFlagMutex, portMAX_DELAY);
     flag = stopFlag;
@@ -143,6 +149,8 @@ void task_pi_tx(void* pv) {
 
 // ===== 初期化処理 =====
 void setup() {
+  BaseType_t TaskResult;
+
   pinMode(LED_PIN, OUTPUT);
   pinMode(SAFE_MODE_PIN, INPUT_PULLUP);
 
@@ -154,10 +162,14 @@ void setup() {
   queue_pi_rx = xQueueCreate(5, PACKET_SIZE);
   queue_tc_rx = xQueueCreate(5, PACKET_SIZE);
 
-  xTaskCreatePinnedToCore(task_pi_rx, "pi_rx", 2048, NULL, 1, NULL, 1);
-  xTaskCreatePinnedToCore(task_tc_rx, "tc_rx", 2048, NULL, 1, NULL, 1);
-  xTaskCreatePinnedToCore(task_tc_tx, "tc_tx", 2048, NULL, 1, NULL, 0);
-  xTaskCreatePinnedToCore(task_pi_tx, "pi_tx", 2048, NULL, 1, NULL, 0);
+  TaskResult = xTaskCreatePinnedToCore(task_pi_rx, "pi_rx", 2048, NULL, 1, NULL, 1);
+  if (TaskResult != pdPASS) Serial.println("[ERR] task_pi_rx failed");
+  TaskResult = xTaskCreatePinnedToCore(task_tc_rx, "tc_rx", 2048, NULL, 1, NULL, 1);
+  if (TaskResult != pdPASS) Serial.println("[ERR] task_tc_rx failed");
+  TaskResult = xTaskCreatePinnedToCore(task_tc_tx, "tc_tx", 2048, NULL, 1, NULL, 0);
+  if (TaskResult != pdPASS) Serial.println("[ERR] task_tc_tx failed");
+  TaskResult = xTaskCreatePinnedToCore(task_pi_tx, "pi_tx", 2048, NULL, 1, NULL, 0);
+  if (TaskResult != pdPASS) Serial.println("[ERR] task_pi_tx failed");
 
   Serial.println("=== UART Relay Ready ===");
 }
