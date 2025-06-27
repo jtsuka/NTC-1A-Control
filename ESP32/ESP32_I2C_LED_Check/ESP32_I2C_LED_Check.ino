@@ -1,7 +1,7 @@
 #include <Wire.h>
 
 void setup() {
-  Wire.begin(5,4);  // SDA=5, SCL=4
+  Wire.begin(6,5);  // SDA=5, SCL=4
   Serial.begin(115200);
   while (!Serial);
 
