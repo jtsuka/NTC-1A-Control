@@ -53,6 +53,7 @@ void task_pi_rx(void* pv) {
   static bool first = true;
     if (first) {
     Serial.println("[START] task_pi_rx launched");
+    Serial.flush(); 
     first = false;
   }
 
@@ -82,6 +83,7 @@ void task_tc_rx(void* pv) {
     // スレッドチェック
     if (first) {
       Serial.println("[START] task_tc_rx launched");
+      Serial.flush(); 
       first = false;
     }
     if (SerialTC.available() >= PACKET_SIZE) {
@@ -103,6 +105,7 @@ void task_tc_tx(void* pv) {
     // スレッドチェック
     if (first) {
       Serial.println("[START] task_tc_tx launched");
+      Serial.flush(); 
       first = false;
     }
     bool flag = false;
@@ -128,6 +131,7 @@ void task_pi_tx(void* pv) {
   static bool first = true;
   if (first) {
     Serial.println("[START] task_pi_tx launched");
+    Serial.flush(); 
     first = false;
   }
   while (1) {
@@ -172,6 +176,7 @@ void setup() {
   if (TaskResult != pdPASS) Serial.println("[ERR] task_pi_tx failed");
 
   Serial.println("=== UART Relay Ready ===");
+  Serial.flush(); 
 }
 
 // ===== LED点滅（動作確認用） =====
