@@ -151,6 +151,13 @@ void task_pi_tx(void* pv) {
   }
 }
 
+// === デバックシリアルPC接続完了待ち ===
+void waitForSerial() {
+  while (!Serial) {
+    delay(10);
+  }
+}
+
 // ===== 初期化処理 =====
 void setup() {
   BaseType_t TaskResult;
