@@ -18,6 +18,7 @@ void setup() {
   SerialPI.begin(UART_BAUD_PI, SERIAL_8N1, PI_UART_RX_PIN, PI_UART_TX_PIN);
 }
 
+#if 0
 void loop() {
   SerialPI.write(test_packet, sizeof(test_packet));
   Serial.print("Sent: ");
@@ -29,3 +30,11 @@ void loop() {
   Serial.println();
   delay(1000); // 1秒間隔
 }
+#else
+void loop() {
+  while (true) {
+    // 何もせず停止
+    delay(1000);
+  }
+}
+#endif
