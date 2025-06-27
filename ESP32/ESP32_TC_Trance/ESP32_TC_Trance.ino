@@ -177,14 +177,25 @@ void setup() {
   queue_tc_rx = xQueueCreate(5, PACKET_SIZE);
 
   TaskResult = xTaskCreatePinnedToCore(task_pi_rx, "pi_rx", 2048, NULL, 1, NULL, 1);
-  if (TaskResult != pdPASS) Serial.println("[ERR] task_pi_rx failed");
+  if (TaskResult != pdPASS) {
+    Serial.println("[ERR] task_pi_rx failed");
+    Serial.flush(); 
+  }
   TaskResult = xTaskCreatePinnedToCore(task_tc_rx, "tc_rx", 2048, NULL, 1, NULL, 1);
-  if (TaskResult != pdPASS) Serial.println("[ERR] task_tc_rx failed");
+  if (TaskResult != pdPASS) {
+    Serial.println("[ERR] task_tc_rx failed");
+    Serial.flush(); 
+  }
   TaskResult = xTaskCreatePinnedToCore(task_tc_tx, "tc_tx", 2048, NULL, 1, NULL, 0);
-  if (TaskResult != pdPASS) Serial.println("[ERR] task_tc_tx failed");
+  if (TaskResult != pdPASS) {
+    Serial.println("[ERR] task_tc_tx failed");
+    Serial.flush(); 
+  }
   TaskResult = xTaskCreatePinnedToCore(task_pi_tx, "pi_tx", 2048, NULL, 1, NULL, 0);
-  if (TaskResult != pdPASS) Serial.println("[ERR] task_pi_tx failed");
-
+  if (TaskResult != pdPASS) {
+    Serial.println("[ERR] task_pi_tx failed");
+    Serial.flush(); 
+  }
   Serial.println("=== UART Relay Ready ===");
   Serial.flush(); 
 }
