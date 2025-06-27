@@ -50,6 +50,13 @@ void printHex(const char* label, const uint8_t* data) {
 // ===== Pi→中継機 受信スレッド（UART2） =====
 void task_pi_rx(void* pv) {
   uint8_t buf[PACKET_SIZE];
+
+  static bool first = true;
+    if (first) {
+    Serial.println("[START] task_pi_rx launched");
+    first = false;
+  }
+
   while (1) {
     if (SerialPI.available() >= PACKET_SIZE) {
       SerialPI.readBytes(buf, PACKET_SIZE);
@@ -64,6 +71,12 @@ void task_pi_rx(void* pv) {
 // ===== TC→中継機 受信スレッド（UART1） =====
 void task_tc_rx(void* pv) {
   uint8_t buf[PACKET_SIZE];
+
+  static bool first = true;
+  if (first) {
+    Serial.println("[START] task_tc_rx launched");
+    first = false;
+  }
   while (1) {
     if (SerialTC.available() >= PACKET_SIZE) {
       SerialTC.readBytes(buf, PACKET_SIZE);
@@ -78,6 +91,13 @@ void task_tc_rx(void* pv) {
 // ===== Pi→TC 送信スレッド（中継） =====
 void task_tc_tx(void* pv) {
   uint8_t pkt[PACKET_SIZE];
+
+  static bool first = true;
+  if (first) {
+    Serial.println("[START] task_tc_tx launched");
+    first = false;
+  }
+
   while (1) {
     bool flag = false;
     xSemaphoreTake(xStopFlagMutex, portMAX_DELAY);
@@ -98,6 +118,12 @@ void task_tc_tx(void* pv) {
 // ===== TC→Pi 送信スレッド（中継） =====
 void task_pi_tx(void* pv) {
   uint8_t pkt[PACKET_SIZE];
+
+  static bool first = true;
+  if (first) {
+    Serial.println("[START] task_pi_tx launched");
+    first = false;
+  }
   while (1) {
     bool flag = false;
     xSemaphoreTake(xStopFlagMutex, portMAX_DELAY);
