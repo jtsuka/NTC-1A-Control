@@ -18,7 +18,7 @@
 #define SAFE_MODE_PIN   2
 #define LED_PIN        21
 
-#define UART_BAUD_PI   1200
+#define UART_BAUD_PI   9600
 #define UART_BAUD_TC    300
 #define PACKET_SIZE       6
 
