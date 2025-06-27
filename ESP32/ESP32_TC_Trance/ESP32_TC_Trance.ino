@@ -159,6 +159,9 @@ void setup() {
   pinMode(SAFE_MODE_PIN, INPUT_PULLUP);
 
   Serial.begin(115200); // USBシリアル（ログ用）
+  waitForSerial();  // ← ここでPCの接続待ち
+  Serial.println("Serial ready");
+
   SerialPI.begin(UART_BAUD_PI, SERIAL_8N1, PI_UART_RX_PIN, PI_UART_TX_PIN);
   SerialTC.begin(UART_BAUD_TC, SERIAL_8N1, TC_UART_RX_PIN, TC_UART_TX_PIN);
 
