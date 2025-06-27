@@ -11,8 +11,13 @@
 #include <freertos/semphr.h>
 #include <HardwareSerial.h>
 
-#define PI_UART_TX_PIN 43
-#define PI_UART_RX_PIN 44
+// こちらが正しい接続
+//#define PI_UART_TX_PIN 43
+//#define PI_UART_RX_PIN 44
+// 逆転バージョン（Piからの信号がGPIO43に来ている場合）
+#define PI_UART_TX_PIN 44
+#define PI_UART_RX_PIN 43
+
 #define TC_UART_TX_PIN 1
 #define TC_UART_RX_PIN 0
 #define SAFE_MODE_PIN   2
