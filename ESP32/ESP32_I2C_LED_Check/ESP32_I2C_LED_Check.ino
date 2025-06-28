@@ -1,7 +1,10 @@
 #include <Wire.h>
 
+#define LED_PIN 21  // XIAO ESP32S3 の内蔵LED
+
 void setup() {
-  Wire.begin(5, 6);  // SDA=GPIO5, SCL=GPIO6 ← Grove I2C対応
+  pinMode(LED_PIN, OUTPUT);
+  Wire.begin(5, 6);  // Grove I2CポートのSDA/SCL
   Serial.begin(115200);
   while (!Serial);
 
@@ -23,4 +26,9 @@ void setup() {
   Serial.println(" device(s).");
 }
 
-void loop() {}
+void loop() {
+  digitalWrite(LED_PIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_PIN, LOW);
+  delay(1000);
+}

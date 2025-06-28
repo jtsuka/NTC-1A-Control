@@ -18,7 +18,7 @@ void setup() {
   SerialPI.begin(UART_BAUD_PI, SERIAL_8N1, PI_UART_RX_PIN, PI_UART_TX_PIN);
 }
 
-#if 0
+#if 1
 void loop() {
   SerialPI.write(test_packet, sizeof(test_packet));
   Serial.print("Sent: ");
