@@ -142,17 +142,17 @@ void send_bitbang_byte(uint8_t b){
 }
 
 void display_packet(const char *label, uint8_t *buf) {
-//  display.clearDisplay();
-//  display.setCursor(0, 0);
-//  display.print(label);
-//  display.println(" Packet");
-//
-//  for (int i = 0; i < 6; i++) {
-//    display.print("0x");
-//    if (buf[i] < 0x10) display.print("0");
-//    display.print(buf[i], HEX);
-//    display.print(" ");
-//    if (i == 2 || i == 5) display.println();
-//  }
-//  display.display();
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  display.print(label);
+  display.println(" Packet");
+
+  for (int i = 0; i < 6; i++) {
+    display.print("0x");
+    if (buf[i] < 0x10) display.print("0");
+    display.print(buf[i], HEX);
+    display.print(" ");
+    if (i == 2 || i == 5) display.println();
+  }
+  display.display();
 }

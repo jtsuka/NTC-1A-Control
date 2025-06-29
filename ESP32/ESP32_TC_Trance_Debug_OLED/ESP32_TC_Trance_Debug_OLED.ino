@@ -15,6 +15,7 @@
 #include <Adafruit_SSD1306.h>
 #include <freertos/semphr.h>
 #include <HardwareSerial.h>
+#include "esp_sleep.h"
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
@@ -67,6 +68,7 @@ public:
 #define UART_BAUD_PI   9600
 #define UART_BAUD_TC    300
 #define PACKET_SIZE       6
+#define SWITCH_PIN 8  // ← 帰宅後に実際のGPIO番号に置き換えてください
 
 HardwareSerial SerialTC(1);
 HardwareSerial SerialPI(2);
@@ -88,13 +90,14 @@ void task_fake_pi_tx(void* pv) {
     flag = stopFlag;
     xSemaphoreGive(xStopFlagMutex);
     if (!flag && digitalRead(SAFE_MODE_PIN)) {
-      xQueueSend(queue_pi_rx, test_packet_pi, portMAX_DELAY);
-      oled.logLine(0, "[TEST->TC] test_packet_pi");
+      SerialTC.write(test_packet_pi, PACKET_SIZE);  // ← UARTへ送信
+      String msg;
+      printHex(msg, test_packet_pi);
+      oled.logLine(0, "[FAKE->TC] " + msg);
     }
     vTaskDelay(pdMS_TO_TICKS(5000));  // 5秒間隔
   }
 }
-
 void task_fake_tc_tx(void* pv) {
   while (1) {
     bool flag;
@@ -102,13 +105,14 @@ void task_fake_tc_tx(void* pv) {
     flag = stopFlag;
     xSemaphoreGive(xStopFlagMutex);
     if (!flag && digitalRead(SAFE_MODE_PIN)) {
-      xQueueSend(queue_tc_rx, test_packet_tc, portMAX_DELAY);
-      oled.logLine(2, "[TEST->PI] test_packet_tc");
+      SerialPI.write(test_packet_tc, PACKET_SIZE);  // ← UARTへ送信
+      String msg;
+      printHex(msg, test_packet_tc);
+      oled.logLine(2, "[FAKE->PI] " + msg);
     }
     vTaskDelay(pdMS_TO_TICKS(5000));  // 5秒間隔
   }
 }
-
 
 // ===== チェックサム検証 =====
 bool isChecksumValid(const uint8_t* data) {
@@ -196,7 +200,10 @@ void task_pi_tx(void* pv) {
   }
 }
 
+#if 0
 void setup() {
+  pinMode(SWITCH_PIN, INPUT_PULLUP);
+  // スリープ復帰用に割り込み設定なども可能
   pinMode(LED_PIN, OUTPUT);
   pinMode(SAFE_MODE_PIN, INPUT_PULLUP);
   Serial.begin(115200);
@@ -217,15 +224,107 @@ void setup() {
   xTaskCreatePinnedToCore(task_pi_tx, "pi_tx", 2048, NULL, 1, NULL, 0);
   Serial.println("=== UART Relay with OLED Ready ===");
   // Test用擬似タスク
-#if 0
+#if 1
+  xTaskCreatePinnedToCore(task_fake_pi_tx, "fake_pi_tx", 2048, NULL, 1, NULL, 0);
+  xTaskCreatePinnedToCore(task_fake_tc_tx, "fake_tc_tx", 2048, NULL, 1, NULL, 0);
+#endif
+}
+#endif
+
+void setup() {
+  pinMode(SWITCH_PIN, INPUT_PULLUP);
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(SAFE_MODE_PIN, INPUT_PULLUP);
+
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, HIGH);
+  delay(300);
+  digitalWrite(LED_PIN, LOW);
+
+  Serial.begin(115200);
+  while (!Serial) delay(10);
+  oled.begin();
+  delay(100);  // ← OLED I2C 初期化安定待ち
+
+  esp_sleep_wakeup_cause_t wakeup_reason = esp_sleep_get_wakeup_cause();
+
+  if (wakeup_reason == ESP_SLEEP_WAKEUP_EXT0) {
+    // GPIOによる復帰だった場合
+    oled.logLine(0, "Wakeup from EXT0");
+    // 初回点滅などを行う
+   // LED点滅だけ独立して実行
+    for (int i = 0; i < 6; i++) {
+      digitalWrite(LED_PIN, i % 2);
+      delay(150);
+    }
+    oled.logLine(1, "Resumed");
+  } else {
+    oled.logLine(0, "Normal boot");
+  }
+
+  // UART開始など続けて処理…
+  SerialPI.begin(UART_BAUD_PI, SERIAL_8N1, PI_UART_RX_PIN, PI_UART_TX_PIN);
+  SerialTC.begin(UART_BAUD_TC, SERIAL_8N1, TC_UART_RX_PIN, TC_UART_TX_PIN);
+
+  xStopFlagMutex = xSemaphoreCreateMutex();
+  queue_pi_rx = xQueueCreate(5, PACKET_SIZE);
+  queue_tc_rx = xQueueCreate(5, PACKET_SIZE);
+
+  xTaskCreatePinnedToCore(task_pi_rx, "pi_rx", 2048, NULL, 1, NULL, 1);
+  xTaskCreatePinnedToCore(task_tc_rx, "tc_rx", 2048, NULL, 1, NULL, 1);
+  xTaskCreatePinnedToCore(task_tc_tx, "tc_tx", 2048, NULL, 1, NULL, 0);
+  xTaskCreatePinnedToCore(task_pi_tx, "pi_tx", 2048, NULL, 1, NULL, 0);
+
+  Serial.println("=== UART Relay with OLED Ready ===");
+
+#if 1
   xTaskCreatePinnedToCore(task_fake_pi_tx, "fake_pi_tx", 2048, NULL, 1, NULL, 0);
   xTaskCreatePinnedToCore(task_fake_tc_tx, "fake_tc_tx", 2048, NULL, 1, NULL, 0);
 #endif
 }
 
+
 void loop() {
-  static bool led_state = false;
-  digitalWrite(LED_PIN, led_state);
-  led_state = !led_state;
-  vTaskDelay(pdMS_TO_TICKS(500));
+  if (digitalRead(SWITCH_PIN) == LOW) {
+    // テスト送信モード
+    oled.logLine(3, "Running...");
+    static bool led_state = false;
+    digitalWrite(LED_PIN, led_state);
+    led_state = !led_state;
+    vTaskDelay(pdMS_TO_TICKS(500));
+  } else {
+    // スリープ準備
+    oled.logLine(0, "Sleep...");
+    delay(100);  // OLED描画の反映
+
+    // OLED表示を完全にOFFにする（I2C制御）
+    display.ssd1306_command(SSD1306_DISPLAYOFF);
+
+    digitalWrite(LED_PIN, LOW);  // LEDも消灯
+    delay(50);  // 念のため
+
+    // スリープ復帰設定（GPIO8がLOWで復帰）
+    esp_sleep_enable_ext0_wakeup(GPIO_NUM_8, 0);
+    esp_deep_sleep_start();
+  }
 }
+
+#if 0
+void loop() {
+  if (digitalRead(SWITCH_PIN) == LOW) {
+    // テスト送信モード
+    oled.logLine(5, "Runing...");
+    static bool led_state = false;
+   digitalWrite(LED_PIN, led_state);
+   led_state = !led_state;
+    vTaskDelay(pdMS_TO_TICKS(500));
+  } else {
+    // スリープに移行（スイッチ離されたとき）
+    oled.logLine(0, "Sleep...");
+    delay(100);  // OLED描画反映
+//    esp_sleep_enable_ext0_wakeup(GPIO_NUM_9, 0);  // GPIO9がLOWになったら復帰
+    esp_sleep_enable_ext0_wakeup(GPIO_NUM_8, 0);  // ← SWITCH_PIN が GPIO8 のため修正    
+    esp_deep_sleep_start();  // ここで完全スリープに入る
+  }
+}
+#endif
