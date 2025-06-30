@@ -14,8 +14,8 @@
 #include <Adafruit_SSD1306.h>
 #include "driver/gpio.h"
 
-#define BB_RX 3
-#define BB_TX 2
+#define BB_RX 44
+#define BB_TX 43
 #define PACKET_SIZE 6
 #define BAUD_RATE 300
 #define BIT_DELAY_US (1000000UL / BAUD_RATE)
