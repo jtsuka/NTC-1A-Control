@@ -308,23 +308,3 @@ void loop() {
     esp_deep_sleep_start();
   }
 }
-
-#if 0
-void loop() {
-  if (digitalRead(SWITCH_PIN) == LOW) {
-    // テスト送信モード
-    oled.logLine(5, "Runing...");
-    static bool led_state = false;
-   digitalWrite(LED_PIN, led_state);
-   led_state = !led_state;
-    vTaskDelay(pdMS_TO_TICKS(500));
-  } else {
-    // スリープに移行（スイッチ離されたとき）
-    oled.logLine(0, "Sleep...");
-    delay(100);  // OLED描画反映
-//    esp_sleep_enable_ext0_wakeup(GPIO_NUM_9, 0);  // GPIO9がLOWになったら復帰
-    esp_sleep_enable_ext0_wakeup(GPIO_NUM_8, 0);  // ← SWITCH_PIN が GPIO8 のため修正    
-    esp_deep_sleep_start();  // ここで完全スリープに入る
-  }
-}
-#endif
