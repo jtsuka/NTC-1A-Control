@@ -2,8 +2,7 @@
   NTC-1A TC Emulator – ESP32-S3版 (Bit-Bang UART 300bps)
   TX: GPIO2  RX: GPIO3  OLED(I2C) 128×64
 
-  - 受信パケット（Pi→TC）をBitBangで受信
-  - エコーバックとして同じパケットを送信
+  - TCエミュレーター中継機からのBitBangで受信したものを中継機にエコーバック
   - OLEDに受信内容と送信内容を16進で表示
   - FreeRTOSベース、スレッドセーフOLED対応
   - 更新日: 2025-06-30
