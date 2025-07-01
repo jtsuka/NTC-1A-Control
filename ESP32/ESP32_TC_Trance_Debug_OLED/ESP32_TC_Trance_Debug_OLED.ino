@@ -95,7 +95,7 @@ void task_fake_pi_tx(void* pv) {
       printHex(msg, test_packet_pi);
       oled.logLine(0, "[FAKE->TC] " + msg);
     }
-    vTaskDelay(pdMS_TO_TICKS(2000));  // 5秒間隔
+    vTaskDelay(pdMS_TO_TICKS(2000));  // 2秒間隔
   }
 }
 void task_fake_tc_tx(void* pv) {
@@ -110,7 +110,7 @@ void task_fake_tc_tx(void* pv) {
       printHex(msg, test_packet_tc);
       oled.logLine(2, "[FAKE->PI] " + msg);
     }
-    vTaskDelay(pdMS_TO_TICKS(5000));  // 5秒間隔
+    vTaskDelay(pdMS_TO_TICKS(2000));  // 2秒間隔
   }
 }
 
