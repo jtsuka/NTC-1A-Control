@@ -81,8 +81,21 @@ def read_exact(n, timeout=0.5):
 
 def rx_loop():
     global running
+    buffer = bytearray()
     while running:
-        time.sleep(0.05)  # スプール送信に対し不要な受信処理を抑制
+        if ser and ser.in_waiting:
+            byte = ser.read(1)
+            buffer += byte
+            if len(buffer) >= 6:
+                pkt = buffer[:6]
+                buffer = buffer[6:]  # 余剰バイトは残す
+                calc_chk = sum(pkt[:5]) & 0xFF
+                if pkt[5] == calc_chk:
+                    out(f"[ASYNC RX] {' '.join(f'{x:02X}' for x in pkt)}")
+                else:
+                    out(f"[ASYNC RX WARN] Checksum mismatch: {' '.join(f'{x:02X}' for x in pkt)}")
+        else:
+            time.sleep(0.01)
 
 def start_serial_thread(port=None):
     global PORT
