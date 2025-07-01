@@ -13,8 +13,8 @@
 #include <Adafruit_SSD1306.h>
 #include "driver/gpio.h"
 
-#define BB_RX 44
-#define BB_TX 43
+#define BB_RX 44        // for Repeater receiving
+#define BB_TX 43        // for Repeater Senging
 #define PACKET_SIZE 6
 #define BAUD_RATE 300
 #define BIT_DELAY_US (1000000UL / BAUD_RATE)
