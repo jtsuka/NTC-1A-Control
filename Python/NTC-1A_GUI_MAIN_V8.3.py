@@ -2,8 +2,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from serial.tools import list_ports
-#from NTC_1A_serial_comm import start_serial_thread, send_packet, stop_serial, set_timeout
-from NTC_1A_serial_bitbang import start_serial_thread, send_packet, stop_serial, set_timeout
+from NTC_1A_serial_comm import start_serial_thread, send_packet, stop_serial, set_timeout
+#from NTC_1A_serial_bitbang import start_serial_thread, send_packet, stop_serial, set_timeout
 from NTC_1A_utils import out, setup_log_display
 
 root = tk.Tk()
