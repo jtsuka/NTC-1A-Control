@@ -1,9 +1,11 @@
 import serial
 
-ser = serial.Serial('/dev/ttyAMA0', 9600, timeout=1)
-print("Listening on /dev/ttyAMA0...")
+ser = serial.Serial('/dev/serial0', 9600, timeout=2)
+print("Listening on /dev/serial0 (9600bps)...")
 
 while True:
     data = ser.read(6)
     if data:
-        print("Received:", ' '.join(f"{b:02X}" for b in data))
+        print("RX:", ' '.join(f"{b:02X}" for b in data))
+    else:
+        print("[TIMEOUT] No data")
