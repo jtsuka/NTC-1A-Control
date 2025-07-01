@@ -5,7 +5,7 @@ ser = serial.Serial('/dev/serial0', 9600, timeout=1)
 print("Listening on /dev/serial0...")
 
 while True:
-    data = ser.read(6)  # 6バイト固定長パケット
+    data = ser.read(6)  # 6繝舌う繝亥崋螳夐聞繝代こ繝�繝�
     if data:
         print("Received:", ' '.join(f"{b:02X}" for b in data))
     else:
