@@ -19,16 +19,6 @@ selected_channel = 1
 selected_entry = None
 entries = {}
 
-# Trance port for RasPi 5
-ports = [port.device for port in list_ports.comports()]
-if "/dev/serial0" not in ports:
-    ports.insert(0, "/dev/serial0")  # ←★ Pi 5 向け対策（常に先頭に表示）
-
-if ports:
-    port_combobox['values'] = ports
-    port_combobox.set(ports[0])
-    start_serial_thread(ports[0])
-
 # ------------------- トップバー -------------------
 top_frame = tk.Frame(root, bg="black")
 top_frame.pack(fill="x")
@@ -37,11 +27,16 @@ tk.Label(top_frame, text="Port", bg="black", fg="white").pack(side="left", padx=
 port_combobox = ttk.Combobox(top_frame, width=10)
 port_combobox.pack(side="left")
 
+# ← 正しくここでポートを取得＋/dev/serial0を追加
 ports = [port.device for port in list_ports.comports()]
+if "/dev/serial0" not in ports:
+    ports.insert(0, "/dev/serial0")  # Pi 5 対策
+
 if ports:
     port_combobox['values'] = ports
     port_combobox.set(ports[0])
     start_serial_thread(ports[0])
+
 port_combobox.bind("<<ComboboxSelected>>", lambda e: start_serial_thread(port_combobox.get()))
 
 tk.Label(top_frame, text=" Timeout(sec)", bg="black", fg="white").pack(side="left")
