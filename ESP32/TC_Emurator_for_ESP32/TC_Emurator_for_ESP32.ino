@@ -67,12 +67,12 @@ void send_packet(const uint8_t* buf) {
 
 void task_main(void* arg) {
   for (;;) {
-//    if (digitalRead(SLEEP_MODE_PIN) == LOW) {
-//      oled.clearAll();
-//      oled.printMessage("== SLEEP MODE ==", 0);
-//      vTaskDelay(pdMS_TO_TICKS(1000));
-//      continue;
-//    }
+    if (digitalRead(SLEEP_MODE_PIN) == LOW) {
+      oled.clearAll();
+      oled.printMessage("== SLEEP MODE ==", 0);
+      vTaskDelay(pdMS_TO_TICKS(1000));
+      continue;
+    }
 
     if (receive_packet(rx_buf)) {
       oled.printHexLine("RECV", rx_buf, 0);
