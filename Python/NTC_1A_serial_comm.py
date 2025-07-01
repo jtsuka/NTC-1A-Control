@@ -2,7 +2,7 @@
 import serial, threading, time
 from NTC_1A_utils import out
 
-PORT = "/dev/ttyAMA0"
+PORT = "/dev/serial0"
 BAUD = 9600
 ser = None
 running = True
@@ -44,7 +44,9 @@ def send_packet(ch, cmd, val):
         return False
 
     try:
-        resp = read_exact(6, timeout=current_timeout_value)
+        # === ここだけ簡易方式 ===
+        resp = ser.read(6)  # 応答バイトを直接読む（6バイト固定）
+        # resp = read_exact(6, timeout=current_timeout_value)
         # RAWダンプをここに追加
         if resp is not None:
             out(f"[RAW] {' '.join(f'{x:02X}' for x in resp)}")
