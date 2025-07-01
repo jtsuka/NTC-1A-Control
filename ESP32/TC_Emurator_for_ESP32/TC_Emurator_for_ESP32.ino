@@ -1,20 +1,23 @@
 /**********************************************************************
   NTC-1A TC Emulator – ESP32-S3版 (Bit-Bang UART 300bps)
-  TX: GPIO2  RX: GPIO3  OLED(I2C) 128×64
-
-  - TCエミュレーター中継機からのBitBangで受信したものを中継機にエコーバック
-  - OLEDに受信内容と送信内容を16進で表示
-  - FreeRTOSベース、スレッドセーフOLED対応
-  - 更新日: 2025-06-30
+  TX: GPIO43  RX: GPIO44  OLED(I2C) 128×64
+  - BitBangで受信→そのままエコーバック
+  - OLEDにRECV/SENDを16進表示
+  - GPIO8がLOWでスリープモード表示＆停止
+  - 本体LED(GPIO48)が常時点滅（動作インジケータ）
+  - FreeRTOS + スレッドセーフOLED対応
+  - 更新日: 2025-07-01
 **********************************************************************/
 
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include "driver/gpio.h"
 
-#define BB_RX 44        // for Repeater receiving
-#define BB_TX 43        // for Repeater Senging
+#define BB_RX 44
+#define BB_TX 43
+#define SLEEP_MODE_PIN 8
+#define LED_PIN 48
+
 #define PACKET_SIZE 6
 #define BAUD_RATE 300
 #define BIT_DELAY_US (1000000UL / BAUD_RATE)
@@ -28,7 +31,7 @@ SemaphoreHandle_t oledMutex;
 
 uint8_t recv_buf[PACKET_SIZE];
 
-// ======== OLED表示関数 =========
+// ===== OLED表示関数 =====
 void displayHexLine(const char* label, const uint8_t* data, uint8_t row) {
   if (xSemaphoreTake(oledMutex, pdMS_TO_TICKS(50)) == pdTRUE) {
     display.setCursor(0, row * 8);
@@ -41,35 +44,30 @@ void displayHexLine(const char* label, const uint8_t* data, uint8_t row) {
   }
 }
 
-// ======== BitBang受信 =========
+// ===== BitBang受信 =====
 bool receive_packet(uint8_t* buf) {
   unsigned long t_start = millis();
-
   for (int i = 0; i < PACKET_SIZE; i++) {
-    // Start bit検出
     while (digitalRead(BB_RX) == HIGH) {
       if (millis() - t_start > 1000) return false;
     }
-
     delayMicroseconds(HALF_DELAY_US);
     if (digitalRead(BB_RX) != LOW) return false;
 
-    // データビット読み取り（LSBファースト）
     uint8_t val = 0;
     for (int b = 0; b < 8; b++) {
       delayMicroseconds(BIT_DELAY_US - 2);
       val |= (digitalRead(BB_RX) << b);
-      delayMicroseconds(30); // 安定化
+      delayMicroseconds(30);
     }
 
     buf[i] = val;
-    delayMicroseconds(BIT_DELAY_US + 100); // Stopビット余白
+    delayMicroseconds(BIT_DELAY_US + 100);
   }
-
   return true;
 }
 
-// ======== BitBang送信 =========
+// ===== BitBang送信 =====
 void send_packet(const uint8_t* buf) {
   for (int i = 0; i < PACKET_SIZE; i++) {
     send_byte(buf[i]);
@@ -80,25 +78,23 @@ void send_packet(const uint8_t* buf) {
 
 void send_byte(uint8_t val) {
   noInterrupts();
-  digitalWrite(BB_TX, LOW);  // Start bit
+  digitalWrite(BB_TX, LOW);
   delayMicroseconds(BIT_DELAY_US);
-
   for (int i = 0; i < 8; i++) {
     digitalWrite(BB_TX, (val >> i) & 0x01);
     delayMicroseconds(BIT_DELAY_US);
   }
-
-  digitalWrite(BB_TX, HIGH);  // Stop bit
+  digitalWrite(BB_TX, HIGH);
   delayMicroseconds(BIT_DELAY_US * 2);
   interrupts();
 }
 
-// ======== メインタスク =========
+// ===== メイン通信タスク =====
 void task_main(void* arg) {
   while (true) {
     if (receive_packet(recv_buf)) {
       displayHexLine("RECV", recv_buf, 0);
-      delayMicroseconds(BIT_DELAY_US * 4); // 安定化
+      delayMicroseconds(BIT_DELAY_US * 4);
       send_packet(recv_buf);
       displayHexLine("SEND", recv_buf, 2);
     } else {
@@ -107,11 +103,24 @@ void task_main(void* arg) {
   }
 }
 
-// ======== 初期化 =========
+// ===== LED点滅タスク =====
+void task_led(void* arg) {
+  while (true) {
+    digitalWrite(LED_PIN, HIGH);
+    vTaskDelay(pdMS_TO_TICKS(500));
+    digitalWrite(LED_PIN, LOW);
+    vTaskDelay(pdMS_TO_TICKS(500));
+  }
+}
+
+// ===== 初期化 =====
 void setup() {
   pinMode(BB_RX, INPUT_PULLUP);
   pinMode(BB_TX, OUTPUT);
   digitalWrite(BB_TX, HIGH);
+
+  pinMode(SLEEP_MODE_PIN, INPUT_PULLUP);
+  pinMode(LED_PIN, OUTPUT);
 
   Serial.begin(115200);
   Wire.begin();
@@ -130,8 +139,22 @@ void setup() {
   display.display();
 
   xTaskCreatePinnedToCore(task_main, "TCEmuMain", 4096, NULL, 1, NULL, 1);
+  xTaskCreatePinnedToCore(task_led,  "LEDTask",   1024, NULL, 1, NULL, 0);
 }
 
+// ===== スリープモード監視 =====
 void loop() {
+  if (digitalRead(SLEEP_MODE_PIN) == LOW) {
+    if (xSemaphoreTake(oledMutex, pdMS_TO_TICKS(100))) {
+      display.clearDisplay();
+      display.setCursor(0, 0);
+      display.println("== SLEEP MODE ==");
+      display.display();
+      xSemaphoreGive(oledMutex);
+    }
+    while (true) {
+      vTaskDelay(pdMS_TO_TICKS(1000));
+    }
+  }
   delay(100);
 }
