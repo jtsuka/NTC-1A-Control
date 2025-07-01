@@ -19,6 +19,16 @@ selected_channel = 1
 selected_entry = None
 entries = {}
 
+# Trance port for RasPi 5
+ports = [port.device for port in list_ports.comports()]
+if "/dev/serial0" not in ports:
+    ports.insert(0, "/dev/serial0")  # ←★ Pi 5 向け対策（常に先頭に表示）
+
+if ports:
+    port_combobox['values'] = ports
+    port_combobox.set(ports[0])
+    start_serial_thread(ports[0])
+
 # ------------------- トップバー -------------------
 top_frame = tk.Frame(root, bg="black")
 top_frame.pack(fill="x")
