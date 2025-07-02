@@ -31,6 +31,12 @@ SemaphoreHandle_t oledMutex;
 #define MODE_REPEATER 1
 #define MODE_EMULATOR 2
 uint8_t current_mode = 0;
+// ===== テストモード制御用グローバル変数 =====
+bool testMode = false;
+bool lastTestPinState = LOW;
+unsigned long lastSendTime = 0;
+unsigned long lastBlinkTime = 0;
+bool ledState = false;
 
 // ========== MACアドレス定義 ==========
 const uint8_t REPEATER_MAC[6] = {0x98, 0x3D, 0xAE, 0x60, 0x55, 0x1C};
@@ -144,6 +150,9 @@ void setup() {
   pinMode(TEST_PIN, INPUT);
   pinMode(TC_UART_TX_PIN, OUTPUT); digitalWrite(TC_UART_TX_PIN, HIGH);
   pinMode(TC_UART_RX_PIN, INPUT);
+  // LEDPINセット
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
 
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDRESS);
@@ -177,48 +186,36 @@ void detectMode() {
   else current_mode = 0;
 }
 
+// 死活の本体LED点滅と、擬似パケット送信モードSW対応
 void loop() {
-  // ★ LED点滅処理（非ブロッキング）
-  static uint32_t lastBlink = 0;
-  static bool ledState = false;
-  if (millis() - lastBlink >= 500) {
-    ledState = !ledState;
-    digitalWrite(LED_PIN, ledState);
-    lastBlink = millis();
-  }
+  bool currentState = digitalRead(TEST_PIN);
 
-  // ★ GPIO8 の立ち上がり検出で sendTestPacket() 実行
-  static bool prevTestPinState = false;
-  bool currentTestPinState = digitalRead(TEST_PIN) == HIGH;
+  // トグル状態の検出
+  if (currentState != lastTestPinState) {
+    lastTestPinState = currentState;
 
-  if (current_mode == MODE_REPEATER) {
-    if (currentTestPinState && !prevTestPinState) {
-      sendTestPacket();  // 一度だけ送信
+    if (currentState == HIGH) {
+      logToOLED("TestMode ON", "Sending Start");
+      testMode = true;
+      lastSendTime = millis();
+    } else {
+      logToOLED("TestMode OFF", "Sending Stop");
+      testMode = false;
+      digitalWrite(LED_PIN, LOW);
     }
   }
 
-  prevTestPinState = currentTestPinState;
+  // パケット送信とLED点滅
+  if (current_mode == MODE_REPEATER && testMode) {
+    if (millis() - lastSendTime >= 1000) {
+      sendTestPacket();
+      lastSendTime = millis();
+    }
 
-  delay(10);  // 高速ポーリング防止
-}
-
-#if 0
-void loop() {
-  // ★ LED点滅処理（追加）
-  static uint32_t lastBlink = 0;
-  static bool ledState = false;
-  if (millis() - lastBlink >= 500) {
-    ledState = !ledState;
-    digitalWrite(LED_PIN, ledState);
-    lastBlink = millis();
+    if (millis() - lastBlinkTime >= 500) {
+      ledState = !ledState;
+      digitalWrite(LED_PIN, ledState);
+      lastBlinkTime = millis();
+    }
   }
-
-  // ★ 元のリピーターモード送信処理（維持）
-  if (current_mode == MODE_REPEATER && digitalRead(TEST_PIN) == HIGH) {
-    sendTestPacket();
-    delay(1000);
-  }
-
-  delay(100);
 }
-#endif
