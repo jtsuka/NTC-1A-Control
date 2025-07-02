@@ -137,11 +137,25 @@ void bitbangToUartTask(void* pv) {
 
 // ========== エミュレーター処理 ==========
 void emulatorTask(void* pv) {
+  uint8_t buf[6];
+  while (1) {
+    // BitBangでパケット受信を試みる
+    if (digitalRead(TC_UART_RX_PIN) == LOW) {
+      bitbangReceivePacket(buf, 6);         // ← これは void なので単独で使う
+      bitbangSendPacket(buf, 6);            // そのままエコーバック
+      logToOLED("Emulator Mode", "Echo TC packet");
+    }
+    vTaskDelay(pdMS_TO_TICKS(10));  // 無駄なCPU回しを回避
+  }
+}
+#if 0
+void emulatorTask(void* pv) {
   while (1) {
     logToOLED("Emulator Mode", "Waiting... (stub)");
     vTaskDelay(pdMS_TO_TICKS(2000));
   }
 }
+#endif
 
 // ========== setup ==========
 void setup() {
