@@ -31,6 +31,15 @@ SemaphoreHandle_t oledMutex;
 #define MODE_REPEATER 1
 #define MODE_EMULATOR 2
 uint8_t current_mode = 0;
+// ========= ログレベル定義 =========
+#define ENABLE_ALIVE_LOG 1              // デフォルトはAliveログのみ
+#define LOG_MODE_PIN 10                 // GPIO10をスイッチに使用
+#define ALIVE_TIME 3000                 // 死活確認時間 3秒
+bool enableVerboseLog = false;          // 詳細ログ有効フラグ
+unsigned long lastAlive = 0;            // タスク死活フラグ
+unsigned long lastAliveSend = 0;        // タスク死活フラグ
+
+
 // ===== テストモード制御用グローバル変数 =====
 bool testMode = false;
 bool lastTestPinState = LOW;
@@ -163,9 +172,16 @@ void emulatorReceiverTask(void* pv) {
       bitbangReceivePacket(buf, ECHO_PACKET_SIZE);
       xQueueSend(echoQueue, buf, portMAX_DELAY);
 
-      String msg = "RECV: ";
-      for (int i = 0; i < 6; i++) msg += String(buf[i], HEX) + " ";
-      logToOLED(msg, "→ Queued for echo");
+      if (enableVerboseLog) {
+        String msg = "RECV: ";
+        for (int i = 0; i < 6; i++) msg += String(buf[i], HEX) + " ";
+        logToOLED(msg, "→ Queued for echo");
+      }
+    }
+    #if ENABLE_ALIVE_LOG
+    if (millis() - lastAlive > ALIVE_TIME) {
+      Serial.println("[EmuRecv] Alive");
+      lastAlive = millis();
     }
     vTaskDelay(pdMS_TO_TICKS(10));
   }
@@ -178,10 +194,18 @@ void emulatorSenderTask(void* pv) {
     if (xQueueReceive(echoQueue, buf, portMAX_DELAY) == pdTRUE) {
       bitbangSendPacket(buf, ECHO_PACKET_SIZE);
 
-      String msg = "SEND: ";
-      for (int i = 0; i < 6; i++) msg += String(buf[i], HEX) + " ";
-      logToOLED("Echoed Back", msg);
+      if (enableVerboseLog) {
+        String msg = "SEND: ";
+        for (int i = 0; i < 6; i++) msg += String(buf[i], HEX) + " ";
+        logToOLED("Echoed Back", msg);
+      }
     }
+#if ENABLE_ALIVE_LOG
+    if (millis() - lastAliveSend > ALIVE_TIME) {
+      Serial.println("[EmuSend] Alive");
+      lastAliveSend = millis();
+    }
+#endif
   }
 }
 
@@ -211,6 +235,10 @@ void setup() {
   // LEDPINセット
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW);
+
+  // ログモードスイッチ設定
+  pinMode(LOG_MODE_PIN, INPUT_PULLUP);  // LOWで詳細ログON
+  enableVerboseLog = (digitalRead(LOG_MODE_PIN) == LOW);
 
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDRESS);
