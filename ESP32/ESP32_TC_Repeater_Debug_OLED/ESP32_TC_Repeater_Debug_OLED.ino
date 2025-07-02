@@ -130,6 +130,7 @@ void printHex(String& result, const uint8_t* data) {
   }
 }
 
+// for PI 受信
 void task_pi_rx(void* pv) {
   uint8_t buf[PACKET_SIZE];
   while (1) {
@@ -145,41 +146,7 @@ void task_pi_rx(void* pv) {
   }
 }
 
-void task_tc_rx(void* pv) {
-  uint8_t buf[PACKET_SIZE];
-  while (1) {
-    if (SerialTC.available() >= PACKET_SIZE) {
-      SerialTC.readBytes(buf, PACKET_SIZE);
-      if (!isChecksumValid(buf)) continue;
-      xQueueSend(queue_tc_rx, buf, portMAX_DELAY);
-      String msg;
-      printHex(msg, buf);
-      oled.logLine(2, "[TC->Relay] " + msg);
-    }
-    vTaskDelay(1);
-  }
-}
-
-void task_tc_tx(void* pv) {
-  uint8_t pkt[PACKET_SIZE];
-  while (1) {
-    xSemaphoreTake(xStopFlagMutex, portMAX_DELAY);
-    bool flag = stopFlag;
-    xSemaphoreGive(xStopFlagMutex);
-    if (flag || !digitalRead(SAFE_MODE_PIN)) {
-      vTaskDelay(10);
-      continue;
-    }
-    if (xQueueReceive(queue_pi_rx, pkt, 0) == pdTRUE) {
-      SerialTC.write(pkt, PACKET_SIZE);
-      String msg;
-      printHex(msg, pkt);
-      oled.logLine(1, "[Relay->TC] " + msg);
-    }
-    vTaskDelay(1);
-  }
-}
-
+// for PI 送信
 void task_pi_tx(void* pv) {
   uint8_t pkt[PACKET_SIZE];
   while (1) {
@@ -199,6 +166,103 @@ void task_pi_tx(void* pv) {
     vTaskDelay(1);
   }
 }
+
+// for TC 受信
+void task_tc_rx(void* pv) {
+  uint8_t buf[PACKET_SIZE];
+  while (1) {
+    if (SerialTC.available() >= PACKET_SIZE) {
+      SerialTC.readBytes(buf, PACKET_SIZE);
+      if (!isChecksumValid(buf)) continue;
+
+      xQueueSend(queue_tc_rx, buf, portMAX_DELAY);
+
+      // OLED表示
+      String msg;
+      printHex(msg, buf);
+      oled.logLine(2, "[TC->Relay] " + msg);
+
+      // 🟢 シリアル出力を追加
+      Serial.print("[TC->Relay] ");
+      for (int i = 0; i < PACKET_SIZE; i++) {
+        Serial.printf("%02X ", buf[i]);
+      }
+      Serial.println();
+    }
+    vTaskDelay(1);
+  }
+}
+
+#if 0 // 修正前 for tc 受信
+void task_tc_rx(void* pv) {
+  uint8_t buf[PACKET_SIZE];
+  while (1) {
+    if (SerialTC.available() >= PACKET_SIZE) {
+      SerialTC.readBytes(buf, PACKET_SIZE);
+      if (!isChecksumValid(buf)) continue;
+      xQueueSend(queue_tc_rx, buf, portMAX_DELAY);
+      String msg;
+      printHex(msg, buf);
+      oled.logLine(2, "[TC->Relay] " + msg);
+    }
+    vTaskDelay(1);
+  }
+}
+#endif
+
+// for TC 送信
+void task_tc_tx(void* pv) {
+  uint8_t pkt[PACKET_SIZE];
+  while (1) {
+    xSemaphoreTake(xStopFlagMutex, portMAX_DELAY);
+    bool flag = stopFlag;
+    xSemaphoreGive(xStopFlagMutex);
+    if (flag || !digitalRead(SAFE_MODE_PIN)) {
+      vTaskDelay(10);
+      continue;
+    }
+    if (xQueueReceive(queue_pi_rx, pkt, 0) == pdTRUE) {
+      SerialTC.write(pkt, PACKET_SIZE);
+
+      // OLED表示
+      String msg;
+      printHex(msg, pkt);
+      oled.logLine(1, "[Relay->TC] " + msg);
+
+      // 🟢 シリアル出力を追加
+      Serial.print("[Relay->TC] ");
+      for (int i = 0; i < PACKET_SIZE; i++) {
+        Serial.printf("%02X ", pkt[i]);
+      }
+      Serial.println();
+    }
+    vTaskDelay(1);
+  }
+}
+
+#if 0 // 修正前コード for TC 送信
+void task_tc_tx(void* pv) {
+  uint8_t pkt[PACKET_SIZE];
+  while (1) {
+    xSemaphoreTake(xStopFlagMutex, portMAX_DELAY);
+    bool flag = stopFlag;
+    xSemaphoreGive(xStopFlagMutex);
+    if (flag || !digitalRead(SAFE_MODE_PIN)) {
+      vTaskDelay(10);
+      continue;
+    }
+    if (xQueueReceive(queue_pi_rx, pkt, 0) == pdTRUE) {
+      SerialTC.write(pkt, PACKET_SIZE);
+      String msg;
+      printHex(msg, pkt);
+      oled.logLine(1, "[Relay->TC] " + msg);
+    }
+    vTaskDelay(1);
+  }
+}
+#endif
+
+
 
 #if 0
 void setup() {
@@ -241,7 +305,7 @@ void setup() {
   delay(300);
   digitalWrite(LED_PIN, LOW);
 
-  Serial.begin(115200);
+  Serial.begin(115200);  // ここを追加：USBシリアル出力開始
   while (!Serial) delay(10);
   oled.begin();
   delay(100);  // ← OLED I2C 初期化安定待ち
