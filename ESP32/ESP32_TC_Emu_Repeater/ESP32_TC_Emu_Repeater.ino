@@ -1,0 +1,180 @@
+// =========================================
+// ESP32 TCエミュレーター＆リピーター統合スケッチ（完全版）
+// - FreeRTOSベース
+// - OLED排他制御付き表示
+// - UART（Pi接続）<-> BitBang（TC接続）中継
+// - MACアドレスによる自動モード切替
+// - GPIO8=HIGH時にテストパケット送信（リピーターモードのみ）
+// - シリアルとOLEDにログ表示
+// - 対応機種：XIAO ESP32S3 + Grove Shield
+// - 日付 2025.07.02 バイナリ統合版
+// =========================================
+
+#include <Arduino.h>
+#include <Wire.h>
+#include <WiFi.h>
+#include <Adafruit_SSD1306.h>
+#include <Adafruit_GFX.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <freertos/semphr.h>
+
+// ========== OLED ==========
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define OLED_RESET    -1
+#define OLED_ADDRESS  0x3C
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+SemaphoreHandle_t oledMutex;
+
+// ========== モード定義 ==========
+#define MODE_REPEATER 1
+#define MODE_EMULATOR 2
+uint8_t current_mode = 0;
+
+// ========== MACアドレス定義 ==========
+const uint8_t REPEATER_MAC[6] = {0x98, 0x3D, 0xAE, 0x60, 0x55, 0x1C};
+const uint8_t EMULATOR_MAC[6] = {0x8C, 0xBF, 0xEA, 0x8E, 0x57, 0xF4};
+
+// ========== ピン定義 ==========
+#define PI_UART_TX_PIN 43
+#define PI_UART_RX_PIN 44
+#define TC_UART_TX_PIN 1
+#define TC_UART_RX_PIN 0
+#define TEST_PIN 8
+
+// ========== 通信定義 ==========
+#define UART_BAUDRATE 9600
+#define BITBANG_BPS 300
+#define BIT_DELAY_US (1000000 / BITBANG_BPS)
+
+// ========== テストパケット ==========
+const uint8_t testPacket[6] = {0x01, 0x06, 0x05, 0x00, 0x00, 0x0C};
+
+// ========== OLEDログ関数 ==========
+void logToOLED(const String& line1, const String& line2) {
+  if (xSemaphoreTake(oledMutex, portMAX_DELAY) == pdTRUE) {
+    display.clearDisplay();
+    display.setCursor(0, 0);
+    display.setTextSize(1);
+    display.setTextColor(SSD1306_WHITE);
+    display.println(line1);
+    display.println(line2);
+    display.display();
+    xSemaphoreGive(oledMutex);
+  }
+  Serial.println(line1 + " | " + line2);
+}
+
+// ========== BitBang送信 ==========
+void bitbangSendByte(uint8_t b) {
+  digitalWrite(TC_UART_TX_PIN, LOW); delayMicroseconds(BIT_DELAY_US); // Start
+  for (int i = 0; i < 8; i++) {
+    digitalWrite(TC_UART_TX_PIN, (b >> i) & 1);
+    delayMicroseconds(BIT_DELAY_US);
+  }
+  digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(BIT_DELAY_US); // Stop
+}
+
+void bitbangSendPacket(const uint8_t* packet, int len) {
+  for (int i = 0; i < len; i++) bitbangSendByte(packet[i]);
+}
+
+// ========== BitBang受信 ==========
+uint8_t bitbangReceiveByte() {
+  while (digitalRead(TC_UART_RX_PIN) == HIGH); // Wait for start bit
+  delayMicroseconds(BIT_DELAY_US + BIT_DELAY_US/2);
+  uint8_t b = 0;
+  for (int i = 0; i < 8; i++) {
+    b |= (digitalRead(TC_UART_RX_PIN) << i);
+    delayMicroseconds(BIT_DELAY_US);
+  }
+  return b;
+}
+
+void bitbangReceivePacket(uint8_t* buf, int len) {
+  for (int i = 0; i < len; i++) buf[i] = bitbangReceiveByte();
+}
+
+// ========== テストパケット送信 ==========
+void sendTestPacket() {
+  bitbangSendPacket(testPacket, 6);
+  logToOLED("Test Packet", "Sent via BitBang");
+}
+
+// ========== リピーター：Pi->TC ==========
+void uartToBitbangTask(void* pv) {
+  while (1) {
+    if (Serial2.available() >= 6) {
+      uint8_t buf[6];
+      Serial2.readBytes(buf, 6);
+      bitbangSendPacket(buf, 6);
+      logToOLED("UART->BitBang", String("SENT: ") + String(buf[0], HEX));
+    }
+    vTaskDelay(pdMS_TO_TICKS(10));
+  }
+}
+
+// ========== リピーター：TC->Pi ==========
+void bitbangToUartTask(void* pv) {
+  while (1) {
+    if (digitalRead(TC_UART_RX_PIN) == LOW) {
+      uint8_t buf[6];
+      bitbangReceivePacket(buf, 6);
+      Serial2.write(buf, 6);
+      logToOLED("BitBang->UART", String("RECV: ") + String(buf[0], HEX));
+    }
+    vTaskDelay(pdMS_TO_TICKS(10));
+  }
+}
+
+// ========== エミュレーター処理 ==========
+void emulatorTask(void* pv) {
+  while (1) {
+    logToOLED("Emulator Mode", "Waiting... (stub)");
+    vTaskDelay(pdMS_TO_TICKS(2000));
+  }
+}
+
+// ========== MACアドレスチェック ==========
+void detectMode() {
+  uint8_t mac[6];
+  esp_read_mac(mac, ESP_MAC_WIFI_STA);
+  if (memcmp(mac, REPEATER_MAC, 6) == 0) current_mode = MODE_REPEATER;
+  else if (memcmp(mac, EMULATOR_MAC, 6) == 0) current_mode = MODE_EMULATOR;
+  else current_mode = 0;
+}
+
+// ========== setup ==========
+void setup() {
+  Serial.begin(115200);
+  pinMode(TEST_PIN, INPUT);
+  pinMode(TC_UART_TX_PIN, OUTPUT); digitalWrite(TC_UART_TX_PIN, HIGH);
+  pinMode(TC_UART_RX_PIN, INPUT);
+
+  Wire.begin();
+  display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDRESS);
+  oledMutex = xSemaphoreCreateMutex();
+
+  detectMode();
+
+  if (current_mode == MODE_REPEATER) {
+    Serial2.begin(UART_BAUDRATE, SERIAL_8N1, PI_UART_RX_PIN, PI_UART_TX_PIN);
+    logToOLED("Mode: REPEATER", "GPIO8=HIGH => Test");
+    xTaskCreatePinnedToCore(uartToBitbangTask, "UART2BB", 4096, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(bitbangToUartTask, "BB2UART", 4096, NULL, 1, NULL, 1);
+  } else if (current_mode == MODE_EMULATOR) {
+    logToOLED("Mode: EMULATOR", "Starting task...");
+    xTaskCreatePinnedToCore(emulatorTask, "Emulator", 4096, NULL, 1, NULL, 1);
+  } else {
+    logToOLED("ERROR", "Unknown MAC address");
+  }
+}
+
+void loop() {
+  if (current_mode == MODE_REPEATER && digitalRead(TEST_PIN) == HIGH) {
+    sendTestPacket();
+    delay(1000);
+  }
+  delay(100);
+}
