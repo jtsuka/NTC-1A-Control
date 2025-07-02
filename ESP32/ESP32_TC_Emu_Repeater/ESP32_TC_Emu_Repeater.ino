@@ -42,6 +42,7 @@ const uint8_t EMULATOR_MAC[6] = {0x8C, 0xBF, 0xEA, 0x8E, 0x57, 0xF4};
 #define TC_UART_TX_PIN 1
 #define TC_UART_RX_PIN 0
 #define TEST_PIN 8
+#define LED_PIN        21  // 内蔵LED
 
 // ========== 通信定義 ==========
 #define UART_BAUDRATE 9600
@@ -177,9 +178,47 @@ void detectMode() {
 }
 
 void loop() {
+  // ★ LED点滅処理（非ブロッキング）
+  static uint32_t lastBlink = 0;
+  static bool ledState = false;
+  if (millis() - lastBlink >= 500) {
+    ledState = !ledState;
+    digitalWrite(LED_PIN, ledState);
+    lastBlink = millis();
+  }
+
+  // ★ GPIO8 の立ち上がり検出で sendTestPacket() 実行
+  static bool prevTestPinState = false;
+  bool currentTestPinState = digitalRead(TEST_PIN) == HIGH;
+
+  if (current_mode == MODE_REPEATER) {
+    if (currentTestPinState && !prevTestPinState) {
+      sendTestPacket();  // 一度だけ送信
+    }
+  }
+
+  prevTestPinState = currentTestPinState;
+
+  delay(10);  // 高速ポーリング防止
+}
+
+#if 0
+void loop() {
+  // ★ LED点滅処理（追加）
+  static uint32_t lastBlink = 0;
+  static bool ledState = false;
+  if (millis() - lastBlink >= 500) {
+    ledState = !ledState;
+    digitalWrite(LED_PIN, ledState);
+    lastBlink = millis();
+  }
+
+  // ★ 元のリピーターモード送信処理（維持）
   if (current_mode == MODE_REPEATER && digitalRead(TEST_PIN) == HIGH) {
     sendTestPacket();
     delay(1000);
   }
+
   delay(100);
 }
+#endif
