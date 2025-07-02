@@ -190,6 +190,63 @@ void detectMode() {
 void loop() {
   bool currentState = digitalRead(TEST_PIN);
 
+  // トグルスイッチ変化検出
+  if (currentState != lastTestPinState) {
+    lastTestPinState = currentState;
+
+    if (currentState == HIGH) {
+      logToOLED("TestMode ON", "Sending Start");
+      testMode = true;
+      lastSendTime = millis();
+    } else {
+      logToOLED("TestMode OFF", "Sending Stop");
+      testMode = false;
+      digitalWrite(LED_PIN, LOW);  // 状態リセット
+    }
+  }
+
+  // ★ リピーターモードの動作
+  if (current_mode == MODE_REPEATER) {
+    if (testMode) {
+      // 擬似送信（TCとPi両方へ）＆ LED点灯
+      if (millis() - lastSendTime >= 1000) {
+        sendTestPacket();                   // BitBang送信
+        Serial2.write(testPacket, 6);       // Pi送信
+        logToOLED("REPEATER TEST", "Sent to TC+Pi");
+        lastSendTime = millis();
+      }
+      digitalWrite(LED_PIN, HIGH);  // 送信中は常時点灯
+    } else {
+      // 通常時は500ms点滅
+      if (millis() - lastBlinkTime >= 500) {
+        ledState = !ledState;
+        digitalWrite(LED_PIN, ledState);
+        lastBlinkTime = millis();
+      }
+    }
+  }
+
+  // ★ エミュレーターモードの動作（常に点滅＋必要なら送信）
+  else if (current_mode == MODE_EMULATOR) {
+    if (testMode && millis() - lastSendTime >= 1000) {
+      Serial2.write(testPacket, 6);
+      logToOLED("EMULATOR TEST", "Sent to Pi");
+      lastSendTime = millis();
+    }
+
+    // 常に点滅
+    if (millis() - lastBlinkTime >= 500) {
+      ledState = !ledState;
+      digitalWrite(LED_PIN, ledState);
+      lastBlinkTime = millis();
+    }
+  }
+}
+
+#if 0
+void loop() {
+  bool currentState = digitalRead(TEST_PIN);
+
   // トグル状態の検出
   if (currentState != lastTestPinState) {
     lastTestPinState = currentState;
@@ -205,10 +262,12 @@ void loop() {
     }
   }
 
-  // パケット送信とLED点滅
+// パケット送信とLED点滅（TC:BitBang送信 + Pi:UART送信）
   if (current_mode == MODE_REPEATER && testMode) {
     if (millis() - lastSendTime >= 1000) {
-      sendTestPacket();
+      sendTestPacket();               // TC側（BitBang）
+      Serial2.write(testPacket, 6);   // Pi側（UART）
+      logToOLED("TestMode ON", "Sent to TC+Pi");
       lastSendTime = millis();
     }
 
@@ -219,3 +278,4 @@ void loop() {
     }
   }
 }
+#endif
