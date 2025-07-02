@@ -137,6 +137,7 @@ void emulatorTask(void* pv) {
 }
 
 // ========== MACアドレスチェック ==========
+#if 0
 void detectMode() {
   uint8_t mac[6];
   esp_read_mac(mac, ESP_MAC_WIFI_STA);
@@ -144,9 +145,11 @@ void detectMode() {
   else if (memcmp(mac, EMULATOR_MAC, 6) == 0) current_mode = MODE_EMULATOR;
   else current_mode = 0;
 }
+#endif
 
 // ========== setup ==========
 void setup() {
+  WiFi.mode(WIFI_STA);  // ← これを追加
   Serial.begin(115200);
   pinMode(TEST_PIN, INPUT);
   pinMode(TC_UART_TX_PIN, OUTPUT); digitalWrite(TC_UART_TX_PIN, HIGH);
@@ -169,6 +172,18 @@ void setup() {
   } else {
     logToOLED("ERROR", "Unknown MAC address");
   }
+}
+
+void detectMode() {
+  uint8_t mac[6];
+  WiFi.macAddress(mac);  // ← これが正しい！
+
+  Serial.printf("MAC: %02X:%02X:%02X:%02X:%02X:%02X\n",
+                mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+
+  if (memcmp(mac, REPEATER_MAC, 6) == 0) current_mode = MODE_REPEATER;
+  else if (memcmp(mac, EMULATOR_MAC, 6) == 0) current_mode = MODE_EMULATOR;
+  else current_mode = 0;
 }
 
 void loop() {
