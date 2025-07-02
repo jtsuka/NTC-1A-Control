@@ -136,17 +136,6 @@ void emulatorTask(void* pv) {
   }
 }
 
-// ========== MACアドレスチェック ==========
-#if 0
-void detectMode() {
-  uint8_t mac[6];
-  esp_read_mac(mac, ESP_MAC_WIFI_STA);
-  if (memcmp(mac, REPEATER_MAC, 6) == 0) current_mode = MODE_REPEATER;
-  else if (memcmp(mac, EMULATOR_MAC, 6) == 0) current_mode = MODE_EMULATOR;
-  else current_mode = 0;
-}
-#endif
-
 // ========== setup ==========
 void setup() {
   WiFi.mode(WIFI_STA);  // ← これを追加
@@ -174,6 +163,7 @@ void setup() {
   }
 }
 
+// ========== MACアドレスチェック ==========
 void detectMode() {
   uint8_t mac[6];
   WiFi.macAddress(mac);  // ← これが正しい！
