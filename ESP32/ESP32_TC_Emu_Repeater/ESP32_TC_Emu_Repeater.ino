@@ -179,11 +179,12 @@ void emulatorReceiverTask(void* pv) {
         logToOLED(msg, "→ Queued for echo");
       }
     }
-    #if ENABLE_ALIVE_LOG
+#if ENABLE_ALIVE_LOG
     if (millis() - lastAlive > ALIVE_TIME) {
       Serial.println("[EmuRecv] Alive");
       lastAlive = millis();
     }
+#endif
     vTaskDelay(pdMS_TO_TICKS(10));
   }
 }
