@@ -38,6 +38,11 @@ unsigned long lastSendTime = 0;
 unsigned long lastBlinkTime = 0;
 bool ledState = false;
 
+// ======== エミュレータ用キューと定数 ========
+QueueHandle_t echoQueue;
+#define ECHO_QUEUE_LENGTH 4
+#define ECHO_PACKET_SIZE  6
+
 // ========== MACアドレス定義 ==========
 const uint8_t REPEATER_MAC[6] = {0x98, 0x3D, 0xAE, 0x60, 0x55, 0x1C};
 const uint8_t EMULATOR_MAC[6] = {0x8C, 0xBF, 0xEA, 0x8E, 0x57, 0xF4};
@@ -59,6 +64,20 @@ const uint8_t EMULATOR_MAC[6] = {0x8C, 0xBF, 0xEA, 0x8E, 0x57, 0xF4};
 const uint8_t testPacket[6] = {0x01, 0x06, 0x05, 0x00, 0x00, 0x0C};
 
 // ========== OLEDログ関数 ==========
+void logToOLED(const String& upper, const String& lower) {
+  if (xSemaphoreTake(oledMutex, portMAX_DELAY) == pdTRUE) {
+    display.clearDisplay();
+    display.setCursor(0, 0);
+    display.setTextSize(1);
+    display.setTextColor(SSD1306_WHITE);
+    display.println(upper);   // 上段（RECV）
+    display.println(lower);   // 下段（SEND）
+    display.display();
+    xSemaphoreGive(oledMutex);
+  }
+  Serial.println(upper + " | " + lower);
+}
+#if 0
 void logToOLED(const String& line1, const String& line2) {
   if (xSemaphoreTake(oledMutex, portMAX_DELAY) == pdTRUE) {
     display.clearDisplay();
@@ -72,6 +91,7 @@ void logToOLED(const String& line1, const String& line2) {
   }
   Serial.println(line1 + " | " + line2);
 }
+#endif
 
 // ========== BitBang送信 ==========
 void bitbangSendByte(uint8_t b) {
@@ -135,6 +155,37 @@ void bitbangToUartTask(void* pv) {
   }
 }
 
+// ========== エミュレーター受信:Rep->Me ==========
+void emulatorReceiverTask(void* pv) {
+  while (1) {
+    if (digitalRead(TC_UART_RX_PIN) == LOW) {
+      uint8_t buf[ECHO_PACKET_SIZE];
+      bitbangReceivePacket(buf, ECHO_PACKET_SIZE);
+      xQueueSend(echoQueue, buf, portMAX_DELAY);
+
+      String msg = "RECV: ";
+      for (int i = 0; i < 6; i++) msg += String(buf[i], HEX) + " ";
+      logToOLED(msg, "→ Queued for echo");
+    }
+    vTaskDelay(pdMS_TO_TICKS(10));
+  }
+}
+
+// ========== エミュレーター送信:Me->Rep ==========
+void emulatorSenderTask(void* pv) {
+  uint8_t buf[ECHO_PACKET_SIZE];
+  while (1) {
+    if (xQueueReceive(echoQueue, buf, portMAX_DELAY) == pdTRUE) {
+      bitbangSendPacket(buf, ECHO_PACKET_SIZE);
+
+      String msg = "SEND: ";
+      for (int i = 0; i < 6; i++) msg += String(buf[i], HEX) + " ";
+      logToOLED("Echoed Back", msg);
+    }
+  }
+}
+
+#if 0
 // ========== エミュレーター処理 ==========
 void emulatorTask(void* pv) {
   uint8_t buf[6];
@@ -146,13 +197,6 @@ void emulatorTask(void* pv) {
       logToOLED("Emulator Mode", "Echo TC packet");
     }
     vTaskDelay(pdMS_TO_TICKS(10));  // 無駄なCPU回しを回避
-  }
-}
-#if 0
-void emulatorTask(void* pv) {
-  while (1) {
-    logToOLED("Emulator Mode", "Waiting... (stub)");
-    vTaskDelay(pdMS_TO_TICKS(2000));
   }
 }
 #endif
@@ -180,11 +224,20 @@ void setup() {
     xTaskCreatePinnedToCore(uartToBitbangTask, "UART2BB", 4096, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(bitbangToUartTask, "BB2UART", 4096, NULL, 1, NULL, 1);
   } else if (current_mode == MODE_EMULATOR) {
-    logToOLED("Mode: EMULATOR", "Starting task...");
-    xTaskCreatePinnedToCore(emulatorTask, "Emulator", 4096, NULL, 1, NULL, 1);
+    logToOLED("Mode: EMULATOR", "Starting echo tasks");
+    echoQueue = xQueueCreate(ECHO_QUEUE_LENGTH, ECHO_PACKET_SIZE);
+    xTaskCreatePinnedToCore(emulatorReceiverTask, "EmuRecv", 4096, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(emulatorSenderTask, "EmuSend", 4096, NULL, 1, NULL, 1);
   } else {
     logToOLED("ERROR", "Unknown MAC address");
   }
+
+#if 0
+  } else if (current_mode == MODE_EMULATOR) {
+    logToOLED("Mode: EMULATOR", "Starting task...");
+    xTaskCreatePinnedToCore(emulatorTask, "Emulator", 4096, NULL, 1, NULL, 1);
+  }
+#endif
 }
 
 // ========== MACアドレスチェック ==========
