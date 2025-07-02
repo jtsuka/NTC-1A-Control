@@ -89,12 +89,12 @@ void task_fake_pi_tx(void* pv) {
     xSemaphoreTake(xStopFlagMutex, portMAX_DELAY);
     flag = stopFlag;
     xSemaphoreGive(xStopFlagMutex);
-    if (!flag && digitalRead(SAFE_MODE_PIN)) {
+//    if (!flag && digitalRead(SAFE_MODE_PIN)) {
       SerialTC.write(test_packet_pi, PACKET_SIZE);  // ← UARTへ送信
       String msg;
       printHex(msg, test_packet_pi);
       oled.logLine(0, "[FAKE->TC] " + msg);
-    }
+//    }
     vTaskDelay(pdMS_TO_TICKS(2000));  // 2秒間隔
   }
 }
@@ -104,12 +104,12 @@ void task_fake_tc_tx(void* pv) {
     xSemaphoreTake(xStopFlagMutex, portMAX_DELAY);
     flag = stopFlag;
     xSemaphoreGive(xStopFlagMutex);
-    if (!flag && digitalRead(SAFE_MODE_PIN)) {
+//    if (!flag && digitalRead(SAFE_MODE_PIN)) {
       SerialPI.write(test_packet_tc, PACKET_SIZE);  // ← UARTへ送信
       String msg;
       printHex(msg, test_packet_tc);
       oled.logLine(2, "[FAKE->PI] " + msg);
-    }
+//    }
     vTaskDelay(pdMS_TO_TICKS(2000));  // 2秒間隔
   }
 }
@@ -312,19 +312,19 @@ void setup() {
 
   esp_sleep_wakeup_cause_t wakeup_reason = esp_sleep_get_wakeup_cause();
 
-  if (wakeup_reason == ESP_SLEEP_WAKEUP_EXT0) {
+//  if (wakeup_reason == ESP_SLEEP_WAKEUP_EXT0) {
     // GPIOによる復帰だった場合
-    oled.logLine(0, "Wakeup from EXT0");
+//    oled.logLine(0, "Wakeup from EXT0");
     // 初回点滅などを行う
    // LED点滅だけ独立して実行
-    for (int i = 0; i < 6; i++) {
-      digitalWrite(LED_PIN, i % 2);
-      delay(150);
-    }
-    oled.logLine(1, "Resumed");
-  } else {
+//    for (int i = 0; i < 6; i++) {
+//      digitalWrite(LED_PIN, i % 2);
+//      delay(150);
+//    }
+//    oled.logLine(1, "Resumed");
+//  } else {
     oled.logLine(0, "Normal boot");
-  }
+//  }
 
   // UART開始など続けて処理…
   SerialPI.begin(UART_BAUD_PI, SERIAL_8N1, PI_UART_RX_PIN, PI_UART_TX_PIN);
@@ -349,26 +349,26 @@ void setup() {
 
 
 void loop() {
-  if (digitalRead(SWITCH_PIN) == LOW) {
+//  if (digitalRead(SWITCH_PIN) == LOW) {
     // テスト送信モード
     oled.logLine(3, "Running...");
     static bool led_state = false;
     digitalWrite(LED_PIN, led_state);
     led_state = !led_state;
     vTaskDelay(pdMS_TO_TICKS(500));
-  } else {
+// } else {
     // スリープ準備
-    oled.logLine(0, "Sleep...");
-    delay(100);  // OLED描画の反映
+//   oled.logLine(0, "Sleep...");
+//   delay(100);  // OLED描画の反映
 
     // OLED表示を完全にOFFにする（I2C制御）
-    display.ssd1306_command(SSD1306_DISPLAYOFF);
+//    display.ssd1306_command(SSD1306_DISPLAYOFF);
 
-    digitalWrite(LED_PIN, LOW);  // LEDも消灯
-    delay(50);  // 念のため
+//    digitalWrite(LED_PIN, LOW);  // LEDも消灯
+//    delay(50);  // 念のため
 
     // スリープ復帰設定（GPIO8がLOWで復帰）
-    esp_sleep_enable_ext0_wakeup(GPIO_NUM_8, 0);
-    esp_deep_sleep_start();
-  }
+//    esp_sleep_enable_ext0_wakeup(GPIO_NUM_8, 0);
+//    esp_deep_sleep_start();
+//  }
 }
