@@ -62,9 +62,9 @@ const uint8_t EMULATOR_MAC[6] = {0x98, 0x3D, 0xAE, 0x60, 0x55, 0x1C};  // 故障
 // ========== ピン定義 ==========
 #define PI_UART_TX_PIN 43   // ESP32からPiへのTX
 #define PI_UART_RX_PIN 44   // PiからESP32へのRX
-#define TC_UART_TX_PIN 1    // BitBang送信用
-#define TC_UART_RX_PIN 0    // BitBang受信用
-#define TEST_PIN 8
+#define TC_UART_TX_PIN 2    // BitBang送信用(1->2)
+#define TC_UART_RX_PIN 3    // BitBang受信用(0->3)
+#define TEST_PIN 8          // テスト用トグルスイッチ
 #define LED_PIN        21  // 内蔵LED
 
 // ========== 通信定義 ==========
