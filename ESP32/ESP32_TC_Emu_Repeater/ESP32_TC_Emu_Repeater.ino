@@ -54,14 +54,16 @@ QueueHandle_t echoQueue;
 #define ECHO_PACKET_SIZE  6
 
 // ========== MACアドレス定義 ==========
-const uint8_t REPEATER_MAC[6] = {0x98, 0x3D, 0xAE, 0x60, 0x55, 0x1C};
-const uint8_t EMULATOR_MAC[6] = {0x8C, 0xBF, 0xEA, 0x8E, 0x57, 0xF4};
+//const uint8_t REPEATER_MAC[6] = {0x98, 0x3D, 0xAE, 0x60, 0x55, 0x1C};
+//const uint8_t EMULATOR_MAC[6] = {0x8C, 0xBF, 0xEA, 0x8E, 0x57, 0xF4};
+const uint8_t REPEATER_MAC[6] = {0x8C, 0xBF, 0xEA, 0x8E, 0x57, 0xF4};
+const uint8_t EMULATOR_MAC[6] = {0x98, 0x3D, 0xAE, 0x60, 0x55, 0x1C};
 
 // ========== ピン定義 ==========
-#define PI_UART_TX_PIN 43
-#define PI_UART_RX_PIN 44
-#define TC_UART_TX_PIN 1
-#define TC_UART_RX_PIN 0
+#define PI_UART_TX_PIN 43   // ESP32からPiへのTX
+#define PI_UART_RX_PIN 44   // PiからESP32へのRX
+#define TC_UART_TX_PIN 2    // BitBang送信用
+#define TC_UART_RX_PIN 3    // BitBang受信用
 #define TEST_PIN 8
 #define LED_PIN        21  // 内蔵LED
 
@@ -287,16 +289,33 @@ void detectMode() {
 
 // 死活の本体LED点滅と、擬似パケット送信モードSW対応
 void loop() {
-  bool currentState = digitalRead(TEST_PIN);
-
-  // for Debug
-//  Serial.println(digitalRead(TC_UART_RX_PIN));
-//  delay(10);
-
+  // loop()内でのチャタリング対策（例）
+  unsigned long lastDebounceTime = 0;
+  const unsigned long debounceDelay = 50;
   // トグルスイッチ変化検出
+  bool currentState = digitalRead(TEST_PIN);
+  if (currentState != lastTestPinState) {
+    lastDebounceTime = millis();  // 状態変化を検出
+  }
+
   if (currentState != lastTestPinState) {
     lastTestPinState = currentState;
 
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    if (currentState != testMode) {
+      testMode = currentState;
+      if (testMode) {
+        logToOLED("TestMode ON", "Sending Start");
+        lastSendTime = millis();
+      } else {
+        logToOLED("TestMode OFF", "Sending Stop");
+        digitalWrite(LED_PIN, LOW);
+      }
+    }
+  }
+  lastTestPinState = currentState;
+
+#if 0
     if (currentState == HIGH) {
       logToOLED("TestMode ON", "Sending Start");
       testMode = true;
@@ -307,6 +326,7 @@ void loop() {
       digitalWrite(LED_PIN, LOW);  // 状態リセット
     }
   }
+#endif
 
   // ★ リピーターモードの動作
   if (current_mode == MODE_REPEATER) {
@@ -327,14 +347,12 @@ void loop() {
         lastBlinkTime = millis();
       }
     }
-  }
-
-  // ★ エミュレーターモードの動作（常に点滅＋必要なら送信）
-  else if (current_mode == MODE_EMULATOR) {
-    if (testMode && millis() - lastSendTime >= 1000) {
-      Serial2.write(testPacket, 6);
-      logToOLED("EMULATOR TEST", "Sent to Pi");
-      lastSendTime = millis();
+    } else if (current_mode == MODE_EMULATOR) { // ★ エミュレーターモードの動作（常に点滅＋必要なら送信）
+      if (testMode && millis() - lastSendTime >= 1000) {
+        Serial2.write(testPacket, 6);
+        logToOLED("EMULATOR TEST", "Sent to Pi");
+        lastSendTime = millis();
+      }
     }
 
     // 常に点滅
