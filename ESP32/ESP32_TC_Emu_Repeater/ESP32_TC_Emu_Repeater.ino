@@ -36,7 +36,7 @@ uint8_t current_mode = 0;
 #define ENABLE_ALIVE_LOG 0              // デフォルトはAliveログのみ
 #define LOG_MODE_PIN 10                 // GPIO10をスイッチに使用
 #define ALIVE_TIME 3000                 // 死活確認時間 3秒
-bool enableVerboseLog = false;          // 詳細ログ有効フラグ
+bool enableVerboseLog = ture;          // 詳細ログ有効フラグ
 unsigned long lastAlive = 0;            // タスク死活フラグ
 unsigned long lastAliveSend = 0;        // タスク死活フラグ
 
@@ -251,7 +251,7 @@ void setup() {
 
   // ログモードスイッチ設定
   pinMode(LOG_MODE_PIN, INPUT_PULLUP);  // LOWで詳細ログON
-  enableVerboseLog = (digitalRead(LOG_MODE_PIN) == LOW);
+//  enableVerboseLog = (digitalRead(LOG_MODE_PIN) == LOW);
 
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDRESS);
