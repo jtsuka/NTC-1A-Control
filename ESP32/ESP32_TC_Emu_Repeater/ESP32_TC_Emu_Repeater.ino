@@ -226,25 +226,9 @@ void emulatorSenderTask(void* pv) {
   }
 }
 
-#if 0
-// ========== エミュレーター処理 ==========
-void emulatorTask(void* pv) {
-  uint8_t buf[6];
-  while (1) {
-    // BitBangでパケット受信を試みる
-    if (digitalRead(TC_UART_RX_PIN) == LOW) {
-      bitbangReceivePacket(buf, 6);         // ← これは void なので単独で使う
-      bitbangSendPacket(buf, 6);            // そのままエコーバック
-      logToOLED("Emulator Mode", "Echo TC packet");
-    }
-    vTaskDelay(pdMS_TO_TICKS(10));  // 無駄なCPU回しを回避
-  }
-}
-#endif
-
 // ========== setup ==========
 void setup() {
-  WiFi.mode(WIFI_STA);  // ← これを追加
+  WiFi.mode(WIFI_STA);  // ← WIFIのMACアドレスで個体識別をする
   Serial.begin(115200);
   pinMode(TEST_PIN, INPUT);
   pinMode(TC_UART_TX_PIN, OUTPUT); digitalWrite(TC_UART_TX_PIN, HIGH);
