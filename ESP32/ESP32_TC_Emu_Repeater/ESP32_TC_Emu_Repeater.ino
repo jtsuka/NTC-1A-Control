@@ -208,7 +208,7 @@ void emulatorSenderTask(void* pv) {
         for (int i = 0; i < 6; i++) msg += String(buf[i], HEX) + " ";
         logToOLED("Echoed Back", msg);
         for (int i = 0; i < ECHO_PACKET_SIZE; i++) {
-          LogNsg += " " + String(buf[i], HEX);
+          LogMsg += " " + String(buf[i], HEX);
         }
         Serial.println(msg);
       }
