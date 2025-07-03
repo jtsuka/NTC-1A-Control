@@ -175,8 +175,14 @@ void emulatorReceiverTask(void* pv) {
 
       if (enableVerboseLog) {
         String msg = "RECV: ";
+        String LogMsg = "[EmuRecv] Packet:";
         for (int i = 0; i < 6; i++) msg += String(buf[i], HEX) + " ";
         logToOLED(msg, "→ Queued for echo");
+        // for debug log
+        for (int i = 0; i < ECHO_PACKET_SIZE; i++) {
+          LogMsg += " " + String(buf[i], HEX);
+        }
+        Serial.println(msg);
       }
     }
 #if ENABLE_ALIVE_LOG
@@ -198,8 +204,13 @@ void emulatorSenderTask(void* pv) {
 
       if (enableVerboseLog) {
         String msg = "SEND: ";
+        String LogMsg = "[EmuSend] Echoed:";
         for (int i = 0; i < 6; i++) msg += String(buf[i], HEX) + " ";
         logToOLED("Echoed Back", msg);
+        for (int i = 0; i < ECHO_PACKET_SIZE; i++) {
+          LogNsg += " " + String(buf[i], HEX);
+        }
+        Serial.println(msg);
       }
     }
 #if ENABLE_ALIVE_LOG
