@@ -130,6 +130,8 @@ uint8_t bitbangReceiveByte() {
 }
 
 void bitbangReceivePacket(uint8_t* buf, int len) {
+  // for debug
+  Serial.println("[DEBUG] Start bit detected");
   for (int i = 0; i < len; i++) buf[i] = bitbangReceiveByte();
 }
 
