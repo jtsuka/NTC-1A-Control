@@ -289,6 +289,10 @@ void detectMode() {
 void loop() {
   bool currentState = digitalRead(TEST_PIN);
 
+  // for Debug
+  Serial.println(digitalRead(TC_UART_RX_PIN));
+  delay(10);
+
   // トグルスイッチ変化検出
   if (currentState != lastTestPinState) {
     lastTestPinState = currentState;
