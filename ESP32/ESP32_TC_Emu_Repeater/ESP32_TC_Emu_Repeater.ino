@@ -33,7 +33,7 @@ SemaphoreHandle_t oledMutex;
 #define MODE_EMULATOR 2
 uint8_t current_mode = 0;
 // ========= ログレベル定義 =========
-#define ENABLE_ALIVE_LOG 1              // デフォルトはAliveログのみ
+#define ENABLE_ALIVE_LOG 0              // デフォルトはAliveログのみ
 #define LOG_MODE_PIN 10                 // GPIO10をスイッチに使用
 #define ALIVE_TIME 3000                 // 死活確認時間 3秒
 bool enableVerboseLog = false;          // 詳細ログ有効フラグ
