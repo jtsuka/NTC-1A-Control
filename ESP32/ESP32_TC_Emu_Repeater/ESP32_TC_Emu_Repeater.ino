@@ -36,7 +36,7 @@ uint8_t current_mode = 0;
 #define ENABLE_ALIVE_LOG 0              // デフォルトはAliveログのみ
 #define LOG_MODE_PIN 10                 // GPIO10をスイッチに使用
 #define ALIVE_TIME 3000                 // 死活確認時間 3秒
-bool enableVerboseLog = ture;          // 詳細ログ有効フラグ
+bool enableVerboseLog = true;          // 詳細ログ有効フラグ
 unsigned long lastAlive = 0;            // タスク死活フラグ
 unsigned long lastAliveSend = 0;        // タスク死活フラグ
 
