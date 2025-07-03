@@ -126,6 +126,7 @@ uint8_t bitbangReceiveByte() {
     b |= (digitalRead(TC_UART_RX_PIN) << i);
     delayMicroseconds(BIT_DELAY_US);
   }
+  Serial.printf("[DEBUG] Received byte: %02X\n", b); // ← NEW!
   return b;
 }
 
@@ -159,6 +160,7 @@ void bitbangToUartTask(void* pv) {
   while (1) {
     if (digitalRead(TC_UART_RX_PIN) == LOW) {
       uint8_t buf[6];
+      Serial.println("[DEBUG] Start bit LOW detected (EmuRecv)");
       bitbangReceivePacket(buf, 6);
       Serial2.write(buf, 6);
       logToOLED("BitBang->UART", String("RECV: ") + String(buf[0], HEX));
