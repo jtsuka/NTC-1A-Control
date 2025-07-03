@@ -254,6 +254,7 @@ void setup() {
   // ログモードスイッチ設定
   pinMode(LOG_MODE_PIN, INPUT_PULLUP);  // LOWで詳細ログON
 //  enableVerboseLog = (digitalRead(LOG_MODE_PIN) == LOW);
+  enableVerboseLog = true;
 
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDRESS);
@@ -271,6 +272,8 @@ void setup() {
     echoQueue = xQueueCreate(ECHO_QUEUE_LENGTH, ECHO_PACKET_SIZE);
     xTaskCreatePinnedToCore(emulatorReceiverTask, "EmuRecv", 4096, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(emulatorSenderTask, "EmuSend", 4096, NULL, 1, NULL, 1);
+    // for Debug
+    Serial.println("[Setup] EMULATOR Receiver task created");
   } else {
     logToOLED("ERROR", "Unknown MAC address");
   }
@@ -352,40 +355,3 @@ void loop() {
     }
   }
 }
-
-#if 0
-void loop() {
-  bool currentState = digitalRead(TEST_PIN);
-
-  // トグル状態の検出
-  if (currentState != lastTestPinState) {
-    lastTestPinState = currentState;
-
-    if (currentState == HIGH) {
-      logToOLED("TestMode ON", "Sending Start");
-      testMode = true;
-      lastSendTime = millis();
-    } else {
-      logToOLED("TestMode OFF", "Sending Stop");
-      testMode = false;
-      digitalWrite(LED_PIN, LOW);
-    }
-  }
-
-// パケット送信とLED点滅（TC:BitBang送信 + Pi:UART送信）
-  if (current_mode == MODE_REPEATER && testMode) {
-    if (millis() - lastSendTime >= 1000) {
-      sendTestPacket();               // TC側（BitBang）
-      Serial2.write(testPacket, 6);   // Pi側（UART）
-      logToOLED("TestMode ON", "Sent to TC+Pi");
-      lastSendTime = millis();
-    }
-
-    if (millis() - lastBlinkTime >= 500) {
-      ledState = !ledState;
-      digitalWrite(LED_PIN, ledState);
-      lastBlinkTime = millis();
-    }
-  }
-}
-#endif
