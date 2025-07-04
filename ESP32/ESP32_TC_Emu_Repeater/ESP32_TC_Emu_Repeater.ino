@@ -33,7 +33,7 @@ SemaphoreHandle_t oledMutex;
 #define MODE_EMULATOR 2
 uint8_t current_mode = 0;
 // ========= ログレベル定義 =========
-#define ENABLE_ALIVE_LOG 0              // デフォルトはAliveログのみ
+#define ENABLE_ALIVE_LOG 1              // デフォルトはAliveログのみ
 #define LOG_MODE_PIN 10                 // GPIO10をスイッチに使用
 #define ALIVE_TIME 3000                 // 死活確認時間 3秒
 bool enableVerboseLog = true;          // 詳細ログ有効フラグ
@@ -226,8 +226,8 @@ void setup() {
 
   // ログモードスイッチ設定
   pinMode(LOG_MODE_PIN, INPUT_PULLUP);  // LOWで詳細ログON
-//  enableVerboseLog = (digitalRead(LOG_MODE_PIN) == LOW);
-  enableVerboseLog = true;
+  enableVerboseLog = (digitalRead(LOG_MODE_PIN) == LOW);
+//  enableVerboseLog = true;
 
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDRESS);
