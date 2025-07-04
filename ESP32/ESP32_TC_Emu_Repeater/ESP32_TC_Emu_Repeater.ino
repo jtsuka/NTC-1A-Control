@@ -89,21 +89,6 @@ void logToOLED(const String& upper, const String& lower) {
   }
   Serial.println(upper + " | " + lower);
 }
-#if 0
-void logToOLED(const String& line1, const String& line2) {
-  if (xSemaphoreTake(oledMutex, portMAX_DELAY) == pdTRUE) {
-    display.clearDisplay();
-    display.setCursor(0, 0);
-    display.setTextSize(1);
-    display.setTextColor(SSD1306_WHITE);
-    display.println(line1);
-    display.println(line2);
-    display.display();
-    xSemaphoreGive(oledMutex);
-  }
-  Serial.println(line1 + " | " + line2);
-}
-#endif
 
 // ========== BitBang送信 ==========
 void bitbangSendByte(uint8_t b) {
@@ -266,12 +251,6 @@ void setup() {
     logToOLED("ERROR", "Unknown MAC address");
   }
 
-#if 0
-  } else if (current_mode == MODE_EMULATOR) {
-    logToOLED("Mode: EMULATOR", "Starting task...");
-    xTaskCreatePinnedToCore(emulatorTask, "Emulator", 4096, NULL, 1, NULL, 1);
-  }
-#endif
 }
 
 // ========== MACアドレスチェック ==========
@@ -314,19 +293,6 @@ void loop() {
     }
   }
   lastTestPinState = currentState;
-
-#if 0
-    if (currentState == HIGH) {
-      logToOLED("TestMode ON", "Sending Start");
-      testMode = true;
-      lastSendTime = millis();
-    } else {
-      logToOLED("TestMode OFF", "Sending Stop");
-      testMode = false;
-      digitalWrite(LED_PIN, LOW);  // 状態リセット
-    }
-  }
-#endif
 
   // ★ リピーターモードの動作
   if (current_mode == MODE_REPEATER) {
