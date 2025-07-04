@@ -34,7 +34,7 @@ SemaphoreHandle_t oledMutex;
 uint8_t current_mode = 0;
 // ========= ログレベル定義 =========
 #define ENABLE_ALIVE_LOG 1              // デフォルトはAliveログのみ
-#define LOG_MODE_PIN 10                 // GPIO10をスイッチに使用
+#define LOG_MODE_PIN 8                 // GPIO8をスイッチに使用
 #define ALIVE_TIME 3000                 // 死活確認時間 3秒
 bool enableVerboseLog = true;          // 詳細ログ有効フラグ
 unsigned long lastAlive = 0;            // タスク死活フラグ
@@ -204,13 +204,14 @@ void emulatorSenderTask(void* pv) {
         Serial.println(msg);
       }
     }
+  } 
+
 #if ENABLE_ALIVE_LOG
     if (millis() - lastAliveSend > ALIVE_TIME) {
       Serial.println("[EmuSend] Alive");
       lastAliveSend = millis();
     }
 #endif
-  }
 }
 
 // ========== setup ==========
@@ -227,7 +228,6 @@ void setup() {
   // ログモードスイッチ設定
   pinMode(LOG_MODE_PIN, INPUT_PULLUP);  // LOWで詳細ログON
   enableVerboseLog = (digitalRead(LOG_MODE_PIN) == LOW);
-//  enableVerboseLog = true;
 
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDRESS);
@@ -240,6 +240,10 @@ void setup() {
     logToOLED("Mode: REPEATER", "GPIO8=HIGH => Test");
     xTaskCreatePinnedToCore(uartToBitbangTask, "UART2BB", 4096, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(bitbangToUartTask, "BB2UART", 4096, NULL, 1, NULL, 1);
+    // for debug
+    pinMode(TEST_PIN, INPUT);
+    pinMode(LED_PIN, OUTPUT);
+    Serial.printf("TEST_PIN = %d\n", digitalRead(TEST_PIN));
   } else if (current_mode == MODE_EMULATOR) {
     logToOLED("Mode: EMULATOR", "Starting echo tasks");
     echoQueue = xQueueCreate(ECHO_QUEUE_LENGTH, ECHO_PACKET_SIZE);
