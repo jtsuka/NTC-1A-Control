@@ -97,7 +97,7 @@
 
   Grove Shield for Seeeduino XIAO v1.0 基板図面あり
 
-
+![Grove for XIAO-ESP32S3](E:\Users\塚田淳一\Documents\GitHub\NTC-1A-Control\Grove for XIAO-ESP32S3.png)
 
 
 
