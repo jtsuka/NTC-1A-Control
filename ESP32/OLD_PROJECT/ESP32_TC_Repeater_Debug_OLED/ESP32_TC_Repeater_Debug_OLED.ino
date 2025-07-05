@@ -104,12 +104,12 @@ void task_fake_tc_tx(void* pv) {
     xSemaphoreTake(xStopFlagMutex, portMAX_DELAY);
     flag = stopFlag;
     xSemaphoreGive(xStopFlagMutex);
-//    if (!flag && digitalRead(SAFE_MODE_PIN)) {
+    if (!flag && digitalRead(SAFE_MODE_PIN)) {
       SerialPI.write(test_packet_tc, PACKET_SIZE);  // ← UARTへ送信
       String msg;
       printHex(msg, test_packet_tc);
       oled.logLine(2, "[FAKE->PI] " + msg);
-//    }
+    }
     vTaskDelay(pdMS_TO_TICKS(2000));  // 2秒間隔
   }
 }
