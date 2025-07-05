@@ -61,8 +61,8 @@ public:
 // ==== ピン定義・UART設定 ====
 #define PI_UART_TX_PIN 43
 #define PI_UART_RX_PIN 44
-#define TC_UART_TX_PIN 1
-#define TC_UART_RX_PIN 0
+#define TC_UART_TX_PIN 2
+#define TC_UART_RX_PIN 3
 #define SAFE_MODE_PIN   2
 #define LED_PIN        21
 #define UART_BAUD_PI   9600
