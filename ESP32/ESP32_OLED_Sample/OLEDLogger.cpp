@@ -9,15 +9,15 @@
 #define LINE_Y(n) (n * 16)
 
 // OLED I2C bus
-TwoWire OLED_Wire = TwoWire(0);
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &OLED_Wire, OLED_RESET);
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 OLEDLogger::OLEDLogger() {
   oledMutex = xSemaphoreCreateMutex();
 }
 
 void OLEDLogger::begin() {
-  OLED_Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN, 400000);
+  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);  // 標準インスタンスで初期化
+  Wire.setClock(400000);                // 必要に応じてクロック変更
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println("SSD1306 allocation failed");
     for (;;);
