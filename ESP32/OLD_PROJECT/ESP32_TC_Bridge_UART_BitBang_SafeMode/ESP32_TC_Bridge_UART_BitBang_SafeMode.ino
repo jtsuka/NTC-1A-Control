@@ -17,12 +17,12 @@
 #define USE_BITBANG 0
 #define PI_UART_TX_PIN 43
 #define PI_UART_RX_PIN 44
-#define TC_UART_TX_PIN 1
-#define TC_UART_RX_PIN 0
+#define TC_UART_TX_PIN 2
+#define TC_UART_RX_PIN 3
 #define LED_PIN 21
 #define I2C_SDA 5
 #define I2C_SCL 6
-#define SAFE_MODE_PIN 2
+#define SAFE_MODE_PIN 8
 #define OLED_ADDR 0x3C
 #define UART_BAUD_PI 1200
 #define UART_BAUD_TC 300

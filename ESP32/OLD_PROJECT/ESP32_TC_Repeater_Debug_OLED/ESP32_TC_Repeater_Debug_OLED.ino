@@ -61,8 +61,8 @@ public:
 // ==== ピン定義・UART設定 ====
 #define PI_UART_TX_PIN 43
 #define PI_UART_RX_PIN 44
-#define TC_UART_TX_PIN 1
-#define TC_UART_RX_PIN 0
+#define TC_UART_TX_PIN 2
+#define TC_UART_RX_PIN 3
 #define SAFE_MODE_PIN   2
 #define LED_PIN        21
 #define UART_BAUD_PI   9600
@@ -104,12 +104,12 @@ void task_fake_tc_tx(void* pv) {
     xSemaphoreTake(xStopFlagMutex, portMAX_DELAY);
     flag = stopFlag;
     xSemaphoreGive(xStopFlagMutex);
-//    if (!flag && digitalRead(SAFE_MODE_PIN)) {
+    if (!flag && digitalRead(SAFE_MODE_PIN)) {
       SerialPI.write(test_packet_tc, PACKET_SIZE);  // ← UARTへ送信
       String msg;
       printHex(msg, test_packet_tc);
       oled.logLine(2, "[FAKE->PI] " + msg);
-//    }
+    }
     vTaskDelay(pdMS_TO_TICKS(2000));  // 2秒間隔
   }
 }

@@ -34,7 +34,7 @@ SemaphoreHandle_t oledMutex;
 uint8_t current_mode = 0;
 // ========= ログレベル定義 =========
 #define ENABLE_ALIVE_LOG 0              // デフォルトはAliveログのみ
-#define LOG_MODE_PIN 10                 // GPIO10をスイッチに使用
+#define LOG_MODE_PIN 8                 // GPIO8をスイッチに使用
 #define ALIVE_TIME 3000                 // 死活確認時間 3秒
 bool enableVerboseLog = true;          // 詳細ログ有効フラグ
 unsigned long lastAlive = 0;            // タスク死活フラグ
@@ -42,7 +42,7 @@ unsigned long lastAliveSend = 0;        // タスク死活フラグ
 
 
 // ===== テストモード制御用グローバル変数 =====
-bool testMode = false;
+bool testMode = true;
 bool lastTestPinState = LOW;
 unsigned long lastSendTime = 0;
 unsigned long lastBlinkTime = 0;
@@ -54,10 +54,10 @@ QueueHandle_t echoQueue;
 #define ECHO_PACKET_SIZE  6
 
 // ========== MACアドレス定義 ==========
-//const uint8_t REPEATER_MAC[6] = {0x98, 0x3D, 0xAE, 0x60, 0x55, 0x1C};
-//const uint8_t EMULATOR_MAC[6] = {0x8C, 0xBF, 0xEA, 0x8E, 0x57, 0xF4};
+//const uint8_t EMULATOR_MAC[6] = {0x98, 0x3D, 0xAE, 0x60, 0x55, 0x1C};  // 故障
 const uint8_t REPEATER_MAC[6] = {0x8C, 0xBF, 0xEA, 0x8E, 0x57, 0xF4};
-const uint8_t EMULATOR_MAC[6] = {0x98, 0x3D, 0xAE, 0x60, 0x55, 0x1C};  // 故障
+const uint8_t EMULATOR_MAC[6] = {0xD8, 0x3B, 0xDA, 0x74, 0x82, 0x78};
+
 
 // ========== ピン定義 ==========
 #define PI_UART_TX_PIN 43   // ESP32からPiへのTX
@@ -124,8 +124,8 @@ void bitbangReceivePacket(uint8_t* buf, int len) {
 }
 
 // ========== テストパケット送信 ==========
-void sendTestPacket() {
-  bitbangSendPacket(testPacket, 6);
+void sendTestPacket(const uint8_t *packet, int lengs) {
+  bitbangSendPacket(packet, lengs);
   logToOLED("Test Packet", "Sent via BitBang");
 }
 
@@ -204,20 +204,25 @@ void emulatorSenderTask(void* pv) {
         Serial.println(msg);
       }
     }
+  } 
+
 #if ENABLE_ALIVE_LOG
     if (millis() - lastAliveSend > ALIVE_TIME) {
       Serial.println("[EmuSend] Alive");
       lastAliveSend = millis();
     }
 #endif
-  }
 }
 
 // ========== setup ==========
 void setup() {
-  WiFi.mode(WIFI_STA);  // ← WIFIのMACアドレスで個体識別をする
+  // ← WIFIのMACアドレスで個体識別をする
+  WiFi.mode(WIFI_STA);
+  // Arduino IDEのシリアル設定
   Serial.begin(115200);
+  // トグルスイッチピンの設定
   pinMode(TEST_PIN, INPUT);
+  // UART PIN 設定
   pinMode(TC_UART_TX_PIN, OUTPUT); digitalWrite(TC_UART_TX_PIN, HIGH);
   pinMode(TC_UART_RX_PIN, INPUT);
   // LEDPINセット
@@ -226,31 +231,45 @@ void setup() {
 
   // ログモードスイッチ設定
   pinMode(LOG_MODE_PIN, INPUT_PULLUP);  // LOWで詳細ログON
-//  enableVerboseLog = (digitalRead(LOG_MODE_PIN) == LOW);
-  enableVerboseLog = true;
+  enableVerboseLog = (digitalRead(LOG_MODE_PIN) == LOW);
 
+  // OLED初期設定
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDRESS);
+  // OLED排他制御用 Mutex
   oledMutex = xSemaphoreCreateMutex();
 
+  // Seeeduino XIAO ESP32S3 MacAddr 個体識別の為に取得しモードを決定する
   detectMode();
 
-  if (current_mode == MODE_REPEATER) {
-    Serial2.begin(UART_BAUDRATE, SERIAL_8N1, PI_UART_RX_PIN, PI_UART_TX_PIN);
-    logToOLED("Mode: REPEATER", "GPIO8=HIGH => Test");
-    xTaskCreatePinnedToCore(uartToBitbangTask, "UART2BB", 4096, NULL, 1, NULL, 1);
-    xTaskCreatePinnedToCore(bitbangToUartTask, "BB2UART", 4096, NULL, 1, NULL, 1);
-  } else if (current_mode == MODE_EMULATOR) {
-    logToOLED("Mode: EMULATOR", "Starting echo tasks");
-    echoQueue = xQueueCreate(ECHO_QUEUE_LENGTH, ECHO_PACKET_SIZE);
-    xTaskCreatePinnedToCore(emulatorReceiverTask, "EmuRecv", 4096, NULL, 1, NULL, 1);
-    xTaskCreatePinnedToCore(emulatorSenderTask, "EmuSend", 4096, NULL, 1, NULL, 1);
-    // for Debug
-    Serial.println("[Setup] EMULATOR Receiver task created");
-  } else {
-    logToOLED("ERROR", "Unknown MAC address");
+  // 個体識別をして、リピーターモードかTCエミュレーターモードを決定して初期化する
+  switch (current_mode) {
+    case MODE_REPEATER:
+      Serial2.begin(UART_BAUDRATE, SERIAL_8N1, PI_UART_RX_PIN, PI_UART_TX_PIN);
+      logToOLED("Mode: REPEATER", "GPIO8=HIGH => Test");
+      xTaskCreatePinnedToCore(uartToBitbangTask, "UART2BB", 4096, NULL, 1, NULL, 1);
+      xTaskCreatePinnedToCore(bitbangToUartTask, "BB2UART", 4096, NULL, 1, NULL, 1);
+      // for debug
+      pinMode(TEST_PIN, INPUT);
+      pinMode(LED_PIN, OUTPUT);
+      Serial.printf("TEST_PIN = %d\n", digitalRead(TEST_PIN));
+      break;
+
+    case MODE_EMULATOR:
+      logToOLED("Mode: EMULATOR", "Starting echo tasks");
+      echoQueue = xQueueCreate(ECHO_QUEUE_LENGTH, ECHO_PACKET_SIZE);
+      xTaskCreatePinnedToCore(emulatorReceiverTask, "EmuRecv", 4096, NULL, 1, NULL, 1);
+      xTaskCreatePinnedToCore(emulatorSenderTask, "EmuSend", 4096, NULL, 1, NULL, 1);
+      // for Debug
+      Serial.println("[Setup] EMULATOR Receiver task created");
+      break;
+
+    default:
+      logToOLED("ERROR", "Unknown MAC address");
+      break;
   }
 
+  return;
 }
 
 // ========== MACアドレスチェック ==========
@@ -277,55 +296,70 @@ void loop() {
     lastDebounceTime = millis();  // 状態変化を検出
   }
 
+  // 今のスイッチと前のスイッチのモードを比較してモードを表示する
   if (currentState != lastTestPinState) {
     lastTestPinState = currentState;
 
-  if ((millis() - lastDebounceTime) > debounceDelay) {
-    if (currentState != testMode) {
-      testMode = currentState;
-      if (testMode) {
-        logToOLED("TestMode ON", "Sending Start");
-        lastSendTime = millis();
-      } else {
-        logToOLED("TestMode OFF", "Sending Stop");
-        digitalWrite(LED_PIN, LOW);
+    if ((millis() - lastDebounceTime) > debounceDelay) {
+      if (currentState != testMode) {
+        testMode = currentState;
+        if (testMode) {
+          logToOLED("TestMode ON", "Sending Start");
+          lastSendTime = millis();
+        } else {
+          logToOLED("TestMode OFF", "Sending Stop");
+          digitalWrite(LED_PIN, LOW);
+        }
       }
     }
-  }
-  lastTestPinState = currentState;
+    lastTestPinState = currentState;
 
-  // ★ リピーターモードの動作
-  if (current_mode == MODE_REPEATER) {
-    if (testMode) {
-      // 擬似送信（TCとPi両方へ）＆ LED点灯
-      if (millis() - lastSendTime >= 1000) {
-        sendTestPacket();                   // BitBang送信
-        Serial2.write(testPacket, 6);       // Pi送信
-        logToOLED("REPEATER TEST", "Sent to TC+Pi");
-        lastSendTime = millis();
-      }
-      digitalWrite(LED_PIN, HIGH);  // 送信中は常時点灯
-    } else {
-      // 通常時は500ms点滅
-      if (millis() - lastBlinkTime >= 500) {
-        ledState = !ledState;
-        digitalWrite(LED_PIN, ledState);
-        lastBlinkTime = millis();
-      }
+    switch (current_mode) {
+      case MODE_REPEATER:                 // ★ リピーターモードの動作
+        if (testMode) {
+          // 擬似送信（TCとPi両方へ）＆ LED点灯
+          if (millis() - lastSendTime >= 1000) {
+            sendTestPacket(testPacket, ECHO_PACKET_SIZE);       // BitBang送信
+            Serial2.write(testPacket, ECHO_PACKET_SIZE);        // Pi送信
+            logToOLED("REPEATER TEST", "Sent to TC+Pi");
+            lastSendTime = millis();
+            ledState = !ledState;
+            digitalWrite(LED_PIN, ledState);
+        }
+          digitalWrite(LED_PIN, HIGH);  // 送信中は常時点灯
+        } else {
+            // 通常時は500ms点滅
+          if (millis() - lastBlinkTime >= 500) {
+            ledState = !ledState;
+            digitalWrite(LED_PIN, ledState);
+            lastBlinkTime = millis();
+          }
+        }
+        break;
+      case MODE_EMULATOR:               // ★ エミュレーターモードの動作（常に点滅＋必要なら送信
+        // ★ エミュレーターモードの動作（常に点滅＋必要なら送信）
+        if (testMode && millis() - lastSendTime >= 1000) {
+          Serial2.write(testPacket, 6);
+          logToOLED("EMULATOR TEST", "Send to Repeater");
+          lastSendTime = millis();
+        }
+        // 通常時は500ms点滅
+        if (millis() - lastBlinkTime >= 500) {
+          ledState = !ledState;
+          digitalWrite(LED_PIN, ledState);
+          lastBlinkTime = millis();
+        }
+        break;
     }
-    } else if (current_mode == MODE_EMULATOR) { // ★ エミュレーターモードの動作（常に点滅＋必要なら送信）
-      if (testMode && millis() - lastSendTime >= 1000) {
-        Serial2.write(testPacket, 6);
-        logToOLED("EMULATOR TEST", "Sent to Pi");
-        lastSendTime = millis();
-      }
-    }
-
+#if 0
     // 常に点滅
     if (millis() - lastBlinkTime >= 500) {
       ledState = !ledState;
       digitalWrite(LED_PIN, ledState);
       lastBlinkTime = millis();
     }
+#endif
   }
 }
+
+
