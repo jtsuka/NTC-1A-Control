@@ -1,22 +1,74 @@
-#include <Arduino.h>
-#include "OLEDLogger.h"
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
-// ==== 表示メッセージ構造体とキュー定義 ====
+// ==== OLEDLoggerクラス定義（クラス化・インスタンス1つのみ） ====
+
+class OLEDLogger {
+private:
+  Adafruit_SSD1306 display;
+  SemaphoreHandle_t mutex;
+
+public:
+  OLEDLogger() : display(128, 64, &Wire, -1) {
+    mutex = xSemaphoreCreateMutex();
+  }
+
+  bool begin() {
+    if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+      return false;
+    }
+    display.clearDisplay();
+    display.display();
+    return true;
+  }
+
+  void updateTop(const String& line1, const String& line2) {
+    if (xSemaphoreTake(mutex, portMAX_DELAY)) {
+      display.fillRect(0, 0, 128, 32, BLACK);
+      display.setTextSize(1);
+      display.setTextColor(WHITE);
+      display.setCursor(0, 0);
+      display.println(line1);
+      display.println(line2);
+      display.display();
+      xSemaphoreGive(mutex);
+    }
+  }
+
+  void updateBottom(const String& line1, const String& line2) {
+    if (xSemaphoreTake(mutex, portMAX_DELAY)) {
+      display.fillRect(0, 32, 128, 32, BLACK);
+      display.setTextSize(1);
+      display.setTextColor(WHITE);
+      display.setCursor(0, 32);
+      display.println(line1);
+      display.println(line2);
+      display.display();
+      xSemaphoreGive(mutex);
+    }
+  }
+};
+
+// ==== 定義と初期化 ====
+
+#define I2C_SDA 4
+#define I2C_SCL 5
+
+OLEDLogger oled;
+QueueHandle_t oledQueue;
 
 typedef struct {
   String line1;
   String line2;
-  bool isTop;  // true = 上段, false = 下段
+  bool isTop;  // true=上段, false=下段
 } OledMessage;
 
-QueueHandle_t oledQueue;
-OLEDLogger oled;  // インスタンス生成
-
 // ==== OLED描画タスク ====
-void oledTask(void *pv) {
+void oledTask(void* pv) {
   OledMessage msg;
   for (;;) {
-    if (xQueueReceive(oledQueue, &msg, portMAX_DELAY) == pdTRUE) {
+    if (xQueueReceive(oledQueue, &msg, portMAX_DELAY)) {
       if (msg.isTop) {
         oled.updateTop(msg.line1, msg.line2);
       } else {
@@ -26,30 +78,36 @@ void oledTask(void *pv) {
   }
 }
 
-// ==== キュー送信用ユーティリティ関数 ====
+// ==== キュー送信ユーティリティ ====
 void sendToOLEDQueue(const String& l1, const String& l2, bool isTop) {
   OledMessage msg = { l1, l2, isTop };
-  xQueueSend(oledQueue, &msg, 0);  // 即時送信（失敗時は無視）
+  xQueueSend(oledQueue, &msg, 0);  // 非ブロッキング
 }
 
 // ==== セットアップ ====
 void setup() {
+  Wire.begin(I2C_SDA, I2C_SCL, 400000);  // Grove Shield対応
   Serial.begin(115200);
+  delay(200);
 
-  oled.begin();  // OLED初期化
+  if (!oled.begin()) {
+    Serial.println("OLED init failed");
+    while (1);
+  }
+
   oledQueue = xQueueCreate(8, sizeof(OledMessage));
   xTaskCreatePinnedToCore(oledTask, "OLEDTask", 4096, NULL, 1, NULL, 1);
 
-  sendToOLEDQueue("ESP32 OLED TEST", "Logger Ready", true);   // 上段に表示
-  sendToOLEDQueue("Loop Starts...", "", false);               // 下段に表示
+  sendToOLEDQueue("ESP32 OLED TEST", "Logger Ready", true);
+  sendToOLEDQueue("Loop Starts...", "", false);
 }
 
-// ==== メインループ：5秒おきに表示切替 ====
+// ==== メインループ ====
 void loop() {
   static uint32_t last = 0;
   static bool toggle = false;
 
-  if (millis() - last > 5000) {
+  if (millis() - last > 4000) {
     if (toggle) {
       sendToOLEDQueue("REPEATER MODE", "GPIO8 = HIGH", true);
       sendToOLEDQueue("Recv: 01 06", "ACK OK", false);
