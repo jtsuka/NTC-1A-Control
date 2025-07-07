@@ -31,6 +31,7 @@ class OLEDLogger {
 private:
   Adafruit_SSD1306* disp;
   SemaphoreHandle_t mutex;
+  portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
 
 public:
   OLEDLogger(Adafruit_SSD1306* d) : disp(d) {
@@ -42,9 +43,9 @@ public:
       return false;
     }
     disp->clearDisplay();
-    taskENTER_CRITICAL();
+    taskENTER_CRITICAL(&mutex);
     display->display();
-    taskEXIT_CRITICAL();
+    taskEXIT_CRITICAL(&mutex);
     return true;
   }
 
@@ -56,7 +57,9 @@ public:
       disp->setCursor(0, 0);
       disp->println(line1);
       disp->println(line2);
-      disp->display();
+      taskENTER_CRITICAL(&mux);
+      display->display();
+      taskEXIT_CRITICAL(&mux);
       xSemaphoreGive(mutex);
     }
   }
@@ -69,9 +72,9 @@ public:
       disp->setCursor(0, 32);
       disp->println(line1);
       disp->println(line2);
-      taskENTER_CRITICAL();
+      taskENTER_CRITICAL(&mux);
       display->display();
-      taskEXIT_CRITICAL();
+      taskEXIT_CRITICAL(&mux);
       xSemaphoreGive(mutex);
     }
   }
