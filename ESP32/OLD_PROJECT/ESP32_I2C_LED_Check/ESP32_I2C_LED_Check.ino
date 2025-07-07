@@ -1,34 +1,53 @@
 #include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
-#define LED_PIN 21  // XIAO ESP32S3 の内蔵LED
+// Grove Shield for Seeed XIAO ESP32S3 の I2Cピン
+#define I2C_SDA 4
+#define I2C_SCL 5
+
+Adafruit_SSD1306 display(128, 64, &Wire, -1);
 
 void setup() {
-  pinMode(LED_PIN, OUTPUT);
-  Wire.begin(5, 6);  // Grove I2CポートのSDA/SCL
   Serial.begin(115200);
-  while (!Serial);
+  delay(200);
+  Serial.println("=== I2C OLED 初期化チェック ===");
 
-  Serial.println("I2C scanner. Scanning ...");
-  byte count = 0;
+  // 念のためWireを明示的に終了・再開
+  Wire.end();
+  delay(50);
+  Wire.begin(I2C_SDA, I2C_SCL);
+  Wire.setClock(100000);  // 通常の100kHz
+  delay(200);             // OLEDのI2C安定化待ち
 
-  for (byte i = 1; i < 127; i++) {
-    Wire.beginTransmission(i);
-    if (Wire.endTransmission() == 0) {
-      Serial.print("Found address: 0x");
-      Serial.println(i, HEX);
-      count++;
-      delay(5);
+  // I2Cアドレススキャン（範囲指定）
+  Serial.println("[I2Cスキャン開始]");
+  for (uint8_t addr = 0x03; addr <= 0x77; addr++) {
+    Wire.beginTransmission(addr);
+    uint8_t error = Wire.endTransmission();
+    if (error == 0) {
+      Serial.print("I2Cデバイス検出: 0x");
+      Serial.println(addr, HEX);
     }
   }
+  Serial.println("[スキャン完了]");
 
-  Serial.print("Done. Found ");
-  Serial.print(count, DEC);
-  Serial.println(" device(s).");
+  // OLEDの初期化
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println("!!! OLED初期化失敗 !!!");
+    while (1);  // ハングしてエラー報告待ち
+  }
+
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 0);
+  display.println("OLED 0x3C Detected");
+  display.println("Init Successful!");
+  display.display();
+  Serial.println("OLED初期化 成功！画面に表示しています。");
 }
 
 void loop() {
-  digitalWrite(LED_PIN, HIGH);
-  delay(1000);
-  digitalWrite(LED_PIN, LOW);
-  delay(1000);
+  // 何もしない
 }
