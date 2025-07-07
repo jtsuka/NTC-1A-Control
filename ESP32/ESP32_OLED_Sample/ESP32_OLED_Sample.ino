@@ -43,9 +43,9 @@ public:
       return false;
     }
     disp->clearDisplay();
-    taskENTER_CRITICAL(&mutex);
+    taskENTER_CRITICAL(&mux);
     display->display();
-    taskEXIT_CRITICAL(&mutex);
+    taskEXIT_CRITICAL(&mux);
     return true;
   }
 
