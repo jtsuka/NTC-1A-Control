@@ -42,7 +42,9 @@ public:
       return false;
     }
     disp->clearDisplay();
-    disp->display();
+    taskENTER_CRITICAL();
+    display->display();
+    taskEXIT_CRITICAL();
     return true;
   }
 
@@ -67,7 +69,9 @@ public:
       disp->setCursor(0, 32);
       disp->println(line1);
       disp->println(line2);
-      disp->display();
+      taskENTER_CRITICAL();
+      display->display();
+      taskEXIT_CRITICAL();
       xSemaphoreGive(mutex);
     }
   }
