@@ -126,7 +126,7 @@ void bitbangReceivePacket(uint8_t* buf, int len) {
 // ========== テストパケット送信 ==========
 void sendTestPacket(const uint8_t *packet, int lengs) {
   bitbangSendPacket(packet, lengs);
-  logToOLED("Test Packet", "Sent via BitBang");
+//  logToOLED("Test Packet", "Sent via BitBang");
 }
 
 // ========== リピーター：Pi->TC ==========
@@ -136,7 +136,7 @@ void uartToBitbangTask(void* pv) {
       uint8_t buf[6];
       Serial2.readBytes(buf, 6);
       bitbangSendPacket(buf, 6);
-      logToOLED("UART->BitBang", String("SENT: ") + String(buf[0], HEX));
+//      logToOLED("UART->BitBang", String("SENT: ") + String(buf[0], HEX));
     }
     vTaskDelay(pdMS_TO_TICKS(10));
   }
@@ -150,7 +150,7 @@ void bitbangToUartTask(void* pv) {
       Serial.println("[DEBUG] Start bit LOW detected (EmuRecv)");
       bitbangReceivePacket(buf, 6);
       Serial2.write(buf, 6);
-      logToOLED("BitBang->UART", String("RECV: ") + String(buf[0], HEX));
+//      logToOLED("BitBang->UART", String("RECV: ") + String(buf[0], HEX));
     }
     vTaskDelay(pdMS_TO_TICKS(10));
   }
@@ -168,7 +168,7 @@ void emulatorReceiverTask(void* pv) {
         String msg = "RECV: ";
         String LogMsg = "[EmuRecv] Packet:";
         for (int i = 0; i < 6; i++) msg += String(buf[i], HEX) + " ";
-        logToOLED(msg, "→ Queued for echo");
+//        logToOLED(msg, "→ Queued for echo");
         // for debug log
         for (int i = 0; i < ECHO_PACKET_SIZE; i++) {
           LogMsg += " " + String(buf[i], HEX);
@@ -197,7 +197,7 @@ void emulatorSenderTask(void* pv) {
         String msg = "SEND: ";
         String LogMsg = "[EmuSend] Echoed:";
         for (int i = 0; i < 6; i++) msg += String(buf[i], HEX) + " ";
-        logToOLED("Echoed Back", msg);
+//        logToOLED("Echoed Back", msg);
         for (int i = 0; i < ECHO_PACKET_SIZE; i++) {
           LogMsg += " " + String(buf[i], HEX);
         }
