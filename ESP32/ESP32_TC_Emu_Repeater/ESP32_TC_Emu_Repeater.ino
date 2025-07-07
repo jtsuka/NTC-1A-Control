@@ -304,10 +304,10 @@ void loop() {
       if (currentState != testMode) {
         testMode = currentState;
         if (testMode) {
-          logToOLED("TestMode ON", "Sending Start");
+//          logToOLED("TestMode ON", "Sending Start");
           lastSendTime = millis();
         } else {
-          logToOLED("TestMode OFF", "Sending Stop");
+//          logToOLED("TestMode OFF", "Sending Stop");
           digitalWrite(LED_PIN, LOW);
         }
       }
@@ -321,7 +321,7 @@ void loop() {
           if (millis() - lastSendTime >= 1000) {
             sendTestPacket(testPacket, ECHO_PACKET_SIZE);       // BitBang送信
             Serial2.write(testPacket, ECHO_PACKET_SIZE);        // Pi送信
-            logToOLED("REPEATER TEST", "Sent to TC+Pi");
+//            logToOLED("REPEATER TEST", "Sent to TC+Pi");
             lastSendTime = millis();
             ledState = !ledState;
             digitalWrite(LED_PIN, ledState);
@@ -340,7 +340,7 @@ void loop() {
         // ★ エミュレーターモードの動作（常に点滅＋必要なら送信）
         if (testMode && millis() - lastSendTime >= 1000) {
           Serial2.write(testPacket, 6);
-          logToOLED("EMULATOR TEST", "Send to Repeater");
+//          logToOLED("EMULATOR TEST", "Send to Repeater");
           lastSendTime = millis();
         }
         // 通常時は500ms点滅
