@@ -34,6 +34,18 @@ QueueHandle_t sendQueue;
 const uint8_t testPacket[6] = { 0x01, 0x06, 0x05, 0x00, 0x00, 0x0C };
 
 // ==============================
+// シリアルへデバッグログ
+// ==============================
+void logPacket(const char* label, const uint8_t* data, size_t len) {
+  Serial.print(label);
+  for (size_t i = 0; i < len; i++) {
+    Serial.printf(" %02X", data[i]);
+  }
+  Serial.println();
+}
+
+
+// ==============================
 // OLED初期化と表示（setup時のみ）
 // ==============================
 void initOLED() {
@@ -102,6 +114,7 @@ bool bitBangReceivePacket(uint8_t* buffer, size_t len) {
 void TaskBitBangReceive(void* pvParameters) {
   for (;;) {
     if (digitalRead(TEST_PIN) == HIGH) {
+      logPacket("[RECV]", recvBuffer, 6);  
       uint8_t tempBuf[6];
       memcpy(tempBuf, &testPacket, 6);
       xQueueSend(sendQueue, &tempBuf, portMAX_DELAY);
