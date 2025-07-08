@@ -3,7 +3,8 @@
 // - 300bps BitBang RX/TX
 // - FreeRTOS構成 / OLED初期化のみ
 // - send_start相当の返信制御追加
-// 2025.07.08 可変長パケットに対応
+// - CommandPacket構造体＆可変長キュー導入
+// - 2025.07.08 可変長パケット対応・完全版
 // ==============================
 
 #include <Arduino.h>
@@ -18,6 +19,9 @@
 #define OLED_SCL_PIN    5
 #define BAUD_RATE      300
 #define BIT_DURATION_US (1000000 / BAUD_RATE)
+
+#define MAX_PAYLOAD_SIZE 10
+#define MAX_PACKET_SIZE  11  // cmd + payload(max10)
 
 // ========== OLED ==========
 #define SCREEN_WIDTH 128
@@ -36,12 +40,16 @@ static const CommandDef cmd_table[] = {
 };
 const size_t CMD_TABLE_LEN = sizeof(cmd_table) / sizeof(CommandDef);
 
-QueueHandle_t sendQueue;
-volatile bool send_start = false;
-uint8_t txBuffer[6];
+// ========== 受信構造体 ==========
+typedef struct {
+  uint8_t cmd_id;
+  uint8_t payload[MAX_PAYLOAD_SIZE];
+  uint8_t length;
+} CommandPacket;
 
-const uint8_t testPacket[6] = { 0x01, 0x06, 0x05, 0x00, 0x00, 0x0C };
+QueueHandle_t cmdQueue;
 
+// ========== デバッグログ ==========
 void logPacket(const char* label, const uint8_t* data, size_t len) {
   Serial.print(label);
   for (size_t i = 0; i < len; ++i) Serial.printf(" %02X", data[i]);
@@ -83,18 +91,19 @@ bool receiveByte(uint8_t* outByte) {
   return true;
 }
 
-void handleCommand(uint8_t cmd, const uint8_t* data) {
-  switch (cmd) {
+void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen) {
+  switch (pkt.cmd_id) {
     case 0x01:
-      txBuffer[0] = 0x10;
-      txBuffer[1] = 0x00;
-      txBuffer[2] = 0x05;
-      txBuffer[3] = 0xA0;
-      txBuffer[4] = 0x00;
-      txBuffer[5] = 0x7F;
-      send_start = true;
+      response[0] = 0x10;
+      response[1] = 0x00;
+      response[2] = 0x05;
+      response[3] = 0xA0;
+      response[4] = 0x00;
+      response[5] = 0x7F;
+      *respLen = 6;
       break;
     default:
+      *respLen = 0;
       break;
   }
 }
@@ -102,9 +111,8 @@ void handleCommand(uint8_t cmd, const uint8_t* data) {
 void TaskBitBangReceive(void* pvParameters) {
   for (;;) {
     if (digitalRead(TEST_PIN) == HIGH) {
-      logPacket("[TEST]", testPacket, 6);
-      memcpy(txBuffer, testPacket, 6);
-      send_start = true;
+      CommandPacket pkt = {0x01, {0x06, 0x05, 0x00, 0x00, 0x0C}, 5};
+      xQueueSend(cmdQueue, &pkt, portMAX_DELAY);
       vTaskDelay(pdMS_TO_TICKS(2000));
       continue;
     }
@@ -112,27 +120,35 @@ void TaskBitBangReceive(void* pvParameters) {
     uint8_t cmd;
     if (!receiveByte(&cmd)) continue;
     int plen = lookupPayloadSize(cmd);
-    if (plen < 0 || plen > 10) continue;
+    if (plen < 0 || plen > MAX_PAYLOAD_SIZE) continue;
 
-    uint8_t data[10];
+    CommandPacket pkt;
+    pkt.cmd_id = cmd;
+    pkt.length = plen;
     for (int i = 0; i < plen; ++i) {
-      if (!receiveByte(&data[i])) return;
+      if (!receiveByte(&pkt.payload[i])) return;
     }
 
-    logPacket("[RECV]", &cmd, 1);
-    logPacket("[RECV-DATA]", data, plen);
-    handleCommand(cmd, data);
+    logPacket("[RECV]", &pkt.cmd_id, 1);
+    logPacket("[RECV-DATA]", pkt.payload, pkt.length);
+    xQueueSend(cmdQueue, &pkt, portMAX_DELAY);
 
-    vTaskDelay(pdMS_TO_TICKS(10));
+    vTaskDelay(pdMS_TO_TICKS(5));
   }
 }
 
 void TaskBitBangSend(void* pvParameters) {
+  CommandPacket pkt;
+  uint8_t response[MAX_PACKET_SIZE];
+  uint8_t respLen = 0;
+
   for (;;) {
-    if (send_start) {
-      send_start = false;
-      logPacket("[SEND]", txBuffer, 6);
-      sendPacket(txBuffer, 6);
+    if (xQueueReceive(cmdQueue, &pkt, portMAX_DELAY) == pdTRUE) {
+      handleCommand(pkt, response, &respLen);
+      if (respLen > 0) {
+        logPacket("[SEND]", response, respLen);
+        sendPacket(response, respLen);
+      }
     }
     vTaskDelay(pdMS_TO_TICKS(5));
   }
@@ -169,7 +185,7 @@ void setup() {
 
   initOLED();
 
-  sendQueue = xQueueCreate(4, sizeof(uint8_t[11]));
+  cmdQueue = xQueueCreate(8, sizeof(CommandPacket));
   xTaskCreatePinnedToCore(TaskBitBangReceive, "Receive", 4096, NULL, 1, NULL, 0);
   xTaskCreatePinnedToCore(TaskBitBangSend, "Send", 2048, NULL, 1, NULL, 0);
   xTaskCreatePinnedToCore(TaskLED, "LED", 1024, NULL, 1, NULL, 1);
