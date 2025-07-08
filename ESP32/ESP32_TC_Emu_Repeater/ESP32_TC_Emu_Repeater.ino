@@ -147,7 +147,7 @@ void bitbangToUartTask(void* pv) {
   while (1) {
     if (digitalRead(TC_UART_RX_PIN) == LOW) {
       uint8_t buf[6];
-      Serial.println("[DEBUG] Start bit LOW detected (EmuRecv)");
+       Serial.println("[DEBUG] Start bit LOW detected (EmuRecv)");
       bitbangReceivePacket(buf, 6);
       Serial2.write(buf, 6);
 //      logToOLED("BitBang->UART", String("RECV: ") + String(buf[0], HEX));
@@ -319,9 +319,19 @@ void loop() {
         if (testMode) {
           // 擬似送信（TCとPi両方へ）＆ LED点灯
           if (millis() - lastSendTime >= 1000) {
-            sendTestPacket(testPacket, ECHO_PACKET_SIZE);       // BitBang送信
-            Serial2.write(testPacket, ECHO_PACKET_SIZE);        // Pi送信
+            uint8_t tempBuf[6];
+            memcpy(tempBuf, testPacket, 6);                     // 修正①：コピーして使う
+            sendTestPacket(tempBuf, ECHO_PACKET_SIZE);          // BitBang送信
+
+            taskENTER_CRITICAL();                               // 修正②：送信保護
+            Serial2.write(tempBuf, ECHO_PACKET_SIZE);           // Pi送信
+            Serial2.flush();                                    // 修正③：送信完了までブロック
+            taskEXIT_CRITICAL();
+
+//            sendTestPacket(testPacket, ECHO_PACKET_SIZE);       // BitBang送信
+//            Serial2.write(testPacket, ECHO_PACKET_SIZE);        // Pi送信
 //            logToOLED("REPEATER TEST", "Sent to TC+Pi");
+
             lastSendTime = millis();
             ledState = !ledState;
             digitalWrite(LED_PIN, ledState);
