@@ -1,8 +1,9 @@
 // ==============================
-// TC Emulator with BitBang Parser (ESP32-S3)
+// TC Emulator with BitBang Parser + Reply Control (ESP32-S3)
 // - 300bps BitBang RX/TX
 // - FreeRTOS構成 / OLED初期化のみ
-// - コマンドIDに応じて受信長を切替
+// - send_start相当の返信制御追加
+// 2025.07.08 可変長パケットに対応
 // ==============================
 
 #include <Arduino.h>
@@ -36,6 +37,8 @@ static const CommandDef cmd_table[] = {
 const size_t CMD_TABLE_LEN = sizeof(cmd_table) / sizeof(CommandDef);
 
 QueueHandle_t sendQueue;
+volatile bool send_start = false;
+uint8_t txBuffer[6];
 
 const uint8_t testPacket[6] = { 0x01, 0x06, 0x05, 0x00, 0x00, 0x0C };
 
@@ -80,11 +83,28 @@ bool receiveByte(uint8_t* outByte) {
   return true;
 }
 
+void handleCommand(uint8_t cmd, const uint8_t* data) {
+  switch (cmd) {
+    case 0x01:
+      txBuffer[0] = 0x10;
+      txBuffer[1] = 0x00;
+      txBuffer[2] = 0x05;
+      txBuffer[3] = 0xA0;
+      txBuffer[4] = 0x00;
+      txBuffer[5] = 0x7F;
+      send_start = true;
+      break;
+    default:
+      break;
+  }
+}
+
 void TaskBitBangReceive(void* pvParameters) {
   for (;;) {
     if (digitalRead(TEST_PIN) == HIGH) {
       logPacket("[TEST]", testPacket, 6);
-      xQueueSend(sendQueue, testPacket, portMAX_DELAY);
+      memcpy(txBuffer, testPacket, 6);
+      send_start = true;
       vTaskDelay(pdMS_TO_TICKS(2000));
       continue;
     }
@@ -94,25 +114,27 @@ void TaskBitBangReceive(void* pvParameters) {
     int plen = lookupPayloadSize(cmd);
     if (plen < 0 || plen > 10) continue;
 
-    uint8_t packet[11];
-    packet[0] = cmd;
+    uint8_t data[10];
     for (int i = 0; i < plen; ++i) {
-      if (!receiveByte(&packet[i + 1])) return;
+      if (!receiveByte(&data[i])) return;
     }
-    logPacket("[RECV]", packet, plen + 1);
-    xQueueSend(sendQueue, packet, portMAX_DELAY);
+
+    logPacket("[RECV]", &cmd, 1);
+    logPacket("[RECV-DATA]", data, plen);
+    handleCommand(cmd, data);
+
     vTaskDelay(pdMS_TO_TICKS(10));
   }
 }
 
 void TaskBitBangSend(void* pvParameters) {
-  uint8_t packet[11];
   for (;;) {
-    if (xQueueReceive(sendQueue, &packet, portMAX_DELAY) == pdTRUE) {
-      logPacket("[SEND]", packet, packet[1] ? packet[1] + 1 : 1);
-      sendPacket(packet, packet[1] ? packet[1] + 1 : 1);
+    if (send_start) {
+      send_start = false;
+      logPacket("[SEND]", txBuffer, 6);
+      sendPacket(txBuffer, 6);
     }
-    vTaskDelay(pdMS_TO_TICKS(10));
+    vTaskDelay(pdMS_TO_TICKS(5));
   }
 }
 
