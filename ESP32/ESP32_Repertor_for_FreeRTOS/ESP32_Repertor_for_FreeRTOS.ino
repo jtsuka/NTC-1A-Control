@@ -117,6 +117,52 @@ void tcSenderTask(void* pv) {
 }
 
 void setup() {
+  // ピン初期化
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(TEST_PIN, INPUT);
+  pinMode(TC_UART_TX_PIN, OUTPUT);
+  pinMode(TC_UART_RX_PIN, INPUT_PULLUP);
+  digitalWrite(TC_UART_TX_PIN, HIGH); // Idle状態
+
+  // I2C初期化 → OLED初期化
+  Wire.begin(4, 5); // SDA, SCL
+  delay(100); // 安定化のための遅延（重要）
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.begin(115200);
+    Serial.println("OLED display init failed!");
+    while (true) {
+      delay(1000); // 致命的エラー時は無限ループで停止
+    }
+  }
+
+  // 初期表示（FreeRTOSタスクではなくここで完結させる）
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 0);
+  display.println("TC Repeater");
+  display.setCursor(0, 16);
+  display.println("with FreeRTOS");
+  display.display();
+
+  // UART初期化（Pi用）
+  Serial.begin(115200); // デバッグ出力用
+  Serial2.begin(9600, SERIAL_8N1, PI_UART_RX_PIN, PI_UART_TX_PIN);
+
+  // キュー生成
+  piToTcQueue = xQueueCreate(8, 6);
+  tcToPiQueue = xQueueCreate(8, 6);
+
+  // FreeRTOSタスク起動
+  xTaskCreatePinnedToCore(uartToTcTask, "UART->TC", 2048, NULL, 1, NULL, 1);
+  xTaskCreatePinnedToCore(tcSenderTask,   "TC SEND", 2048, NULL, 1, NULL, 1);
+  xTaskCreatePinnedToCore(tcReceiverTask, "TC RECV", 2048, NULL, 1, NULL, 1);
+  xTaskCreatePinnedToCore(tcToUartTask,   "TC->UART", 2048, NULL, 1, NULL, 1);
+}
+
+#if 0
+void setup() {
   pinMode(LED_PIN, OUTPUT);
   pinMode(TEST_PIN, INPUT);
   pinMode(TC_UART_TX_PIN, OUTPUT);
@@ -138,6 +184,7 @@ void setup() {
   xTaskCreatePinnedToCore(tcReceiverTask, "TC RECV", 2048, NULL, 1, NULL, 1);
   xTaskCreatePinnedToCore(tcToUartTask,   "TC->UART", 2048, NULL, 1, NULL, 1);
 }
+#endif
 
 void loop() {
   digitalWrite(LED_PIN, !digitalRead(LED_PIN));
