@@ -56,7 +56,7 @@ void initOLED() {
 // ==============================
 void bitBangSendByte(uint8_t b) {
   digitalWrite(TC_UART_TX_PIN, LOW); // Start bit
-  delayMicroseconds(BIT_DURATION_US);
+  delayMicroseconds(BIT_DURATION_US + BIT_DURATION_US / 2);
   for (int i = 0; i < 8; i++) {
     digitalWrite(TC_UART_TX_PIN, (b >> i) & 0x01); // LSBファースト
     delayMicroseconds(BIT_DURATION_US);
@@ -102,11 +102,15 @@ bool bitBangReceivePacket(uint8_t* buffer, size_t len) {
 void TaskBitBangReceive(void* pvParameters) {
   for (;;) {
     if (digitalRead(TEST_PIN) == HIGH) {
-      xQueueSend(sendQueue, &testPacket, portMAX_DELAY);
+      uint8_t tempBuf[6];
+      memcpy(tempBuf, &testPacket, 6);
+      xQueueSend(sendQueue, &tempBuf, portMAX_DELAY);
       vTaskDelay(pdMS_TO_TICKS(2000));
     } else {
       if (bitBangReceivePacket(recvBuffer, 6)) {
-        xQueueSend(sendQueue, &recvBuffer, portMAX_DELAY);
+        uint8_t tempBuf[6];
+        memcpy(tempBuf, recvBuffer, 6);
+        xQueueSend(sendQueue, &tempBuf, portMAX_DELAY);
       }
     }
     vTaskDelay(pdMS_TO_TICKS(10));
