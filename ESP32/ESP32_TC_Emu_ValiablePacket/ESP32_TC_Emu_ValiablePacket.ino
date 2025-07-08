@@ -1,10 +1,9 @@
 // ==============================
-// TC Emulator with BitBang Parser + Reply Control (ESP32-S3)
+// TC Emulator with FreeRTOS-safe Logging (ESP32-S3)
 // - 300bps BitBang RX/TX
 // - FreeRTOS構成 / OLED初期化のみ
-// - send_start相当の返信制御追加
-// - CommandPacket構造体＆可変長キュー導入
-// - 2025.07.08 可変長パケット対応・完全版
+// - 可変長パケット対応
+// - Serial出力にportMUX排他制御を追加
 // ==============================
 
 #include <Arduino.h>
@@ -23,10 +22,12 @@
 #define MAX_PAYLOAD_SIZE 10
 #define MAX_PACKET_SIZE  11  // cmd + payload(max10)
 
-// ========== OLED ==========
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+// ========== FreeRTOS Serial Mutex ==========
+portMUX_TYPE serialMux = portMUX_INITIALIZER_UNLOCKED;
 
 // ========== コマンド定義テーブル ==========
 typedef struct {
@@ -49,11 +50,24 @@ typedef struct {
 
 QueueHandle_t cmdQueue;
 
-// ========== デバッグログ ==========
+// ========== ログ出力 ==========
 void logPacket(const char* label, const uint8_t* data, size_t len) {
-  Serial.print(label);
-  for (size_t i = 0; i < len; ++i) Serial.printf(" %02X", data[i]);
-  Serial.println();
+  char buffer[128];
+  int idx = snprintf(buffer, sizeof(buffer), "%s", label);
+
+  for (size_t i = 0; i < len && idx < sizeof(buffer) - 4; ++i) {
+    int written = snprintf(&buffer[idx], sizeof(buffer) - idx, " %02X", data[i]);
+    if (written < 0 || written >= (int)(sizeof(buffer) - idx)) break;
+    idx += written;
+  }
+#if 0
+  for (size_t i = 0; i < len && idx < sizeof(buffer) - 4; ++i) {
+    idx += snprintf(&buffer[idx], sizeof(buffer) - idx, " %02X", data[i]);
+  }
+#endif
+  portENTER_CRITICAL(&serialMux);
+  Serial.println(buffer);
+  portEXIT_CRITICAL(&serialMux);
 }
 
 int lookupPayloadSize(uint8_t cmd_id) {
@@ -74,8 +88,17 @@ void bitBangSendByte(uint8_t b) {
 }
 
 void sendPacket(const uint8_t* data, size_t len) {
+  portENTER_CRITICAL(&serialMux);
+  for (size_t i = 0; i < len; ++i) bitBangSendByte(data[i]);
+  portEXIT_CRITICAL(&serialMux);
+  delayMicroseconds(3000);  // パケット後の分離タイミング
+}
+
+#if 0
+void sendPacket(const uint8_t* data, size_t len) {
   for (size_t i = 0; i < len; ++i) bitBangSendByte(data[i]);
 }
+#endif
 
 bool receiveByte(uint8_t* outByte) {
   while (digitalRead(TC_UART_RX_PIN) == HIGH) vTaskDelay(1);
@@ -132,7 +155,6 @@ void TaskBitBangReceive(void* pvParameters) {
     logPacket("[RECV]", &pkt.cmd_id, 1);
     logPacket("[RECV-DATA]", pkt.payload, pkt.length);
     xQueueSend(cmdQueue, &pkt, portMAX_DELAY);
-
     vTaskDelay(pdMS_TO_TICKS(5));
   }
 }
@@ -184,6 +206,7 @@ void setup() {
   digitalWrite(TC_UART_TX_PIN, HIGH);
 
   initOLED();
+  delay(1000);
 
   cmdQueue = xQueueCreate(8, sizeof(CommandPacket));
   xTaskCreatePinnedToCore(TaskBitBangReceive, "Receive", 4096, NULL, 1, NULL, 0);
@@ -191,4 +214,7 @@ void setup() {
   xTaskCreatePinnedToCore(TaskLED, "LED", 1024, NULL, 1, NULL, 1);
 }
 
-void loop() {}
+void loop() {
+//  display.display();   // 1フレームの描画だけここで呼ぶ
+  delay(10);           // 無駄なCPU消費を避ける
+}
