@@ -75,6 +75,10 @@ const uint8_t EMULATOR_MAC[6] = {0xD8, 0x3B, 0xDA, 0x74, 0x82, 0x78};
 // ========== テストパケット ==========
 const uint8_t testPacket[6] = {0x01, 0x06, 0x05, 0x00, 0x00, 0x0C};
 
+// Mutex
+portMUX_TYPE uartMux = portMUX_INITIALIZER_UNLOCKED;
+
+
 // ========== OLEDログ関数 ==========
 void logToOLED(const String& upper, const String& lower) {
   if (xSemaphoreTake(oledMutex, portMAX_DELAY) == pdTRUE) {
@@ -147,7 +151,7 @@ void bitbangToUartTask(void* pv) {
   while (1) {
     if (digitalRead(TC_UART_RX_PIN) == LOW) {
       uint8_t buf[6];
-       Serial.println("[DEBUG] Start bit LOW detected (EmuRecv)");
+      Serial.println("[DEBUG] Start bit LOW detected (EmuRecv)");
       bitbangReceivePacket(buf, 6);
       Serial2.write(buf, 6);
 //      logToOLED("BitBang->UART", String("RECV: ") + String(buf[0], HEX));
