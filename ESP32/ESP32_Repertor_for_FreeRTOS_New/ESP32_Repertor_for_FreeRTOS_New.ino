@@ -1,5 +1,5 @@
 // ================================================
-// ESP32-S3 TC Repeater with FreeRTOS + 割り込み保護版
+// ESP32-S3 TC Repeater with FreeRTOS + 割り込み保護版 + tempキュー転送
 // - BitBang 300bps (GPIO2: TX, GPIO3: RX)
 // - UART Pi (GPIO43: TX, GPIO44: RX)
 // - OLED無効化（I2C: GPIO4, GPIO5）
@@ -53,7 +53,7 @@ void bitbangSendPacket(const uint8_t* data, size_t len) {
   }
 }
 
-// 割り込み保護付き BitBang受信（MSBファースト受信テスト版）
+// 割り込み保護付き BitBang受信（MSBファースト受信）
 bool bitbangReceiveByte(uint8_t* outByte) {
   if (digitalRead(TC_UART_RX_PIN) == LOW) {
     noInterrupts();
@@ -68,36 +68,12 @@ bool bitbangReceiveByte(uint8_t* outByte) {
       delayMicroseconds(3333);
     }
     interrupts();
-    *outByte = b;
     Serial.printf("[RX byte] %02X\n", b);
+    *outByte = b;
     return true;
   }
   return false;
 }
-
-#if 0
-// 割り込み保護付き BitBang受信
-bool bitbangReceiveByte(uint8_t* outByte) {
-  if (digitalRead(TC_UART_RX_PIN) == LOW) {
-    noInterrupts();
-    delayMicroseconds(1666);  // Half-bit
-    while (digitalRead(TC_UART_RX_PIN) == LOW); // Start bit end
-    delayMicroseconds(3333);  // Bit center
-
-    uint8_t b = 0;
-    for (int i = 0; i < 8; ++i) {
-      b >>= 1;
-      if (digitalRead(TC_UART_RX_PIN)) b |= 0x80;
-      delayMicroseconds(3333);
-    }
-    interrupts();
-    *outByte = b;
-    Serial.printf("[RX byte] %02X\n", b);
-    return true;
-  }
-  return false;
-}
-#endif
 
 // UART→キュー（piToTc）
 void uartToTcTask(void* pv) {
@@ -127,7 +103,7 @@ void tcSenderTask(void* pv) {
   }
 }
 
-// BitBang受信→Piキュー転送
+// BitBang受信→Piキュー転送（安全バッファ）
 void tcReceiverTask(void* pv) {
   uint8_t packet[6];
   size_t index = 0;
@@ -139,7 +115,9 @@ void tcReceiverTask(void* pv) {
         Serial.print("[TC→Q tcToPi] ");
         for (int i = 0; i < 6; ++i) Serial.printf("%02X ", packet[i]);
         Serial.println();
-        xQueueSend(tcToPiQueue, packet, portMAX_DELAY);
+        uint8_t temp[6];  // スタック上の一時バッファ
+        memcpy(temp, packet, 6);
+        xQueueSend(tcToPiQueue, temp, portMAX_DELAY);
         index = 0;
       }
     } else {
