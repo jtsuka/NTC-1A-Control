@@ -124,7 +124,8 @@ void sendPacket(const uint8_t* data, size_t len) {
 
 bool receiveByte(uint8_t* outByte) {
   while (digitalRead(TC_UART_RX_PIN) == HIGH) vTaskDelay(1);
-  delayMicroseconds(BIT_DURATION_US + BIT_DURATION_US / 2);
+//  delayMicroseconds(BIT_DURATION_US + BIT_DURATION_US / 2);
+  delayMicroseconds(BIT_DURATION_US * 1.5);  // ← 中央補正をしっかり
 
   uint8_t b = 0;
   for (int i = 0; i < 8; ++i) {

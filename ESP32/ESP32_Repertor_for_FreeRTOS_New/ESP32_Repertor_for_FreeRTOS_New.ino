@@ -53,7 +53,7 @@ uint8_t getExpectedLength(uint8_t cmd) {
 
 void bitbangSendPacket(const uint8_t* data, size_t len) {
   for (size_t i = 0; i < len; ++i) {
-    uint8_t b = data[i];
+    uint8_t b = reverseBits(data[i]);  // ★ LSBで送信に変更
     digitalWrite(TC_UART_TX_PIN, LOW); delayMicroseconds(3333);
     for (int j = 0; j < 8; ++j) {
       digitalWrite(TC_UART_TX_PIN, b & 0x01); delayMicroseconds(3333);
