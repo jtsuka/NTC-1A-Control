@@ -109,7 +109,7 @@ tk.Button(left_frame, text="SAFE MODE OFF", font=font_button,
 
 # --- テストボタンの追加 ---
 test_frame = tk.LabelFrame(root, text="テスト送信", padx=5, pady=5)
-test_frame.place(x=10, y=400)  # 適宜座標は調整してください
+test_frame.place(x=10, y=450)  # 適宜座標は調整してください
 
 for i in range(5):
     btn = tk.Button(test_frame, text=f"CMD{i+1}", width=3, command=lambda idx=i: send_test_packet(idx))
