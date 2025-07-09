@@ -51,6 +51,14 @@ typedef struct {
 
 QueueHandle_t cmdQueue;
 
+// ビット反転（MSB → LSB変換）
+uint8_t reverseBits(uint8_t b) {
+  b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
+  b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
+  b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
+  return b;
+}
+
 // ========== ログ出力 ==========
 void logPacket(const char* label, const uint8_t* data, size_t len) {
   char buffer[128];
@@ -86,14 +94,6 @@ void bitBangSendByte(uint8_t b) {
     b >>= 1;
   }
   digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(BIT_DURATION_US);
-}
-
-// ビット反転（MSB → LSB変換）
-uint8_t reverseBits(uint8_t b) {
-  b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
-  b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
-  b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
-  return b;
 }
 
 // MSB/LSB対応 送信関数
@@ -132,7 +132,8 @@ bool receiveByte(uint8_t* outByte) {
     delayMicroseconds(BIT_DURATION_US);
   }
   delayMicroseconds(BIT_DURATION_US);
-  *outByte = b;
+
+  *outByte = BIT_PAT ? reverseBits(b) : b;  // ← この行を修正
   return true;
 }
 

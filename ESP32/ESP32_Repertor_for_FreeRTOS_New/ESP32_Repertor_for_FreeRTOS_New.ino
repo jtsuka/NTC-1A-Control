@@ -37,6 +37,13 @@ const PacketInfo packetTable[] = {
   {0x20, 8},
 };
 
+uint8_t reverseBits(uint8_t b) {
+  b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
+  b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
+  b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
+  return b;
+}
+
 uint8_t getExpectedLength(uint8_t cmd) {
   for (size_t i = 0; i < sizeof(packetTable) / sizeof(PacketInfo); ++i) {
     if (packetTable[i].cmd == cmd) return packetTable[i].len;
@@ -66,12 +73,12 @@ bool bitbangReceiveByte(uint8_t* outByte) {
 
     uint8_t b = 0;
     for (int i = 0; i < 8; ++i) {
-      b >>= 1;
+      b <<= 1;
       if (digitalRead(TC_UART_RX_PIN)) b |= 0x80;
       delayMicroseconds(3333);
     }
     interrupts();
-    *outByte = b;
+    *outByte = reverseBits(b);  // LSB → MSB に変換
     return true;
   }
   return false;
