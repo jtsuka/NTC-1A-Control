@@ -53,6 +53,29 @@ void bitbangSendPacket(const uint8_t* data, size_t len) {
   }
 }
 
+// 割り込み保護付き BitBang受信（MSBファースト受信テスト版）
+bool bitbangReceiveByte(uint8_t* outByte) {
+  if (digitalRead(TC_UART_RX_PIN) == LOW) {
+    noInterrupts();
+    delayMicroseconds(1666);  // Half-bit to center of first bit
+    while (digitalRead(TC_UART_RX_PIN) == LOW); // Wait for start bit to end
+    delayMicroseconds(3333);  // Center of first data bit
+
+    uint8_t b = 0;
+    for (int i = 0; i < 8; ++i) {
+      b <<= 1;
+      if (digitalRead(TC_UART_RX_PIN)) b |= 0x01;
+      delayMicroseconds(3333);
+    }
+    interrupts();
+    *outByte = b;
+    Serial.printf("[RX byte] %02X\n", b);
+    return true;
+  }
+  return false;
+}
+
+#if 0
 // 割り込み保護付き BitBang受信
 bool bitbangReceiveByte(uint8_t* outByte) {
   if (digitalRead(TC_UART_RX_PIN) == LOW) {
@@ -74,6 +97,7 @@ bool bitbangReceiveByte(uint8_t* outByte) {
   }
   return false;
 }
+#endif
 
 // UART→キュー（piToTc）
 void uartToTcTask(void* pv) {
