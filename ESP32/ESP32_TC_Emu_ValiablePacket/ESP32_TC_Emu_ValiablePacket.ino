@@ -17,7 +17,7 @@
 #define OLED_SDA_PIN    4
 #define OLED_SCL_PIN    5
 #define BAUD_RATE      300
-#define BIT_PAT         true    // LSB
+#define BIT_PAT        false    // LSB
 #define BIT_DURATION_US (1000000 / BAUD_RATE)
 
 #define MAX_PAYLOAD_SIZE 10
@@ -125,10 +125,6 @@ void sendPacket(const uint8_t* data, size_t len) {
 bool receiveByte(uint8_t* outByte) {
   while (digitalRead(TC_UART_RX_PIN) == HIGH) vTaskDelay(1);
 
-  portENTER_CRITICAL(&serialMux);
-  Serial.println("[DBG] Start bit detected");
-  portEXIT_CRITICAL(&serialMux);
-
 //  delayMicroseconds(BIT_DURATION_US + BIT_DURATION_US / 2);
 //  delayMicroseconds(BIT_DURATION_US * 1.5);  // ← 中央補正をしっかり
   const int start_offset = (BIT_DURATION_US * 3) / 2;
@@ -141,10 +137,6 @@ bool receiveByte(uint8_t* outByte) {
     int bit = digitalRead(TC_UART_RX_PIN);
     b |= (bit << i);
 
-//    portENTER_CRITICAL(&serialMux);
-//    Serial.printf("[DBG] Bit %d = %d\n", i, bit);
-//    portEXIT_CRITICAL(&serialMux);
-
     delayMicroseconds(BIT_DURATION_US);
   }
   interrupts();
@@ -154,6 +146,30 @@ bool receiveByte(uint8_t* outByte) {
   return true;
 }
 
+void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen) {
+  uint8_t msbCmd = BIT_PAT ? pkt.cmd_id :reverseBits(pkt.cmd_id);
+
+  switch (msbCmd) {
+    case 0x01:
+    case 0x02:
+    case 0x03:
+    case 0x04:
+    case 0x05:
+      // 応答のコマンドIDは BIT_PAT に応じて正しい形式で返す
+      response[0] = pkt.cmd_id;  // LSBそのままでよければ
+      for (uint8_t i = 0; i < pkt.length; ++i) {
+        response[1 + i] = pkt.payload[i];
+      }
+      *respLen = pkt.length + 1;
+      break;
+
+    default:
+      *respLen = 0;
+      break;
+  }
+}
+
+#if 0
 void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen) {
   switch (pkt.cmd_id) {
     case 0x01:
@@ -174,6 +190,7 @@ void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen
       break;
   }
 }
+#endif
 
 #if 0
 void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen) {
