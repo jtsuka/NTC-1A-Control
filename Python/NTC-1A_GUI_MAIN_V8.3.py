@@ -19,6 +19,20 @@ selected_channel = 1
 selected_entry = None
 entries = {}
 
+# --- テスト送信用ユーティリティ ---
+def send_test_packet(index):
+    from NTC_1A_serial_comm import send_packet_raw
+    test_packets = [
+        [0x01, 0x06, 0x05, 0x00, 0x00, 0x0C],  # CMD1 固定長
+        [0x02, 0x03, 0x10, 0x20, 0x30],        # CMD2 可変長5
+        [0x03, 0x10, 0xAA, 0xBB, 0xCC, 0xDD],  # CMD3 可変長6
+        [0x04, 0x99],                          # CMD4 短い
+        [0x05, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06]  # CMD5 可変長7
+    ]
+    if 0 <= index < len(test_packets):
+        print(f"[GUI] Send Test CMD{index+1}: {test_packets[index]}")
+        send_packet_raw(test_packets[index])
+
 # ------------------- トップバー -------------------
 top_frame = tk.Frame(root, bg="black")
 top_frame.pack(fill="x")
@@ -92,6 +106,14 @@ tk.Button(left_frame, text="SAFE MODE OFF", font=font_button,
           command=lambda: send_safe_mode(False),
           bg="darkgreen", fg="white", width=18) \
     .grid(row=safe_btn_row + 1, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
+
+# --- テストボタンの追加 ---
+test_frame = tk.LabelFrame(root, text="テスト送信", padx=5, pady=5)
+test_frame.place(x=10, y=400)  # 適宜座標は調整してください
+
+for i in range(5):
+    btn = tk.Button(test_frame, text=f"CMD{i+1}", width=3, command=lambda idx=i: send_test_packet(idx))
+    btn.grid(row=0, column=i, padx=3)
 
 
 # ------------------- テンキー -------------------

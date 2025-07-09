@@ -109,3 +109,10 @@ def stop_serial():
     running = False
     if ser and ser.is_open:
         ser.close()
+        
+def send_packet_raw(packet_bytes):
+    """Rawバイナリパケットを送信する（可変長）"""
+    global ser
+    if ser and ser.is_open:
+        ser.write(bytes(packet_bytes))
+        print(f"[TX raw] {' '.join(f'{b:02X}' for b in packet_bytes)}")
