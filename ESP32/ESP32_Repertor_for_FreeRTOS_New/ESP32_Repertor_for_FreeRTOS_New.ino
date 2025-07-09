@@ -67,6 +67,26 @@ void bitbangSendPacket(const uint8_t* data, size_t len) {
 bool bitbangReceiveByte(uint8_t* outByte) {
   if (digitalRead(TC_UART_RX_PIN) == LOW) {
     noInterrupts();
+    delayMicroseconds(1666);  // スタートビット中央へ
+    while (digitalRead(TC_UART_RX_PIN) == LOW);
+    delayMicroseconds(3333); // 最初のデータビットへ
+
+    uint8_t b = 0;
+    for (int i = 0; i < 8; ++i) {
+      b |= (digitalRead(TC_UART_RX_PIN) << i);  // ← LSB順にそのまま受信
+      delayMicroseconds(3333);
+    }
+    interrupts();
+    *outByte = b;  // reverseBits は不要
+    return true;
+  }
+  return false;
+}
+
+#if 0
+bool bitbangReceiveByte(uint8_t* outByte) {
+  if (digitalRead(TC_UART_RX_PIN) == LOW) {
+    noInterrupts();
     delayMicroseconds(1666);
     while (digitalRead(TC_UART_RX_PIN) == LOW);
     delayMicroseconds(3333);
@@ -83,6 +103,7 @@ bool bitbangReceiveByte(uint8_t* outByte) {
   }
   return false;
 }
+#endif
 
 void uartToTcTask(void* pv) {
   uint8_t buf[MAX_PKT_SIZE];
