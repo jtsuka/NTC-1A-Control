@@ -173,7 +173,7 @@ void tcToUartTask(void* pv) {
     }
   }
 }
-#eneif
+#endif
 
 const uint8_t testPacket[6] = {0x01, 0x06, 0x05, 0x00, 0x00, 0x0C};
 void testLoopTask(void* pv) {
