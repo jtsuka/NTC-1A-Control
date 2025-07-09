@@ -133,6 +133,7 @@ void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen
 
 void TaskBitBangReceive(void* pvParameters) {
   for (;;) {
+
     if (digitalRead(TEST_PIN) == HIGH) {
       CommandPacket pkt = {0x01, {0x06, 0x05, 0x00, 0x00, 0x0C}, 5};
       xQueueSend(cmdQueue, &pkt, portMAX_DELAY);
