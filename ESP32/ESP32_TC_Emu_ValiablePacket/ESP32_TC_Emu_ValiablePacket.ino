@@ -17,6 +17,7 @@
 #define OLED_SDA_PIN    4
 #define OLED_SCL_PIN    5
 #define BAUD_RATE      300
+#define BIT_PAT         true    // LSB
 #define BIT_DURATION_US (1000000 / BAUD_RATE)
 
 #define MAX_PAYLOAD_SIZE 10
@@ -87,12 +88,33 @@ void bitBangSendByte(uint8_t b) {
   digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(BIT_DURATION_US);
 }
 
+// ビット反転（MSB → LSB変換）
+uint8_t reverseBits(uint8_t b) {
+  b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
+  b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
+  b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
+  return b;
+}
+
+// MSB/LSB対応 送信関数
+void sendPacket(const uint8_t* data, size_t len, bool lsbMode) {
+  portENTER_CRITICAL(&serialMux);
+  for (size_t i = 0; i < len; ++i) {
+    uint8_t b = lsbMode ? reverseBits(data[i]) : data[i];
+    bitBangSendByte(b);
+  }
+  portEXIT_CRITICAL(&serialMux);
+  delayMicroseconds(3000);  // パケット後の分離タイミング
+}
+
+#if 0
 void sendPacket(const uint8_t* data, size_t len) {
   portENTER_CRITICAL(&serialMux);
   for (size_t i = 0; i < len; ++i) bitBangSendByte(data[i]);
   portEXIT_CRITICAL(&serialMux);
   delayMicroseconds(3000);  // パケット後の分離タイミング
 }
+#endif
 
 #if 0
 void sendPacket(const uint8_t* data, size_t len) {
@@ -117,6 +139,28 @@ bool receiveByte(uint8_t* outByte) {
 void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen) {
   switch (pkt.cmd_id) {
     case 0x01:
+    case 0x02:
+    case 0x03:
+    case 0x04:
+    case 0x05:
+      // pkt.length + 1 は cmd_id + payload長
+      response[0] = pkt.cmd_id;
+      for (uint8_t i = 0; i < pkt.length; ++i) {
+        response[1 + i] = pkt.payload[i];
+      }
+      *respLen = pkt.length + 1;
+      break;
+
+    default:
+      *respLen = 0;
+      break;
+  }
+}
+
+#if 0
+void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen) {
+  switch (pkt.cmd_id) {
+    case 0x01:
       response[0] = 0x10;
       response[1] = 0x00;
       response[2] = 0x05;
@@ -130,6 +174,7 @@ void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen
       break;
   }
 }
+#endif
 
 void TaskBitBangReceive(void* pvParameters) {
   for (;;) {
@@ -170,7 +215,7 @@ void TaskBitBangSend(void* pvParameters) {
       handleCommand(pkt, response, &respLen);
       if (respLen > 0) {
         logPacket("[SEND]", response, respLen);
-        sendPacket(response, respLen);
+        sendPacket(response, respLen, BIT_PAT);
       }
     }
     vTaskDelay(pdMS_TO_TICKS(5));
