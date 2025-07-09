@@ -147,6 +147,35 @@ bool receiveByte(uint8_t* outByte) {
 }
 
 void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen) {
+  uint8_t id = pkt.cmd_id;
+  uint8_t id_rev = reverseBits(id);
+
+  switch (id) {
+    case 0x01: case 0x02: case 0x03:
+    case 0x04: case 0x05: case 0x06:
+      break;
+    default:
+      switch (id_rev) {
+        case 0x01: case 0x02: case 0x03:
+        case 0x04: case 0x05: case 0x06:
+          id = id_rev;  // LSB受信だったと判断
+          break;
+        default:
+          *respLen = 0;
+          return;
+      }
+  }
+
+  response[0] = pkt.cmd_id;  // 元のIDでそのまま返す（echo）
+  for (uint8_t i = 0; i < pkt.length; ++i) {
+    response[1 + i] = pkt.payload[i];
+  }
+  *respLen = pkt.length + 1;
+}
+
+
+#if 0
+void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen) {
   uint8_t msbCmd = BIT_PAT ? pkt.cmd_id :reverseBits(pkt.cmd_id);
 
   switch (msbCmd) {
@@ -168,6 +197,7 @@ void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen
       break;
   }
 }
+#endif
 
 #if 0
 void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen) {
