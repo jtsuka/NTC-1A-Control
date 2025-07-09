@@ -18,7 +18,7 @@
 
 #define MAX_PKT_SIZE 16  // 最大パケットサイズ
 
-#define BIT_PAT         false    // LSB
+#define BIT_PAT         True    // LSB
 
 QueueHandle_t piToTcQueue;
 QueueHandle_t tcToPiQueue;
