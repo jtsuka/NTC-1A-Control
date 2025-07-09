@@ -124,14 +124,30 @@ void sendPacket(const uint8_t* data, size_t len) {
 
 bool receiveByte(uint8_t* outByte) {
   while (digitalRead(TC_UART_RX_PIN) == HIGH) vTaskDelay(1);
+
+  portENTER_CRITICAL(&serialMux);
+  Serial.println("[DBG] Start bit detected");
+  portEXIT_CRITICAL(&serialMux);
+
 //  delayMicroseconds(BIT_DURATION_US + BIT_DURATION_US / 2);
-  delayMicroseconds(BIT_DURATION_US * 1.5);  // ← 中央補正をしっかり
+//  delayMicroseconds(BIT_DURATION_US * 1.5);  // ← 中央補正をしっかり
+  const int start_offset = (BIT_DURATION_US * 3) / 2;
+  // ↓ここからだけ割り込み禁止にする
+  noInterrupts();
+  delayMicroseconds(start_offset);
 
   uint8_t b = 0;
   for (int i = 0; i < 8; ++i) {
-    b |= (digitalRead(TC_UART_RX_PIN) << i);
+    int bit = digitalRead(TC_UART_RX_PIN);
+    b |= (bit << i);
+
+//    portENTER_CRITICAL(&serialMux);
+//    Serial.printf("[DBG] Bit %d = %d\n", i, bit);
+//    portEXIT_CRITICAL(&serialMux);
+
     delayMicroseconds(BIT_DURATION_US);
   }
+  interrupts();
   delayMicroseconds(BIT_DURATION_US);
 
   *outByte = BIT_PAT ? reverseBits(b) : b;  // ← この行を修正
@@ -257,9 +273,9 @@ void setup() {
   delay(1000);
 
   cmdQueue = xQueueCreate(8, sizeof(CommandPacket));
-  xTaskCreatePinnedToCore(TaskBitBangReceive, "Receive", 4096, NULL, 1, NULL, 0);
+  xTaskCreatePinnedToCore(TaskBitBangReceive, "Receive", 4096, NULL, 1, NULL, 1);
   xTaskCreatePinnedToCore(TaskBitBangSend, "Send", 2048, NULL, 1, NULL, 0);
-  xTaskCreatePinnedToCore(TaskLED, "LED", 1024, NULL, 1, NULL, 1);
+  xTaskCreatePinnedToCore(TaskLED, "LED", 1024, NULL, 1, NULL, 0);
 }
 
 void loop() {
