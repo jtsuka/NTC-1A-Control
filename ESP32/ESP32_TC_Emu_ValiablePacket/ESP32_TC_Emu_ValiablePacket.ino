@@ -17,7 +17,7 @@
 #define OLED_SDA_PIN    4
 #define OLED_SCL_PIN    5
 #define BAUD_RATE      300
-#define BIT_PAT        false    // LSB
+#define BIT_PAT        true    // LSB
 #define BIT_DURATION_US (1000000 / BAUD_RATE)
 
 #define MAX_PAYLOAD_SIZE 10
