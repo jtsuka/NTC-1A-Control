@@ -211,6 +211,7 @@ void TaskBitBangSend(void* pvParameters) {
   }
 }
 
+#if 0
 void TaskLED(void* pvParameters) {
   for (;;) {
     digitalWrite(LED_PIN, HIGH);
@@ -221,7 +222,6 @@ void TaskLED(void* pvParameters) {
 }
 
 void initOLED() {
-#if 0
   Wire.begin(OLED_SDA_PIN, OLED_SCL_PIN);
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) return;
   display.clearDisplay();
@@ -230,9 +230,9 @@ void initOLED() {
   display.setCursor(0, 0);
   display.println("TC Emulator Ready");
   display.display();
-#endif
   delay(1000);
 }
+#endif
 
 void setup() {
   Serial.begin(115200);
@@ -248,10 +248,13 @@ void setup() {
   cmdQueue = xQueueCreate(8, sizeof(CommandPacket));
   xTaskCreatePinnedToCore(TaskBitBangReceive, "Receive", 4096, NULL, 1, NULL, 1);
   xTaskCreatePinnedToCore(TaskBitBangSend, "Send", 2048, NULL, 1, NULL, 0);
-  xTaskCreatePinnedToCore(TaskLED, "LED", 1024, NULL, 1, NULL, 0);
+//  xTaskCreatePinnedToCore(TaskLED, "LED", 1024, NULL, 1, NULL, 0);
 }
 
 void loop() {
-//  display.display();   // 1フレームの描画だけここで呼ぶ
+    digitalWrite(LED_PIN, HIGH);
+    vTaskDelay(pdMS_TO_TICKS(500));
+    digitalWrite(LED_PIN, LOW);
+    vTaskDelay(pdMS_TO_TICKS(500));
   delay(10);           // 無駄なCPU消費を避ける
 }
