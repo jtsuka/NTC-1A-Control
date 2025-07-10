@@ -155,11 +155,11 @@ void tcToUartTask(void* pv) {
     if (xQueueReceive(tcToPiQueue, buf, portMAX_DELAY)) {
       uint8_t len = getExpectedLength(buf[0]);
       //  そのまま返す
-    //  uint8_t msbBuf[MAX_PKT_SIZE];
-    //  for (uint8_t i = 0; i < len; ++i) {
-    //    msbBuf[i] = BIT_PAT ? reverseBits(buf[i]) : buf[i];
-    //  }
-      Serial2.write(buf, len);
+      uint8_t msbBuf[MAX_PKT_SIZE];
+      for (uint8_t i = 0; i < len; ++i) {
+        msbBuf[i] = BIT_PAT ? reverseBits(buf[i]) : buf[i];
+      }
+      Serial2.write(msbbuf, len);
     }
   }
 }
