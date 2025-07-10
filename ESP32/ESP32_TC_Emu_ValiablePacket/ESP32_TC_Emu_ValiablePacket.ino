@@ -9,6 +9,7 @@
 #include <Arduino.h>
 #include <Adafruit_SSD1306.h>
 #include <Wire.h>
+#include "esp_rom_sys.h"  // これをインクルード！
 
 #define TC_UART_TX_PIN 2
 #define TC_UART_RX_PIN 3
@@ -19,7 +20,7 @@
 #define BAUD_RATE      300
 #define BIT_PAT        true    // LSB
 //#define BIT_DURATION_US (1000000 / BAUD_RATE)
-#define BIT_DURATION_US 3360  // ← 少し長めの値に調整
+#define BIT_DURATION_US 3333  // ← 少し長めの値に調整
 
 
 #define MAX_PAYLOAD_SIZE 10
@@ -89,8 +90,31 @@ int lookupPayloadSize(uint8_t cmd_id) {
 }
 
 void bitBangSendByte(uint8_t b) {
+  if (BIT_PAT) {
+    b = reverseBits(b);  // LSBファーストなら事前に反転
+  }
+
+  noInterrupts();
+  digitalWrite(TC_UART_TX_PIN, LOW);
+  esp_rom_delay_us(BIT_DURATION_US);
+
+  // MSBファーストで送信（LSB希望時は事前に反転済）
+  for (int i = 7; i >= 0; --i) {
+    digitalWrite(TC_UART_TX_PIN, (b >> i) & 0x01);
+    esp_rom_delay_us(BIT_DURATION_US);
+  }
+
+  digitalWrite(TC_UART_TX_PIN, HIGH);
+  esp_rom_delay_us(BIT_DURATION_US * 2);  // ストップビット + ギャップ
+  interrupts();
+}
+
+
+#if 0
+void bitBangSendByte(uint8_t b) {
   noInterrupts();  // ←追加
-  digitalWrite(TC_UART_TX_PIN, LOW); delayMicroseconds(BIT_DURATION_US);
+  digitalWrite(TC_UART_TX_PIN, LOW);
+  delayMicroseconds(BIT_DURATION_US);
 
   if (BIT_PAT) {
     // LSBファースト
@@ -106,22 +130,26 @@ void bitBangSendByte(uint8_t b) {
       delayMicroseconds(BIT_DURATION_US);
     }
   }
-  digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(BIT_DURATION_US);
+  digitalWrite(TC_UART_TX_PIN, HIGH);
+  delayMicroseconds(BIT_DURATION_US * 2); // 6720us
 
   interrupts();    // ←追加
 
-  delayMicroseconds(1000);  // ギャップは割込み許可後に
 }
+#endif
 
 // MSB/LSB対応 送信関数
 void sendPacket(const uint8_t* data, size_t len, bool lsbMode) {
-  delayMicroseconds(500); // ← sendPacket() の最初に、安定待機
+
   noInterrupts();  // ←追加
   portENTER_CRITICAL(&serialMux);
+
   for (size_t i = 0; i < len; ++i) {
-    uint8_t b = lsbMode ? reverseBits(data[i]) : data[i];
-    bitBangSendByte(b);
-    delayMicroseconds(6000);  // ← 各バイト間のストップビット確保
+//    uint8_t b = lsbMode ? reverseBits(data[i]) : data[i];
+//    bitBangSendByte(data[i]);
+      // 修正後（BIT_PATに応じて反転してから渡す）
+      uint8_t b = lsbMode ? reverseBits(data[i]) : data[i];
+      bitBangSendByte(b);
   }
   portEXIT_CRITICAL(&serialMux);
   interrupts();    // ←追加
@@ -259,8 +287,8 @@ void setup() {
   delay(1000);
 
   cmdQueue = xQueueCreate(8, sizeof(CommandPacket));
-  xTaskCreatePinnedToCore(TaskBitBangReceive, "Receive", 4096, NULL, 1, NULL, 1);
-  xTaskCreatePinnedToCore(TaskBitBangSend, "Send", 2048, NULL, 1, NULL, 0);
+  xTaskCreatePinnedToCore(TaskBitBangReceive, "Receive", 4096, NULL, 1, NULL, 0);
+  xTaskCreatePinnedToCore(TaskBitBangSend, "Send", 2048, NULL, 1, NULL, 1);
 //  xTaskCreatePinnedToCore(TaskLED, "LED", 1024, NULL, 1, NULL, 0);
 }
 
