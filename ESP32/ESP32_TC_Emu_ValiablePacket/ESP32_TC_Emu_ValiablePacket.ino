@@ -122,8 +122,8 @@ void bitBangSendByte(uint8_t b) {
 
 // MSB/LSB対応 送信関数
 void sendPacket(const uint8_t* data, size_t len, bool lsbMode) {
-  noInterrupts();  // ←追加
   delayMicroseconds(500); // ← sendPacket() の最初に、安定待機
+  noInterrupts();  // ←追加
   portENTER_CRITICAL(&serialMux);
   for (size_t i = 0; i < len; ++i) {
     uint8_t b = lsbMode ? reverseBits(data[i]) : data[i];
