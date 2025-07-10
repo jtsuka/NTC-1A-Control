@@ -54,6 +54,8 @@ uint8_t getExpectedLength(uint8_t cmd) {
 }
 
 void bitbangSendPacket(const uint8_t* data, size_t len) {
+  portENTER_CRITICAL(&serialMux);  // ★ ここで割込み禁止
+
   for (size_t i = 0; i < len; ++i) {
     uint8_t msbBit = BIT_PAT ? reverseBits(data[i]): data[i];
     uint8_t b = msbBit;
@@ -63,8 +65,9 @@ void bitbangSendPacket(const uint8_t* data, size_t len) {
       b >>= 1;
     }
     digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(3333);
-//    delayMicroseconds(3000);
   }
+  portEXIT_CRITICAL(&serialMux);   // ★ ここで解放
+  delayMicroseconds(3000);
 }
 
 bool bitbangReceiveByte(uint8_t* outByte) {
