@@ -117,7 +117,7 @@ void bitBangSendByte(uint8_t b) {
 
   interrupts();    // ←追加
 
-  delayMicroseconds(4000);  // バイト間ギャップ明示
+  delayMicroseconds(1000);  // バイト間ギャップ明示
 }
 
 // MSB/LSB対応 送信関数
