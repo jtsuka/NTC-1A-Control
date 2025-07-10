@@ -63,7 +63,7 @@ void bitbangSendPacket(const uint8_t* data, size_t len) {
       b >>= 1;
     }
     digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(3333);
-    delayMicroseconds(3000);
+//    delayMicroseconds(3000);
   }
 }
 
@@ -162,21 +162,10 @@ void tcToUartTask(void* pv) {
         msbBuf[i] = BIT_PAT ? buf[i] : reverseBits(buf[i]) ;
       }
       Serial2.write(msbBuf, len);
+      Serial2.flush();  // UART TXバッファが空になるまで待機
     }
   }
 }
-
-#if 0
-void tcToUartTask(void* pv) {
-  uint8_t buf[MAX_PKT_SIZE];
-  for (;;) {
-    if (xQueueReceive(tcToPiQueue, buf, portMAX_DELAY)) {
-      uint8_t len = getExpectedLength(buf[0]);
-      Serial2.write(buf, len);
-    }
-  }
-}
-#endif
 
 const uint8_t testPacket[6] = {0x01, 0x06, 0x05, 0x00, 0x00, 0x0C};
 void testLoopTask(void* pv) {
@@ -208,7 +197,7 @@ void setup() {
 
   xTaskCreatePinnedToCore(uartToTcTask,   "UART->TC",  2048, NULL, 1, NULL, 1);
   xTaskCreatePinnedToCore(tcSenderTask,   "TC SEND",   2048, NULL, 1, NULL, 0);
-  xTaskCreatePinnedToCore(tcReceiverTask, "TC RECV",   2048, NULL, 1, NULL, 1);
+  xTaskCreatePinnedToCore(tcReceiverTask, "TC RECV",   2048, NULL, 1, NULL, 0);
   xTaskCreatePinnedToCore(tcToUartTask,   "TC->UART",  2048, NULL, 1, NULL, 0);
   xTaskCreatePinnedToCore(testLoopTask,   "TEST",      2048, NULL, 1, NULL, 1);
 }
