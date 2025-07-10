@@ -65,9 +65,9 @@ void bitbangSendPacket(const uint8_t* data, size_t len) {
       b >>= 1;
     }
     digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(3333);
+//    delayMicroseconds(4000);
   }
   portEXIT_CRITICAL(&serialMux);   // ★ ここで解放
-  delayMicroseconds(4000);
 }
 
 bool bitbangReceiveByte(uint8_t* outByte) {
@@ -158,12 +158,15 @@ void tcReceiverTask(void* pv) {
 
 void tcToUartTask(void* pv) {
   uint8_t buf[MAX_PKT_SIZE];
+
+//  delayMicroseconds(4000);  // ← BitBang終了を待ってUART送信開始
+
   for (;;) {
     if (xQueueReceive(tcToPiQueue, buf, portMAX_DELAY)) {
       uint8_t len = getExpectedLength(buf[0]);
 
      // 衝突防止：BitBang送信直後のUART送信をわずかに遅延
-      delayMicroseconds(800);  // 1バイトぶん程度のBitBang時間確保
+      delayMicroseconds(4000);  // 1バイトぶん程度のBitBang時間確保
 
       //  そのまま返す or 反転
       uint8_t msbBuf[MAX_PKT_SIZE];
