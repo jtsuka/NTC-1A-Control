@@ -89,16 +89,9 @@ int lookupPayloadSize(uint8_t cmd_id) {
 }
 
 void bitBangSendByte(uint8_t b) {
-//  noInterrupts();  // ←追加
+  noInterrupts();  // ←追加
   digitalWrite(TC_UART_TX_PIN, LOW); delayMicroseconds(BIT_DURATION_US);
-#if 0
-  for (int i = 0; i < 8; ++i) {
-    digitalWrite(TC_UART_TX_PIN, b & 0x01);
-    delayMicroseconds(BIT_DURATION_US);
-    b >>= 1;
-  }
-  digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(BIT_DURATION_US);
-#endif
+
   if (BIT_PAT) {
     // LSBファースト
     for (int i = 0; i < 8; ++i) {
@@ -115,9 +108,9 @@ void bitBangSendByte(uint8_t b) {
   }
   digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(BIT_DURATION_US);
 
-//  interrupts();    // ←追加
+  interrupts();    // ←追加
 
-  delayMicroseconds(1000);  // バイト間ギャップ明示
+  delayMicroseconds(1000);  // ギャップは割込み許可後に
 }
 
 // MSB/LSB対応 送信関数
@@ -128,7 +121,7 @@ void sendPacket(const uint8_t* data, size_t len, bool lsbMode) {
   for (size_t i = 0; i < len; ++i) {
     uint8_t b = lsbMode ? reverseBits(data[i]) : data[i];
     bitBangSendByte(b);
-    delayMicroseconds(3500);  // ← 各バイト間のストップビット確保
+    delayMicroseconds(6000);  // ← 各バイト間のストップビット確保
   }
   portEXIT_CRITICAL(&serialMux);
   interrupts();    // ←追加
