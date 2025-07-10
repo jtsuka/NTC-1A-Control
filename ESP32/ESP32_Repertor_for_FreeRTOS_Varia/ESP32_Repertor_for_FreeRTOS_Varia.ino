@@ -67,6 +67,8 @@ void bitbangSendPacket(const uint8_t* data, size_t len) {
     digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(3333);
 //    delayMicroseconds(4000);
   }
+  // bitbangSendPacket() の最後
+  delayMicroseconds(4000);  // パケット間ギャップ
   portEXIT_CRITICAL(&serialMux);   // ★ ここで解放
 }
 
@@ -210,8 +212,8 @@ void setup() {
 
   xTaskCreatePinnedToCore(uartToTcTask,   "UART->TC",  2048, NULL, 1, NULL, 1);
   xTaskCreatePinnedToCore(tcSenderTask,   "TC SEND",   2048, NULL, 1, NULL, 0);
-  xTaskCreatePinnedToCore(tcReceiverTask, "TC RECV",   2048, NULL, 1, NULL, 1);
-  xTaskCreatePinnedToCore(tcToUartTask,   "TC->UART",  2048, NULL, 1, NULL, 0);
+  xTaskCreatePinnedToCore(tcReceiverTask, "TC RECV",   2048, NULL, 1, NULL, 0);
+  xTaskCreatePinnedToCore(tcToUartTask,   "TC->UART",  2048, NULL, 1, NULL, 1);
   xTaskCreatePinnedToCore(testLoopTask,   "TEST",      2048, NULL, 1, NULL, 1);
 }
 
