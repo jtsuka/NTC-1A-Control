@@ -18,7 +18,7 @@
 
 #define MAX_PKT_SIZE 16  // 最大パケットサイズ
 
-#define BIT_PAT         True    // LSB
+#define BIT_PAT        true    // LSB
 
 QueueHandle_t piToTcQueue;
 QueueHandle_t tcToPiQueue;
@@ -154,12 +154,12 @@ void tcToUartTask(void* pv) {
   for (;;) {
     if (xQueueReceive(tcToPiQueue, buf, portMAX_DELAY)) {
     //  そのまま返す
-    //  uint8_t len = getExpectedLength(buf[0]);
+    uint8_t len = getExpectedLength(buf[0]);
     //  uint8_t msbBuf[MAX_PKT_SIZE];
     //  for (uint8_t i = 0; i < len; ++i) {
     //    msbBuf[i] = BIT_PAT ? reverseBits(buf[i]) : buf[i];
     //  }
-      Serial2.write(msbBuf, len);
+      Serial2.write(buf, len);
     }
   }
 }
