@@ -80,6 +80,9 @@ bool bitbangReceiveByte(uint8_t* outByte) {
       delayMicroseconds(3333);
     }
     interrupts();
+
+    delayMicroseconds(500);  // stopビット完了のための追加待機
+
     // モードによって切換え
     *outByte = BIT_PAT ? reverseBits(b) : b;
     return true;
@@ -155,6 +158,10 @@ void tcToUartTask(void* pv) {
   for (;;) {
     if (xQueueReceive(tcToPiQueue, buf, portMAX_DELAY)) {
       uint8_t len = getExpectedLength(buf[0]);
+
+     // 衝突防止：BitBang送信直後のUART送信をわずかに遅延
+      delayMicroseconds(800);  // 1バイトぶん程度のBitBang時間確保
+
       //  そのまま返す or 反転
       uint8_t msbBuf[MAX_PKT_SIZE];
       for (uint8_t i = 0; i < len; ++i) {
