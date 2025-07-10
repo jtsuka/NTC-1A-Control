@@ -18,7 +18,7 @@
 
 #define MAX_PKT_SIZE 16  // 最大パケットサイズ
 
-#define BIT_PAT        false   // LSB
+#define BIT_PAT        true   // LSB
 
 QueueHandle_t piToTcQueue;
 QueueHandle_t tcToPiQueue;
@@ -80,7 +80,8 @@ bool bitbangReceiveByte(uint8_t* outByte) {
       delayMicroseconds(3333);
     }
     interrupts();
-    *outByte = b;  // reverseBits は不要
+    // モードによって切換え
+    *outByte = BIT_PAT ? reverseBits(b) : b;
     return true;
   }
   return false;
