@@ -160,7 +160,7 @@ void tcToUartTask(void* pv) {
 //        msbBuf[i] = BIT_PAT ? reverseBits(buf[i]) : buf[i];
         msbBuf[i] = BIT_PAT ? buf[i] : reverseBits(buf[i]) ;
       }
-      Serial2.write(msbBuf, len);
+      Serial2.write(buf, len);
     }
   }
 }
