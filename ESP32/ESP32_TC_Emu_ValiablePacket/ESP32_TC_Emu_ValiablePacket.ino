@@ -18,7 +18,9 @@
 #define OLED_SCL_PIN    5
 #define BAUD_RATE      300
 #define BIT_PAT        true    // LSB
-#define BIT_DURATION_US (1000000 / BAUD_RATE)
+//#define BIT_DURATION_US (1000000 / BAUD_RATE)
+#define BIT_DURATION_US 3360  // ← 少し長めの値に調整
+
 
 #define MAX_PAYLOAD_SIZE 10
 #define MAX_PACKET_SIZE  11  // cmd + payload(max10)
@@ -102,29 +104,15 @@ void bitBangSendByte(uint8_t b) {
 
 // MSB/LSB対応 送信関数
 void sendPacket(const uint8_t* data, size_t len, bool lsbMode) {
+  delayMicroseconds(500); // ← sendPacket() の最初に、安定待機
   portENTER_CRITICAL(&serialMux);
   for (size_t i = 0; i < len; ++i) {
     uint8_t b = lsbMode ? reverseBits(data[i]) : data[i];
     bitBangSendByte(b);
+    delayMicroseconds(3500);  // ← 各バイト間のストップビット確保
   }
   portEXIT_CRITICAL(&serialMux);
-  delayMicroseconds(3000);  // パケット後の分離タイミング
 }
-
-#if 0
-void sendPacket(const uint8_t* data, size_t len) {
-  portENTER_CRITICAL(&serialMux);
-  for (size_t i = 0; i < len; ++i) bitBangSendByte(data[i]);
-  portEXIT_CRITICAL(&serialMux);
-  delayMicroseconds(3000);  // パケット後の分離タイミング
-}
-#endif
-
-#if 0
-void sendPacket(const uint8_t* data, size_t len) {
-  for (size_t i = 0; i < len; ++i) bitBangSendByte(data[i]);
-}
-#endif
 
 bool receiveByte(uint8_t* outByte) {
   while (digitalRead(TC_UART_RX_PIN) == HIGH) vTaskDelay(1);
