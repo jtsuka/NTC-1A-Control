@@ -165,74 +165,6 @@ void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen
   *respLen = pkt.length + 1;
 }
 
-
-#if 0
-void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen) {
-  uint8_t msbCmd = BIT_PAT ? pkt.cmd_id :reverseBits(pkt.cmd_id);
-
-  switch (msbCmd) {
-    case 0x01:
-    case 0x02:
-    case 0x03:
-    case 0x04:
-    case 0x05:
-      // 応答のコマンドIDは BIT_PAT に応じて正しい形式で返す
-      response[0] = pkt.cmd_id;  // LSBそのままでよければ
-      for (uint8_t i = 0; i < pkt.length; ++i) {
-        response[1 + i] = pkt.payload[i];
-      }
-      *respLen = pkt.length + 1;
-      break;
-
-    default:
-      *respLen = 0;
-      break;
-  }
-}
-#endif
-
-#if 0
-void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen) {
-  switch (pkt.cmd_id) {
-    case 0x01:
-    case 0x02:
-    case 0x03:
-    case 0x04:
-    case 0x05:
-      // pkt.length + 1 は cmd_id + payload長
-      response[0] = pkt.cmd_id;
-      for (uint8_t i = 0; i < pkt.length; ++i) {
-        response[1 + i] = pkt.payload[i];
-      }
-      *respLen = pkt.length + 1;
-      break;
-
-    default:
-      *respLen = 0;
-      break;
-  }
-}
-#endif
-
-#if 0
-void handleCommand(const CommandPacket& pkt, uint8_t* response, uint8_t* respLen) {
-  switch (pkt.cmd_id) {
-    case 0x01:
-      response[0] = 0x10;
-      response[1] = 0x00;
-      response[2] = 0x05;
-      response[3] = 0xA0;
-      response[4] = 0x00;
-      response[5] = 0x7F;
-      *respLen = 6;
-      break;
-    default:
-      *respLen = 0;
-      break;
-  }
-}
-#endif
-
 void TaskBitBangReceive(void* pvParameters) {
   for (;;) {
 
@@ -289,6 +221,7 @@ void TaskLED(void* pvParameters) {
 }
 
 void initOLED() {
+#if 0
   Wire.begin(OLED_SDA_PIN, OLED_SCL_PIN);
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) return;
   display.clearDisplay();
@@ -297,6 +230,7 @@ void initOLED() {
   display.setCursor(0, 0);
   display.println("TC Emulator Ready");
   display.display();
+#endif
   delay(1000);
 }
 
