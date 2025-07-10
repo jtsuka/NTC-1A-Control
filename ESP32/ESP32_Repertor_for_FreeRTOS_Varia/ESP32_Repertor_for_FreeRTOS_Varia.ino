@@ -153,8 +153,8 @@ void tcToUartTask(void* pv) {
   uint8_t buf[MAX_PKT_SIZE];
   for (;;) {
     if (xQueueReceive(tcToPiQueue, buf, portMAX_DELAY)) {
-    //  そのまま返す
-    uint8_t len = getExpectedLength(buf[0]);
+      uint8_t len = getExpectedLength(buf[0]);
+      //  そのまま返す
     //  uint8_t msbBuf[MAX_PKT_SIZE];
     //  for (uint8_t i = 0; i < len; ++i) {
     //    msbBuf[i] = BIT_PAT ? reverseBits(buf[i]) : buf[i];
