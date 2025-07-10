@@ -67,7 +67,7 @@ void bitbangSendPacket(const uint8_t* data, size_t len) {
     digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(3333);
   }
   portEXIT_CRITICAL(&serialMux);   // ★ ここで解放
-  delayMicroseconds(3000);
+  delayMicroseconds(4000);
 }
 
 bool bitbangReceiveByte(uint8_t* outByte) {
