@@ -260,7 +260,7 @@ void setup() {
   pinMode(TEST_PIN, INPUT_PULLUP);
   digitalWrite(TC_UART_TX_PIN, HIGH);
 
-  initOLED();
+//  initOLED();
   delay(1000);
 
   cmdQueue = xQueueCreate(8, sizeof(CommandPacket));
