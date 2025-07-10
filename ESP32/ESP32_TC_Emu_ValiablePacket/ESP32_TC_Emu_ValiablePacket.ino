@@ -87,6 +87,7 @@ int lookupPayloadSize(uint8_t cmd_id) {
 }
 
 void bitBangSendByte(uint8_t b) {
+  noInterrupts();  // ←追加
   digitalWrite(TC_UART_TX_PIN, LOW); delayMicroseconds(BIT_DURATION_US);
   for (int i = 0; i < 8; ++i) {
     digitalWrite(TC_UART_TX_PIN, b & 0x01);
@@ -94,6 +95,9 @@ void bitBangSendByte(uint8_t b) {
     b >>= 1;
   }
   digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(BIT_DURATION_US);
+  interrupts();    // ←追加
+
+  delayMicroseconds(4000);  // バイト間ギャップ明示
 }
 
 // MSB/LSB対応 送信関数
