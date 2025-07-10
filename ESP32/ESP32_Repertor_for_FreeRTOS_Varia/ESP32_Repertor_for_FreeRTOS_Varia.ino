@@ -18,7 +18,7 @@
 
 #define MAX_PKT_SIZE 16  // 最大パケットサイズ
 
-#define BIT_PAT        false   // LSB
+#define BIT_PAT        true   // LSB
 
 QueueHandle_t piToTcQueue;
 QueueHandle_t tcToPiQueue;
@@ -57,7 +57,7 @@ void bitbangSendPacket(const uint8_t* data, size_t len) {
   portENTER_CRITICAL(&serialMux);  // ★ ここで割込み禁止
 
   for (size_t i = 0; i < len; ++i) {
-    uint8_t msbBit = BIT_PAT ? reverseBits(data[i]): data[i];
+    uint8_t msbBit = BIT_PAT ? data[i] : reverseBits(data[i]);
     uint8_t b = msbBit;
     digitalWrite(TC_UART_TX_PIN, LOW); delayMicroseconds(3333);
     for (int j = 0; j < 8; ++j) {
