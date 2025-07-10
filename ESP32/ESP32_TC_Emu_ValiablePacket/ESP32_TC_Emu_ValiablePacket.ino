@@ -91,12 +91,30 @@ int lookupPayloadSize(uint8_t cmd_id) {
 void bitBangSendByte(uint8_t b) {
   noInterrupts();  // ←追加
   digitalWrite(TC_UART_TX_PIN, LOW); delayMicroseconds(BIT_DURATION_US);
+#if 0
   for (int i = 0; i < 8; ++i) {
     digitalWrite(TC_UART_TX_PIN, b & 0x01);
     delayMicroseconds(BIT_DURATION_US);
     b >>= 1;
   }
   digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(BIT_DURATION_US);
+#endif
+  if (BIT_PAT) {
+    // LSBファースト
+    for (int i = 0; i < 8; ++i) {
+      digitalWrite(TC_UART_TX_PIN, b & 0x01);
+      delayMicroseconds(BIT_DURATION_US);
+      b >>= 1;
+    }
+  } else {
+    // MSBファースト
+    for (int i = 7; i >= 0; --i) {
+      digitalWrite(TC_UART_TX_PIN, (b >> i) & 0x01);
+      delayMicroseconds(BIT_DURATION_US);
+    }
+  }
+  digitalWrite(TC_UART_TX_PIN, HIGH); delayMicroseconds(BIT_DURATION_US);
+
   interrupts();    // ←追加
 
   delayMicroseconds(4000);  // バイト間ギャップ明示
