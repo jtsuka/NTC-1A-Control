@@ -56,6 +56,8 @@ bool receive_packet() {
   unsigned long start = millis();
   bool success = true;
 
+  memset(recv_buf, 0, sizeof(recv_buf));  // ★ゼロ初期化
+
   noInterrupts();
 
   for (int i = 0; i < 2; i++) {  // CMD + LEN 先読み
@@ -89,6 +91,13 @@ bool receive_packet() {
   }
 
   recv_len = recv_buf[1];  // LEN値
+
+// ★ここでLENバイト制限を入れる（2以上、MAX以下）
+  if (recv_len < 2 || recv_len > MAX_PKT_LEN) {
+    success = false;
+    goto end;
+  }
+
   if (recv_len > MAX_PKT_LEN) recv_len = MAX_PKT_LEN;
 
   for (int i = 2; i < recv_len; i++) {
