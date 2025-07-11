@@ -43,12 +43,15 @@ void setup() {
 }
 
 void loop() {
+  Serial.println("loop"); 
   if (receive_packet()) {
     display_packet("RECV", recv_buf, recv_len);
     delayMicroseconds(BIT_DELAY * 4);  // パケット間待ち
     send_packet(recv_buf, recv_len);
     display_packet("SEND", recv_buf, recv_len);
     delayMicroseconds(500);  // 次の受信への休止
+  } else {
+    Serial.println("receive failed");  // ③ 失敗時表示
   }
 }
 
@@ -99,6 +102,10 @@ bool receive_packet() {
   }
 
   if (recv_len > MAX_PKT_LEN) recv_len = MAX_PKT_LEN;
+
+  // CMD受信後すぐに確認
+  Serial.print("CMD="); Serial.println(recv_buf[0], HEX);
+  Serial.print("LEN="); Serial.println(recv_buf[1]);  // ← これ重要
 
   for (int i = 2; i < recv_len; i++) {
     uint8_t b = 0;
