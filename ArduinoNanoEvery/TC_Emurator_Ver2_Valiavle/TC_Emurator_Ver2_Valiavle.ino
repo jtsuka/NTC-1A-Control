@@ -113,6 +113,7 @@ bool receive_packet() {
 
 end:
   interrupts();
+  Serial.println("receive OK");
   return success;
 }
 
@@ -126,6 +127,7 @@ void send_packet(uint8_t *buf, uint8_t len) {
   }
   delayMicroseconds(BIT_DELAY * 2 + 300);
   interrupts();
+  Serial.print("SEND len="); Serial.println(len);
 }
 
 void send_bitbang_byte(uint8_t b) {
@@ -140,6 +142,7 @@ void send_bitbang_byte(uint8_t b) {
   delayMicroseconds(BIT_DELAY * 2 + 300);
   delayMicroseconds(200);
   interrupts();
+  Serial.println(b, HEX);
 }
 
 void display_packet(const char *label, uint8_t *buf, uint8_t len) {
