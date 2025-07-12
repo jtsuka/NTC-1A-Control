@@ -5,6 +5,7 @@
 // - Baud rate: UART = 9600bps, BitBang = 300bps LSB-first
 // - After sending BitBang, wait up to 100ms for response
 // - Includes buffer isolation, packet validation, length-safe response
+// - FreeRTOS-safe BitBang using taskENTER_CRITICAL
 // ----------------------------------------
 
 #include <Arduino.h>
@@ -18,7 +19,7 @@
 #define BITBANG_RX_PIN 3
 
 #define UART_BAUD_RATE 9600
-#define BITBANG_DELAY_US 3400   // Adjusted for stable 300bps
+#define BITBANG_DELAY_US 3330   // Adjusted for stable 300bps
 #define RESPONSE_TIMEOUT_MS 100
 #define MAX_PACKET_LEN 32
 #define FIXED_PACKET_LEN 6
@@ -49,6 +50,7 @@ void uartSendPacket(const uint8_t *buf, int len) {
 
 // ------------- BitBang TX ---------------
 void bitBangSendByte(uint8_t b) {
+  taskENTER_CRITICAL();
   digitalWrite(BITBANG_TX_PIN, LOW); // Start bit
   delayMicroseconds(BITBANG_DELAY_US);
 
@@ -59,24 +61,27 @@ void bitBangSendByte(uint8_t b) {
 
   digitalWrite(BITBANG_TX_PIN, HIGH); // Stop bit
   delayMicroseconds(BITBANG_DELAY_US);
+  taskEXIT_CRITICAL();
 }
 
 void bitBangSendPacket(const uint8_t *buf, int len) {
+  Serial.print("[SEND] ");
   for (int i = 0; i < len; i++) {
     bitBangSendByte(buf[i]);
+    Serial.printf("%02X ", buf[i]);
   }
+  Serial.println();
 }
 
 // ------------- BitBang RX ---------------
 int bitBangReceivePacket(uint8_t *buf, int maxLen) {
   int byteCount = 0;
   while (byteCount < maxLen) {
-    // Wait for start bit (LOW), break if too long
     unsigned long start = millis();
     while (digitalRead(BITBANG_RX_PIN) == HIGH) {
       if ((millis() - start) > 10) return 0;
     }
-    delayMicroseconds(BITBANG_DELAY_US * 1.6); // Midpoint of first data bit
+    delayMicroseconds(BITBANG_DELAY_US * 1.6);
 
     uint8_t b = 0;
     for (int i = 0; i < 8; i++) {
@@ -84,7 +89,6 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen) {
       delayMicroseconds(BITBANG_DELAY_US);
     }
 
-    // Stop bit check (should be HIGH)
     delayMicroseconds(BITBANG_DELAY_US);
     if (digitalRead(BITBANG_RX_PIN) == LOW) {
       Serial.println("[WARN] Stop bit not detected. Skipping byte.");
@@ -148,7 +152,7 @@ void setup() {
   uartInit();
 
   pinMode(BITBANG_TX_PIN, OUTPUT);
-  digitalWrite(BITBANG_TX_PIN, HIGH);
+  digitalWrite(BITBANG_TX_PIN, HIGH);  // Ensure idle HIGH
   pinMode(BITBANG_RX_PIN, INPUT_PULLUP);
 
   bitbangRxQueue = xQueueCreate(4, sizeof(uint8_t*));
