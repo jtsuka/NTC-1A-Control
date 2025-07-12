@@ -5,7 +5,7 @@
 // - Baud rate: UART = 9600bps, BitBang = 300bps LSB-first
 // - After sending BitBang, wait up to 100ms for response
 // - Includes buffer isolation, packet validation, length-safe response
-// - FreeRTOS-safe BitBang using taskENTER_CRITICAL
+// - FreeRTOS-safe BitBang using taskENTER_CRITICAL(&mux)
 // ----------------------------------------
 
 #include <Arduino.h>
@@ -13,6 +13,7 @@
 #include <freertos/task.h>
 #include <freertos/queue.h>
 
+// ピン定義
 #define UART_RX_PIN 44
 #define UART_TX_PIN 43
 #define BITBANG_TX_PIN 2
@@ -25,8 +26,9 @@
 #define FIXED_PACKET_LEN 6
 
 QueueHandle_t bitbangRxQueue;
+portMUX_TYPE bitbangMux = portMUX_INITIALIZER_UNLOCKED;  // FreeRTOS排他制御用
 
-// ---------------- UART ------------------
+// ---------------- UART 初期化 ------------------
 void uartInit() {
   Serial1.begin(UART_BAUD_RATE, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
 }
@@ -48,9 +50,9 @@ void uartSendPacket(const uint8_t *buf, int len) {
   delay(1);  // Ensure completion
 }
 
-// ------------- BitBang TX ---------------
+// ------------- BitBang 送信 ------------------
 void bitBangSendByte(uint8_t b) {
-  taskENTER_CRITICAL();
+  taskENTER_CRITICAL(&bitbangMux);
   digitalWrite(BITBANG_TX_PIN, LOW); // Start bit
   delayMicroseconds(BITBANG_DELAY_US);
 
@@ -61,7 +63,7 @@ void bitBangSendByte(uint8_t b) {
 
   digitalWrite(BITBANG_TX_PIN, HIGH); // Stop bit
   delayMicroseconds(BITBANG_DELAY_US);
-  taskEXIT_CRITICAL();
+  taskEXIT_CRITICAL(&bitbangMux);
 }
 
 void bitBangSendPacket(const uint8_t *buf, int len) {
@@ -73,7 +75,7 @@ void bitBangSendPacket(const uint8_t *buf, int len) {
   Serial.println();
 }
 
-// ------------- BitBang RX ---------------
+// ------------- BitBang 受信 ------------------
 int bitBangReceivePacket(uint8_t *buf, int maxLen) {
   int byteCount = 0;
   while (byteCount < maxLen) {
@@ -81,7 +83,7 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen) {
     while (digitalRead(BITBANG_RX_PIN) == HIGH) {
       if ((millis() - start) > 10) return 0;
     }
-    delayMicroseconds(BITBANG_DELAY_US * 1.6);
+    delayMicroseconds(BITBANG_DELAY_US * 1.6);  // 中央でサンプリング
 
     uint8_t b = 0;
     for (int i = 0; i < 8; i++) {
@@ -89,7 +91,7 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen) {
       delayMicroseconds(BITBANG_DELAY_US);
     }
 
-    delayMicroseconds(BITBANG_DELAY_US);
+    delayMicroseconds(BITBANG_DELAY_US);  // Stop bit
     if (digitalRead(BITBANG_RX_PIN) == LOW) {
       Serial.println("[WARN] Stop bit not detected. Skipping byte.");
       continue;
@@ -101,13 +103,12 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen) {
     }
 
     buf[byteCount++] = b;
-
     if (byteCount >= FIXED_PACKET_LEN) break;
   }
   return byteCount;
 }
 
-// ------------- FreeRTOS Tasks ------------
+// ------------- FreeRTOS タスク定義 ------------------
 void TaskBitBangReceive(void *pvParameters) {
   uint8_t rxBuf[MAX_PACKET_LEN];
   while (1) {
@@ -146,7 +147,7 @@ void TaskUartReceive(void *pvParameters) {
   }
 }
 
-// -------------- Setup -------------------
+// ----------------- Setup ---------------------
 void setup() {
   Serial.begin(115200);
   uartInit();
@@ -164,5 +165,5 @@ void setup() {
 }
 
 void loop() {
-  // nothing
+  // No loop action needed
 }
