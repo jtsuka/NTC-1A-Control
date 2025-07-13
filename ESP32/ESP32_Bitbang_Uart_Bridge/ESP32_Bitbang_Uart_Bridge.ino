@@ -1,157 +1,125 @@
-/*
-  ESP32-S3 BitBang <-> UART Bridge (FreeRTOS)
-  - UART RX (from Pi) -> BitBang TX (to TC)
-  - BitBang RX (from TC) -> UART TX (to Pi)
-  - OLED + Serial log
-  - Grove Shield pin assignment
-*/
-
 #include <Arduino.h>
-#include <Wire.h>
-#include <Adafruit_SSD1306.h>
+#include "driver/uart.h"
 #include "freertos/queue.h"
-#include "freertos/task.h"
 
-// === Pin Definitions ===
-#define PIN_UART_RX     9  // GPIO9 (from Pi)
-#define PIN_UART_TX     8  // GPIO8 (to Pi)
-#define PIN_BITBANG_RX  3  // GPIO3 (from TC)
-#define PIN_BITBANG_TX  2  // GPIO2 (to TC)
-#define PIN_OLED_SDA    4  // Grove I2C
-#define PIN_OLED_SCL    5
+#define UART_NUM        UART_NUM_1
+#define UART_TX_PIN     43
+#define UART_RX_PIN     44
+#define BB_TX_PIN       2
+#define BB_RX_PIN       3
 
-// === Constants ===
 #define BAUD_UART       9600
-#define BIT_DELAY_US    3333  // Approx. 300bps
-#define MAX_PACKET_SIZE 16
+#define BIT_DELAY_US    3333
+#define PACKET_SIZE     6
 
-// === Queues ===
-QueueHandle_t uartRxQueue;
-QueueHandle_t bitbangTxQueue;
-QueueHandle_t bitbangRxQueue;
-QueueHandle_t uartTxQueue;
+QueueHandle_t txQueue;
+QueueHandle_t rxQueue;
 
-// === OLED Setup ===
-Adafruit_SSD1306 display(128, 64, &Wire, -1);
+portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
 
-void logOLED(const char* title, const char* msg) {
-  display.clearDisplay();
-  display.setCursor(0, 0);
-  display.println(title);
-  display.setCursor(0, 20);
-  display.println(msg);
-  display.display();
+// === BitBang送信 ===
+void bitBangSendByte(uint8_t b) {
+  taskENTER_CRITICAL(&mux);
+  digitalWrite(BB_TX_PIN, LOW);  // Start
+  delayMicroseconds(BIT_DELAY_US);
+  for (int i = 0; i < 8; i++) {
+    digitalWrite(BB_TX_PIN, (b >> i) & 1);
+    delayMicroseconds(BIT_DELAY_US);
+  }
+  digitalWrite(BB_TX_PIN, HIGH); // Stop
+  delayMicroseconds(BIT_DELAY_US);
+  taskEXIT_CRITICAL(&mux);
 }
 
-void logSerial(const char* prefix, const uint8_t* data, size_t len) {
-  Serial.printf("%s:", prefix);
-  for (size_t i = 0; i < len; i++) {
-    Serial.printf(" %02X", data[i]);
+void bitBangSendPacket(const uint8_t* data) {
+  Serial.print("BB TX: ");
+  for (int i = 0; i < PACKET_SIZE; i++) {
+    Serial.printf("%02X ", data[i]);
+    bitBangSendByte(data[i]);
   }
   Serial.println();
 }
 
-// === BitBang TX ===
-void bitBangSendByte(uint8_t b) {
-  digitalWrite(PIN_BITBANG_TX, LOW);  // Start bit
-  delayMicroseconds(BIT_DELAY_US);
-  for (int i = 0; i < 8; i++) {
-    digitalWrite(PIN_BITBANG_TX, (b >> i) & 0x01);
-    delayMicroseconds(BIT_DELAY_US);
-  }
-  digitalWrite(PIN_BITBANG_TX, HIGH);  // Stop bit
-  delayMicroseconds(BIT_DELAY_US);
-}
-
-void bitBangSendPacket(const uint8_t* data, size_t len) {
-  for (size_t i = 0; i < len; i++) {
-    bitBangSendByte(data[i]);
-  }
-  logSerial("BitBang TX", data, len);
-}
-
-// === BitBang RX ===
-uint8_t bitBangReceiveByte() {
-  while (digitalRead(PIN_BITBANG_RX));  // Wait for start bit
-  delayMicroseconds(BIT_DELAY_US * 1.5);
-  uint8_t b = 0;
-  for (int i = 0; i < 8; i++) {
-    b |= (digitalRead(PIN_BITBANG_RX) << i);
-    delayMicroseconds(BIT_DELAY_US);
-  }
-  delayMicroseconds(BIT_DELAY_US);  // Stop bit
-  return b;
-}
-
-// === Tasks ===
-void TaskUARTReceive(void *pvParameters) {
-  uint8_t b;
-  while (1) {
-    if (Serial2.available()) {
-      b = Serial2.read();
-      xQueueSend(uartRxQueue, &b, portMAX_DELAY);
+// === BitBang受信 ===
+bool bitBangReceivePacket(uint8_t* data) {
+  for (int i = 0; i < PACKET_SIZE; i++) {
+    // スタートビット待機（ブロッキング回避）
+    while (digitalRead(BB_RX_PIN) == HIGH) {
+      vTaskDelay(pdMS_TO_TICKS(1));  // ← CPU占有を防ぐ
     }
-  }
-}
 
-void TaskBitBangSend(void *pvParameters) {
-  uint8_t b;
-  while (1) {
-    if (xQueueReceive(uartRxQueue, &b, portMAX_DELAY) == pdTRUE) {
-      bitBangSendByte(b);
+    delayMicroseconds(BIT_DELAY_US * 1.5);
+
+    uint8_t b = 0;
+    for (int j = 0; j < 8; j++) {
+      b |= (digitalRead(BB_RX_PIN) << j);
+      delayMicroseconds(BIT_DELAY_US);
     }
+
+    delayMicroseconds(BIT_DELAY_US);  // Stop bit
+    data[i] = b;
+
+    taskYIELD();  // ← 他タスクへ一時的にCPUを譲る
   }
+  return true;
 }
 
-void TaskBitBangReceive(void *pvParameters) {
-  uint8_t b;
+// === タスク: UART受信 → BitBang送信 ===
+void TaskUartToBitBang(void* pv) {
+  uint8_t buf[PACKET_SIZE];
   while (1) {
-    b = bitBangReceiveByte();
-    xQueueSend(bitbangRxQueue, &b, portMAX_DELAY);
-  }
-}
-
-void TaskUARTSend(void *pvParameters) {
-  uint8_t b;
-  while (1) {
-    if (xQueueReceive(bitbangRxQueue, &b, portMAX_DELAY) == pdTRUE) {
-      Serial2.write(b);
+    int len = uart_read_bytes(UART_NUM, buf, PACKET_SIZE, pdMS_TO_TICKS(100));
+    if (len == PACKET_SIZE) {
+      xQueueSend(txQueue, buf, 0);
+      Serial.print("UART RX: ");
+      for (int i = 0; i < PACKET_SIZE; i++) Serial.printf("%02X ", buf[i]);
+      Serial.println();
     }
+    vTaskDelay(pdMS_TO_TICKS(10));
   }
 }
 
-// === Setup ===
+// === タスク: BitBang受信 → UART送信 ===
+void TaskBitBangToUart(void* pv) {
+  uint8_t buf[PACKET_SIZE];
+  while (1) {
+    if (bitBangReceivePacket(buf)) {
+      Serial.print("BB RX: ");
+      for (int i = 0; i < PACKET_SIZE; i++) Serial.printf("%02X ", buf[i]);
+      Serial.println();
+      uart_write_bytes(UART_NUM, buf, PACKET_SIZE);
+    }
+    vTaskDelay(pdMS_TO_TICKS(5));  // ← 安全マージン
+  }
+}
+
+// === セットアップ ===
 void setup() {
   Serial.begin(115200);
-  Serial2.begin(BAUD_UART, SERIAL_8N1, PIN_UART_RX, PIN_UART_TX);
+  pinMode(BB_TX_PIN, OUTPUT);
+  digitalWrite(BB_TX_PIN, HIGH);
+  pinMode(BB_RX_PIN, INPUT_PULLUP);
 
-  pinMode(PIN_BITBANG_TX, OUTPUT);
-  pinMode(PIN_BITBANG_RX, INPUT_PULLUP);
-  digitalWrite(PIN_BITBANG_TX, HIGH);
+  uart_config_t config = {
+    .baud_rate = BAUD_UART,
+    .data_bits = UART_DATA_8_BITS,
+    .parity    = UART_PARITY_DISABLE,
+    .stop_bits = UART_STOP_BITS_1,
+    .flow_ctrl = UART_HW_FLOWCTRL_DISABLE
+  };
+  uart_param_config(UART_NUM, &config);
+  uart_set_pin(UART_NUM, UART_TX_PIN, UART_RX_PIN, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
+  uart_driver_install(UART_NUM, 256, 0, 0, NULL, 0);
 
-  Wire.begin(PIN_OLED_SDA, PIN_OLED_SCL);
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  display.println("UART <-> BitBang Bridge");
-  display.display();
+  txQueue = xQueueCreate(4, PACKET_SIZE);
+  rxQueue = xQueueCreate(4, PACKET_SIZE);
 
-  uartRxQueue = xQueueCreate(32, sizeof(uint8_t));
-  bitbangTxQueue = xQueueCreate(32, sizeof(uint8_t));
-  bitbangRxQueue = xQueueCreate(32, sizeof(uint8_t));
-  uartTxQueue = xQueueCreate(32, sizeof(uint8_t));
+  xTaskCreatePinnedToCore(TaskUartToBitBang, "U2B", 2048, NULL, 1, NULL, 1);
+  xTaskCreatePinnedToCore(TaskBitBangToUart, "B2U", 2048, NULL, 1, NULL, 0);
 
-  xTaskCreatePinnedToCore(TaskUARTReceive, "UART RX", 2048, NULL, 1, NULL, 1);
-  xTaskCreatePinnedToCore(TaskBitBangSend,  "BB Send", 2048, NULL, 1, NULL, 1);
-  xTaskCreatePinnedToCore(TaskBitBangReceive,"BB Recv", 2048, NULL, 1, NULL, 0);
-  xTaskCreatePinnedToCore(TaskUARTSend,     "UART TX", 2048, NULL, 1, NULL, 0);
-
-  Serial.println("UART <-> BitBang Bridge Ready");
+  Serial.println("Bridge Ready");
 }
 
 void loop() {
-  // OLED heartbeat or debug log (optional)
-  delay(1000);
+  delay(10);
 }
