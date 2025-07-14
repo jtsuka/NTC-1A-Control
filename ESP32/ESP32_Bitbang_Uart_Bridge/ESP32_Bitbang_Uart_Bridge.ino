@@ -89,7 +89,7 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen) {
     delayMicroseconds(BITBANG_DELAY_US);
     if (digitalRead(BITBANG_RX_PIN) == LOW) {
       Serial.println("[WARN] Stop bit error.");
-      continue;
+      // continue;
     }
     if (byteCount == 0 && (b == 0x00 || b == 0xFF)) {
       Serial.println("[WARN] Invalid start byte.");
