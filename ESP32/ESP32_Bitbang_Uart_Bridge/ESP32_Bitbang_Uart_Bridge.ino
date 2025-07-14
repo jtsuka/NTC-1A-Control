@@ -139,7 +139,7 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen) {
     while (digitalRead(BITBANG_RX_PIN) == LOW) {
       if ((millis() - start) > 30) return 0;  // ← 延長
     }
-    delayMicroseconds(BITBANG_DELAY_US * 1.7); // サンプリング点
+    delayMicroseconds(BITBANG_DELAY_US * 1.5); // サンプリング点
     uint8_t b = 0;
     for (int i = 0; i < 8; i++) {
       b |= (digitalRead(BITBANG_RX_PIN) << i); // 反転して取り込む
