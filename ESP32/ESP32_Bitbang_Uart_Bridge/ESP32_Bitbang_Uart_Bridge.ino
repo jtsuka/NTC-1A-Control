@@ -31,6 +31,30 @@ void uartInit() {
   Serial1.begin(UART_BAUD_RATE, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
 }
 
+/* ========= 追加：ノイズ除去付きスタート検出 ========= */
+static bool waitValidStart()
+{
+  const uint32_t debounce_us = BITBANG_DELAY_US / 3;   // ≒ 1.1 ms
+  uint32_t t0 = micros();
+
+  /* LOW に落ちるのを 30 ms だけ待つ */
+  while (digitalRead(BITBANG_RX_PIN) == HIGH) {
+    if (micros() - t0 > 30000) return false;           // タイムアウト
+  }
+
+  /* ¼bit 後にまだ LOW か？（短いグリッチならここで弾く） */
+  delayMicroseconds(debounce_us);
+  if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
+
+  /* さらに ¼bit 後も確認（より確実に）*/
+  delayMicroseconds(debounce_us);
+  if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
+
+  /* 本物確定 ─ 中央まで移動 */
+  delayMicroseconds(BITBANG_DELAY_US - 2 * debounce_us);
+  return true;
+}
+
 int uartReceivePacket(uint8_t *buf) {
   int len = 0;
   unsigned long start = millis();
