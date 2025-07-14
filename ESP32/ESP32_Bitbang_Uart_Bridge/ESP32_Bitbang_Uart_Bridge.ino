@@ -74,6 +74,39 @@ void bitBangSendPacket(const uint8_t *buf, int len) {
   Serial.println();
 }
 
+int bitBangReceivePacket(uint8_t *buf, int maxLen)
+{
+  int byteCount = 0;
+
+  while (byteCount < maxLen)
+  {
+    /* ---- スタート検出（デバウンス付き） ---- */
+    if (!waitValidStart()) return 0;   // ノイズ or 30 ms 超
+
+    /* ---- 8 bit 読み取り ---- */
+    uint8_t b = 0;
+    for (int i = 0; i < 8; i++) {
+      b |= (digitalRead(BITBANG_RX_PIN) << i);
+      delayMicroseconds(BITBANG_DELAY_US);
+    }
+
+    /* Stop ビット (HIGH) は “捨て読み” のみに変更 */
+    delayMicroseconds(BITBANG_DELAY_US);
+
+    /* ---- 最初のバイトだけ簡易チェック ---- */
+    if (byteCount == 0 && (b == 0x00 || b == 0xFF)) {
+      Serial.println("[WARN] Invalid start byte (00/FF)");
+      return 0;                    // グリッチか極性ズレ
+    }
+
+    buf[byteCount++] = b;
+    if (byteCount >= FIXED_PACKET_LEN) break;
+  }
+  return byteCount;
+}
+
+
+#if 0
 int bitBangReceivePacket(uint8_t *buf, int maxLen) {
   int byteCount = 0;
   while (byteCount < maxLen) {
@@ -101,6 +134,7 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen) {
   }
   return byteCount;
 }
+#endif
 
 void TaskBitBangReceive(void *pvParameters) {
   uint8_t rxBuf[MAX_PACKET_LEN];
