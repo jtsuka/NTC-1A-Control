@@ -64,7 +64,7 @@ static bool waitValidStart()
   if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
 
   /* 本物確定 ─ 中央まで移動 */
-  delayMicroseconds(BITBANG_DELAY_US * 1.60);
+  delayMicroseconds(BITBANG_DELAY_US * 1.70);
   return true;
 }
 
@@ -233,37 +233,6 @@ void TaskUartReceive(void *pvParameters)
     vTaskDelay(pdMS_TO_TICKS(1));
   }
 }
-
-
-#if 0
-void TaskUartReceive(void *pvParameters) {
-  uint8_t buf[MAX_PACKET_LEN];
-  while (1) {
-    int len = uartReceivePacket(buf);
-    if (len > 0) {
-      Serial.println("[INFO] Pi -> TC へ送信開始");
-      bitBangSendPacket(buf, len);
-
-      // TCからの応答を受信（TaskBitBangReceiveが malloc したもの）
-      uint8_t* echoBuf = nullptr;
-      if (xQueueReceive(bitbangRxQueue, &echoBuf, pdMS_TO_TICKS(RESPONSE_TIMEOUT_MS)) == pdTRUE) {
-        uartSendPacket(echoBuf, FIXED_PACKET_LEN);
-        Serial.print("[RECV TC] ");
-        for (int i = 0; i < FIXED_PACKET_LEN; i++) {
-          Serial.printf("%02X ", echoBuf[i]);
-        }
-        Serial.println();
-        if ( echoBuf != nullptr ) {
-          free(echoBuf);  // ← malloc されたメモリの解放
-        }
-      } else {
-        Serial.println("[WARN] TC応答なし (timeout)");
-      }
-    }
-    vTaskDelay(pdMS_TO_TICKS(1));
-  }
-}
-#endif
 
 void setup() {
   Serial.begin(115200);
