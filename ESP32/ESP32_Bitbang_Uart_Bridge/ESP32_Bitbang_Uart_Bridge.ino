@@ -35,6 +35,15 @@ void uartInit() {
   Serial1.begin(UART_BAUD_RATE, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
 }
 
+/* 8bit を左右反転するユーティリティ */
+static inline uint8_t rev8(uint8_t v)
+{
+  v = (v >> 4) | (v << 4);
+  v = ((v & 0xCC) >> 2) | ((v & 0x33) << 2);
+  v = ((v & 0xAA) >> 1) | ((v & 0x55) << 1);
+  return v;
+}
+
 /* ========= 追加：ノイズ除去付きスタート検出 ========= */
 static bool waitValidStart()
 {
@@ -228,6 +237,15 @@ void TaskUartReceive(void *pvParameters)
                         pdMS_TO_TICKS(RESPONSE_TIMEOUT_MS))
           == pdTRUE)
       {
+        /* デバッグで内容を必ず出力して確認 */
+        Serial.print("[DBG] echoBuf =");
+        for(int i=0;i<FIXED_PACKET_LEN;i++) Serial.printf(" %02X", echoBuf[i]);
+        Serial.println();
+
+        /* ここで rev8 して Pi へ */
+        uint8_t txTmp[FIXED_PACKET_LEN];
+        for(int i=0;i<FIXED_PACKET_LEN;i++) txTmp[i]=rev8(echoBuf[i]);
+
         uartSendPacket(echoBuf, FIXED_PACKET_LEN);   // Pi へ返信
         free(echoBuf);
       }
