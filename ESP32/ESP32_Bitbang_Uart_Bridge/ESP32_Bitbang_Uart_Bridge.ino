@@ -226,14 +226,11 @@ void TaskUartReceive(void *pvParameters)
         Serial.println();
 
 
-//        /* ここで rev8 して Pi へ */
-//        uint8_t txTmp[FIXED_PACKET_LEN];
-//        for(int i=0;i<FIXED_PACKET_LEN;i++) txTmp[i]=rev8(echoBuf[i]);
-
-//        uartSendPacket(echoBuf, FIXED_PACKET_LEN);   // Pi へ返信
-        /* Pi へ送る前にだけ rev8() */
-        uint8_t txTmp[FIXED_PACKET_LEN];
-        for (int i = 0; i < FIXED_PACKET_LEN; i++) txTmp[i] = rev8(echoBuf[i]);
+      /* LSB→MSB へビット反転して Pi へ返す */
+      uint8_t txTmp[FIXED_PACKET_LEN];
+      for (int i = 0; i < FIXED_PACKET_LEN; i++) {
+          txTmp[i] = rev8(echoBuf[i]);   // ★ 反転
+      }
 
         uartSendPacket(txTmp, FIXED_PACKET_LEN);      // Pi へ返信
         free(echoBuf);
