@@ -176,7 +176,7 @@ void TaskBitBangReceive(void *pvParameters) {
       uint8_t* copyBuf = (uint8_t*)malloc(len);
       if (copyBuf != nullptr) {
         memcpy(copyBuf, rxBuf, len);
-        if (xQueueSend(bitbangRxQueue, &copyBuf, 0) != pdTRUE) {
+        if (xQueueSend(bitbangRxQueue, &copyBuf, pdMS_TO_TICKS(10)) != pdTRUE) {
           free(copyBuf);  // キューがいっぱい → メモリ解放
           Serial.println("[ERROR] xQueueSend failed. Buffer discarded.");
         }
@@ -248,6 +248,7 @@ void TaskUartReceive(void *pvParameters)
         uartSendPacket(txTmp, FIXED_PACKET_LEN);      // Pi へ返信
 
         free(echoBuf);
+        echoBuf = nullptr;      /*   次ループで “残りカス” を誤判定しない */
       }
       else
       {
