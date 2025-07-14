@@ -155,6 +155,9 @@ void setup() {
   Serial.begin(115200);
   uartInit();
 
+  pinMode(BITBANG_RX_PIN, INPUT_PULLUP);
+  Serial.printf("[DBG] idle-level=%d\n", digitalRead(BITBANG_RX_PIN));
+
   pinMode(BITBANG_TX_PIN, OUTPUT);
   digitalWrite(BITBANG_TX_PIN, HIGH);  // idle HIGH
   pinMode(BITBANG_RX_PIN, INPUT_PULLUP);  // ★プルアップを戻す
