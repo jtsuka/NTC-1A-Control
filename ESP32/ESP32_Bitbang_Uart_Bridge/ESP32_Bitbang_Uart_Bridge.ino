@@ -19,7 +19,7 @@
 #define BITBANG_RX_PIN     3
 
 #define UART_BAUD_RATE     9600
-#define BITBANG_DELAY_US   3330
+#define BITBANG_DELAY_US   3340
 #define RESPONSE_TIMEOUT_MS 200
 #define MAX_PACKET_LEN     32
 #define FIXED_PACKET_LEN   6
