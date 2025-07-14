@@ -98,7 +98,7 @@ void bitBangSendByte(uint8_t b) {
   digitalWrite(BITBANG_TX_PIN, HIGH);   // Start HIGH
   delayMicroseconds(BITBANG_DELAY_US);
   for (int i = 0; i < 8; i++) {
-    digitalWrite(BITBANG_TX_PIN, !(b >> i & 1));   // データ反転
+    digitalWrite(BITBANG_TX_PIN, (b >> i & 1));   // データ反転しない
     delayMicroseconds(BITBANG_DELAY_US);
   }
   digitalWrite(BITBANG_TX_PIN, LOW);    // Stop LOW
