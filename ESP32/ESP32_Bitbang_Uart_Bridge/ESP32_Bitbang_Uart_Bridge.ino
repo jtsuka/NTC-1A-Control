@@ -80,7 +80,7 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen) {
     while (digitalRead(BITBANG_RX_PIN) == HIGH) {
       if ((millis() - start) > 30) return 0;  // ← 延長
     }
-    delayMicroseconds(BITBANG_DELAY_US * 1.6);
+    delayMicroseconds(BITBANG_DELAY_US * 1.7);
     uint8_t b = 0;
     for (int i = 0; i < 8; i++) {
       b |= (digitalRead(BITBANG_RX_PIN) << i);
