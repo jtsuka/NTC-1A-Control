@@ -24,6 +24,8 @@
 #define MAX_PACKET_LEN     32
 #define FIXED_PACKET_LEN   6
 
+#define START_OFFSET 1.77f
+
 QueueHandle_t bitbangRxQueue;
 portMUX_TYPE bitbangMux = portMUX_INITIALIZER_UNLOCKED;
 
@@ -64,7 +66,7 @@ static bool waitValidStart()
   if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
 
   /* 本物確定 ─ 中央まで移動 */
-  delayMicroseconds(BITBANG_DELAY_US * 1.75);
+  delayMicroseconds(BITBANG_DELAY_US * START_OFFSET);
   return true;
 }
 
