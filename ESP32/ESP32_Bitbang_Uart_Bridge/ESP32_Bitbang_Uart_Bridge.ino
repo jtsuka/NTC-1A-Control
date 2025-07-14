@@ -24,7 +24,7 @@
 #define MAX_PACKET_LEN     32
 #define FIXED_PACKET_LEN   6
 
-#define START_OFFSET 1.79f
+#define START_OFFSET 1.82f
 
 QueueHandle_t bitbangRxQueue;
 portMUX_TYPE bitbangMux = portMUX_INITIALIZER_UNLOCKED;
@@ -167,6 +167,11 @@ void TaskBitBangReceive(void *pvParameters) {
   uint8_t rxBuf[MAX_PACKET_LEN];
   while (1) {
     int len = bitBangReceivePacket(rxBuf, MAX_PACKET_LEN);
+    // for Debug
+    Serial.print("[DBG TCraw]");
+    for(int i=0;i<len;i++) Serial.printf(" %02X", rxBuf[i]);
+    Serial.println();    
+
     if (len == FIXED_PACKET_LEN) {
       uint8_t* copyBuf = (uint8_t*)malloc(len);
       if (copyBuf != nullptr) {
