@@ -157,7 +157,11 @@ void setup() {
 
   pinMode(BITBANG_TX_PIN, OUTPUT);
   digitalWrite(BITBANG_TX_PIN, HIGH);  // idle HIGH
-  pinMode(BITBANG_RX_PIN, INPUT);      // ← PULLUPを削除
+  pinMode(BITBANG_RX_PIN, INPUT_PULLUP);  // ★プルアップを戻す
+  gpio_set_pull_mode((gpio_num_t)BITBANG_RX_PIN,
+                   GPIO_PULLUP_ONLY);   // ★強制 47k → 10k 相当へ
+
+//  pinMode(BITBANG_RX_PIN, INPUT);      // ← PULLUPを削除
 
   bitbangRxQueue = xQueueCreate(4, sizeof(uint8_t*));
   xTaskCreatePinnedToCore(TaskBitBangReceive, "BitBangRX", 4096, NULL, 1, NULL, 1);
