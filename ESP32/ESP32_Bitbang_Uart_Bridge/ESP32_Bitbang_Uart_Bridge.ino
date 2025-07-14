@@ -66,7 +66,12 @@ static bool waitValidStart()
   if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
 
   /* 本物確定 ─ 中央まで移動 */
-  delayMicroseconds(BITBANG_DELAY_US * START_OFFSET);
+//  delayMicroseconds(BITBANG_DELAY_US * START_OFFSET);
+  /* 本物確定 ─ 中央まで移動
+     3340-2*1113 = 1114 µs だと“ほんの少し前寄り”だったので +10µs */
+  const uint32_t center_us = (BITBANG_DELAY_US - 2 * debounce_us) + 10; // ★
+  delayMicroseconds(center_us);
+
   return true;
 }
 
@@ -152,7 +157,8 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
   }
   // bit反転
   for (int i = 0; i < maxLen; i++ ) {
-    buf[i] = rev8(buf[i]);   // bitBangReceivePacket の最後で
+ //   buf[i] = rev8(buf[i]);   // bitBangReceivePacket の最後で
+      /* ★受信側では bit 反転しない（Pi へ返す直前だけ rev8） */
   }
 
   return byteCount;
@@ -219,11 +225,17 @@ void TaskUartReceive(void *pvParameters)
         for(int i=0;i<FIXED_PACKET_LEN;i++) Serial.printf(" %02X", echoBuf[i]);
         Serial.println();
 
-        /* ここで rev8 して Pi へ */
-        uint8_t txTmp[FIXED_PACKET_LEN];
-        for(int i=0;i<FIXED_PACKET_LEN;i++) txTmp[i]=rev8(echoBuf[i]);
 
-        uartSendPacket(echoBuf, FIXED_PACKET_LEN);   // Pi へ返信
+//        /* ここで rev8 して Pi へ */
+//        uint8_t txTmp[FIXED_PACKET_LEN];
+//        for(int i=0;i<FIXED_PACKET_LEN;i++) txTmp[i]=rev8(echoBuf[i]);
+
+//        uartSendPacket(echoBuf, FIXED_PACKET_LEN);   // Pi へ返信
+        /* Pi へ送る前にだけ rev8() */
+        uint8_t txTmp[FIXED_PACKET_LEN];
+        for (int i = 0; i < FIXED_PACKET_LEN; i++) txTmp[i] = rev8(echoBuf[i]);
+
+        uartSendPacket(txTmp, FIXED_PACKET_LEN);      // Pi へ返信
         free(echoBuf);
       }
       else
