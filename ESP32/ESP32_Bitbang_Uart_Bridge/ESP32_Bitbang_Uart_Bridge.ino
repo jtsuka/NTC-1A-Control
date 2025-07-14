@@ -53,13 +53,14 @@ void uartSendPacket(const uint8_t *buf, int len) {
 
 void bitBangSendByte(uint8_t b) {
   taskENTER_CRITICAL(&bitbangMux);
-  digitalWrite(BITBANG_TX_PIN, LOW);
+  digitalWrite(BITBANG_TX_PIN, HIGH);   // Start HIGH
   delayMicroseconds(BITBANG_DELAY_US);
   for (int i = 0; i < 8; i++) {
-    digitalWrite(BITBANG_TX_PIN, (b >> i) & 0x01);
+    digitalWrite(BITBANG_TX_PIN, !(b >> i & 1));   // データ反転
+//    digitalWrite(BITBANG_TX_PIN, (b >> i) & 0x01);
     delayMicroseconds(BITBANG_DELAY_US);
   }
-  digitalWrite(BITBANG_TX_PIN, HIGH);
+  digitalWrite(BITBANG_TX_PIN, LOW);    // Stop LOW
   delayMicroseconds(BITBANG_DELAY_US);
   taskEXIT_CRITICAL(&bitbangMux);
 }
@@ -77,13 +78,13 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen) {
   int byteCount = 0;
   while (byteCount < maxLen) {
     unsigned long start = millis();
-    while (digitalRead(BITBANG_RX_PIN) == HIGH) {
+    while (digitalRead(BITBANG_RX_PIN) == LOW) {
       if ((millis() - start) > 30) return 0;  // ← 延長
     }
-    delayMicroseconds(BITBANG_DELAY_US * 1.7);
+    delayMicroseconds(BITBANG_DELAY_US * 1.7); // サンプリング点
     uint8_t b = 0;
     for (int i = 0; i < 8; i++) {
-      b |= (digitalRead(BITBANG_RX_PIN) << i);
+      b |= (digitalRead(BITBANG_RX_PIN) << i); // 反転して取り込む
       delayMicroseconds(BITBANG_DELAY_US);
     }
 //    delayMicroseconds(BITBANG_DELAY_US);
