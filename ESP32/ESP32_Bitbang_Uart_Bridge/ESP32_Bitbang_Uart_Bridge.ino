@@ -24,7 +24,7 @@
 #define MAX_PACKET_LEN     32
 #define FIXED_PACKET_LEN   6
 
-#define START_OFFSET 1.77f
+#define START_OFFSET 1.78f
 
 QueueHandle_t bitbangRxQueue;
 portMUX_TYPE bitbangMux = portMUX_INITIALIZER_UNLOCKED;
