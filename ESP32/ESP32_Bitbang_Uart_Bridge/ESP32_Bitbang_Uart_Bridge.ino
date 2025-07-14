@@ -163,6 +163,8 @@ void setup() {
   xTaskCreatePinnedToCore(TaskUartReceive, "UartRX", 4096, NULL, 1, NULL, 1);
 
   Serial.println("[START] TC Repeater Ready.");
+  Serial.print("[DEBUG] RXB idle level = ");
+  Serial.println(digitalRead(BITBANG_RX_PIN));   // 0 なら LOW、1 なら HIGH
 }
 
 void loop() {
