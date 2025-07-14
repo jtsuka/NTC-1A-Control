@@ -107,13 +107,15 @@ void TaskBitBangReceive(void *pvParameters) {
     int len = bitBangReceivePacket(rxBuf, MAX_PACKET_LEN);
     if (len == FIXED_PACKET_LEN) {
       uint8_t* copyBuf = (uint8_t*)malloc(len);
-      if (copyBuf) {
+      if (copyBuf != nullptr) {
         memcpy(copyBuf, rxBuf, len);
-        xQueueSend(bitbangRxQueue, &copyBuf, 0);
+        if (xQueueSend(bitbangRxQueue, &copyBuf, 0) != pdTRUE) {
+          free(copyBuf);  // キューがいっぱい → メモリ解放
+          Serial.println("[ERROR] xQueueSend failed. Buffer discarded.");
+        }
+      } else {
+        Serial.println("[ERROR] malloc failed in BitBangReceive");
       }
-      Serial.print("[RECV TC] ");
-      for (int i = 0; i < len; i++) Serial.printf("%02X ", rxBuf[i]);
-      Serial.println();
     }
     vTaskDelay(pdMS_TO_TICKS(1));
   }
@@ -127,10 +129,18 @@ void TaskUartReceive(void *pvParameters) {
       Serial.println("[INFO] Pi -> TC へ送信開始");
       bitBangSendPacket(buf, len);
 
+      // TCからの応答を受信（TaskBitBangReceiveが malloc したもの）
       uint8_t* echoBuf = nullptr;
       if (xQueueReceive(bitbangRxQueue, &echoBuf, pdMS_TO_TICKS(RESPONSE_TIMEOUT_MS)) == pdTRUE) {
         uartSendPacket(echoBuf, FIXED_PACKET_LEN);
-        free(echoBuf);
+        Serial.print("[RECV TC] ");
+        for (int i = 0; i < FIXED_PACKET_LEN; i++) {
+          Serial.printf("%02X ", echoBuf[i]);
+        }
+        Serial.println();
+        if ( echobur != nullprt ) {
+          free(echoBuf);  // ← malloc されたメモリの解放
+        }
       } else {
         Serial.println("[WARN] TC応答なし (timeout)");
       }
@@ -138,6 +148,7 @@ void TaskUartReceive(void *pvParameters) {
     vTaskDelay(pdMS_TO_TICKS(1));
   }
 }
+
 
 void setup() {
   Serial.begin(115200);
