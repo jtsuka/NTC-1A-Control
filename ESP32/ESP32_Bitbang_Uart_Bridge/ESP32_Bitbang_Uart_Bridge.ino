@@ -102,13 +102,13 @@ void bitBangSendByte(uint8_t b) {
 
    /* ---------- Drive start～stop bit ---------- */
   taskENTER_CRITICAL(&bitbangMux);
-  digitalWrite(BITBANG_TX_PIN, HIGH);   // Start HIGH
+  digitalWrite(BITBANG_TX_PIN, LOW);   // Start LOW
   delayMicroseconds(BITBANG_DELAY_US);
   for (int i = 0; i < 8; i++) {
-    digitalWrite(BITBANG_TX_PIN, (b >> i & 1));   // データ反転しない
+    digitalWrite(BITBANG_TX_PIN, (b >> i) & 1);   // データ反転しない
     delayMicroseconds(BITBANG_DELAY_US);
   }
-  digitalWrite(BITBANG_TX_PIN, LOW);    // Stop LOW
+  digitalWrite(BITBANG_TX_PIN, HIGH);    // Stop HIGH
   delayMicroseconds(BITBANG_DELAY_US);
   taskEXIT_CRITICAL(&bitbangMux);
   
@@ -156,10 +156,10 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
     if (byteCount >= FIXED_PACKET_LEN) break;
   }
   // bit反転
-  for (int i = 0; i < maxLen; i++ ) {
- //   buf[i] = rev8(buf[i]);   // bitBangReceivePacket の最後で
+//  for (int i = 0; i < maxLen; i++ ) {
+//   buf[i] = rev8(buf[i]);   // bitBangReceivePacket の最後で
       /* ★受信側では bit 反転しない（Pi へ返す直前だけ rev8） */
-  }
+//  }
 
   return byteCount;
 }
