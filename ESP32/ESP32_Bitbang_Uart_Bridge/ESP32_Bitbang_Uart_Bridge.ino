@@ -138,7 +138,7 @@ void TaskUartReceive(void *pvParameters) {
           Serial.printf("%02X ", echoBuf[i]);
         }
         Serial.println();
-        if ( echobur != nullprt ) {
+        if ( echoBuf != nullptr ) {
           free(echoBuf);  // ← malloc されたメモリの解放
         }
       } else {
