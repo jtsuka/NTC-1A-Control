@@ -79,18 +79,23 @@ void uartSendPacket(const uint8_t *buf, int len) {
   delay(1);
 }
 
+/* 送信 1byte */
 void bitBangSendByte(uint8_t b) {
+   /* ---------- Drive start～stop bit ---------- */
   taskENTER_CRITICAL(&bitbangMux);
   digitalWrite(BITBANG_TX_PIN, HIGH);   // Start HIGH
   delayMicroseconds(BITBANG_DELAY_US);
   for (int i = 0; i < 8; i++) {
     digitalWrite(BITBANG_TX_PIN, !(b >> i & 1));   // データ反転
-//    digitalWrite(BITBANG_TX_PIN, (b >> i) & 0x01);
     delayMicroseconds(BITBANG_DELAY_US);
   }
   digitalWrite(BITBANG_TX_PIN, LOW);    // Stop LOW
   delayMicroseconds(BITBANG_DELAY_US);
   taskEXIT_CRITICAL(&bitbangMux);
+  
+  /* ---------- ここが肝心！TX を Hi-Z へ ---------- */
+  pinMode(BITBANG_TX_PIN, INPUT);       // Tx ライン手放し
+  /* 300 bps なので 3.3 ms 待つ間に RX が安定する */
 }
 
 void bitBangSendPacket(const uint8_t *buf, int len) {
