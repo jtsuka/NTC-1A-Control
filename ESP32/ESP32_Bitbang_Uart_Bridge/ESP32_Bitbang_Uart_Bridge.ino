@@ -113,7 +113,7 @@ void bitBangSendByte(uint8_t b) {
 void bitBangSendPacket(const uint8_t *buf, int len) {
   Serial.print("[SEND TC] ");
   for (int i = 0; i < len; i++) {
-    bitBangSendByte(buf[i]);
+    bitBangSendByte(rev8(buf[i]));
     delayMicroseconds(BITBANG_DELAY_US*3);   // ←バイト間ギャップ
     Serial.printf("%02X ", buf[i]);
   }
@@ -148,39 +148,12 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
     buf[byteCount++] = b;
     if (byteCount >= FIXED_PACKET_LEN) break;
   }
+  // bit反転
+  buf[i] = rev8(buf[i]);   // bitBangReceivePacket の最後で
+
   return byteCount;
 }
 
-
-#if 0
-int bitBangReceivePacket(uint8_t *buf, int maxLen) {
-  int byteCount = 0;
-  while (byteCount < maxLen) {
-    unsigned long start = millis();
-    while (digitalRead(BITBANG_RX_PIN) == LOW) {
-      if ((millis() - start) > 30) return 0;  // ← 延長
-    }
-    delayMicroseconds(BITBANG_DELAY_US * 1.4); // サンプリング点
-    uint8_t b = 0;
-    for (int i = 0; i < 8; i++) {
-      b |= (digitalRead(BITBANG_RX_PIN) << i); // 反転して取り込む
-      delayMicroseconds(BITBANG_DELAY_US);
-    }
-//    delayMicroseconds(BITBANG_DELAY_US);
-//    if (digitalRead(BITBANG_RX_PIN) == LOW) {
-//      Serial.println("[WARN] Stop bit error.");
-//      continue;
-//    }
-    if (byteCount == 0 && (b == 0x00 || b == 0xFF)) {
-      Serial.println("[WARN] Invalid start byte.");
-      return 0;
-    }
-    buf[byteCount++] = b;
-    if (byteCount >= FIXED_PACKET_LEN) break;
-  }
-  return byteCount;
-}
-#endif
 
 void TaskBitBangReceive(void *pvParameters) {
   uint8_t rxBuf[MAX_PACKET_LEN];
