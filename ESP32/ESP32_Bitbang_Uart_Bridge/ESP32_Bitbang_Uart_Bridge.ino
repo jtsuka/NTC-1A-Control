@@ -81,6 +81,9 @@ void uartSendPacket(const uint8_t *buf, int len) {
 
 /* 送信 1byte */
 void bitBangSendByte(uint8_t b) {
+  /* ─── 送信開始前に必ず OUTPUT へ戻す！ ─── */
+  pinMode(BITBANG_TX_PIN, OUTPUT);          // ← これが無いと Hi-Z のまま
+
    /* ---------- Drive start～stop bit ---------- */
   taskENTER_CRITICAL(&bitbangMux);
   digitalWrite(BITBANG_TX_PIN, HIGH);   // Start HIGH
