@@ -27,6 +27,10 @@
 QueueHandle_t bitbangRxQueue;
 portMUX_TYPE bitbangMux = portMUX_INITIALIZER_UNLOCKED;
 
+// --- 追加：直前に送った 6 byte を保持するバッファ
+static uint8_t lastSent[FIXED_PACKET_LEN] = {0};
+static bool    lastValid = false;                // まだ何も送っていない状態
+
 void uartInit() {
   Serial1.begin(UART_BAUD_RATE, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
 }
@@ -181,6 +185,56 @@ void TaskBitBangReceive(void *pvParameters) {
   }
 }
 
+
+void TaskUartReceive(void *pvParameters)
+{
+  uint8_t buf[MAX_PACKET_LEN];
+
+  while (1)
+  {
+    /* Pi → ESP32 から受信して buf[] に格納 */
+    int len = uartReceivePacket(buf);
+
+    /* ───────── 新規パケットが来た？ ───────── */
+    if (len == FIXED_PACKET_LEN)
+    {
+      /* 過去と同じ内容ならスキップ（再送ループ防止） */
+      if (lastValid && memcmp(buf, lastSent, FIXED_PACKET_LEN) == 0)
+      {
+        vTaskDelay(pdMS_TO_TICKS(1));
+        continue;                      // ★ 同じなので送らない
+      }
+
+      /* ---------- Bit-Bang で TC に送信 ---------- */
+      Serial.println("[INFO] Pi -> TC へ送信開始");
+      bitBangSendPacket(buf, FIXED_PACKET_LEN);
+
+      /* 送れたので今回の内容を記録 */
+      memcpy(lastSent, buf, FIXED_PACKET_LEN);
+      lastValid = true;
+
+      /* ---------- TC からの応答待ち ---------- */
+      uint8_t *echoBuf = nullptr;
+      if (xQueueReceive(bitbangRxQueue,
+                        &echoBuf,
+                        pdMS_TO_TICKS(RESPONSE_TIMEOUT_MS))
+          == pdTRUE)
+      {
+        uartSendPacket(echoBuf, FIXED_PACKET_LEN);   // Pi へ返信
+        free(echoBuf);
+      }
+      else
+      {
+        Serial.println("[WARN] TC応答なし (timeout)");
+      }
+    }
+
+    vTaskDelay(pdMS_TO_TICKS(1));
+  }
+}
+
+
+#if 0
 void TaskUartReceive(void *pvParameters) {
   uint8_t buf[MAX_PACKET_LEN];
   while (1) {
@@ -208,7 +262,7 @@ void TaskUartReceive(void *pvParameters) {
     vTaskDelay(pdMS_TO_TICKS(1));
   }
 }
-
+#endif
 
 void setup() {
   Serial.begin(115200);
