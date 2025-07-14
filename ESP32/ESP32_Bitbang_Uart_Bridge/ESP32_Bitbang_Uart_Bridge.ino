@@ -149,7 +149,7 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
     if (byteCount >= FIXED_PACKET_LEN) break;
   }
   // bit反転
-  for (int i = 0; i < macLen; i++ ) {
+  for (int i = 0; i < maxLen; i++ ) {
     buf[i] = rev8(buf[i]);   // bitBangReceivePacket の最後で
   }
 
