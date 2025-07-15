@@ -52,7 +52,7 @@ static bool waitValidStart()
 {
   /* 中央へ移動 – ½bit + Δ */
   const uint32_t halfBit = BITBANG_DELAY_US / 2;   // 1 665 µs
-  const uint32_t delta   = 568;                    // ← 試す値 (+25µs ずつ)
+  const uint32_t delta   = 572;                    // ← 試す値 (+25µs ずつ)
 
     /* スタート Low を 30 ms だけ待つ */
     uint32_t t0 = micros();
