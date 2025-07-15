@@ -135,8 +135,12 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
 
   while (byteCount < maxLen)
   {
+    bool got = waitValidStart();
+    ESP_EARLY_LOGI("SYN","start=%s time=%lu us",
+               got ? "OK" : "FAIL",
+               micros()-t0);
     /* ---- スタート検出（デバウンス付き） ---- */
-    if (!waitValidStart()) return 0;   // ノイズ or 30 ms 超
+    if (!got) return 0;   // ノイズ or 30 ms 超
 
     /* ---- 8 bit 読み取り ---- */
     uint8_t b = 0;
@@ -144,6 +148,7 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
       b |= (digitalRead(BITBANG_RX_PIN) << i);
       delayMicroseconds(BITBANG_DELAY_US);
     }
+    ESP_EARLY_LOGI("BB","byte%u=0x%02X", byteCount, b);
 
     /* Stop ビット (HIGH) は “捨て読み” のみに変更 */
     delayMicroseconds(BITBANG_DELAY_US);
