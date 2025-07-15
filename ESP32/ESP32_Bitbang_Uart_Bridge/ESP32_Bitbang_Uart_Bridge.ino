@@ -61,7 +61,7 @@ static bool waitValidStart()
     if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
 
     /* ---------- 中央へ ½bit 移動 ---------- */
-    delayMicroseconds(BITBANG_DELAY_US / 2 + 200);   // ★ 1 665 µs +200µs 追い足し
+    delayMicroseconds(BITBANG_DELAY_US / 2 + 300);   // ★ 1 665 µs +200µs 追い足し
 
     return true;                               // ここが bit0 中央
 }
