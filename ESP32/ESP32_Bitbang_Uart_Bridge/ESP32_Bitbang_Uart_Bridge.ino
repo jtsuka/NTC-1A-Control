@@ -87,8 +87,11 @@ int uartReceivePacket(uint8_t *buf) {
 
 void uartSendPacket(const uint8_t *buf, int len) {
   Serial.print("[SEND Pi] ");
-  for (int i = 0; i < len; i++) Serial.printf("%02X ", buf[i]);
   Serial.println();
+ for (int i = 0; i < len; i++) {
+    Serial.printf("%02X ", buf[i]);
+    Serial.println();
+ }
   Serial1.write(buf, len);
   Serial1.flush();
   delay(1);
