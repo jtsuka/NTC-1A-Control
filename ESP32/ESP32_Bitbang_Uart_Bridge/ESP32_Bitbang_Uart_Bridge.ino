@@ -24,7 +24,7 @@
 #define MAX_PACKET_LEN     32
 #define FIXED_PACKET_LEN   6
 
-#define START_OFFSET 1.84f
+#define START_OFFSET 1.90f
 #define BYTE_GAP  1
 
 QueueHandle_t bitbangRxQueue;
@@ -138,9 +138,9 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
     /* ---- スタート検出 ---- */
     uint32_t t0 = micros();               // ←★ ここで現在時刻を保存
     bool got = waitValidStart();
-    ESP_EARLY_LOGI("SYN","start=%s time=%lu us",
-               got ? "OK" : "FAIL",
-               micros()-t0);
+  //  ESP_EARLY_LOGI("SYN","start=%s time=%lu us",
+  //             got ? "OK" : "FAIL",
+  //             micros()-t0);
     /* ---- スタート検出（デバウンス付き） ---- */
     if (!got) return 0;   // ノイズ or 30 ms 超
 
@@ -150,7 +150,11 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
       b |= (digitalRead(BITBANG_RX_PIN) << i);
       delayMicroseconds(BITBANG_DELAY_US);
     }
-    ESP_EARLY_LOGI("BB","byte%u=0x%02X", byteCount, b);
+    // --- 受信 1byte 完了後だけ出力するので負荷が小さい ----
+    ESP_EARLY_LOGI("BB", "b%d=%02X   idle=%d",
+               byteCount,   /* 0-5 */
+               b,
+               digitalRead(BITBANG_RX_PIN));
 
     /* Stop ビット (HIGH) は “捨て読み” のみに変更 */
     delayMicroseconds(BITBANG_DELAY_US);
