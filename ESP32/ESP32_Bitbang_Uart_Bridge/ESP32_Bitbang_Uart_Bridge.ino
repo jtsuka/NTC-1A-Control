@@ -50,6 +50,25 @@ static inline uint8_t rev8(uint8_t v)
 /* ========= 追加：ノイズ除去付きスタート検出 ========= */
 static bool waitValidStart()
 {
+    /* スタート Low を 30 ms だけ待つ */
+    uint32_t t0 = micros();
+    while (digitalRead(BITBANG_RX_PIN) == HIGH) {
+        if (micros() - t0 > 30000) return false;
+    }
+
+    /* ノイズ除去（ここでは 300 µs）*/
+    delayMicroseconds(300);
+    if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
+
+    /* ---------- 中央へ ½bit 移動 ---------- */
+    delayMicroseconds(BITBANG_DELAY_US / 2);   // ★ 1 665 µs
+
+    return true;                               // ここが bit0 中央
+}
+
+#if 0
+static bool waitValidStart()
+{
   const uint32_t debounce_us = BITBANG_DELAY_US / 3;   // ≒ 1.1 ms
   uint32_t t0 = micros();
 
@@ -73,6 +92,7 @@ static bool waitValidStart()
 
   return true;
 }
+#endif
 
 int uartReceivePacket(uint8_t *buf) {
   int len = 0;
