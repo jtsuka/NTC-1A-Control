@@ -26,6 +26,10 @@
 
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
+// ---------------- tunable range ----------------
+#define DELTA_MIN_US  380   // ここから
+#define DELTA_MAX_US  720   // ここまで自動スキャン
+#define DELTA_STEP_US  20   // 微調ステップ
 
 QueueHandle_t bitbangRxQueue;
 portMUX_TYPE bitbangMux = portMUX_INITIALIZER_UNLOCKED;
@@ -33,6 +37,15 @@ portMUX_TYPE bitbangMux = portMUX_INITIALIZER_UNLOCKED;
 // --- 追加：直前に送った 6 byte を保持するバッファ
 static uint8_t lastSent[FIXED_PACKET_LEN] = {0};
 static bool    lastValid = false;                // まだ何も送っていない状態
+
+// for tuneable range
+static uint32_t delta_now = (DELTA_MIN_US + DELTA_MAX_US)/2;
+static bool delta_fixed   = false;
+
+// ---- 失敗統計用 ----
+static uint16_t syncFail   = 0;
+static uint16_t syncOK     = 0;
+
 
 void uartInit() {
   Serial1.begin(UART_BAUD_RATE, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
@@ -51,8 +64,14 @@ static inline uint8_t rev8(uint8_t v)
 static bool waitValidStart()
 {
   /* 中央へ移動 – ½bit + Δ */
-  const uint32_t halfBit = BITBANG_DELAY_US / 2;   // 1 665 µs
-  const uint32_t delta   = 571;                    // ← 試す値 (+25µs ずつ)
+ // const uint32_t halfBit = BITBANG_DELAY_US / 2;   // 1 665 µs
+ // const uint32_t delta   = 571;                    // ← 試す値 (+25µs ずつ)
+
+    const uint32_t debounce_us = BITBANG_DELAY_US / 3;
+    uint32_t t0 = micros();
+
+    while (digitalRead(BITBANG_RX_PIN) == HIGH)
+        if (micros() - t0 > delta_now) return false;   // ← ★ ここ
 
     /* スタート Low を 30 ms だけ待つ */
     uint32_t t0 = micros();
@@ -245,6 +264,31 @@ void TaskBitBangReceive(void *pvParameters) {
 //        Serial.println();
       }
     }
+    if(!startOK) syncFail++; else syncOK++;
+
+    uint32_t now = millis();
+    if(!delta_fixed && now - lastEvalMs > 250) {          // 250 ms毎に評価
+        uint16_t total = syncFail + syncOK;
+        if(total > 30) {                                  // データ十分？
+            float failRate = (float)syncFail / total;
+            ESP_EARLY_LOGI("AUTO","delta=%lu  fail=%.1f%%",(unsigned long)delta_now,
+                          failRate*100.0);
+
+            if(failRate < 0.15) {
+                // 充分良い → step/2 ずつ縮めてゼロを狙う
+                if(delta_now > DELTA_MIN_US + DELTA_STEP_US)
+                    delta_now -= DELTA_STEP_US/2;
+                else delta_fixed = true;
+            } else {
+                // 悪い → 広げる
+                if(delta_now < DELTA_MAX_US - DELTA_STEP_US)
+                    delta_now += DELTA_STEP_US;
+                else delta_fixed = true;                  // 端まで来たら FIX
+            }
+            syncFail = syncOK = 0;
+        }
+       lastEvalMs = now;
+    }
     vTaskDelay(pdMS_TO_TICKS(1));
   }
 }
@@ -343,6 +387,10 @@ void setup() {
   Serial.println("[START] TC Repeater Ready.");
   Serial.print("[DEBUG] RXB idle level = ");
   Serial.println(digitalRead(BITBANG_RX_PIN));   // 0 なら LOW、1 なら HIGH
+
+  /* 既存の setup の最後に … */
+  ESP_EARLY_LOGI("AUTO","Δ sweep %u–%u µs  step=%u",
+                 DELTA_MIN_US, DELTA_MAX_US, DELTA_STEP_US);
 }
 
 void loop() {
