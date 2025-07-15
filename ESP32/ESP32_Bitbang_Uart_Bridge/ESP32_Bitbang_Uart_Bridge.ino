@@ -178,6 +178,7 @@ void TaskBitBangReceive(void *pvParameters) {
         memcpy(copyBuf, rxBuf, len);
         if (xQueueSend(bitbangRxQueue, &copyBuf, pdMS_TO_TICKS(10)) != pdTRUE) {
           free(copyBuf);  // キューがいっぱい → メモリ解放
+          copyBuf = nullptr;
           Serial.println("[ERROR] xQueueSend failed. Buffer discarded.");
         }
       } else {
