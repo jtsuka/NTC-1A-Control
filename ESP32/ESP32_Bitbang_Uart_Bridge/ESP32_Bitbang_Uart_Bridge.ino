@@ -120,13 +120,13 @@ void bitBangSendByte(uint8_t b) {
 }
 
 void bitBangSendPacket(const uint8_t *buf, int len) {
-  Serial.print("[SEND TC] ");
+//  Serial.print("[SEND TC] ");
   for (int i = 0; i < len; i++) {
     bitBangSendByte(rev8(buf[i]));
     delayMicroseconds(BITBANG_DELAY_US * BYTE_GAP);   // ←バイト間ギャップ 3 -> 2 ->1 へ
-    Serial.printf("%02X ", buf[i]);
+//    Serial.printf("%02X ", buf[i]);
   }
-  Serial.println();
+//  Serial.println();
 }
 
 int bitBangReceivePacket(uint8_t *buf, int maxLen)
@@ -172,12 +172,12 @@ void TaskBitBangReceive(void *pvParameters) {
   while (1) {
     int len = bitBangReceivePacket(rxBuf, MAX_PACKET_LEN);
     // for Debug
-    Serial.printf("[DBG TCraw] len=%d", len);
-    Serial.println();
-    for(int i=0;i<len;i++) {
-      Serial.printf(" %02X", rxBuf[i]);
-      Serial.println();
-    }
+//   Serial.printf("[DBG TCraw] len=%d", len);
+//   Serial.println();
+//    for(int i=0;i<len;i++) {
+//      Serial.printf(" %02X", rxBuf[i]);
+//      Serial.println();
+//    }
 
     if (len == FIXED_PACKET_LEN) {
       uint8_t* copyBuf = (uint8_t*)malloc(len);
@@ -186,14 +186,14 @@ void TaskBitBangReceive(void *pvParameters) {
         if (xQueueSend(bitbangRxQueue, &copyBuf, pdMS_TO_TICKS(10)) != pdTRUE) {
           free(copyBuf);  // キューがいっぱい → メモリ解放
           copyBuf = nullptr;
-          Serial.println("[ERROR] xQueueSend failed. Buffer discarded.");
+//         Serial.println("[ERROR] xQueueSend failed. Buffer discarded.");
         }
         // ★ TaskBitBangReceive の Queue 成功直後
-        Serial.println("[DBG] RX→Queue OK");
-        Serial.println();
+//        Serial.println("[DBG] RX→Queue OK");
+//        Serial.println();
       } else {
-        Serial.println("[ERROR] malloc failed in BitBangReceive");
-        Serial.println();
+//        Serial.println("[ERROR] malloc failed in BitBangReceive");
+//        Serial.println();
       }
     }
     vTaskDelay(pdMS_TO_TICKS(1));
@@ -218,9 +218,9 @@ void TaskUartReceive(void *pvParameters)
       {
         // ★ Pi → ESP32 が 6 バイト入った直後
         if (len == FIXED_PACKET_LEN) {
-            Serial.print("[DBG RX] ");
-            for (int i=0;i<len;i++) Serial.printf("%02X ", buf[i]);
-            Serial.println();
+//            Serial.print("[DBG RX] ");
+//            for (int i=0;i<len;i++) Serial.printf("%02X ", buf[i]);
+//            Serial.println();
         }
 
         vTaskDelay(pdMS_TO_TICKS(1));
@@ -243,9 +243,9 @@ void TaskUartReceive(void *pvParameters)
           == pdTRUE)
       {
         /* デバッグで内容を必ず出力して確認 */
-        Serial.print("[DBG] echoBuf =");
-        for(int i=0;i<FIXED_PACKET_LEN;i++) Serial.printf(" %02X", echoBuf[i]);
-        Serial.println();
+//        Serial.print("[DBG] echoBuf =");
+//        for(int i=0;i<FIXED_PACKET_LEN;i++) Serial.printf(" %02X", echoBuf[i]);
+//        Serial.println();
 
 
         /* LSB→MSB へビット反転して Pi へ返す */
@@ -254,9 +254,9 @@ void TaskUartReceive(void *pvParameters)
             txTmp[i] = rev8(echoBuf[i]);   // ★ 反転
         }
         /* 2) デバッグ表示 */
-        Serial.print("[DBG] Pi<-TC:");
-        for (int i = 0; i < FIXED_PACKET_LEN; i++) Serial.printf(" %02X", txTmp[i]);
-        Serial.println();
+//        Serial.print("[DBG] Pi<-TC:");
+//        for (int i = 0; i < FIXED_PACKET_LEN; i++) Serial.printf(" %02X", txTmp[i]);
+//        Serial.println();
         uartSendPacket(txTmp, FIXED_PACKET_LEN);      // Pi へ返信
 
         free(echoBuf);
@@ -264,7 +264,7 @@ void TaskUartReceive(void *pvParameters)
       }
       else
       {
-        Serial.println("[WARN] TC応答なし (timeout)");
+//        Serial.println("[WARN] TC応答なし (timeout)");
       }
     }
 
