@@ -169,9 +169,15 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
 
 void TaskBitBangReceive(void *pvParameters) {
   uint8_t rxBuf[MAX_PACKET_LEN];
+  static uint32_t dbgCount[7]={0};
   while (1) {
     int len = bitBangReceivePacket(rxBuf, MAX_PACKET_LEN);
     // for Debug
+    if (len<=6) dbgCount[len]++;
+    if ((dbgCount[0]+dbgCount[6]) % 500 == 0) {   // 500回に1度だけ
+      ESP_EARLY_LOGI("BBRX", "len[0]=%u len[6]=%u", dbgCount[0], dbgCount[6]);
+    }
+
 //   Serial.printf("[DBG TCraw] len=%d", len);
 //   Serial.println();
 //    for(int i=0;i<len;i++) {
