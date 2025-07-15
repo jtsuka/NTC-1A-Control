@@ -169,7 +169,7 @@ void TaskBitBangReceive(void *pvParameters) {
   while (1) {
     int len = bitBangReceivePacket(rxBuf, MAX_PACKET_LEN);
     // for Debug
-//    Serial.print("[DBG TCraw]");
+    Serial.printf("[DBG TCraw] len=%d", len);
     for(int i=0;i<len;i++) Serial.printf(" %02X", rxBuf[i]);
     Serial.println();    
 
