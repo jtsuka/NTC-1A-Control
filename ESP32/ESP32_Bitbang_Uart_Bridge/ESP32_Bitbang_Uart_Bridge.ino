@@ -178,7 +178,7 @@ void TaskBitBangReceive(void *pvParameters) {
     if (len<=6) dbgCount[len]++;
     if (len > 0) {
       ESP_EARLY_LOGI("BBRX", "b0=%02X", rxBuf[0]); // ★追加
-    } else if ( len = 0 && cnt < 3 ) {
+    } else if ( len = 0 && cnt++ < 3 ) {
       ESP_EARLY_LOGI("BBRX", "len=%d", len);           // ★追加
     }
 
