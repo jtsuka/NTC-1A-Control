@@ -38,13 +38,15 @@ portMUX_TYPE bitbangMux = portMUX_INITIALIZER_UNLOCKED;
 static uint8_t lastSent[FIXED_PACKET_LEN] = {0};
 static bool    lastValid = false;                // まだ何も送っていない状態
 
-// for tuneable range
-static uint32_t delta_now = (DELTA_MIN_US + DELTA_MAX_US)/2;
-static bool delta_fixed   = false;
-
-// ---- 失敗統計用 ----
+/* ---- 自動チューニング用 ---- */
+static uint32_t delta_now  = (DELTA_MIN_US + DELTA_MAX_US)/2;
+static bool     delta_fixed = false;
 static uint16_t syncFail   = 0;
 static uint16_t syncOK     = 0;
+static uint32_t lastEvalMs = 0;
+
+/* ★ start 判定結果を保持する */
+static bool startOK = false;   // true = waitValidStart() success
 
 
 void uartInit() {
@@ -180,12 +182,9 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
   {
     /* ---- スタート検出 ---- */
     uint32_t t0 = micros();               // ←★ ここで現在時刻を保存
-    bool got = waitValidStart();
-  //  ESP_EARLY_LOGI("SYN","start=%s time=%lu us",
-  //             got ? "OK" : "FAIL",
-  //             micros()-t0);
-    /* ---- スタート検出（デバウンス付き） ---- */
-    if (!got) return 0;   // ノイズ or 30 ms 超
+     /* ---- スタート検出（デバウンス付き） ---- */
+    startOK = waitValidStart();          // ← 成否を保存
+    if (!startOK) return 0;
 
     /* ---- 8 bit 読み取り ---- */
     uint8_t b = 0;
@@ -226,26 +225,9 @@ void TaskBitBangReceive(void *pvParameters) {
   while (1) {
     int len = bitBangReceivePacket(rxBuf, MAX_PACKET_LEN);
     // for Debug
-//    ESP_EARLY_LOGI("BBRX", "len=%d", len);           // ★追加
-    if (len<=6) dbgCount[len]++;
-//    if (len > 0) {
-//      ESP_EARLY_LOGI("BBRX", "b0=%02X", rxBuf[0]); // ★追加
-//    } else if ( len = 0 && cnt++ < 3 ) {
-//      ESP_EARLY_LOGI("BBRX", "len=%d", len);           // ★追加
-//    }
-
-
-
-//    if ((dbgCount[0]+dbgCount[6]) % 500 == 0) {   // 500回に1度だけ
-//      ESP_EARLY_LOGI("BBRX", "len[0]=%u len[6]=%u", dbgCount[0], dbgCount[6]);
-//    }
-
-//   Serial.printf("[DBG TCraw] len=%d", len);
-//   Serial.println();
-//    for(int i=0;i<len;i++) {
-//      Serial.printf(" %02X", rxBuf[i]);
-//      Serial.println();
-//    }
+      /* ★ 統計カウントをここで更新 */
+      if (startOK) syncOK++;
+      else         syncFail++;
 
     if (len == FIXED_PACKET_LEN) {
       uint8_t* copyBuf = (uint8_t*)malloc(len);
@@ -254,17 +236,10 @@ void TaskBitBangReceive(void *pvParameters) {
         if (xQueueSend(bitbangRxQueue, &copyBuf, pdMS_TO_TICKS(10)) != pdTRUE) {
           free(copyBuf);  // キューがいっぱい → メモリ解放
           copyBuf = nullptr;
-//         Serial.println("[ERROR] xQueueSend failed. Buffer discarded.");
         }
-        // ★ TaskBitBangReceive の Queue 成功直後
-//        Serial.println("[DBG] RX→Queue OK");
-//        Serial.println();
-      } else {
-//        Serial.println("[ERROR] malloc failed in BitBangReceive");
-//        Serial.println();
       }
     }
-//    if(!startOK) syncFail++; else syncOK++;
+    if(!startOK) syncFail++; else syncOK++;
 
     uint32_t now = millis();
     if(!delta_fixed && now - lastEvalMs > 250) {          // 250 ms毎に評価
