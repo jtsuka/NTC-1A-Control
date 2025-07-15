@@ -135,6 +135,8 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
 
   while (byteCount < maxLen)
   {
+    /* ---- スタート検出 ---- */
+    uint32_t t0 = micros();               // ←★ ここで現在時刻を保存
     bool got = waitValidStart();
     ESP_EARLY_LOGI("SYN","start=%s time=%lu us",
                got ? "OK" : "FAIL",
