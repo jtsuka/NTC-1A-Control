@@ -169,7 +169,7 @@ void TaskBitBangReceive(void *pvParameters) {
   while (1) {
     int len = bitBangReceivePacket(rxBuf, MAX_PACKET_LEN);
     // for Debug
-    Serial.print("[DBG TCraw]");
+//    Serial.print("[DBG TCraw]");
     for(int i=0;i<len;i++) Serial.printf(" %02X", rxBuf[i]);
     Serial.println();    
 
@@ -182,8 +182,12 @@ void TaskBitBangReceive(void *pvParameters) {
           copyBuf = nullptr;
           Serial.println("[ERROR] xQueueSend failed. Buffer discarded.");
         }
+        // ★ TaskBitBangReceive の Queue 成功直後
+        Serial.println("[DBG] RX→Queue OK");
+        Serial.println();
       } else {
         Serial.println("[ERROR] malloc failed in BitBangReceive");
+        Serial.println();
       }
     }
     vTaskDelay(pdMS_TO_TICKS(1));
