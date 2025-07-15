@@ -50,6 +50,10 @@ static inline uint8_t rev8(uint8_t v)
 /* ========= 追加：ノイズ除去付きスタート検出 ========= */
 static bool waitValidStart()
 {
+  /* 中央へ移動 – ½bit + Δ */
+  const uint32_t halfBit = BITBANG_DELAY_US / 2;   // 1 665 µs
+  const uint32_t delta   = 250;                    // ← 試す値 (+250µs ずつ)
+
     /* スタート Low を 30 ms だけ待つ */
     uint32_t t0 = micros();
     while (digitalRead(BITBANG_RX_PIN) == HIGH) {
@@ -61,7 +65,7 @@ static bool waitValidStart()
     if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
 
     /* ---------- 中央へ ½bit 移動 ---------- */
-    delayMicroseconds(BITBANG_DELAY_US / 2 + 300);   // ★ 1 665 µs +200µs 追い足し
+    delayMicroseconds(halfBit + delta);
 
     return true;                               // ここが bit0 中央
 }
