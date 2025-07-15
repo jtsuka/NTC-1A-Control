@@ -74,7 +74,7 @@ static bool waitValidStart()
         if (micros() - t0 > delta_now) return false;   // ← ★ ここ
     }
     /* スタート Low を 30 ms だけ待つ */
-    uint32_t t0 = micros();
+//    uint32_t t0 = micros();
     while (digitalRead(BITBANG_RX_PIN) == HIGH) {
         if (micros() - t0 > 30000) return false;
     }
