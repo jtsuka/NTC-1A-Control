@@ -112,7 +112,7 @@ void bitBangSendByte(uint8_t b) {
   taskEXIT_CRITICAL(&bitbangMux);
   
   /* ---------- ここが肝心！TX を Hi-Z へ ---------- */
-  pinMode(BITBANG_TX_PIN, INPUT);       // Tx ライン手放し
+//  pinMode(BITBANG_TX_PIN, INPUT);       // Tx ライン手放し
   /* 300 bps なので 3.3 ms 待つ間に RX が安定する */
 }
 
