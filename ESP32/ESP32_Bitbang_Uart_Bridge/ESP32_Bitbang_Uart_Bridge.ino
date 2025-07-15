@@ -25,6 +25,7 @@
 #define FIXED_PACKET_LEN   6
 
 #define START_OFFSET 1.84f
+#define BYTE_GAP  1
 
 QueueHandle_t bitbangRxQueue;
 portMUX_TYPE bitbangMux = portMUX_INITIALIZER_UNLOCKED;
@@ -119,8 +120,7 @@ void bitBangSendPacket(const uint8_t *buf, int len) {
   Serial.print("[SEND TC] ");
   for (int i = 0; i < len; i++) {
     bitBangSendByte(rev8(buf[i]));
-    delayMicroseconds(BITBANG_DELAY_US * 2);   // ←バイト間ギャップ 3 -> 2 へ
-//    delayMicroseconds(BITBANG_DELAY_US*3);   // ←バイト間ギャップ
+    delayMicroseconds(BITBANG_DELAY_US * BYTE_GAP);   // ←バイト間ギャップ 3 -> 2 ->1 へ
     Serial.printf("%02X ", buf[i]);
   }
   Serial.println();
