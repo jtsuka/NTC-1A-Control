@@ -179,9 +179,9 @@ void TaskBitBangReceive(void *pvParameters) {
       ESP_EARLY_LOGI("BBRX", "b0=%02X", rxBuf[0]); // ★追加
     }
 
-    if ((dbgCount[0]+dbgCount[6]) % 500 == 0) {   // 500回に1度だけ
-      ESP_EARLY_LOGI("BBRX", "len[0]=%u len[6]=%u", dbgCount[0], dbgCount[6]);
-    }
+//    if ((dbgCount[0]+dbgCount[6]) % 500 == 0) {   // 500回に1度だけ
+//      ESP_EARLY_LOGI("BBRX", "len[0]=%u len[6]=%u", dbgCount[0], dbgCount[6]);
+//    }
 
 //   Serial.printf("[DBG TCraw] len=%d", len);
 //   Serial.println();
