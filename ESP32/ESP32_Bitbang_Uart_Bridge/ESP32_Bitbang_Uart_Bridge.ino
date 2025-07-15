@@ -24,7 +24,7 @@
 #define MAX_PACKET_LEN     32
 #define FIXED_PACKET_LEN   6
 
-#define START_OFFSET 1.90f
+#define START_OFFSET 1.94f
 #define BYTE_GAP  1
 
 QueueHandle_t bitbangRxQueue;
