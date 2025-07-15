@@ -135,7 +135,7 @@ void bitBangSendByte(uint8_t b) {
   taskEXIT_CRITICAL(&bitbangMux);
   
   /* ---------- ここが肝心！TX を Hi-Z へ ---------- */
-//  pinMode(BITBANG_TX_PIN, INPUT);       // Tx ライン手放し
+  pinMode(BITBANG_TX_PIN, INPUT);       // Tx ライン手放し
   /* 300 bps なので 3.3 ms 待つ間に RX が安定する */
 }
 
@@ -170,12 +170,10 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
       b |= (digitalRead(BITBANG_RX_PIN) << i);
       delayMicroseconds(BITBANG_DELAY_US);
     }
-    // --- 受信 1byte 完了後だけ出力するので負荷が小さい ----
-    ESP_EARLY_LOGI("BB", "b%d=%02X   idle=%d",
-               byteCount,   /* 0-5 */
-               b,
-               digitalRead(BITBANG_RX_PIN));
-
+    if (byteCount == 0 || byteCount == 5) {
+    ESP_EARLY_LOGI("BB", "b%d=%02X idle=%d",
+                   byteCount, b, digitalRead(BITBANG_RX_PIN));
+    }
     /* Stop ビット (HIGH) は “捨て読み” のみに変更 */
     delayMicroseconds(BITBANG_DELAY_US);
 
@@ -207,11 +205,13 @@ void TaskBitBangReceive(void *pvParameters) {
     // for Debug
 //    ESP_EARLY_LOGI("BBRX", "len=%d", len);           // ★追加
     if (len<=6) dbgCount[len]++;
-    if (len > 0) {
-      ESP_EARLY_LOGI("BBRX", "b0=%02X", rxBuf[0]); // ★追加
-    } else if ( len = 0 && cnt++ < 3 ) {
-      ESP_EARLY_LOGI("BBRX", "len=%d", len);           // ★追加
-    }
+//    if (len > 0) {
+//      ESP_EARLY_LOGI("BBRX", "b0=%02X", rxBuf[0]); // ★追加
+//    } else if ( len = 0 && cnt++ < 3 ) {
+//      ESP_EARLY_LOGI("BBRX", "len=%d", len);           // ★追加
+//    }
+
+
 
 //    if ((dbgCount[0]+dbgCount[6]) % 500 == 0) {   // 500回に1度だけ
 //      ESP_EARLY_LOGI("BBRX", "len[0]=%u len[6]=%u", dbgCount[0], dbgCount[6]);
