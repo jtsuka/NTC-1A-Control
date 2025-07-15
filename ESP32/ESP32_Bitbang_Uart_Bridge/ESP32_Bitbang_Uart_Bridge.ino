@@ -119,7 +119,8 @@ void bitBangSendPacket(const uint8_t *buf, int len) {
   Serial.print("[SEND TC] ");
   for (int i = 0; i < len; i++) {
     bitBangSendByte(rev8(buf[i]));
-    delayMicroseconds(BITBANG_DELAY_US*3);   // ←バイト間ギャップ
+    delayMicroseconds(BITBANG_DELAY_US * 2);   // ←バイト間ギャップ 3 -> 2 へ
+//    delayMicroseconds(BITBANG_DELAY_US*3);   // ←バイト間ギャップ
     Serial.printf("%02X ", buf[i]);
   }
   Serial.println();
