@@ -264,7 +264,7 @@ void TaskBitBangReceive(void *pvParameters) {
 //        Serial.println();
       }
     }
-    if(!startOK) syncFail++; else syncOK++;
+//    if(!startOK) syncFail++; else syncOK++;
 
     uint32_t now = millis();
     if(!delta_fixed && now - lastEvalMs > 250) {          // 250 ms毎に評価
