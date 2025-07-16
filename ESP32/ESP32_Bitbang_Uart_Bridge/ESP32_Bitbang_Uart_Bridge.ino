@@ -27,9 +27,9 @@
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
 // ---------------- tunable range ----------------
-#define DELTA_MIN_US  380   // ここから
-#define DELTA_MAX_US  720   // ここまで自動スキャン
-#define DELTA_STEP_US  20   // 微調ステップ
+#define DELTA_MIN_US  200   // ここから
+#define DELTA_MAX_US  1200   // ここまで自動スキャン
+#define DELTA_STEP_US  25   // 微調ステップ
 
 QueueHandle_t bitbangRxQueue;
 portMUX_TYPE bitbangMux = portMUX_INITIALIZER_UNLOCKED;
@@ -222,6 +222,7 @@ void TaskBitBangReceive(void *pvParameters) {
   uint8_t rxBuf[MAX_PACKET_LEN];
   static uint32_t dbgCount[7]={0};
   int cnt=0;
+  startOK=false;
   while (1) {
     int len = bitBangReceivePacket(rxBuf, MAX_PACKET_LEN);
     // for Debug
@@ -245,9 +246,9 @@ void TaskBitBangReceive(void *pvParameters) {
     if(!delta_fixed && now - lastEvalMs > 250) {          // 250 ms毎に評価
         uint16_t total = syncFail + syncOK;
         if(total > 30) {                                  // データ十分？
-            float failRate = (float)syncFail / total;
-            ESP_EARLY_LOGI("AUTO","delta=%lu  fail=%.1f%%",(unsigned long)delta_now,
-                          failRate*100.0);
+            uint32_t failPermil = (syncFail * 1000 )/ total; // 0.1% 単位
+            ESP_EARLY_LOGI("AUTO","delta=%lu  fail=%u.%u%%",(unsigned long)delta_now,
+                          failPermil/10, failPermil%10);
 
             if(failRate < 0.15) {
                 // 充分良い → step/2 ずつ縮めてゼロを狙う
