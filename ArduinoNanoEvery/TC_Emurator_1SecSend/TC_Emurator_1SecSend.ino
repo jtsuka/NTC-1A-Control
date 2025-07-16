@@ -52,7 +52,7 @@ void sendCmd1()
   Serial.print(F("[EMU] TX:"));
   for (uint8_t i = 0; i < 6; i++) {
     bitBangSendByte(CMD1[i]);
-    Serial.printf(" %02X", CMD1[i]);
+//    Serial.printf(" %02X", CMD1[i]);
   }
   Serial.println();
 }
