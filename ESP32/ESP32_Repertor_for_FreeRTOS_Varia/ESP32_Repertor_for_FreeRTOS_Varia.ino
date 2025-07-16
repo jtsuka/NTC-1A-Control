@@ -217,4 +217,17 @@ void setup() {
   xTaskCreatePinnedToCore(testLoopTask,   "TEST",      2048, NULL, 1, NULL, 1);
 }
 
-void loop() {}
+// loop()にLED点滅処理を追加
+void loop() {
+  static unsigned long lastBlink = 0;
+  static bool ledState = false;
+
+  if (millis() - lastBlink >= 500) {
+    ledState = !ledState;
+    digitalWrite(LED_PIN, ledState);
+    lastBlink = millis();
+  }
+
+  // loop()は必ず何かdelay入れる（CPU占有防止）
+  delay(10);
+}

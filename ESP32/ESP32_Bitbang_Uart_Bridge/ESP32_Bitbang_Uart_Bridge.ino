@@ -23,6 +23,7 @@
 #define RESPONSE_TIMEOUT_MS 200
 #define MAX_PACKET_LEN     32
 #define FIXED_PACKET_LEN   6
+#define LED_PIN 21
 
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
@@ -306,6 +307,8 @@ void setup() {
   Serial.begin(115200);
   uartInit();
 
+  // for Look()
+  pinMode(LED_PIN, OUTPUT);
 //  pinMode(BITBANG_RX_PIN, INPUT_PULLUP);  // 内部P-UP
 //  Serial.printf("[DBG] idle-level=%d\n", digitalRead(BITBANG_RX_PIN));
   pinMode(BITBANG_RX_PIN, INPUT); // 高インピーダンス
@@ -332,6 +335,17 @@ void setup() {
                  DELTA_MIN_US, DELTA_MAX_US, DELTA_STEP_US);
 }
 
+// loop()にLED点滅処理を追加
 void loop() {
-  // loopなし
+  static unsigned long lastBlink = 0;
+  static bool ledState = false;
+
+  if (millis() - lastBlink >= 100) {
+    ledState = !ledState;
+    digitalWrite(LED_PIN, ledState);
+    lastBlink = millis();
+  }
+
+  // loop()は必ず何かdelay入れる（CPU占有防止）
+  delay(10);
 }
