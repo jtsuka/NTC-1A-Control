@@ -250,7 +250,7 @@ void TaskBitBangReceive(void *pvParameters) {
             ESP_EARLY_LOGI("AUTO","delta=%lu  fail=%u.%u%%",(unsigned long)delta_now,
                           failPermil/10, failPermil%10);
 
-            if(failRate < 0.15) {
+            if(failPermil < 150) {
                 // 充分良い → step/2 ずつ縮めてゼロを狙う
                 if(delta_now > DELTA_MIN_US + DELTA_STEP_US)
                     delta_now -= DELTA_STEP_US/2;
