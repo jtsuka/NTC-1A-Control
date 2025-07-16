@@ -94,34 +94,6 @@ static bool waitValidStart()
     return true;                               // ここが bit0 中央
 }
 
-#if 0
-static bool waitValidStart()
-{
-  const uint32_t debounce_us = BITBANG_DELAY_US / 3;   // ≒ 1.1 ms
-  uint32_t t0 = micros();
-
-  /* LOW に落ちるのを 30 ms だけ待つ */
-  while (digitalRead(BITBANG_RX_PIN) == HIGH) {
-    if (micros() - t0 > 30000) return false;           // タイムアウト
-  }
-
-  /* ¼bit 後にまだ LOW か？（短いグリッチならここで弾く） */
-  delayMicroseconds(debounce_us);
-  if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
-
-  /* さらに ¼bit 後も確認（より確実に）*/
-  delayMicroseconds(debounce_us);
-  if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
-
-  /* 本物確定 ─ 中央まで移動
-     3340-2*1113 = 1114 µs だと“ほんの少し前寄り”だったので +10µs */
-   const uint32_t center_us = (uint32_t)(BITBANG_DELAY_US * START_OFFSET);
-  delayMicroseconds(center_us);
-
-  return true;
-}
-#endif
-
 int uartReceivePacket(uint8_t *buf) {
   int len = 0;
   unsigned long start = millis();
@@ -168,13 +140,10 @@ void bitBangSendByte(uint8_t b) {
 }
 
 void bitBangSendPacket(const uint8_t *buf, int len) {
-//  Serial.print("[SEND TC] ");
   for (int i = 0; i < len; i++) {
     bitBangSendByte(rev8(buf[i]));
     delayMicroseconds(BITBANG_DELAY_US * BYTE_GAP);   // ←バイト間ギャップ 3 -> 2 ->1 へ
-//    Serial.printf("%02X ", buf[i]);
   }
-//  Serial.println();
 }
 
 int bitBangReceivePacket(uint8_t *buf, int maxLen)
@@ -211,12 +180,6 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
     buf[byteCount++] = b;
     if (byteCount >= FIXED_PACKET_LEN) break;
   }
-  // bit反転
-//  for (int i = 0; i < maxLen; i++ ) {
-//   buf[i] = rev8(buf[i]);   // bitBangReceivePacket の最後で
-      /* ★受信側では bit 反転しない（Pi へ返す直前だけ rev8） */
-//  }
-
   return byteCount;
 }
 
@@ -288,12 +251,12 @@ void TaskUartReceive(void *pvParameters)
       /* 過去と同じ内容ならスキップ（再送ループ防止） */
       if (lastValid && memcmp(buf, lastSent, FIXED_PACKET_LEN) == 0)
       {
-        // ★ Pi → ESP32 が 6 バイト入った直後
-        if (len == FIXED_PACKET_LEN) {
+//        ★ Pi → ESP32 が 6 バイト入った直後
+//        if (len == FIXED_PACKET_LEN) {
 //            Serial.print("[DBG RX] ");
 //            for (int i=0;i<len;i++) Serial.printf("%02X ", buf[i]);
 //            Serial.println();
-        }
+//        }
 
         vTaskDelay(pdMS_TO_TICKS(1));
         continue;                      // ★ 同じなので送らない
@@ -314,11 +277,6 @@ void TaskUartReceive(void *pvParameters)
                         pdMS_TO_TICKS(RESPONSE_TIMEOUT_MS))
           == pdTRUE)
       {
-        /* デバッグで内容を必ず出力して確認 */
-//        Serial.print("[DBG] echoBuf =");
-//        for(int i=0;i<FIXED_PACKET_LEN;i++) Serial.printf(" %02X", echoBuf[i]);
-//        Serial.println();
-
 
         /* LSB→MSB へビット反転して Pi へ返す */
         uint8_t txTmp[FIXED_PACKET_LEN];
