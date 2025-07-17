@@ -73,9 +73,9 @@ static bool waitValidStart()
     const uint32_t debounce_us = BITBANG_DELAY_US / 3;
     uint32_t t0 = micros();
 
-    while (digitalRead(BITBANG_RX_PIN) == HIGH) {
-        if (micros() - t0 > delta_now) return false;   // ← ★ ここ
-    }
+//    while (digitalRead(BITBANG_RX_PIN) == HIGH) {
+//        if (micros() - t0 > delta_now) return false;   // ← ★ ここ
+//    }
     /* スタート Low を 30 ms だけ待つ */
     while (digitalRead(BITBANG_RX_PIN) == HIGH) {
         if (micros() - t0 > 30000) return false;
@@ -203,7 +203,6 @@ void TaskBitBangReceive(void *pvParameters) {
         }
       }
     }
-    if(!startOK) syncFail++; else syncOK++;
 
     uint32_t now = millis();
     if(!delta_fixed && now - lastEvalMs > 250) {          // 250 ms毎に評価
