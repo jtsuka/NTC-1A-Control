@@ -73,21 +73,17 @@ static bool waitValidStart()
     const uint32_t debounce_us = BITBANG_DELAY_US / 3;
     uint32_t t0 = micros();
 
-//    while (digitalRead(BITBANG_RX_PIN) == HIGH) {
-    while (digitalRead(BITBANG_RX_PIN) == LOW) {
+    while (digitalRead(BITBANG_RX_PIN) == HIGH) {
         if (micros() - t0 > delta_now) return false;   // ← ★ ここ
     }
     /* スタート Low を 30 ms だけ待つ */
-//    uint32_t t0 = micros();
-//    while (digitalRead(BITBANG_RX_PIN) == HIGH) {
-    while (digitalRead(BITBANG_RX_PIN) == LOW) {
+    while (digitalRead(BITBANG_RX_PIN) == HIGH) {
         if (micros() - t0 > 30000) return false;
     }
 
     /* ノイズ除去（ここでは 300 µs）*/
     delayMicroseconds(300);
-//    if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
-    if (digitalRead(BITBANG_RX_PIN) == LOW) return false;
+    if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
 
     /* ---------- 中央へ ½bit 移動 ---------- */
     delayMicroseconds(debounce_us + delta_now);
