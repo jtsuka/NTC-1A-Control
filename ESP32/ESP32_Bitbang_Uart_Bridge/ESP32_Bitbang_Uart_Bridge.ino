@@ -247,13 +247,6 @@ void TaskUartReceive(void *pvParameters)
       /* 過去と同じ内容ならスキップ（再送ループ防止） */
       if (lastValid && memcmp(buf, lastSent, FIXED_PACKET_LEN) == 0)
       {
-//        ★ Pi → ESP32 が 6 バイト入った直後
-//        if (len == FIXED_PACKET_LEN) {
-//            Serial.print("[DBG RX] ");
-//            for (int i=0;i<len;i++) Serial.printf("%02X ", buf[i]);
-//            Serial.println();
-//        }
-
         vTaskDelay(pdMS_TO_TICKS(1));
         continue;                      // ★ 同じなので送らない
       }
@@ -279,10 +272,6 @@ void TaskUartReceive(void *pvParameters)
         for (int i = 0; i < FIXED_PACKET_LEN; i++) {
             txTmp[i] = rev8(echoBuf[i]);   // ★ 反転
         }
-        /* 2) デバッグ表示 */
-//        Serial.print("[DBG] Pi<-TC:");
-//        for (int i = 0; i < FIXED_PACKET_LEN; i++) Serial.printf(" %02X", txTmp[i]);
-//        Serial.println();
         uartSendPacket(txTmp, FIXED_PACKET_LEN);      // Pi へ返信
 
         free(echoBuf);
