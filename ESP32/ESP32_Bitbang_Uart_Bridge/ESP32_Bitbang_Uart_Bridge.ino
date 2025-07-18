@@ -25,6 +25,12 @@
 #define FIXED_PACKET_LEN   6
 #define LED_PIN 21
 
+// AE-LLCNV-LVC8T245基板セットアップ
+#define RX_DIR_GPIO 7
+#define RX_OE_GPIO 8
+#define TX_DIR_GPIO 9
+#define TX_OE_GPIO 4
+
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
 // ---------------- tunable range ----------------
@@ -290,6 +296,14 @@ void setup() {
 //  Serial.printf("[DBG] idle-level=%d\n", digitalRead(BITBANG_RX_PIN));
   pinMode(BITBANG_RX_PIN, INPUT); // 高インピーダンス
   Serial.printf("[DEBUG] RXB idle level = %d\n", digitalRead(BITBANG_RX_PIN));
+
+  // RX側 for AE-LLCNV-LVC8T245(1)
+  pinMode(RX_DIR_GPIO, OUTPUT); digitalWrite(RX_DIR_GPIO, LOW);   // B→A
+  pinMode(RX_OE_GPIO, OUTPUT);  digitalWrite(RX_OE_GPIO, LOW);    // 有効
+
+  // TX側 for AE-LLCNV-LVC8T245(2)
+  pinMode(TX_DIR_GPIO, OUTPUT); digitalWrite(TX_DIR_GPIO, HIGH);  // A→B
+  pinMode(TX_OE_GPIO, OUTPUT);  digitalWrite(TX_OE_GPIO, LOW);    // 有効
 
   pinMode(BITBANG_TX_PIN, OUTPUT);
   digitalWrite(BITBANG_TX_PIN, HIGH);  // idle HIGH
