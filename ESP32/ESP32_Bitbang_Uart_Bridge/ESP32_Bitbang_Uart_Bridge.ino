@@ -26,8 +26,8 @@
 #define LED_PIN 21
 
 // AE-LLCNV-LVC8T245基板セットアップ
-#define PIN_DIR1 4        // Grove JP5
-#define PIN_OE 5          // Grove JP5
+#define PIN_DIR1 9        // Grove JP5
+#define PIN_OE 10          // Grove JP5
 #define PIN_DIR2 7        // Grove JP7
 #define PIN_DIR2_ALT 8    // Grove JP7
 
