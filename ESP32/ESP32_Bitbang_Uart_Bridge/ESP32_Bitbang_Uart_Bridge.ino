@@ -26,10 +26,10 @@
 #define LED_PIN 21
 
 // AE-LLCNV-LVC8T245基板セットアップ
-#define RX_DIR_GPIO 7
-#define RX_OE_GPIO 8
-#define TX_DIR_GPIO 9
-#define TX_OE_GPIO 4
+#define PIN_DIR1 4        // Grove JP5
+#define PIN_OE 5          // Grove JP5
+#define PIN_DIR2 7        // Grove JP7
+#define PIN_DIR2_ALT 8    // Grove JP7
 
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
@@ -297,14 +297,16 @@ void setup() {
   pinMode(BITBANG_RX_PIN, INPUT); // 高インピーダンス
   Serial.printf("[DEBUG] RXB idle level = %d\n", digitalRead(BITBANG_RX_PIN));
 
-  // RX側 for AE-LLCNV-LVC8T245(1)
-  pinMode(RX_DIR_GPIO, OUTPUT); digitalWrite(RX_DIR_GPIO, LOW);   // B→A
-  pinMode(RX_OE_GPIO, OUTPUT);  digitalWrite(RX_OE_GPIO, LOW);    // 有効
+  // for AE-LLCNV-LVC8T245
+  pinMode(PIN_DIR1, OUTPUT);
+  pinMode(PIN_DIR2, OUTPUT);
+  pinMode(PIN_OE,   OUTPUT);
 
-  // TX側 for AE-LLCNV-LVC8T245(2)
-  pinMode(TX_DIR_GPIO, OUTPUT); digitalWrite(TX_DIR_GPIO, HIGH);  // A→B
-  pinMode(TX_OE_GPIO, OUTPUT);  digitalWrite(TX_OE_GPIO, LOW);    // 有効
+  digitalWrite(PIN_DIR1, HIGH);  // A→B (TC→ESP32)
+  digitalWrite(PIN_DIR2, HIGH);  // A→B (TC→ESP32)
+  digitalWrite(PIN_OE,   LOW);   // 出力有効（OE=L）
 
+  // Bitbang
   pinMode(BITBANG_TX_PIN, OUTPUT);
   digitalWrite(BITBANG_TX_PIN, HIGH);  // idle HIGH
   pinMode(BITBANG_RX_PIN, INPUT_PULLUP);  // ★プルアップを戻す
