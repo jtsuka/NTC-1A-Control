@@ -302,8 +302,8 @@ void setup() {
   pinMode(PIN_DIR2, OUTPUT);
   pinMode(PIN_OE,   OUTPUT);
 
-  digitalWrite(PIN_DIR1, HIGH);  // A→B (TC→ESP32)
-  digitalWrite(PIN_DIR2, HIGH);  // A→B (TC→ESP32)
+  digitalWrite(PIN_DIR1, LOW);  // B→A (ESP32-?TC)
+  digitalWrite(PIN_DIR2, HIGH);  // A→B (TC->ESP32)
   digitalWrite(PIN_OE,   LOW);   // 出力有効（OE=L）
 
   // Bitbang
