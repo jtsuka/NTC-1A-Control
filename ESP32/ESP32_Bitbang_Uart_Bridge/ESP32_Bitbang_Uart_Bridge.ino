@@ -306,6 +306,18 @@ void setup() {
   digitalWrite(PIN_DIR2, HIGH);  // A→B (TC->ESP32)
   digitalWrite(PIN_OE,   LOW);   // 出力有効（OE=L）
 
+  delay(100);  // 状態反映待ち
+
+  // Step 2: 読み戻して確認
+//  pinMode(PIN_OE, INPUT);  // 強制的に入力に戻して電圧状態確認
+  int level = digitalRead(PIN_OE);
+
+  Serial.printf("[診断] GPIO%d の状態: %s\n", PIN_OE,
+                level == LOW ? "LOW（正常）" : "HIGH（異常または接続不良）");
+
+// Step 3: 波形確認用のON/OFFトグル出力
+//  pinMode(PIN_OE, OUTPUT);
+
   // Bitbang
   pinMode(BITBANG_TX_PIN, OUTPUT);
   digitalWrite(BITBANG_TX_PIN, HIGH);  // idle HIGH
