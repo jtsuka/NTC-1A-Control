@@ -15,8 +15,8 @@
 
 #define UART_RX_PIN        44
 #define UART_TX_PIN        43
-#define BITBANG_TX_PIN     2
-#define BITBANG_RX_PIN     3
+#define BITBANG_TX_PIN     3
+#define BITBANG_RX_PIN     4
 
 #define UART_BAUD_RATE     9600
 #define BITBANG_DELAY_US   3340
@@ -26,10 +26,10 @@
 #define LED_PIN 21
 
 // AE-LLCNV-LVC8T245基板セットアップ
-#define PIN_DIR1 9        // Grove JP5
-#define PIN_OE 10          // Grove JP5
-#define PIN_DIR2 7        // Grove JP7
-#define PIN_DIR2_ALT 8    // Grove JP7
+#define PIN_DIR_A 5        // Grove JP5
+#define PIN_OE 6           // Grove JP5
+#define PIN_DIR_B 10        // Grove JP8
+#define PIN_DIR_B_ALT 11    // Grove JP8
 
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
@@ -298,22 +298,28 @@ void setup() {
   Serial.printf("[DEBUG] RXB idle level = %d\n", digitalRead(BITBANG_RX_PIN));
 
   // for AE-LLCNV-LVC8T245
-  pinMode(PIN_DIR1, OUTPUT);
-  pinMode(PIN_DIR2, OUTPUT);
-  pinMode(PIN_OE,   OUTPUT);
+  pinMode(PIN_DIR_A, OUTPUT);
+  pinMode(PIN_DIR_B, OUTPUT);
+  pinMode(PIN_DIR_B_ALT, OUTPUT);
 
-  digitalWrite(PIN_DIR1, LOW);  // B→A (ESP32-?TC)
-  digitalWrite(PIN_DIR2, HIGH);  // A→B (TC->ESP32)
-  digitalWrite(PIN_OE,   LOW);   // 出力有効（OE=L）
+  digitalWrite(PIN_DIR_A, LOW);  // B→A (ESP32-?TC)
+  digitalWrite(PIN_DIR_B, HIGH);  // A→B (TC->ESP32)
+  digitalWrite(PIN_DIR_B_ALT, LOW);   // 出力有効（OE=L）
 
   delay(100);  // 状態反映待ち
 
   // Step 2: 読み戻して確認
 //  pinMode(PIN_OE, INPUT);  // 強制的に入力に戻して電圧状態確認
-  int level = digitalRead(PIN_OE);
+  int level1 = digitalRead(PIN_DIR_B_ALT);
+  int level2 = digitalRead(PIN_DIR_A);
+  int level3 = digitalRead(PIN_DIR_B);
 
-  Serial.printf("[診断] GPIO%d の状態: %s\n", PIN_OE,
-                level == LOW ? "LOW（正常）" : "HIGH（異常または接続不良）");
+  Serial.printf("[診断] OE GPIO%d の状態: %s\n", PIN_DIR_B_ALT,
+                level1 == LOW ? "LOW" : "HIGH");
+  Serial.printf("[診断] GPIO%d の状態: %s\n", PIN_DIR_A,
+                level2 == LOW ? "LOW" : "HIGH");
+  Serial.printf("[診断] GPIO%d の状態: %s\n", PIN_DIR_B,
+                level3 == LOW ? "LOW" : "HIGH");
 
 // Step 3: 波形確認用のON/OFFトグル出力
 //  pinMode(PIN_OE, OUTPUT);
@@ -344,11 +350,20 @@ void setup() {
 void loop() {
   static unsigned long lastBlink = 0;
   static bool ledState = false;
+  static int level1 = digitalRead(PIN_DIR_A);
+  static int level2 = digitalRead(PIN_DIR_B);
+  static int level3 = digitalRead(PIN_DIR_B_ALT);
 
   if (millis() - lastBlink >= 100) {
     ledState = !ledState;
     digitalWrite(LED_PIN, ledState);
     lastBlink = millis();
+  Serial.printf("[診断] DIR_A GPIO%d の状態: %s\n", PIN_DIR_A,
+                level1 == LOW ? "LOW" : "HIGH");
+  Serial.printf("[診断] DIR_B GPIO%d の状態: %s\n", PIN_DIR_B,
+                level2 == LOW ? "LOW" : "HIGH");
+  Serial.printf("[診断] OE GPIO%d の状態: %s\n", PIN_DIR_B_ALT,
+                level3 == LOW ? "LOW" : "HIGH");
   }
 
   // loop()は必ず何かdelay入れる（CPU占有防止）
