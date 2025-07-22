@@ -362,18 +362,19 @@ void loop() {
   static bool ledState = false;
   static int level1 = digitalRead(PIN_DIR_A);
   static int level2 = digitalRead(PIN_DIR_B);
-  static int level3 = digitalRead(PIN_DIR_B_ALT);
+  static int level3 = digitalRead(PIN_OE_A);
+  static int level4 = digitalRead(PIN_OE_B);
 
   if (millis() - lastBlink >= 100) {
     ledState = !ledState;
     digitalWrite(LED_PIN, ledState);
     lastBlink = millis();
-  Serial.printf("[診断] DIR_A GPIO%d の状態: %s\n", PIN_DIR_A,
-                level1 == LOW ? "LOW" : "HIGH");
-  Serial.printf("[診断] DIR_B GPIO%d の状態: %s\n", PIN_DIR_B,
-                level2 == LOW ? "LOW" : "HIGH");
-  Serial.printf("[診断] OE GPIO%d の状態: %s\n", PIN_DIR_B_ALT,
-                level3 == LOW ? "LOW" : "HIGH");
+//  Serial.printf("[診断] DIR_A GPIO%d の状態: %s\n", PIN_DIR_A,
+//                level1 == LOW ? "LOW" : "HIGH");
+//  Serial.printf("[診断] DIR_B GPIO%d の状態: %s\n", PIN_DIR_B,
+//                level2 == LOW ? "LOW" : "HIGH");
+//  Serial.printf("[診断] OE GPIO%d の状態: %s\n", PIN_OE_A,
+//                level3 == LOW ? "LOW" : "HIGH");
   }
 
   // loop()は必ず何かdelay入れる（CPU占有防止）
