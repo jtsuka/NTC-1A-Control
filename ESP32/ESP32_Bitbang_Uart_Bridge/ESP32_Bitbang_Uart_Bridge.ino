@@ -26,10 +26,10 @@
 #define LED_PIN 21
 
 // AE-LLCNV-LVC8T245基板セットアップ
-#define PIN_DIR_A 5        // Grove JP5
-#define PIN_OE_A 6           // Grove JP5
-#define PIN_DIR_B 9        // Grove JP7
-#define PIN_OE_B 10    // Grove JP7
+#define PIN_DIR_A 6         // Grove JP5
+#define PIN_OE_A 5          // Grove JP5
+#define PIN_DIR_B 10        // Grove JP7
+#define PIN_OE_B 9          // Grove JP7
 
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
