@@ -26,10 +26,10 @@
 #define LED_PIN 21
 
 // AE-LLCNV-LVC8T245基板セットアップ
-#define PIN_DIR_A 6         // Grove JP5
-#define PIN_OE_A 5          // Grove JP5
-#define PIN_DIR_B 10        // Grove JP7
-#define PIN_OE_B 9          // Grove JP7
+#define PIN_DIR_A 6         // Grove JP5(黄 D5/SDA)
+#define PIN_OE_A 5          // Grove JP5(白 D4/SCL)
+#define PIN_DIR_B 10        // Grove JP7(黄 D9/MISO) 
+#define PIN_OE_B 9          // Grove JP7(白 D8/SCK)
 
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
@@ -288,6 +288,13 @@ void TaskUartReceive(void *pvParameters)
   }
 }
 
+void dumpCtrl(const char* tag){
+  Serial.printf("[%s] DIRA=%d  OEA=%d  DIRB=%d  OEB=%d\n",
+      tag,
+      digitalRead(PIN_DIR_A), digitalRead(PIN_OE_A),
+      digitalRead(PIN_DIR_B), digitalRead(PIN_OE_B));
+}
+
 void setup() {
   Serial.begin(115200);
   uartInit();
@@ -371,6 +378,7 @@ void loop() {
     ledState = !ledState;
     digitalWrite(LED_PIN, ledState);
     lastBlink = millis();
+    dumpCtrl("AFTER_INIT");   // 期待: 0 0 1 0
 //  Serial.printf("[診断] DIR_A GPIO%d の状態: %s\n", PIN_DIR_A,
 //                level1 == LOW ? "LOW" : "HIGH");
 //  Serial.printf("[診断] DIR_B GPIO%d の状態: %s\n", PIN_DIR_B,
