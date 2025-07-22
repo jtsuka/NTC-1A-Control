@@ -15,8 +15,8 @@
 
 #define UART_RX_PIN        44
 #define UART_TX_PIN        43
-#define BITBANG_TX_PIN     3
-#define BITBANG_RX_PIN     4
+#define BITBANG_TX_PIN     2
+#define BITBANG_RX_PIN     3
 
 #define UART_BAUD_RATE     9600
 #define BITBANG_DELAY_US   3340
@@ -28,8 +28,8 @@
 // AE-LLCNV-LVC8T245基板セットアップ
 #define PIN_DIR_A 5        // Grove JP5
 #define PIN_OE 6           // Grove JP5
-#define PIN_DIR_B 10        // Grove JP8
-#define PIN_DIR_B_ALT 11    // Grove JP8
+#define PIN_DIR_B 7        // Grove JP7
+#define PIN_DIR_B_ALT 8    // Grove JP7
 
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
@@ -324,8 +324,6 @@ void setup() {
   Serial.printf("[診断] GPIO%d の状態: %s\n", PIN_DIR_B,
                 level3 == LOW ? "LOW" : "HIGH");
 
-// Step 3: 波形確認用のON/OFFトグル出力
-//  pinMode(PIN_OE, OUTPUT);
 
   // Bitbang
   pinMode(BITBANG_TX_PIN, OUTPUT);
