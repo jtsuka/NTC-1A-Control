@@ -302,8 +302,11 @@ void setup() {
   pinMode(PIN_DIR_B, OUTPUT);
   pinMode(PIN_DIR_B_ALT, OUTPUT);
 
+  digitalWrite(PIN_DIR_B_ALT, HIGH);   // 出力無効（OE=H）
+
   digitalWrite(PIN_DIR_A, LOW);  // B→A (ESP32-?TC)
   digitalWrite(PIN_DIR_B, HIGH);  // A→B (TC->ESP32)
+  delay(50);  // 状態反映待ち
   digitalWrite(PIN_DIR_B_ALT, LOW);   // 出力有効（OE=L）
 
   delay(100);  // 状態反映待ち
