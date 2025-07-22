@@ -5,7 +5,7 @@
 // - Baud rate: UART = 9600bps, BitBang = 300bps
 // - Wait up to 100ms for TC response, then reply to Pi
 // - Safe with FreeRTOS & taskENTER_CRITICAL
-// - 2025.07.14 3th Try Version
+// - 2025.07.22 4th Try Version
 // ----------------------------------------
 
 #include <Arduino.h>
