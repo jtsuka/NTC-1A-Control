@@ -72,7 +72,9 @@ static inline uint8_t rev8(uint8_t v)
 /* ========= 追加：ノイズ除去付きスタート検出 ========= */
 static bool waitValidStart()
 {
-    const uint32_t debounce_us = BITBANG_DELAY_US / 3;
+    const uint32_t debounce_us = 300;
+    const uint32_t halfbit_us  = BITBANG_DELAY_US / 2;   // ◎ 1/2 ビット
+
     uint32_t t0 = micros();
 
     /* スタート Low を 30 ms だけ待つ */
@@ -82,10 +84,10 @@ static bool waitValidStart()
 
     /* ノイズ除去（ここでは 300 µs）*/
     delayMicroseconds(300);
-    if (digitalRead(BITBANG_RX_PIN) == LOW) return false;
+    if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
 
     /* ---------- 中央へ ½bit 移動 ---------- */
-    delayMicroseconds(debounce_us + delta_now);
+    delayMicroseconds(halfbit_us + delta_now);
 
     return true;                               // ここが bit0 中央
 }
