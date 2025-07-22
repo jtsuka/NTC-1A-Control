@@ -27,9 +27,9 @@
 
 // AE-LLCNV-LVC8T245基板セットアップ
 #define PIN_DIR_A 5        // Grove JP5
-#define PIN_OE 6           // Grove JP5
-#define PIN_DIR_B 7        // Grove JP7
-#define PIN_DIR_B_ALT 8    // Grove JP7
+#define PIN_OE_A 6           // Grove JP5
+#define PIN_DIR_B 9        // Grove JP7
+#define PIN_OE_B 10    // Grove JP7
 
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
@@ -292,35 +292,44 @@ void setup() {
 
   // for Look()
   pinMode(LED_PIN, OUTPUT);
-//  pinMode(BITBANG_RX_PIN, INPUT_PULLUP);  // 内部P-UP
-//  Serial.printf("[DBG] idle-level=%d\n", digitalRead(BITBANG_RX_PIN));
+
   pinMode(BITBANG_RX_PIN, INPUT); // 高インピーダンス
   Serial.printf("[DEBUG] RXB idle level = %d\n", digitalRead(BITBANG_RX_PIN));
 
   // for AE-LLCNV-LVC8T245
   pinMode(PIN_DIR_A, OUTPUT);
   pinMode(PIN_DIR_B, OUTPUT);
-  pinMode(PIN_DIR_B_ALT, OUTPUT);
+  pinMode(PIN_OE_A, OUTPUT);
+  pinMode(PIN_OE_B, OUTPUT);
 
-  digitalWrite(PIN_DIR_B_ALT, HIGH);   // 出力無効（OE=H）
+  // 前出力をHi-Z
+  digitalWrite(PIN_OE_A, HIGH);   // 出力無効（OE=H）
+  digitalWrite(PIN_OE_B, HIGH);   // 出力無効（OE=H）
 
-  digitalWrite(PIN_DIR_A, LOW);  // B→A (ESP32-?TC)
-  digitalWrite(PIN_DIR_B, HIGH);  // A→B (TC->ESP32)
-  delay(50);  // 状態反映待ち
-  digitalWrite(PIN_DIR_B_ALT, LOW);   // 出力有効（OE=L）
+  // 方向を確定
+  digitalWrite(PIN_DIR_A, LOW);   // B→A (TC -> ESP32)
+  digitalWrite(PIN_DIR_B, HIGH);  // A→B (ESP32 -> TC)
+  delay(50);  // DIR状態反映待ち
+
+  // 出力を有効化
+  digitalWrite(PIN_OE_A, LOW);   // 出力有効（OE_A=L）
+  digitalWrite(PIN_OE_B, LOW);   // 出力有効（OE_B=L）
 
   delay(100);  // 状態反映待ち
 
   // Step 2: 読み戻して確認
 //  pinMode(PIN_OE, INPUT);  // 強制的に入力に戻して電圧状態確認
-  int level1 = digitalRead(PIN_DIR_B_ALT);
+  int OElevel1 = digitalRead(PIN_OE_A);
+  int OElevel2 = digitalRead(PIN_OE_B);
   int level2 = digitalRead(PIN_DIR_A);
   int level3 = digitalRead(PIN_DIR_B);
 
-  Serial.printf("[診断] OE GPIO%d の状態: %s\n", PIN_DIR_B_ALT,
-                level1 == LOW ? "LOW" : "HIGH");
+  Serial.printf("[診断] OE GPIO%d の状態: %s\n", PIN_OE_A,
+                OElevel1 == LOW ? "LOW" : "HIGH");
   Serial.printf("[診断] GPIO%d の状態: %s\n", PIN_DIR_A,
                 level2 == LOW ? "LOW" : "HIGH");
+  Serial.printf("[診断] OE GPIO%d の状態: %s\n", PIN_OE_B,
+                OElevel2 == LOW ? "LOW" : "HIGH");
   Serial.printf("[診断] GPIO%d の状態: %s\n", PIN_DIR_B,
                 level3 == LOW ? "LOW" : "HIGH");
 
