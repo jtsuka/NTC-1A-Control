@@ -25,11 +25,11 @@
 #define FIXED_PACKET_LEN   6
 #define LED_PIN 21
 
-// AE-LLCNV-LVC16T245モジュールセットアップ
-#define PIN_OE_A 8          // Grove JP5(白 D4/SCL)
-#define PIN_DIR_A 7         // Grove JP5(黄 D5/SDA)
-#define PIN_OE_B 5          // Grove JP7(白 D8/SCK)
-#define PIN_DIR_B 6        // Grove JP7(黄 D9/MISO) 
+// --- AE-LCNV-LVCH16T245 control pins ---
+#define PIN_OE_A 5      // 1OE  (J5 白)   LOW = 出力有効
+#define PIN_DIR_A 6     // 1DIR (J5 黄)   LOW = B→A (TC→ESP32)
+#define PIN_OE_B 7      // 2OE  (J7 白)   LOW = 出力有効
+#define PIN_DIR_B 8     // 2DIR (J7 黄)   HIGH = A→B (ESP32→TC)
 
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
