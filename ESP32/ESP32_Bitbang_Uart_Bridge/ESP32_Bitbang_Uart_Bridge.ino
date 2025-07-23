@@ -26,10 +26,10 @@
 #define LED_PIN 21
 
 // AE-LLCNV-LVC16T245モジュールセットアップ
-#define PIN_OE_A 5          // Grove JP5(白 D4/SCL)
-#define PIN_DIR_A 6         // Grove JP5(黄 D5/SDA)
-#define PIN_OE_B 9          // Grove JP7(白 D8/SCK)
-#define PIN_DIR_B 10        // Grove JP7(黄 D9/MISO) 
+#define PIN_OE_A 8          // Grove JP5(白 D4/SCL)
+#define PIN_DIR_A 7         // Grove JP5(黄 D5/SDA)
+#define PIN_OE_B 5          // Grove JP7(白 D8/SCK)
+#define PIN_DIR_B 6        // Grove JP7(黄 D9/MISO) 
 
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
@@ -163,8 +163,8 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
       delayMicroseconds(BITBANG_DELAY_US);
     }
     if (byteCount == 0 || byteCount == 5) {
-    ESP_EARLY_LOGI("BB", "b%d=%02X idle=%d",
-                   byteCount, b, digitalRead(BITBANG_RX_PIN));
+//    ESP_EARLY_LOGI("BB", "b%d=%02X idle=%d",
+//                   byteCount, b, digitalRead(BITBANG_RX_PIN));
     }
     /* Stop ビット (HIGH) は “捨て読み” のみに変更 */
     delayMicroseconds(BITBANG_DELAY_US);
