@@ -16,18 +16,18 @@ void setup() {
 
 void loop() {
   // --- フェーズ 0: 1OE ブリンク -----------------
-  digitalWrite(PIN_OE_A, HIGH);  delay(500);
-  digitalWrite(PIN_OE_A, LOW );  delay(500);
+//  digitalWrite(PIN_OE_A, HIGH);  delay(500);
+//  digitalWrite(PIN_OE_A, LOW );  delay(500);
 
   // --- フェーズ 1: 1DIR ブリンク -----------------
-  digitalWrite(PIN_DIR_A, HIGH); delay(500);
-  digitalWrite(PIN_DIR_A, LOW ); delay(500);
+//  digitalWrite(PIN_DIR_A, HIGH); delay(500);
+//  digitalWrite(PIN_DIR_A, LOW ); delay(500);
 
   // --- フェーズ 2: 2OE ブリンク -----------------
-  digitalWrite(PIN_OE_B, HIGH);  delay(500);
-  digitalWrite(PIN_OE_B, LOW );  delay(500);
+//  digitalWrite(PIN_OE_B, HIGH);  delay(500);
+//  digitalWrite(PIN_OE_B, LOW );  delay(500);
 
   // --- フェーズ 3: 2DIR ブリンク -----------------
-  digitalWrite(PIN_DIR_B, HIGH); delay(500);
-  digitalWrite(PIN_DIR_B, LOW ); delay(500);
+//  digitalWrite(PIN_DIR_B, HIGH); delay(500);
+//  digitalWrite(PIN_DIR_B, LOW ); delay(500);
 }
