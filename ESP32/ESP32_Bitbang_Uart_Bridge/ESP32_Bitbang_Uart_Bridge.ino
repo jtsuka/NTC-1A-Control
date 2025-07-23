@@ -5,7 +5,7 @@
 // - Baud rate: UART = 9600bps, BitBang = 300bps
 // - Wait up to 100ms for TC response, then reply to Pi
 // - Safe with FreeRTOS & taskENTER_CRITICAL
-// - 2025.07.22 4th Try Version
+// - 2025.07.23 5th Try Version
 // ----------------------------------------
 
 #include <Arduino.h>
@@ -13,10 +13,10 @@
 #include <freertos/task.h>
 #include <freertos/queue.h>
 
-#define UART_RX_PIN        44
-#define UART_TX_PIN        43
-#define BITBANG_TX_PIN     2
-#define BITBANG_RX_PIN     3
+#define UART_TX_PIN        43   // Grove JP7(白 D6/TX)
+#define UART_RX_PIN        44   // Grove JP7(黄 D7/RX)
+#define BITBANG_TX_PIN     2    // Grove JP2(白 D1)
+#define BITBANG_RX_PIN     3    // Grove JP2(黄 D2)
 
 #define UART_BAUD_RATE     9600
 #define BITBANG_DELAY_US   3340
@@ -26,10 +26,10 @@
 #define LED_PIN 21
 
 // AE-LLCNV-LVC8T245基板セットアップ
-#define PIN_DIR_A 6         // Grove JP5(黄 D5/SDA)
 #define PIN_OE_A 5          // Grove JP5(白 D4/SCL)
-#define PIN_DIR_B 10        // Grove JP7(黄 D9/MISO) 
+#define PIN_DIR_A 6         // Grove JP5(黄 D5/SDA)
 #define PIN_OE_B 9          // Grove JP7(白 D8/SCK)
+#define PIN_DIR_B 10        // Grove JP7(黄 D9/MISO) 
 
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
