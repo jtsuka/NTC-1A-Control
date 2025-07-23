@@ -4,8 +4,8 @@
 
 #define PIN_OE_A 5      // 1OE  (J5-白)
 #define PIN_DIR_A 6     // 1DIR (J5-黄)
-#define PIN_OE_B 9      // 2OE  (J7-白)
-#define PIN_DIR_B 10    // 2DIR (J7-黄)
+#define PIN_OE_B 7      // 2OE  (J7-白)
+#define PIN_DIR_B 8     // 2DIR (J7-黄)
 
 void setup() {
   pinMode(PIN_OE_A,  OUTPUT);
