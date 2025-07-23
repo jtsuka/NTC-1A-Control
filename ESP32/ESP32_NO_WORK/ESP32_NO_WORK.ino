@@ -12,6 +12,10 @@ void setup() {
   pinMode(PIN_DIR_A, OUTPUT);
   pinMode(PIN_OE_B,  OUTPUT);
   pinMode(PIN_DIR_B, OUTPUT);
+  digitalWrite(PIN_OE_A, HIGH);
+  digitalWrite(PIN_DIR_A, HIGH);
+  digitalWrite(PIN_OE_B, HIGH);
+  digitalWrite(PIN_DIR_B, HIGH);
 }
 
 void loop() {
