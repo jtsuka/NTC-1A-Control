@@ -25,7 +25,7 @@
 #define FIXED_PACKET_LEN   6
 #define LED_PIN 21
 
-// AE-LLCNV-LVC8T245基板セットアップ
+// AE-LLCNV-LVC16T245モジュールセットアップ
 #define PIN_OE_A 5          // Grove JP5(白 D4/SCL)
 #define PIN_DIR_A 6         // Grove JP5(黄 D5/SDA)
 #define PIN_OE_B 9          // Grove JP7(白 D8/SCK)
