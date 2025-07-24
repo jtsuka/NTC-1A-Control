@@ -46,11 +46,15 @@ static uint8_t lastSent[FIXED_PACKET_LEN] = {0};
 static bool    lastValid = false;                // まだ何も送っていない状態
 
 /* ---- 自動チューニング用 ---- */
-static int32_t  delta_now   = DELTA_MIN_US;   // ★左端からスタート
-static bool     delta_fixed = false;
+//static int32_t  delta_now   = DELTA_MIN_US;   // ★左端からスタート
+//static bool     delta_fixed = false;
 static uint16_t syncFail    = 0, syncOK = 0;
 static uint32_t lastEvalMs  = 0;
 static uint8_t  sweepCount  = 0;              // ★何周したか数える
+
+/* Δチューニング完了 */
+static const int32_t delta_now = -300;   // ←固定
+static const bool    delta_fixed = true; // ←常に true
 
 /* ★ start 判定結果を保持する */
 static bool startOK = false;   // true = waitValidStart() success
@@ -77,14 +81,14 @@ static bool waitValidStart()
 
     /* 1. スタート Low を最大 30 ms 待つ ---------------------- */
     uint32_t t0 = micros();
-    while (digitalRead(BITBANG_RX_PIN) == HIGH) {      // HIGH→LOW を待つ
+    while (digitalRead(BITBANG_RX_PIN) == LOW) {      // HIGH→LOW を待つ
         if (micros() - t0 > 30000) return false;       // タイムアウト
     }
     /* ここに来たとき RX は LOW (スタート候補) */
 
     /* 2. 300 µs 待って still LOW なら本物、HIGH ならグリッチ ---- */
     delayMicroseconds(debounce_us);
-    if (digitalRead(BITBANG_RX_PIN) == HIGH) return false; // ノイズだった
+    if (digitalRead(BITBANG_RX_PIN) == LOW) return false; // ノイズだった
 
     /* 3. 半ビット＋Δ だけ進めてビット中央へ ------------------ */
     delayMicroseconds(halfbit_us + delta_now);
@@ -122,13 +126,13 @@ void bitBangSendByte(uint8_t b) {
 
    /* ---------- Drive start～stop bit ---------- */
   taskENTER_CRITICAL(&bitbangMux);
-  digitalWrite(BITBANG_TX_PIN, LOW);   // Start LOW
+  digitalWrite(BITBANG_TX_PIN, HIGH);   // Start HIGH
   delayMicroseconds(BITBANG_DELAY_US);
   for (int i = 0; i < 8; i++) {
-    digitalWrite(BITBANG_TX_PIN, (b >> i) & 1);   // データ反転しない
+    digitalWrite(BITBANG_TX_PIN, !(b >> i) & 1);   // データ反転
     delayMicroseconds(BITBANG_DELAY_US);
   }
-  digitalWrite(BITBANG_TX_PIN, HIGH);    // Stop HIGH
+  digitalWrite(BITBANG_TX_PIN, LOW);    // Stop LOW
   delayMicroseconds(BITBANG_DELAY_US);
   taskEXIT_CRITICAL(&bitbangMux);
   
@@ -163,8 +167,8 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
       delayMicroseconds(BITBANG_DELAY_US);
     }
     if (byteCount == 0 || byteCount == 5) {
-    ESP_EARLY_LOGI("BB", "b%d=%02X idle=%d",
-                   byteCount, b, digitalRead(BITBANG_RX_PIN));
+//    ESP_EARLY_LOGI("BB", "b%d=%02X idle=%d",
+//                   byteCount, b, digitalRead(BITBANG_RX_PIN));
     }
     /* Stop ビット (HIGH) は “捨て読み” のみに変更 */
     delayMicroseconds(BITBANG_DELAY_US);
@@ -205,6 +209,7 @@ void TaskBitBangReceive(void *pvParameters) {
       }
     }
 
+#if 0
      // ---- Δ 自動チューニング ----------------------------------
     uint32_t now = millis();
     if (!delta_fixed && now - lastEvalMs > 250) {        // 250 ms ごと
@@ -233,7 +238,7 @@ void TaskBitBangReceive(void *pvParameters) {
         }
         lastEvalMs = now;
     }
-
+#endif
   }
 }
 
