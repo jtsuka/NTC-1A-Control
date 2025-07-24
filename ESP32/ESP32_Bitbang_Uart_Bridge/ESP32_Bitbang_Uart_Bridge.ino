@@ -70,27 +70,27 @@ static inline uint8_t rev8(uint8_t v)
   return v;
 }
 
-/* ========= 追加：ノイズ除去付きスタート検出 ========= */
+/* ========= ノイズ除去付きスタート検出 ========= */
 static bool waitValidStart()
 {
-    const uint32_t debounce_us = 300;
-    const uint32_t halfbit_us  = BITBANG_DELAY_US / 2;   // ◎ 1/2 ビット
+    const uint32_t debounce_us = 300;                  // ノイズ除去時間
+    const uint32_t halfbit_us  = BITBANG_DELAY_US / 2; // 1670 µs (300 bps)
 
+    /* 1. スタート Low を最大 30 ms 待つ ---------------------- */
     uint32_t t0 = micros();
-
-    /* スタート Low を 30 ms だけ待つ */
-    while (digitalRead(BITBANG_RX_PIN) == HIGH) {
-        if (micros() - t0 > 30000) return false;
+    while (digitalRead(BITBANG_RX_PIN) == HIGH) {      // HIGH→LOW を待つ
+        if (micros() - t0 > 30000) return false;       // タイムアウト
     }
+    /* ここに来たとき RX は LOW (スタート候補) */
 
-    /* ノイズ除去（ここでは 300 µs）*/
-    delayMicroseconds(300);
-    if (digitalRead(BITBANG_RX_PIN) == LOW) return false;
+    /* 2. 300 µs 待って still LOW なら本物、HIGH ならグリッチ ---- */
+    delayMicroseconds(debounce_us);
+    if (digitalRead(BITBANG_RX_PIN) == HIGH) return false; // ノイズだった
 
-    /* ---------- 中央へ ½bit 移動 ---------- */
+    /* 3. 半ビット＋Δ だけ進めてビット中央へ ------------------ */
     delayMicroseconds(halfbit_us + delta_now);
 
-    return true;                               // ここが bit0 中央
+    return true;                                       // ★ 正常にスタート捕捉
 }
 
 int uartReceivePacket(uint8_t *buf) {
@@ -233,7 +233,8 @@ void TaskBitBangReceive(void *pvParameters) {
         }
         lastEvalMs = now;
     }
-
+  }
+}
 
 void TaskUartReceive(void *pvParameters)
 {
@@ -375,7 +376,7 @@ void loop() {
     ledState = !ledState;
     digitalWrite(LED_PIN, ledState);
     lastBlink = millis();
-//    dumpCtrl("AFTER_INIT");   // 期待: 0 0 1 0
+    dumpCtrl("AFTER_INIT");   // 期待: 0 0 1 0
   }
 
   // loop()は必ず何かdelay入れる（CPU占有防止）
