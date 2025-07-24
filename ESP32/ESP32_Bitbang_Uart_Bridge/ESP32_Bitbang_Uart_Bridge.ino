@@ -46,15 +46,15 @@ static uint8_t lastSent[FIXED_PACKET_LEN] = {0};
 static bool    lastValid = false;                // まだ何も送っていない状態
 
 /* ---- 自動チューニング用 ---- */
-//static int32_t  delta_now   = DELTA_MIN_US;   // ★左端からスタート
-//static bool     delta_fixed = false;
+static int32_t  delta_now   = DELTA_MIN_US;   // ★左端からスタート
+static bool     delta_fixed = false;
 static uint16_t syncFail    = 0, syncOK = 0;
 static uint32_t lastEvalMs  = 0;
 static uint8_t  sweepCount  = 0;              // ★何周したか数える
 
 /* Δチューニング完了 */
-static const int32_t delta_now = -300;   // ←固定
-static const bool    delta_fixed = true; // ←常に true
+//static const int32_t delta_now = -300;   // ←固定
+//static const bool    delta_fixed = true; // ←常に true
 
 /* ★ start 判定結果を保持する */
 static bool startOK = false;   // true = waitValidStart() success
@@ -209,7 +209,7 @@ void TaskBitBangReceive(void *pvParameters) {
       }
     }
 
-#if 0
+#if 1
      // ---- Δ 自動チューニング ----------------------------------
     uint32_t now = millis();
     if (!delta_fixed && now - lastEvalMs > 250) {        // 250 ms ごと
