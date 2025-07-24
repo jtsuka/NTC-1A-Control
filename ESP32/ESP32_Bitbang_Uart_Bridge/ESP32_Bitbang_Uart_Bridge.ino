@@ -159,8 +159,7 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
     /* ---- 8 bit 読み取り ---- */
     uint8_t b = 0;
     for (int i = 0; i < 8; i++) {
-//    b |= (digitalRead(BITBANG_RX_PIN) << i);
-      b |= (digitalRead(BITBANG_RX_PIN) << (7 - i)); // LSB->MSB に読んでおく
+      b |= (digitalRead(BITBANG_RX_PIN) << i);
       delayMicroseconds(BITBANG_DELAY_US);
     }
     b = rev8(b);   // ★ここでビット順を反転して正しい値にす
