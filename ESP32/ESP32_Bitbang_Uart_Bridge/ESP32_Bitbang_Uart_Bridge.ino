@@ -34,8 +34,8 @@
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
 // ---------------- tunable range ----------------
-#define DELTA_MIN_US  (-300)   // ここから
-#define DELTA_MAX_US  (300)   // ここまで自動スキャン
+#define DELTA_MIN_US  (-300)   // 掃き出し左端 (固定)
+#define DELTA_MAX_US  ( 300)   // 掃き出し右端
 #define DELTA_STEP_US  25   // 微調ステップ
 
 QueueHandle_t bitbangRxQueue;
@@ -46,12 +46,11 @@ static uint8_t lastSent[FIXED_PACKET_LEN] = {0};
 static bool    lastValid = false;                // まだ何も送っていない状態
 
 /* ---- 自動チューニング用 ---- */
-//static uint32_t delta_now  = (DELTA_MIN_US + DELTA_MAX_US)/2;
-static int32_t delta_now  = 0;
+static int32_t  delta_now   = DELTA_MIN_US;   // ★左端からスタート
 static bool     delta_fixed = false;
-static uint16_t syncFail   = 0;
-static uint16_t syncOK     = 0;
-static uint32_t lastEvalMs = 0;
+static uint16_t syncFail    = 0, syncOK = 0;
+static uint32_t lastEvalMs  = 0;
+static uint8_t  sweepCount  = 0;              // ★何周したか数える
 
 /* ★ start 判定結果を保持する */
 static bool startOK = false;   // true = waitValidStart() success
@@ -85,7 +84,7 @@ static bool waitValidStart()
 
     /* 2. 300 µs 待って still LOW なら本物、HIGH ならグリッチ ---- */
     delayMicroseconds(debounce_us);
-    if (digitalRead(BITBANG_RX_PIN) == LOW) return false; // ノイズだった
+    if (digitalRead(BITBANG_RX_PIN) == HIGH) return false; // ノイズだった
 
     /* 3. 半ビット＋Δ だけ進めてビット中央へ ------------------ */
     delayMicroseconds(halfbit_us + delta_now);
@@ -160,21 +159,22 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
     /* ---- 8 bit 読み取り ---- */
     uint8_t b = 0;
     for (int i = 0; i < 8; i++) {
-      b |= (digitalRead(BITBANG_RX_PIN) << i);
+//    b |= (digitalRead(BITBANG_RX_PIN) << i);
+      b |= (digitalRead(BITBANG_RX_PIN) << (7 - i)); // ★MSB→LSB に読んでおく
       delayMicroseconds(BITBANG_DELAY_US);
     }
     if (byteCount == 0 || byteCount == 5) {
-//    ESP_EARLY_LOGI("BB", "b%d=%02X idle=%d",
-//                   byteCount, b, digitalRead(BITBANG_RX_PIN));
+    ESP_EARLY_LOGI("BB", "b%d=%02X idle=%d",
+                   byteCount, b, digitalRead(BITBANG_RX_PIN));
     }
     /* Stop ビット (HIGH) は “捨て読み” のみに変更 */
     delayMicroseconds(BITBANG_DELAY_US);
 
     /* ---- 最初のバイトだけ簡易チェック ---- */
-    if (byteCount == 0 && (b == 0x00 || b == 0xFF)) {
-      Serial.println("[WARN] Invalid start byte (00/FF)");
-      return 0;                    // グリッチか極性ズレ
-    }
+//    if (byteCount == 0 && (b == 0x00 || b == 0xFF)) {
+//      Serial.println("[WARN] Invalid start byte (00/FF)");
+//      return 0;                    // グリッチか極性ズレ
+//    }
 
     buf[byteCount++] = b;
     if (byteCount >= FIXED_PACKET_LEN) break;
@@ -206,33 +206,35 @@ void TaskBitBangReceive(void *pvParameters) {
       }
     }
 
-    // ---- Δ 自動チューニング ----------------------------------
+     // ---- Δ 自動チューニング ----------------------------------
     uint32_t now = millis();
-    if (!delta_fixed && now - lastEvalMs > 250) {   // 250 ms ごとに評価
-        uint16_t total = syncFail + syncOK;         // 試行回数
-        if (total > 30) {                           // データ十分？
-            uint32_t failPermil = (syncFail * 1000) / total;  // 0.1 % 単位
+    if (!delta_fixed && now - lastEvalMs > 250) {        // 250 ms ごと
+        uint16_t total = syncFail + syncOK;              // 評価対象数
+        if (total > 30) {                                // データ十分
+            uint32_t failPermil = (syncFail * 1000) / total;  // 0.1 %
             ESP_EARLY_LOGI("AUTO",
                 "delta=%ld  fail=%u.%u%%",
                 (long)delta_now, failPermil / 10, failPermil % 10);
 
-            if (failPermil < 150) {                 // 成功率 85 % 以上
-                if (syncOK > 30) {                  // 30 回連続 OK → 確定
-                    delta_fixed = true;
-                } else if (delta_now > DELTA_MIN_US + DELTA_STEP_US) {
-                    delta_now -= DELTA_STEP_US / 2; // さらに中央へ寄せる
-                }
-            } else {                                // 失敗率が高い
-                if (delta_now < DELTA_MAX_US - DELTA_STEP_US) {
-                    delta_now += DELTA_STEP_US;     // 範囲を広げる
-                } else {
-                    delta_fixed = true;             // 端まで来たら確定
+            if (failPermil < 150) {                      // 成功率85%以上
+                delta_fixed = true;                      // そこで決定
+            } else {
+                /* 失敗 → Δ を 25 µs 右へ進める --------------- */
+                delta_now += DELTA_STEP_US;
+
+                /* 右端まで来たら左端へ戻して再周回 ------------ */
+                if (delta_now > DELTA_MAX_US) {
+                    delta_now = DELTA_MIN_US;
+                    if (++sweepCount >= 3) {             // 3周しても全滅
+                        delta_fixed = true;              // あきらめて確定
+                    }
                 }
             }
-            syncFail = syncOK = 0;                  // 統計リセット
+            syncFail = syncOK = 0;                       // 統計リセット
         }
         lastEvalMs = now;
     }
+
   }
 }
 
