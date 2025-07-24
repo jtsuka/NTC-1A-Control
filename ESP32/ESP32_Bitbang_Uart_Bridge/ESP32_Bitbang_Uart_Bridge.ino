@@ -139,7 +139,7 @@ void bitBangSendByte(uint8_t b) {
 
 void bitBangSendPacket(const uint8_t *buf, int len) {
   for (int i = 0; i < len; i++) {
-    bitBangSendByte(rev8(buf[i]));
+    bitBangSendByte(buf[i]);
     delayMicroseconds(BITBANG_DELAY_US * BYTE_GAP);   // ←バイト間ギャップ 3 -> 2 ->1 へ
   }
 }
@@ -162,7 +162,6 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
       b |= (digitalRead(BITBANG_RX_PIN) << i);
       delayMicroseconds(BITBANG_DELAY_US);
     }
-    b = rev8(b);   // ★ここでビット順を反転して正しい値にす
     if (byteCount == 0 || byteCount == 5) {
     ESP_EARLY_LOGI("BB", "b%d=%02X idle=%d",
                    byteCount, b, digitalRead(BITBANG_RX_PIN));
