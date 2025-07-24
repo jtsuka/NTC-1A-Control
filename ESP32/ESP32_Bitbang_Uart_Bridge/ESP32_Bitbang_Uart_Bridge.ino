@@ -85,7 +85,7 @@ static bool waitValidStart()
 
     /* 2. 300 µs 待って still LOW なら本物、HIGH ならグリッチ ---- */
     delayMicroseconds(debounce_us);
-    if (digitalRead(BITBANG_RX_PIN) == HIGH) return false; // ノイズだった
+    if (digitalRead(BITBANG_RX_PIN) == LOW) return false; // ノイズだった
 
     /* 3. 半ビット＋Δ だけ進めてビット中央へ ------------------ */
     delayMicroseconds(halfbit_us + delta_now);
@@ -376,7 +376,7 @@ void loop() {
     ledState = !ledState;
     digitalWrite(LED_PIN, ledState);
     lastBlink = millis();
-    dumpCtrl("AFTER_INIT");   // 期待: 0 0 1 0
+//    dumpCtrl("AFTER_INIT");   // 期待: 0 0 1 0
   }
 
   // loop()は必ず何かdelay入れる（CPU占有防止）
