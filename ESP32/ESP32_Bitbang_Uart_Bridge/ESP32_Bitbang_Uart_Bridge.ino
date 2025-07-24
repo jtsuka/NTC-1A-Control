@@ -34,8 +34,8 @@
 #define START_OFFSET 1.94f
 #define BYTE_GAP  1
 // ---------------- tunable range ----------------
-#define DELTA_MIN_US  200   // ここから
-#define DELTA_MAX_US  1200   // ここまで自動スキャン
+#define DELTA_MIN_US  (-300)   // ここから
+#define DELTA_MAX_US  (300)   // ここまで自動スキャン
 #define DELTA_STEP_US  25   // 微調ステップ
 
 QueueHandle_t bitbangRxQueue;
@@ -46,7 +46,8 @@ static uint8_t lastSent[FIXED_PACKET_LEN] = {0};
 static bool    lastValid = false;                // まだ何も送っていない状態
 
 /* ---- 自動チューニング用 ---- */
-static uint32_t delta_now  = (DELTA_MIN_US + DELTA_MAX_US)/2;
+//static uint32_t delta_now  = (DELTA_MIN_US + DELTA_MAX_US)/2;
+static int32_t delta_now  = 0;
 static bool     delta_fixed = false;
 static uint16_t syncFail   = 0;
 static uint16_t syncOK     = 0;
@@ -84,7 +85,7 @@ static bool waitValidStart()
 
     /* ノイズ除去（ここでは 300 µs）*/
     delayMicroseconds(300);
-    if (digitalRead(BITBANG_RX_PIN) == HIGH) return false;
+    if (digitalRead(BITBANG_RX_PIN) == LOW) return false;
 
     /* ---------- 中央へ ½bit 移動 ---------- */
     delayMicroseconds(halfbit_us + delta_now);
@@ -205,32 +206,33 @@ void TaskBitBangReceive(void *pvParameters) {
       }
     }
 
+    // ---- Δ 自動チューニング ----------------------------------
     uint32_t now = millis();
-    if(!delta_fixed && now - lastEvalMs > 250) {          // 250 ms毎に評価
-        uint16_t total = syncFail + syncOK;
-        if(total > 30) {                                  // データ十分？
-            uint32_t failPermil = (syncFail * 1000 )/ total; // 0.1% 単位
-            ESP_EARLY_LOGI("AUTO","delta=%lu  fail=%u.%u%%",(unsigned long)delta_now,
-                          failPermil/10, failPermil%10);
+    if (!delta_fixed && now - lastEvalMs > 250) {   // 250 ms ごとに評価
+        uint16_t total = syncFail + syncOK;         // 試行回数
+        if (total > 30) {                           // データ十分？
+            uint32_t failPermil = (syncFail * 1000) / total;  // 0.1 % 単位
+            ESP_EARLY_LOGI("AUTO",
+                "delta=%ld  fail=%u.%u%%",
+                (long)delta_now, failPermil / 10, failPermil % 10);
 
-            if(failPermil < 150) {
-                // 充分良い → step/2 ずつ縮めてゼロを狙う
-                if(delta_now > DELTA_MIN_US + DELTA_STEP_US)
-                    delta_now -= DELTA_STEP_US/2;
-                else delta_fixed = true;
-            } else {
-                // 悪い → 広げる
-                if(delta_now < DELTA_MAX_US - DELTA_STEP_US)
-                    delta_now += DELTA_STEP_US;
-                else delta_fixed = true;                  // 端まで来たら FIX
+            if (failPermil < 150) {                 // 成功率 85 % 以上
+                if (syncOK > 30) {                  // 30 回連続 OK → 確定
+                    delta_fixed = true;
+                } else if (delta_now > DELTA_MIN_US + DELTA_STEP_US) {
+                    delta_now -= DELTA_STEP_US / 2; // さらに中央へ寄せる
+                }
+            } else {                                // 失敗率が高い
+                if (delta_now < DELTA_MAX_US - DELTA_STEP_US) {
+                    delta_now += DELTA_STEP_US;     // 範囲を広げる
+                } else {
+                    delta_fixed = true;             // 端まで来たら確定
+                }
             }
-            syncFail = syncOK = 0;
+            syncFail = syncOK = 0;                  // 統計リセット
         }
-       lastEvalMs = now;
+        lastEvalMs = now;
     }
-    vTaskDelay(pdMS_TO_TICKS(1));
-  }
-}
 
 
 void TaskUartReceive(void *pvParameters)
