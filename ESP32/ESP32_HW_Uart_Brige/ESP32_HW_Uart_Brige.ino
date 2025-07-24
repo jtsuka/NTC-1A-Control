@@ -1,9 +1,9 @@
 // TC Repeater with BitBang Response Timeout - ESP32-S3 (FIXED)
 // ------------------------------------------------------------
 // - UART RX/TX (to Pi):  GPIO44 / GPIO43
-// - BitBang TX/RX (to TC): GPIO2 / GPIO3
-// - UART  : 9 600 bps
-// - BB    : 300 bps  (1 bit = 3340 µs)
+// - UART TX/RX (to TC):  GPIO2 / GPIO3
+// - UART      : 9600 bps
+// - HW UART   : 300 bps
 // ------------------------------------------------------------
 
 #include <Arduino.h>
@@ -13,8 +13,8 @@
 
 #define UART_TX_PIN        43
 #define UART_RX_PIN        44
-#define BITBANG_TX_PIN      2
-#define BITBANG_RX_PIN      3
+#define TC_UART_TX_PIN      2
+#define TC_UART_RX_PIN      3
 
 #define UART_BAUD_RATE      9600
 #define BITBANG_DELAY_US    3340            // 1 bit
@@ -33,6 +33,10 @@
 #define DELTA_MIN_US  (-300)
 #define DELTA_MAX_US  ( 300)
 #define DELTA_STEP_US   25
+
+/* ハードウエアシリアル */
+HardwareSerial PiSerial      = Serial1;   // Raspberry Pi 用 (UART0)
+HardwareSerial TCserial(2);               // TC 用 (UART1)  ※Serial2 と同義
 
 /* グローバル ------------------------------------ */
 QueueHandle_t bitbangRxQueue;
@@ -246,14 +250,17 @@ void TaskUartReceive(void*)
 void setup()
 {
   Serial.begin(115200);
-  uartInit();
+//  uartInit();
+  Serial1.begin(9600, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);  // Pi
+  Serial2.setRxBufferSize(256);             // ★バッファ拡大
+  Serial2.begin(300,  SERIAL_8N1, TC_UART_RX_PIN, TC_UART_TX_PIN);    // TC
 
   pinMode(LED_PIN, OUTPUT);
 
   /* ★NEW: 強プルアップ */
-  pinMode(BITBANG_RX_PIN, INPUT_PULLUP);
-  gpio_set_pull_mode((gpio_num_t)BITBANG_RX_PIN, GPIO_PULLUP_ONLY);
-  gpio_pullup_en((gpio_num_t)BITBANG_RX_PIN);
+//  pinMode(BITBANG_RX_PIN, INPUT_PULLUP);
+//  gpio_set_pull_mode((gpio_num_t)BITBANG_RX_PIN, GPIO_PULLUP_ONLY);
+//  gpio_pullup_en((gpio_num_t)BITBANG_RX_PIN);
 
   /* LVC8T245 設定 */
   pinMode(PIN_DIR_A, OUTPUT); pinMode(PIN_DIR_B, OUTPUT);
@@ -264,7 +271,15 @@ void setup()
   digitalWrite(PIN_OE_A,  LOW);
   digitalWrite(PIN_OE_B,  LOW);
 
-  Serial.printf("[DEBUG] RXB idle = %d\n", digitalRead(BITBANG_RX_PIN));
+//  Serial.printf("[DEBUG] RXB idle = %d\n", digitalRead(BITBANG_RX_PIN));
+
+  /* 2) Raspberry Pi ⇆ ESP32 (9600 bps) --------------------- */
+  //  RX=GPIO44, TX=GPIO43 → XIAO 基板の Grove JP7 に相当
+  PiSerial.begin(9600, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
+
+  /* 3) TC ⇆ ESP32 (300 bps) ------------------------------- */
+  //  RX=GPIO3,  TX=GPIO2  → Grove JP2
+  TCserial.begin(300, SERIAL_8N1, TC_UART_RX_PIN, TC_UART_TX_PIN);
 
   bitbangRxQueue = xQueueCreate(4, sizeof(uint8_t*));
   xTaskCreatePinnedToCore(TaskBitBangReceive, "BB-RX", 4096, NULL, 1, NULL, 1);
