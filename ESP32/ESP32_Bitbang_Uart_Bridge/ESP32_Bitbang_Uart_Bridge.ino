@@ -160,9 +160,10 @@ int bitBangReceivePacket(uint8_t *buf, int maxLen)
     uint8_t b = 0;
     for (int i = 0; i < 8; i++) {
 //    b |= (digitalRead(BITBANG_RX_PIN) << i);
-      b |= (digitalRead(BITBANG_RX_PIN) << (7 - i)); // ★MSB→LSB に読んでおく
+      b |= (digitalRead(BITBANG_RX_PIN) << (7 - i)); // LSB->MSB に読んでおく
       delayMicroseconds(BITBANG_DELAY_US);
     }
+    b = rev8(b);   // ★ここでビット順を反転して正しい値にす
     if (byteCount == 0 || byteCount == 5) {
     ESP_EARLY_LOGI("BB", "b%d=%02X idle=%d",
                    byteCount, b, digitalRead(BITBANG_RX_PIN));
