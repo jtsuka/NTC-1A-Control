@@ -18,6 +18,14 @@ HardwareSerial SerialTC(2); // UART2 ←→ TC
 #define PIN_OE2        7   // (白)RX 出力有効 → 常時 LOW
 #define PIN_DIR2       8   // (黄)RX方向：TC → ESP32 → LOW 固定
 
+// ---- 1バイトをビット単位で左右反転 ----
+static inline uint8_t rev8(uint8_t b) {
+  b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
+  b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
+  b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
+  return b;
+}
+
 void setup() {
   Serial.begin(115200);
   delay(300);
@@ -69,7 +77,11 @@ void loop() {
     Serial.print("[TC → Pi] ");
     for (int i = 0; i < PACKET_LEN; ++i) Serial.printf("%02X ", tcBuf[i]);
     Serial.println();
-    SerialPi.write(tcBuf, PACKET_LEN);
+    // --- TC から PACKET_LEN バイト取り終えた直後 ---
+    uint8_t rev_pkt[PACKET_LEN];
+    for (int i = 0; i < PACKET_LEN; i++) rev_pkt[i] = rev8(buffer[i]);
+    Serial1.write(rev_pkt, PACKET_LEN);   // Pi へ送信（GPIO43）
+
     SerialPi.flush();
   } else {
     Serial.println("[WARN] TC応答なし or 不完全");
