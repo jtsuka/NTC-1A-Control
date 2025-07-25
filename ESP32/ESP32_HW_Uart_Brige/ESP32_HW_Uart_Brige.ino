@@ -11,16 +11,17 @@
 #include <freertos/task.h>
 #include <freertos/queue.h>
 
-#define UART_TX_PIN        43
-#define UART_RX_PIN        44
-#define TC_UART_TX_PIN      2
-#define TC_UART_RX_PIN      3
+#define UART_PI_RX 44
+#define UART_PI_TX 43
+#define UART_TC_RX 3
+#define UART_TC_TX 2
+#define PACKET_LEN 6
+
 
 #define UART_BAUD_RATE      9600
 //#define BITBANG_DELAY_US    3340            // 1 bit
 //#define RESPONSE_TIMEOUT_MS 200
 #define MAX_PACKET_LEN      32
-#define FIXED_PACKET_LEN     6
 #define LED_PIN             21
 
 /* --- SN74LVC8T245 制御 -------------------------- */
@@ -29,14 +30,10 @@
 #define PIN_OE_B  7   // 2OE  LOW = enable  (ESP32→TC 方向)
 #define PIN_DIR_B 8   // 2DIR HIGH = A→B
 
-/* Δ 自動チューニング範囲 ------------------------- */
-//#define DELTA_MIN_US  (-300)
-//#define DELTA_MAX_US  ( 300)
-//#define DELTA_STEP_US   25
 
 /* ハードウエアシリアル */
-HardwareSerial PiSerial      = Serial1;   // Raspberry Pi 用 (UART0)
-HardwareSerial TCserial(2);               // TC 用 (UART1)  ※Serial2 と同義
+HardwareSerial SerialPi(1);               // Raspberry Pi 用 (UART1)
+HardwareSerial SerialTC(2);               // TC 用 (UART2)  ※Serial2 と同義
 
 /* グローバル ------------------------------------ */
 QueueHandle_t bitbangRxQueue;
