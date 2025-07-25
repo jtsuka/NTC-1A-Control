@@ -61,6 +61,71 @@ void setup() {
 }
 
 void loop() {
+
+  /******************* ① Pi → ESP32 → TC *******************/
+  while (SerialPi.available()) {
+    uint8_t b = SerialPi.read();
+
+    /* ①‐A スタート同期  :  Pi→TC の先頭は rev8 前で 0x01 */
+//    if (idxPi == 0 && b != 0x01) {
+    // 修正後（正）  Piから来る先頭 0x80 を受け入れる
+    if (idxPi == 0 && b != 0x80) {
+      /* 先頭バイトが 0x01 以外なら捨てる（D5 18 7F などを除去） */
+      continue;
+    }
+
+    bufPi[idxPi++] = b;
+
+    if (idxPi == PACKET_LEN) {
+      /* ①‐B rev8 → TCへ送信（300 bps） */
+      for (int i = 0; i < PACKET_LEN; ++i) bufPi[i] = rev8(bufPi[i]);
+      SerialTC.write(bufPi, PACKET_LEN);
+      SerialTC.flush();       // 送信完了待ちで FIFO 残しゼロ
+
+      /* -- 任意: デバッグ表示 --
+      Serial.print("[Pi→TC] ");
+      for (int i = 0; i < PACKET_LEN; ++i) Serial.printf("%02X ", bufPi[i]);
+      Serial.println();
+      */
+
+      idxPi = 0;              // バッファリセット
+    }
+  }
+
+
+  /******************* ② TC → ESP32 → Pi *******************/
+  while (SerialTC.available()) {
+    uint8_t b = SerialTC.read();
+
+    /* ②‐A スタート同期 : TC→Pi の先頭は 0x80 */
+    if (idxTC == 0 && b != 0x80) {
+      continue;               // ゴミ（チャタリング由来 0x7F 等）を無視
+    }
+
+    bufTC[idxTC++] = b;
+
+    if (idxTC == PACKET_LEN) {
+      /* ②‐B rev8 → Piへ送信（9600 bps） */
+      for (int i = 0; i < PACKET_LEN; ++i) bufTC[i] = rev8(bufTC[i]);
+      SerialPi.write(bufTC, PACKET_LEN);
+      SerialPi.flush();
+
+      /* -- 任意: デバッグ表示 --
+      Serial.print("[TC→Pi] ");
+      for (int i = 0; i < PACKET_LEN; ++i) Serial.printf("%02X ", bufTC[i]);
+      Serial.println();
+      */
+
+      idxTC = 0;
+    }
+  }
+
+  delay(1);   // tiny yield
+}
+
+
+#if 0
+void loop() {
   // -------------------------------------------------
   // ① Pi → ESP32 → TC  (9600 → 300, rev8 before send)
   // -------------------------------------------------
@@ -110,3 +175,4 @@ void loop() {
   // small yield to keep WiFi/BLE happy if future expansion
   delay(1);
 }
+#endif
