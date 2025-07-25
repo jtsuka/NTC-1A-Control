@@ -15,8 +15,8 @@ HardwareSerial SerialTC(2);  // UART2 ←→ TC
 // LVC16T245 制御ピン定義
 #define PIN_DIR1       6   // TX方向：ESP32→TC → HIGH固定
 #define PIN_DIR2       8   // RX方向：TC→ESP32 → LOW固定
-#define PIN_OE1        7   // TX出力有効 → 常時 LOW
-#define PIN_OE2        9   // RX出力有効 → 常時 LOW
+#define PIN_OE1        5   // TX出力有効 → 常時 LOW
+#define PIN_OE2        7   // RX出力有効 → 常時 LOW
 
 void setup() {
   Serial.begin(115200);
