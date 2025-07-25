@@ -26,8 +26,10 @@
 /* --- SN74LVC8T245 制御 -------------------------- */
 #define PIN_OE_A  5   // 1OE  LOW = enable  (TC→ESP32 方向)
 #define PIN_DIR_A 6   // 1DIR LOW = B→A
-#define PIN_OE_B  7   // 2OE  LOW = enable  (ESP32→TC 方向)
-#define PIN_DIR_B 8   // 2DIR HIGH = A→B
+//#define PIN_OE_B  7   // 2OE  LOW = enable  (ESP32→TC 方向)
+//#define PIN_DIR_B 8   // 2DIR HIGH = A→B
+#define PIN_OE_B  8   // 2OE  LOW = enable  (ESP32→TC 方向)
+#define PIN_DIR_B 7   // 2DIR HIGH = A→B
 
 /* Δ 自動チューニング範囲 ------------------------- */
 #define DELTA_MIN_US  (-300)
