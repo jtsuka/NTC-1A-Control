@@ -8,7 +8,7 @@ ser = None
 running = True
 current_timeout_value = 2.0  # 初期値（秒）
 # === LSB送信モード設定 ===
-USE_LSB = false  # ← TrueにするとMSBファースト送信
+USE_LSB = False  # ← TrueにするとMSBファースト送信
 
 # === ビット反転ユーティリティ ===
 def reverse_bits(byte):
