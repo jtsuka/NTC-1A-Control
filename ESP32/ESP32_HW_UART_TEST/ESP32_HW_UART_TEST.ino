@@ -2,7 +2,7 @@
 
 // UART 定義
 #define UART_PI_RX    44    // (黄)RX Pi->ESP32
-#define UART_PI_TX    43    // (白)TX RSP32->Pi
+#define UART_PI_TX    43    // (白)TX ESP32->Pi
 #define UART_TC_RX     3    // (黄)RX TC->ESP32
 #define UART_TC_TX     2    // (白)TX ESP32->TC
 
