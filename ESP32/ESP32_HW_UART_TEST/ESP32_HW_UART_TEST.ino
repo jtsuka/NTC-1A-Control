@@ -24,7 +24,9 @@ void setup() {
   Serial.println("[BOOT] TC Repeater: Pi_RX = 無限待ちモード");
 
   SerialPi.begin(9600, SERIAL_8N1, UART_PI_RX, UART_PI_TX);
+  Serial.println("Initializing SerialTC...");
   SerialTC.begin(300, SERIAL_8N1, UART_TC_RX, UART_TC_TX);
+  Serial.println("SerialTC initialized.");
 
   pinMode(PIN_DIR1, OUTPUT); digitalWrite(PIN_DIR1, HIGH);
   pinMode(PIN_DIR2, OUTPUT); digitalWrite(PIN_DIR2, LOW);
@@ -50,7 +52,8 @@ void loop() {
   for (int i = 0; i < PACKET_LEN; ++i) Serial.printf("%02X ", piBuf[i]);
   Serial.println();
 
-  SerialTC.write(piBuf, PACKET_LEN);
+  int result = SerialTC.write(piBuf, PACKET_LEN);
+  Serial.printf("[DEBUG] SerialTC.write() result: %d\n", result);
   SerialTC.flush();
 
   // ◆ TC → Pi：応答待機（タイムアウト付き）
