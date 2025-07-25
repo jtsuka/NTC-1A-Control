@@ -79,7 +79,7 @@ void loop() {
     Serial.println();
     // --- TC から PACKET_LEN バイト取り終えた直後 ---
     uint8_t rev_pkt[PACKET_LEN];
-    for (int i = 0; i < PACKET_LEN; i++) rev_pkt[i] = rev8(buffer[i]);
+    for (int i = 0; i < PACKET_LEN; i++) rev_pkt[i] = rev8(tcBuf[i]);
     Serial1.write(rev_pkt, PACKET_LEN);   // Pi へ送信（GPIO43）
 
     SerialPi.flush();
