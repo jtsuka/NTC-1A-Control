@@ -13,10 +13,10 @@ HardwareSerial SerialPi(1);  // UART1 ←→ Pi
 HardwareSerial SerialTC(2);  // UART2 ←→ TC
 
 // LVC16T245 制御ピン定義
-#define PIN_DIR1       6   // TX方向：ESP32→TC → HIGH固定
-#define PIN_DIR2       8   // RX方向：TC→ESP32 → LOW固定
 #define PIN_OE1        5   // TX出力有効 → 常時 LOW
+#define PIN_DIR1       6   // TX方向：ESP32→TC → HIGH固定
 #define PIN_OE2        7   // RX出力有効 → 常時 LOW
+#define PIN_DIR2       8   // RX方向：TC→ESP32 → LOW固定
 
 void setup() {
   Serial.begin(115200);
@@ -28,12 +28,19 @@ void setup() {
   SerialTC.begin(300, SERIAL_8N1, UART_TC_RX, UART_TC_TX);
 
   // DIRピン固定（TX方向: HIGH, RX方向: LOW）
-  pinMode(PIN_DIR1, OUTPUT); digitalWrite(PIN_DIR1, HIGH);
-  pinMode(PIN_DIR2, OUTPUT); digitalWrite(PIN_DIR2, LOW);
+  pinMode(PIN_DIR1, OUTPUT);
+  pinMode(PIN_DIR2, OUTPUT);
 
   // OEピン常時LOW（出力有効化）
-  pinMode(PIN_OE1, OUTPUT); digitalWrite(PIN_OE1, LOW);
-  pinMode(PIN_OE2, OUTPUT); digitalWrite(PIN_OE2, LOW);
+  pinMode(PIN_OE1, OUTPUT);
+  pinMode(PIN_OE2, OUTPUT);
+
+  // for DIR LVC16245
+  digitalWrite(PIN_DIR1, LOW);    // TC->ESP32
+  digitalWrite(PIN_DIR2, HIGH);   // ESP32->TC
+  digitalWrite(PIN_OE1, LOW);     // ALLWAYS LOW
+  digitalWrite(PIN_OE2, LOW);     // ALLWAYS LOW
+
 }
 
 void loop() {
