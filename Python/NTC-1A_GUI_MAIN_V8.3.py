@@ -2,8 +2,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from serial.tools import list_ports
-from NTC_1A_serial_comm import start_serial_thread, send_packet, stop_serial, set_timeout
-#from NTC_1A_serial_bitbang import start_serial_thread, send_packet, stop_serial, set_timeout
+# 「send_packet(payload)」 と「build_packet()」を使用
+from NTC_1A_serial_comm import start_serial_thread, send_packet, build_packet, stop_serial, set_timeout
 from NTC_1A_utils import out, setup_log_display
 
 root = tk.Tk()
@@ -24,10 +24,8 @@ def send_test_packet(index):
     from NTC_1A_serial_comm import send_packet_raw
     test_packets = [
         [0x01, 0x06, 0x05, 0x00, 0x00, 0x0C],  # CMD1 固定長
-        [0x02, 0x03, 0x10, 0x20, 0x30],        # CMD2 可変長5
-        [0x03, 0x10, 0xAA, 0xBB, 0xCC, 0xDD],  # CMD3 可変長6
-        [0x04, 0x99],                          # CMD4 短い
-        [0x05, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06]  # CMD5 可変長7
+        build_packet([0x01, 0x64, 0,0,0]),      # 張力=100gf
+        build_packet([0x02, 0x10, 0x27, 0x00, 0]),  # 長さ=10000 (0x2710)
     ]
     if 0 <= index < len(test_packets):
         print(f"[GUI] Send Test CMD{index+1}: {test_packets[index]}")
@@ -172,15 +170,21 @@ def handle_command(cmd):
     try:
         if cmd == "SEND":
             t = int(entries[f"ch{ch}_tension"].get())
-            l = int(float(entries[f"ch{ch}_length"].get()) * 10)
+            l = int(float(entries[f"ch{ch}_length"].get()) * 10)   # 0.1 m 単位
             c = int(entries[f"ch{ch}_count"].get())
-            send_packet(ch, 0x06, t)
-            send_packet(ch, 0x04, l)
-            send_packet(ch, 0x05, c)
-        elif cmd == "RESET":
-            send_packet(ch, 0x03, 0)
+
+            # --- 1) 張力 (CMD_SEND = 0x01) ---
+            send_packet([0x01, (t & 0xFF), 0, 0, 0])
+
+            # --- 2) 巻取長 (CMD_LEN = 0x02)   24-bit = lLo,lMid,lHi ---
+            send_packet([0x02, (l & 0xFF), ((l>>8)&0xFF), (l>>16)&0xFF, 0])
+
+            # --- 3) カウント初期化 (CMD_CNT = 0x03) ---
+            send_packet([0x03, (c & 0xFF), ((c>>8)&0xFF), ((c>>16)&0xFF), 0])
+         elif cmd == "RESET":
+            send_packet([0x04, 0,0,0,0])      # CMD_RESET (0x04)
         elif cmd == "STOP":
-            send_packet(ch, 0x07, 0)
+            send_packet([0x05, 0,0,0,0])      # CMD_STOP  (0x05)
     except Exception as e:
         out(f"[ERROR] コマンド送信失敗: {e}")
 
