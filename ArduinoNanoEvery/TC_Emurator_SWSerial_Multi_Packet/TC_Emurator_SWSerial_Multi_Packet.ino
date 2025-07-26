@@ -55,7 +55,9 @@ void showPacket(const char *tag, const uint8_t *buf, uint8_t len, bool err){
   if(err) Serial.print(" ERR");
   Serial.print(" [");
   for(uint8_t i=0;i<len;++i){
-    Serial.printf("%02X ",buf[i]);
+    char hx[4];
+    sprintf(hx, "%02X ", buf[i]);
+    Serial.print(hx);
   }
   Serial.println("]");
 }
@@ -83,5 +85,4 @@ void loop() {
     ring[wrIdx++] = b;
     wrIdx &= 0x1F;                    // 32 で巻き戻し
   }
-
-  /
+}
