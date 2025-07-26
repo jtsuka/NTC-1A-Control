@@ -89,10 +89,15 @@ void setup(){
     // for Debug serial monitor
     Serial.begin(115200);
 
+    // ■ 追加：UART TX ピンを強制 idle HIGH してから begin()
+    pinMode(UART_TC_TX, OUTPUT);
+    digitalWrite(UART_TC_TX, HIGH);
+
     // for Raspberry Pi & TC HW Serial init
     SerialPi.begin(BAUD_PI,SERIAL_8N1,UART_PI_RX,UART_PI_TX);
     SerialTC.begin(BAUD_TC,SERIAL_8N1,UART_TC_RX,UART_TC_TX);
-
+    // ── ここで少し待つ ──
+    delay(100);
     // for AE-LLCNV-LVCH16T245 16-bit bidirectional level conversion module setup
     pinMode(PIN_OE1,OUTPUT); digitalWrite(PIN_OE1,LOW); pinMode(PIN_DIR1,OUTPUT); digitalWrite(PIN_DIR1,HIGH);
     pinMode(PIN_OE2,OUTPUT); digitalWrite(PIN_OE2,LOW); pinMode(PIN_DIR2,OUTPUT); digitalWrite(PIN_DIR2,LOW);
@@ -104,9 +109,17 @@ void setup(){
     xTaskCreatePinnedToCore(taskPi2Tc,"Pi2TC",4096,NULL,3,NULL,0);
     xTaskCreatePinnedToCore(taskTc2Pi,"TC2Pi",4096,NULL,4,NULL,0);
 
+    // ─── ゴミ受信を全部捨てる ───
+    while(SerialPi.available()) SerialPi.read();
+    while(SerialTC.available()) SerialTC.read();
+
     // for ESP32S3 Setting for handling UART reception with interrupt + callback
-    SerialPi.onReceive(onUartPi); SerialTC.onReceive(onUartTc);     // 受信割り込みで onUartPi(),onUartTc()  を呼ぶ 
-    SerialPi.setRxFIFOFull(1); SerialTC.setRxFIFOFull(1);           // 1バイト来るごとに割り込み発生
+    SerialPi.setRxFIFOFull(1);
+    SerialPi.setRxTimeout(40);           // 5 ビット時間後に onReceive()
+    SerialPi.onReceive(onUartPi);       // 受信割り込みで onUartPi()  を呼ぶ 
+    SerialTC.setRxFIFOFull(1);          // 1バイト来るごとに割り込み発生
+    SerialTC.setRxTimeout(40);
+    SerialTC.onReceive(onUartTc);       // 受信割り込みで onUartTc()  を呼ぶ 
 }
 
 void loop(){
