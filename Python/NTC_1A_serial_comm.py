@@ -145,6 +145,10 @@ def rx_loop():
         if ser and ser.in_waiting:
             byte = ser.read(1)
             buffer += byte
+            # ★ ここから追加 -------------
+            while buffer and buffer[0] != 0x01:   # 先頭が 0x01 になるまで捨てる
+                buffer.pop(0)
+            # ★ ここまで追加 -------------
             if len(buffer) >= 6:
                 pkt = buffer[:6]
                 buffer = buffer[6:]  # 余剰バイトは残す
