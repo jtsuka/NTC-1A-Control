@@ -21,14 +21,24 @@ enum TcCmd : uint8_t { CMD_RESET=1, CMD_SENS_ADJ=2, CMD_SEND=3, CMD_SETTING=5, C
 inline uint8_t checksum7(const uint8_t* d, size_t n) {
     uint8_t s = 0;  for(size_t i=0;i<n;++i) s += d[i];  return s & 0x7F;
 }
-inline uint8_t rev8(uint8_t v){ v=(v>>4)|(v<<4); v=((v&0xCC)>>2)|((v&0x33)<<2); v=((v&0xAA)>>1)|((v&0x55)<<1); return v; }
+inline uint8_t rev8(uint8_t v){
+    v=(v>>4)|(v<<4);
+    v=((v&0xCC)>>2)|((v&0x33)<<2);
+    v=((v&0xAA)>>1)|((v&0x55)<<1);
+    return v;
+}
 
 /* ---------------- packet struct -------- */
 struct Packet{
     uint8_t buf[FRAME_MAX];
     uint8_t len{0};
-    uint8_t cmd() const { return buf[0] & 0x07; }
-    void toBytes(uint8_t* out,bool doRev=false) const{ for(uint8_t i=0;i<len;++i) out[i]=doRev?rev8(buf[i]):buf[i]; }
+    uint8_t cmd() const {
+        return buf[0] & 0x07;
+        }
+    void toBytes(uint8_t* out,bool doRev=false) const{
+        for(uint8_t i=0;i<len;++i)
+            out[i]=doRev?rev8(buf[i]):buf[i];
+        }
 };
 
 /* ---------------- packet factory -------- */
