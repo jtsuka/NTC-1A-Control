@@ -10,23 +10,31 @@ current_timeout_value = 2.0  # 初期値（秒）
 # === LSB送信モード設定 ===
 USE_LSB = False  # ← TrueにするとMSBファースト送信
 
+# ---------- New: 共通チェックサム & ビルダー ----------
+def build_packet(payload):
+    """
+    payload : list[int]    # 先頭～5byte目(=len-1) までのデータ
+    return  : list[int]    # 末尾に checksum7 を付けた 6/8/12byte パケット
+    """
+    chk = sum(payload) & 0x7F         # 7-bit 加算
+    return payload + [chk]
+
 # === ビット反転ユーティリティ ===
 def reverse_bits(byte):
     return int('{:08b}'.format(byte)[::-1], 2)
 
-def send_packet(ch, cmd, val):
-    if not ser or not ser.is_open:
-        out("[SKIP] Port not open")
-        return False
-
-    pkt = [ch, cmd, val, 0, 0]
-    pkt.append(sum(pkt) & 0xFF)
-
+def send_packet(payload):
+    """
+    payload : list[int]    # 必要なバイト列 (5B or 7B or 11B) ※chk無し
+    例) SEND  → [0x01, tens, 0,0,0]
+        RESET → [0x02, lenLo, lenHi, tens, 0,0,0]
+    """
+    pkt = build_packet(payload)
     # === LSB変換（オプション）===
     tx_data = [reverse_bits(b) for b in pkt] if USE_LSB else pkt
 
     try:
-        ser.write(bytes(tx_data))
+        ser.write(bytes(tx_data)) # 6/8/12B そのまま送出
         ser.flush()
         time.sleep(0.1)
         out(f"[TX{'-LSB' if USE_LSB else ''}] {' '.join(f'{x:02X}' for x in tx_data)}")
@@ -59,9 +67,11 @@ def send_packet(ch, cmd, val):
         return False
 
 def send_packet_raw(packet_bytes):
-    """Rawバイナリパケットを送信する（可変長）"""
+    """任意のパケットを送信 (checksum 付いていなければ自動付与)"""
     global ser
     if ser and ser.is_open:
+        if len(packet_bytes) in (5,7,11):          # chk 未付与とみなす
+            packet_bytes = build_packet(packet_bytes)
         tx_data = [reverse_bits(b) for b in packet_bytes] if USE_LSB else packet_bytes
         ser.write(bytes(tx_data))
         print(f"[TX raw{'-LSB' if USE_LSB else ''}] {' '.join(f'{b:02X}' for b in tx_data)}")
