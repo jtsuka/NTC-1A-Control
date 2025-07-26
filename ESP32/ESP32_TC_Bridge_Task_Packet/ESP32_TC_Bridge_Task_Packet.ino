@@ -93,7 +93,7 @@ void setup(){
     SerialPi.begin(BAUD_PI,SERIAL_8N1,UART_PI_RX,UART_PI_TX);
     SerialTC.begin(BAUD_TC,SERIAL_8N1,UART_TC_RX,UART_TC_TX);
 
-    // for AE-LLCNV-LVCH16T245 16bit Lebel conberter setup
+    // for AE-LLCNV-LVCH16T245 16-bit bidirectional level conversion module setup
     pinMode(PIN_OE1,OUTPUT); digitalWrite(PIN_OE1,LOW); pinMode(PIN_DIR1,OUTPUT); digitalWrite(PIN_DIR1,HIGH);
     pinMode(PIN_OE2,OUTPUT); digitalWrite(PIN_OE2,LOW); pinMode(PIN_DIR2,OUTPUT); digitalWrite(PIN_DIR2,LOW);
 
