@@ -164,29 +164,39 @@ def toggle_channel():
         bg="#003366" if selected_channel == 1 else "#006600"
     )
     refresh_colors()
-
+    
 def handle_command(cmd):
     ch = selected_channel
     try:
         if cmd == "SEND":
             t = int(entries[f"ch{ch}_tension"].get())
-            l = int(float(entries[f"ch{ch}_length"].get()) * 10)   # 0.1 m 単位
+            l = int(float(entries[f"ch{ch}_length"].get()) * 10)      # 0.1 m 単位
             c = int(entries[f"ch{ch}_count"].get())
 
-            # --- 1) 張力 (CMD_SEND = 0x01) ---
-            send_packet([0x01, (t & 0xFF), 0, 0, 0])
+            # --- 1) 張力コマンド (CMD_SEND = 0x01) ---
+            send_packet([0x01, t & 0xFF, 0, 0, 0])
 
-            # --- 2) 巻取長 (CMD_LEN = 0x02)   24-bit = lLo,lMid,lHi ---
-            send_packet([0x02, (l & 0xFF), ((l>>8)&0xFF), (l>>16)&0xFF, 0])
+            # --- 2) 巻取長コマンド (CMD_LEN = 0x02) 24-bit ---
+            send_packet([0x02,
+                         l & 0xFF,
+                         (l >> 8) & 0xFF,
+                         (l >> 16) & 0xFF,
+                         0])
 
-            # --- 3) カウント初期化 (CMD_CNT = 0x03) ---
-            send_packet([0x03, (c & 0xFF), ((c>>8)&0xFF), ((c>>16)&0xFF), 0])
-         elif cmd == "RESET":
-            send_packet([0x04, 0,0,0,0])      # CMD_RESET (0x04)
+            # --- 3) カウンタ初期化 (CMD_CNT = 0x03) ---
+            send_packet([0x03,
+                         c & 0xFF,
+                         (c >> 8) & 0xFF,
+                         (c >> 16) & 0xFF,
+                         0])
+
+        elif cmd == "RESET":
+            send_packet([0x04, 0, 0, 0, 0])   # CMD_RESET
+
         elif cmd == "STOP":
-            send_packet([0x05, 0,0,0,0])      # CMD_STOP  (0x05)
-    except Exception as e:
-        out(f"[ERROR] コマンド送信失敗: {e}")
+            send_packet([0x05, 0, 0, 0, 0])   # CMD_STOP
+    except ValueError:
+        log("入力値が整数化できません")
 
 # セーフモードON/OFF送信関数
 def send_safe_mode(on: bool):
