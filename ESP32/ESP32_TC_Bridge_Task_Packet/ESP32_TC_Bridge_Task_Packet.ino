@@ -1,96 +1,61 @@
-/*********************************************************************
-   ESP32-S3 TC Repeater – Task & PacketClass version
-*********************************************************************/
+// =============================================================
+// ESP32_TC_Bridge_Task_Packet.ino  (main sketch)
+// =============================================================
 #include "tc_packet.hpp"
 using namespace tc;
+#include <HardwareSerial.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <freertos/queue.h>
 
-/* ---------- UART 定義 ---------- */
+/* ------------- pin / uart ----------------*/
 #define UART_PI_TX 43
 #define UART_PI_RX 44
 #define UART_TC_TX 2
 #define UART_TC_RX 3
 #define BAUD_PI 9600
 #define BAUD_TC 300
-HardwareSerial SerialPi(1);   // UART1
-HardwareSerial SerialTC(2);   // UART2
-
-/* ---------- LVC16T245 DIR / OE ---------- */
+HardwareSerial SerialPi(1);
+HardwareSerial SerialTC(2);
+/* level‑shifter */
 #define PIN_OE1 5
 #define PIN_DIR1 6
 #define PIN_OE2 7
 #define PIN_DIR2 8
 
-/* ---------- Queues ---------- */
-QueueHandle_t qPi2Tc;
-QueueHandle_t qTc2Pi;
+/* ------------- RTOS queues ---------------*/
+static QueueHandle_t qPi2Tc;
+static QueueHandle_t qTc2Pi;
 
-/* ---------- RingBuffer for parser ---------- */
-static uint8_t bufPi[64]; static size_t idxPi=0;
-static uint8_t bufTc[64]; static size_t idxTc=0;
+/* ------------- ring buffers --------------*/
+static uint8_t bufPi[RING_SIZE]; static uint8_t idxPi = 0;
+static uint8_t bufTc[RING_SIZE]; static uint8_t idxTc = 0;
 
-/* ---------- UART RX ISR → queue push ---------- */
-void IRAM_ATTR onUartPi(void*){
-  uint8_t b;
-  while(SerialPi.readBytes(&b,1)==1){ xQueueSendFromISR(qPi2Tc,&b,nullptr);}
-}
-void IRAM_ATTR onUartTc(void*){
-  uint8_t b;
-  while(SerialTC.readBytes(&b,1)==1){ xQueueSendFromISR(qTc2Pi,&b,nullptr);}
-}
+/* ------------- ISR callbacks -------------*/
+void IRAM_ATTR onUartPi(){ BaseType_t hp=pdFALSE; while(SerialPi.available()){ uint8_t b=SerialPi.read(); xQueueSendFromISR(qPi2Tc,&b,&hp);} if(hp) portYIELD_FROM_ISR(); }
+void IRAM_ATTR onUartTc(){ BaseType_t hp=pdFALSE; while(SerialTC.available()){ uint8_t b=SerialTC.read(); xQueueSendFromISR(qTc2Pi,&b,&hp);} if(hp) portYIELD_FROM_ISR(); }
 
-/* ---------- Task: Pi -> TC ---------- */
+/* ------------- task Pi -> TC ------------*/
 void taskPi2Tc(void*){
-  for(;;){
-    uint8_t b;
-    if(xQueueReceive(qPi2Tc,&b,portMAX_DELAY)==pdTRUE){
-      bufPi[idxPi++]=b; if(idxPi>63) idxPi=0;
-      if(auto pkt=PacketFactory::tryParse(bufPi,idxPi)){
-        uint8_t out[8]; pkt->toBytes(out,false);   // TC側へは rev8 無し
-        SerialTC.write(out,pkt->len());
-        SerialTC.flush();
-      }
-    }
-  }
+    for(;;){ uint8_t b; if(xQueueReceive(qPi2Tc,&b,portMAX_DELAY)==pdTRUE){ bufPi[idxPi]=b; idxPi=(idxPi+1)&(RING_SIZE-1); if(auto p=PacketFactory::tryParse(bufPi,idxPi)){ SerialTC.write(p->buf,p->len); SerialTC.flush(); idxPi=0; } } }
 }
-/* ---------- Task: TC -> Pi ---------- */
+/* ------------- task TC -> Pi ------------*/
 void taskTc2Pi(void*){
-  for(;;){
-    uint8_t b;
-    if(xQueueReceive(qTc2Pi,&b,portMAX_DELAY)==pdTRUE){
-      bufTc[idxTc++]=b; if(idxTc>63) idxTc=0;
-      if(auto pkt=PacketFactory::tryParse(bufTc,idxTc)){
-        uint8_t out[8]; pkt->toBytes(out,true);    // Pi側へは rev8 有り
-        SerialPi.write(out,pkt->len());
-        SerialPi.flush();
-      }
-    }
-  }
+    for(;;){ uint8_t b; if(xQueueReceive(qTc2Pi,&b,portMAX_DELAY)==pdTRUE){ bufTc[idxTc]=b; idxTc=(idxTc+1)&(RING_SIZE-1); if(auto p=PacketFactory::tryParse(bufTc,idxTc)){ uint8_t out[FRAME_MAX]; p->toBytes(out,false); SerialPi.write(out,p->len); SerialPi.flush(); idxTc=0;} } }
 }
 
-void setup(){
-  Serial.begin(115200);
-
-  /* UART init */
+/* ------------- setup --------------------*/
+void setup(){ Serial.begin(115200);
   SerialPi.begin(BAUD_PI,SERIAL_8N1,UART_PI_RX,UART_PI_TX);
   SerialTC.begin(BAUD_TC,SERIAL_8N1,UART_TC_RX,UART_TC_TX);
-
-  /* Level-Shifter 固定 */
-  pinMode(PIN_OE1,OUTPUT); digitalWrite(PIN_OE1,LOW);
-  pinMode(PIN_DIR1,OUTPUT); digitalWrite(PIN_DIR1,HIGH); // A→B (ESP32→TC)
-  pinMode(PIN_OE2,OUTPUT); digitalWrite(PIN_OE2,LOW);
-  pinMode(PIN_DIR2,OUTPUT); digitalWrite(PIN_DIR2,LOW);  // B→A (TC→ESP32)
-
-  /* Queues & Tasks */
-  qPi2Tc = xQueueCreate(128,sizeof(uint8_t));
-  qTc2Pi = xQueueCreate(128,sizeof(uint8_t));
-  xTaskCreatePinnedToCore(taskPi2Tc,"Pi2TC",4096,nullptr,3,nullptr,0); // prio 3
-  xTaskCreatePinnedToCore(taskTc2Pi,"TC2Pi",4096,nullptr,4,nullptr,0); // prio 4 (300bps側)
-
-  /* UART IRQ hook */
-  SerialPi.onReceive(onUartPi,nullptr);
-  SerialTC.onReceive(onUartTc,nullptr);
+  pinMode(PIN_OE1,OUTPUT); digitalWrite(PIN_OE1,LOW); pinMode(PIN_DIR1,OUTPUT); digitalWrite(PIN_DIR1,HIGH);
+  pinMode(PIN_OE2,OUTPUT); digitalWrite(PIN_OE2,LOW); pinMode(PIN_DIR2,OUTPUT); digitalWrite(PIN_DIR2,LOW);
+  qPi2Tc=xQueueCreate(128,sizeof(uint8_t)); qTc2Pi=xQueueCreate(128,sizeof(uint8_t));
+  xTaskCreatePinnedToCore(taskPi2Tc,"Pi2TC",4096,NULL,3,NULL,0);
+  xTaskCreatePinnedToCore(taskTc2Pi,"TC2Pi",4096,NULL,4,NULL,0);
+  SerialPi.onReceive(onUartPi); SerialTC.onReceive(onUartTc); SerialPi.setRxFIFOFull(1); SerialTC.setRxFIFOFull(1);
 }
 
 void loop(){
-  delay(100);  // main loop idle
+    vTaskDelay(pdMS_TO_TICKS(100));
 }
