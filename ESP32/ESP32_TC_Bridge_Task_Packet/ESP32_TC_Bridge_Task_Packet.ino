@@ -9,19 +9,19 @@ using namespace tc;
 #include <freertos/queue.h>
 
 /* ------------- pin / uart ----------------*/
-#define UART_PI_TX 43
-#define UART_PI_RX 44
-#define UART_TC_TX 2
-#define UART_TC_RX 3
+#define UART_PI_TX 43   // (白)TX ESP32->Pi
+#define UART_PI_RX 44   // (黄)RX Pi->ESP32
+#define UART_TC_TX 2    // (白)TX ESP32->TC
+#define UART_TC_RX 3    // (黄)RX TC->ESP32
 #define BAUD_PI 9600
 #define BAUD_TC 300
 HardwareSerial SerialPi(1);
 HardwareSerial SerialTC(2);
 /* level‑shifter */
-#define PIN_OE1 5
-#define PIN_DIR1 6
-#define PIN_OE2 7
-#define PIN_DIR2 8
+#define PIN_OE1 5       // (白)TX 出力有効 → 常時 LOW
+#define PIN_DIR1 6      // (黄)TX方向：ESP32 → TC → HIGH 固定
+#define PIN_OE2 7       // (白)RX 出力有効 → 常時 LOW
+#define PIN_DIR2 8      // (黄)RX方向：TC → ESP32 → LOW 固定
 
 /* ------------- RTOS queues ---------------*/
 static QueueHandle_t qPi2Tc;
