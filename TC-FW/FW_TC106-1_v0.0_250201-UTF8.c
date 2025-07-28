@@ -8,6 +8,8 @@
 
 //#include <p24FJ32GA002.h>
 #include <p24FJ16GA002.h>
+#include <xc.h>        // PIC24F ??????
+#include <libpic30.h>  // Nop() ???
 //#include "i2c.h"
 
 //_CONFIG2( POSCMOD_NONE & ALTI2C_OFF & LPOL_ON & IOL1WAY_ON & OSCIOFNC_ON & FCKSM_CSECMD & FNOSC_FRC & WDTWIN_WDTWIN50 & PWMPIN_OFF & PWMLOCK_ON & IESO_OFF )
@@ -1410,7 +1412,7 @@ void tension_compensate(void)
 
 	if(tens_set < 200)//20120105, tension set <25g;  200/8=25;
 	{
-		Kp = 0.13 //Ref 0.03
+		Kp = 0.13; //Ref 0.03
 		Ki = 0.02; //Ref 0.008
 		Kd = 0.005; //Ref 0.011
 	}
