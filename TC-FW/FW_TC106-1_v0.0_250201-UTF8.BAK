@@ -1,9 +1,4 @@
 /********************************************/
-// TC Original Version
-// Modify : Change processing, processing to 
-//		stop switching pulses of timer interrupts 
-//		of 300bps communication signals
-// Modify: 2025.07.28
 /********************************************/
 
 //#include <p24FJ32GA002.h>
@@ -49,9 +44,6 @@ volatile float Kp;
 volatile float Ki;
 volatile float Kd;
 volatile signed int Ka;
-
-// ファイル先頭付近（既存の volatile 定義のすぐ下など）に追加
-volatile uint8_t tx_enable = 0;    // 0: 出力抑制, 1: 送信中
 
 volatile unsigned char setlen[3];		//设定的长度（对藖E屑醴ㄊ迪殖ざ瓤刂疲?
 volatile signed char len_1[3];		//剩余的长度,计算发生负数
@@ -249,7 +241,6 @@ unsigned int getI2C(void);
 void __attribute__((__interrupt__, auto_psv)) _T1Interrupt(void)//TMR1每50uS进葋E酥卸?
 {
 	IFS0bits.T1IF = 0; //Clear Timer1 interrupt flag
-#if 0	// bit Pluse output stop!!
 	if(tx_timer!=0)
 	{
 		tx_timer--;//125*13.2uS=1.65mS处历罨次
@@ -259,18 +250,6 @@ void __attribute__((__interrupt__, auto_psv)) _T1Interrupt(void)//TMR1每50uS进
 		tx_timer=32;
 		flag1.BIT.tx_300=1;		
 	}
-#endif
-	// 送信中のみ、300bps 用フラグを立てる
-	if (tx_enable) {
-		if (tx_timer != 0) {
-			tx_timer--;
-		} else {
-			tx_timer = 32;            // ≒1.65ms
-			flag1.BIT.tx_300 = 1;     // 次の data_tx() 呼び出しを許可
-		}
-	}
-	// 以下 rx_timer/display_timer 等はそのまま…
-
 	if(rx_timer!=0)
 	{
 		 rx_timer--;//250*13.2uS=3.3mS处历罨次
@@ -1112,18 +1091,16 @@ void rxsend(void)
 		settens = rx_buffer[0];
 		tension_compensate();//张力补偿
 		tens_desired = tens_set;
-		tx_enable = 1;       // ここからビットパルス出力を開始
 	}
 	else if(rx_bytecntr==2)
-	{
-	        rx_bytecntr = 0;
-		tx_enable = 1;       // ここからビットパルス出力を開始
-	}
-	else
-	{
-        	rxerror();
-	}
-
+    {
+        rx_bytecntr = 0;
+    }
+    else
+    {
+        rxerror();
+    }
+		
 }
 /************************************************************************************/
 void table_rx(unsigned char b)
