@@ -6,7 +6,7 @@ from NTC_1A_serial_comm import start_serial_thread, send_packet, send_packet_raw
 
 # --- シリアル初期化 ---
 SERIAL_PORT = '/dev//dev/serial0'  # 必宜変更
-#SERIAL_PORT = 'COM3'  # 必宜変更
+#SERIAL_PORT = 'COM1'  # 必宜変更
 start_serial_thread(SERIAL_PORT)
 
 # --- Pygame 初期化 ---
@@ -38,6 +38,16 @@ LABEL_X = 30
 FIELD_X = LABEL_X + LABEL_W + 20
 LABEL_Y_START = 120
 LABEL_Y_GAP = 70
+
+# ラベル表示用（日本語表記）
+label_map = {
+    'CH1_TENSION': 'CH1 テンション',
+    'CH1_LENGTH': 'CH1 長さ',
+    'CH1_COUNT': 'CH1 カウント',
+    'CH2_TENSION': 'CH2 テンション',
+    'CH2_LENGTH': 'CH2 長さ',
+    'CH2_COUNT': 'CH2 カウント'
+}
 
 # --- ボタン定義 ---
 class Button:
@@ -132,7 +142,8 @@ while True:
         col, row = idx//3, idx%3
         lx = LABEL_X + col*350; ly = LABEL_Y_START + row*LABEL_Y_GAP
         # ラベル
-        lbl_surf = font.render(key.replace('_',' '), True, (200,200,200))
+        #lbl_surf = font.render(key.replace('_',' '), True, (200,200,200))
+        lbl_surf = font.render(label_map.get(key, key), True, (200,200,200))
         screen.blit(lbl_surf, (lx, ly))
         # フィールド枠
         fx = FIELD_X + col*350; fy = LABEL_Y_START + row*LABEL_Y_GAP
