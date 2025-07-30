@@ -26,8 +26,9 @@ NTC_1A_utils.out = log_callback
 
 # --- フィールド設定 ---
 fields = {
-    'CH1_TENS': '', 'CH1_LENG': '', 'CH1_CNT': '',
-    'CH2_TENS': '', 'CH2_LENG': '', 'CH2_CNT': ''
+    'CH1_TENSION': '', 'CH1_LENGTH': '', 'CH1_COUNT': '',
+    'CH2_TENSION': '', 'CH2_LENGTH': '', 'CH2_COUNT': ''
+}
 }
 field_keys = list(fields.keys())
 current_field = 0
