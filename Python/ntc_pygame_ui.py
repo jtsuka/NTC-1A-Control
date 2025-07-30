@@ -29,7 +29,6 @@ fields = {
     'CH1_TENSION': '', 'CH1_LENGTH': '', 'CH1_COUNT': '',
     'CH2_TENSION': '', 'CH2_LENGTH': '', 'CH2_COUNT': ''
 }
-}
 field_keys = list(fields.keys())
 current_field = 0
 LABEL_W, LABEL_H = 150, 30
