@@ -5,7 +5,7 @@ import NTC_1A_utils
 from NTC_1A_serial_comm import start_serial_thread, send_packet, send_packet_raw, build_packet
 
 # --- シリアル初期化 ---
-SERIAL_PORT = '/dev//dev/serial0'  # 必宜変更
+SERIAL_PORT = '/dev/serial0'  # 必宜変更
 start_serial_thread(SERIAL_PORT)
 
 # --- Pygame 初期化 ---
