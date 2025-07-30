@@ -113,6 +113,15 @@ while True:
             for b in buttons:
                 b.handle(pos, is_down)
 
+    # 入力フィールドのクリック処理
+    for idx, key in enumerate(field_keys):
+        col, row = idx // 3, idx % 3
+        fx = FIELD_X + col * 350
+        fy = LABEL_Y_START + row * LABEL_Y_GAP
+        rect = pygame.Rect(fx, fy, FIELD_W, FIELD_H)
+        if rect.collidepoint(pos):
+            current_field = idx
+
     screen.fill((20,20,20))
     # ボタン描画
     for b in buttons:
