@@ -79,7 +79,10 @@ void loop() {
   /* --- 受信リングに格納 --- */
   while(tcSerial.available()){
     uint8_t b = tcSerial.read();
-    if(USE_LSB) b = rev8(b);
+    if(USE_LSB) b = rev8(b);+    // 反転 = true で TX/RX ともアイドル LOW に
++    SerialTC.begin(BAUD_TC, SERIAL_8N1,
++                   UART_TC_RX, UART_TC_TX,
++                   /*invert = */ true);
     ring[wrIdx++] = b;
     wrIdx &= 0x1F;                    // 32 で巻き戻し
   }
