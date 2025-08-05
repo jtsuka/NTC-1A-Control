@@ -91,15 +91,11 @@ void setup(){
 
     // ■ 追加：UART TX ピンを強制 idle HIGH してから begin()
     pinMode(UART_TC_TX, OUTPUT);
-    digitalWrite(UART_TC_TX, LOW);
+    digitalWrite(UART_TC_TX, HIGH);
 
     // for Raspberry Pi & TC HW Serial init
     SerialPi.begin(BAUD_PI,SERIAL_8N1,UART_PI_RX,UART_PI_TX);
-    // SerialTC.begin(BAUD_TC,SERIAL_8N1,UART_TC_RX,UART_TC_TX);
-    // 反転 = true で TX/RX ともアイドル LOW に
-    SerialTC.begin(BAUD_TC, SERIAL_8N1,
-                    UART_TC_RX, UART_TC_TX,
-                    /*invert = */ true);    
+    SerialTC.begin(BAUD_TC,SERIAL_8N1,UART_TC_RX,UART_TC_TX);
     // ── ここで少し待つ ──
     delay(100);
     // for AE-LLCNV-LVCH16T245 16-bit bidirectional level conversion module setup
