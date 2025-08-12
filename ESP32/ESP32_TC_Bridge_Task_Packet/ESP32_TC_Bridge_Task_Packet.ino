@@ -167,8 +167,6 @@ void setup(){
     while(SerialPi.available()) SerialPi.read();
     while(SerialTC.available()) SerialTC.read();
 
-    // LVC16T245 DIR/OE セルフチェック
-    lvc_selfcheck_run();
 
     // for ESP32S3 Setting for handling UART reception with interrupt + callback
     SerialPi.setRxFIFOFull(1);
@@ -177,6 +175,9 @@ void setup(){
     SerialTC.setRxFIFOFull(1);          // 1バイト来るごとに割り込み発生
     SerialTC.setRxTimeout(40);
     SerialTC.onReceive(onUartTc);       // 受信割り込みで onUartTc()  を呼ぶ 
+
+    // LVC16T245 DIR/OE セルフチェック
+    lvc_selfcheck_run();
 }
 
 void loop(){
