@@ -84,6 +84,60 @@ void taskTc2Pi(void*){
     }
 }
 
+// ---- LVC16T245 DIR/OE セルフチェック関数（ESP32-S3 / Arduino）----
+// 使い方：setup()の最後などで lvc_selfcheck_run(); を1回呼ぶ。
+
+struct LvcPins {
+  int OE1 = 5;   // 1OE  (J4-2 白)
+  int DIR1 = 6;  // 1DIR (J4-1 黄)
+  int OE2 = 7;   // 2OE  (J7-1 黄)
+  int DIR2 = 8;  // 2DIR (J7-2 白)
+};
+
+static LvcPins LVC;  // 必要に応じて値を書き換え可
+
+// 外部プル等を観察（I2C系にPUがあるか等）: 任意
+static void lvc_probe_pullups(Stream& out=Serial) {
+  const int pins[4]  = {LVC.OE1, LVC.DIR1, LVC.OE2, LVC.DIR2};
+  const char* name[] = {"1OE","1DIR","2OE","2DIR"};
+  for (int i=0;i<4;i++) pinMode(pins[i], INPUT);
+  delay(5);
+  out.println("[LVC] Probe pulls (INPUT read):");
+  for (int i=0;i<4;i++) out.printf("  %-4s : %s\n", name[i],
+                         digitalRead(pins[i]) ? "HIGH(外部PUの可能性)" : "LOW(外部PD/なし)");
+}
+
+// 既定レベルをドライブ＆確認。true=PASS
+static bool lvc_drive_and_verify(Stream& out=Serial) {
+  pinMode(LVC.OE1, OUTPUT);  digitalWrite(LVC.OE1, LOW);   // 有効
+  pinMode(LVC.DIR1,OUTPUT);  digitalWrite(LVC.DIR1,HIGH);  // A→B（ESP→TC）
+  pinMode(LVC.OE2, OUTPUT);  digitalWrite(LVC.OE2, LOW);   // 有効
+  pinMode(LVC.DIR2,OUTPUT);  digitalWrite(LVC.DIR2,LOW);   // B→A（TC→ESP）
+  delay(5);
+
+  int rOE1=digitalRead(LVC.OE1), rDIR1=digitalRead(LVC.DIR1);
+  int rOE2=digitalRead(LVC.OE2), rDIR2=digitalRead(LVC.DIR2);
+
+  out.println("[LVC] Drive & verify:");
+  out.printf("  1OE  = %s (期待:LOW)\n",  rOE1 ? "HIGH":"LOW");
+  out.printf("  1DIR = %s (期待:HIGH)\n", rDIR1? "HIGH":"LOW");
+  out.printf("  2OE  = %s (期待:LOW)\n",  rOE2 ? "HIGH":"LOW");
+  out.printf("  2DIR = %s (期待:LOW)\n",  rDIR2 ? "HIGH":"LOW");
+
+  bool pass = (rOE1==LOW) && (rDIR1==HIGH) && (rOE2==LOW) && (rDIR2==LOW);
+  out.printf("[LVC] RESULT: %s\n", pass ? "PASS" : "NG");
+  if (!pass) out.println("      -> 配線の入替/ポート取り違え/外部プル確認を。");
+  return pass;
+}
+
+// まとめ呼び出し（setup()で1回呼ぶ）
+static void lvc_selfcheck_run() {
+  Serial.println("\n=== LVC16T245 DIR/OE Self-Check ===");
+  lvc_probe_pullups(Serial);       // 任意：外部プルの観察
+  lvc_drive_and_verify(Serial);    // 既定値をドライブして検証
+}
+
+
 /* ------------- setup --------------------*/
 void setup(){
     // for Debug serial monitor
@@ -112,6 +166,9 @@ void setup(){
     // ─── ゴミ受信を全部捨てる ───
     while(SerialPi.available()) SerialPi.read();
     while(SerialTC.available()) SerialTC.read();
+
+    // LVC16T245 DIR/OE セルフチェック
+    lvc_selfcheck_run();
 
     // for ESP32S3 Setting for handling UART reception with interrupt + callback
     SerialPi.setRxFIFOFull(1);
