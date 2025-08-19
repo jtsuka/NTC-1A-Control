@@ -143,18 +143,25 @@ void setup(){
     // for Debug serial monitor
     Serial.begin(115200);
 
-    // ■ 追加：UART TX ピンを強制 idle HIGH してから begin()
-    pinMode(UART_TC_TX, OUTPUT);
-    digitalWrite(UART_TC_TX, HIGH);
-
-    // for Raspberry Pi & TC HW Serial init
-    SerialPi.begin(BAUD_PI,SERIAL_8N1,UART_PI_RX,UART_PI_TX);
-    SerialTC.begin(BAUD_TC,SERIAL_8N1,UART_TC_RX,UART_TC_TX);
-    // ── ここで少し待つ ──
-    delay(100);
     // for AE-LLCNV-LVCH16T245 16-bit bidirectional level conversion module setup
     pinMode(PIN_OE1,OUTPUT); digitalWrite(PIN_OE1,LOW); pinMode(PIN_DIR1,OUTPUT); digitalWrite(PIN_DIR1,HIGH);
     pinMode(PIN_OE2,OUTPUT); digitalWrite(PIN_OE2,LOW); pinMode(PIN_DIR2,OUTPUT); digitalWrite(PIN_DIR2,LOW);
+
+    // ■ 追加：UART TX ピンを強制 idle HIGH してから begin()
+    pinMode(UART_TC_TX, OUTPUT);
+    digitalWrite(UART_TC_TX, HIGH);
+    delay(1); // 100msは不要。1～2msで十分
+
+    // for Raspberry Pi & TC HW Serial init
+    SerialPi.begin(BAUD_PI,SERIAL_8N1,UART_PI_RX,UART_PI_TX);
+    SerialPi.setTxInvert(false);
+    SerialPi.setRxInvert(false);
+
+    SerialTC.begin(BAUD_TC,SERIAL_8N1,UART_TC_RX,UART_TC_TX);
+    SerialTC.setTxInvert(false);
+    SerialTC.setRxInvert(false);
+    // ── ここで少し待つ ──
+    delay(100);
 
     // for Send paket Queue for Pi, for TC
     qPi2Tc=xQueueCreate(128,sizeof(uint8_t)); qTc2Pi=xQueueCreate(128,sizeof(uint8_t));
@@ -178,6 +185,12 @@ void setup(){
 
     // LVC16T245 DIR/OE セルフチェック
     lvc_selfcheck_run();
+
+    // （任意の一次切り分け）起動直後に既知パターンを1回だけ送る
+    // 0xFFは連続‘1’なのでアイドル維持、0x00でLOWパルスになる
+    const uint8_t diag[] = {0xFF,0x00,0xFF,0x00};
+    SerialTC.write(diag, sizeof(diag));
+    SerialTC.flush();
 }
 
 void loop(){
