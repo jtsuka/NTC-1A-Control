@@ -154,11 +154,9 @@ void setup(){
 
     // for Raspberry Pi & TC HW Serial init
     SerialPi.begin(BAUD_PI,SERIAL_8N1,UART_PI_RX,UART_PI_TX);
-    SerialPi.setTxInvert(false);
     SerialPi.setRxInvert(false);
 
     SerialTC.begin(BAUD_TC,SERIAL_8N1,UART_TC_RX,UART_TC_TX);
-    SerialTC.setTxInvert(false);
     SerialTC.setRxInvert(false);
     // ── ここで少し待つ ──
     delay(100);
