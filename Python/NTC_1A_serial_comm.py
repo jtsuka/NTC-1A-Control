@@ -1,21 +1,18 @@
-# NTC_1A_serial_comm.py – ESP32 Fusion v1.2.1 完全対応版 v1.3
+# NTC_1A_serial_comm.py – v1.3.1 完全対応版
 import serial, threading, time
-import NTC_1A_utils  # 'from ... import out' ではなくモジュールごとインポート
+import NTC_1A_utils 
 
 PORT = "/dev/serial0"
 BAUD = 9600
 ser = None
 running = True
 
-# ---------- 共通チェックサム & ビルダー ----------
 def checksum7(data):
-    """7-bit 加算チェックサム (ESP32/TC実機互換)"""
+    """7-bit 加算チェックサム [cite: 15, 16]"""
     return sum(data) & 0x7F
 
 def build_packet(payload):
-    """末尾に7bit CSを付与したパケットを生成"""
-    chk = checksum7(payload)
-    return payload + [chk]
+    return payload + [checksum7(payload)]
 
 def open_port():
     global ser
@@ -28,7 +25,7 @@ def open_port():
         NTC_1A_utils.out(f"[ERROR] Port open failed: {e}")
 
 def send_packet(payload):
-    """CSを含まないデータ(5, 7, 11B)を送り、ESP32が認識できる6, 8, 12Bにする"""
+    """CSを含まない5, 7, 11Bのリストをパケット化して送信"""
     if not ser or not ser.is_open: return False
     pkt = build_packet(payload)
     try:
@@ -41,17 +38,15 @@ def send_packet(payload):
         return False
 
 def rx_loop():
-    """堅牢なパケット受信：常にスライドして6/8/12Bを探す"""
+    """堅牢なパケット検知ロジック (0x01ヘッダー縛りからの脱却)"""
     global running
     buffer = bytearray()
     while running:
         if ser and ser.in_waiting:
             try:
                 buffer += ser.read(ser.in_waiting)
-                
                 while len(buffer) >= 6:
                     found = False
-                    # 長いパケットから順にチェックサムを確認
                     for length in [12, 8, 6]:
                         if len(buffer) >= length:
                             pkt = buffer[:length]
@@ -60,11 +55,8 @@ def rx_loop():
                                 buffer = buffer[length:]
                                 found = True
                                 break
-                    
-                    if found: continue # 次のパケットへ
-                    
-                    # どの長さでもCSが合わないなら1バイト捨ててスライド
-                    buffer.pop(0)
+                    if found: continue
+                    buffer.pop(0) # 同期が合わない場合は1バイトスライド
             except Exception as e:
                 NTC_1A_utils.out(f"[RX ERR] {e}")
         else:
@@ -74,8 +66,7 @@ def start_serial_thread(port=None):
     global PORT
     if port: PORT = port
     open_port()
-    t = threading.Thread(target=rx_loop, daemon=True)
-    t.start()
+    threading.Thread(target=rx_loop, daemon=True).start()
 
 def stop_serial():
     global running
