@@ -2,17 +2,13 @@
 #include <Arduino.h>
 
 namespace tc {
-  // Raspberry Pi 側のパケット長定義
   constexpr uint8_t PI_LEN_SEND  = 6;
   constexpr uint8_t PI_LEN_SENS  = 8;
   constexpr uint8_t PI_LEN_RESET = 12;
   constexpr uint8_t PI_MAX       = 12;
-
-  // TC実機側の通信制限（データ5バイト + コマンド1バイト = 6フレーム）
   constexpr uint8_t TC_DATA_LEN  = 5;
-  constexpr uint8_t RING_SIZE    = 64; // 必ず2の累乗
+  constexpr uint8_t RING_SIZE    = 64;
 
-  // 7-bit 加算チェックサム（実機ソース互換）
   static inline uint8_t checksum7(const uint8_t* d, uint8_t n) {
     uint16_t s = 0;
     for (uint8_t i = 0; i < n; i++) s += d[i];
@@ -25,15 +21,18 @@ namespace tc {
     uint8_t cmd() const { return buf[0] & 0x07; }
   };
 
-  // 64bitシグネチャによる重複パケット排除
+  /**
+   * 64bitシグネチャ：内容ベースの二重送信ガード
+   * 構成：[Length(8bit) | Checksum(8bit) | Buf0(8bit) | Buf1(8bit) | BufLast-1(8bit)]
+   */
   static inline uint64_t signature(const uint8_t* p, uint8_t len) {
     if (len < 2) return 0;
     uint64_t sig = 0;
     sig |= (uint64_t)len << 32;
     sig |= (uint64_t)p[len - 1] << 24; // Checksum
-    sig |= (uint64_t)p[0] << 16;       // CMD
-    sig |= (uint64_t)p[1] << 8;        // Data0
-    sig |= (uint64_t)p[len - 2];       // Last Data
+    sig |= (uint64_t)p[0] << 16;       // CMD (Pi[0])
+    sig |= (uint64_t)p[1] << 8;        // Data0 (Pi[1])
+    sig |= (uint64_t)p[len - 2];       // Penultimate Byte
     return sig;
   }
 
@@ -61,16 +60,17 @@ namespace tc {
     }
   };
 
-  // 実機用の5+1形式へ翻訳
   struct TcFrames {
     uint8_t data[TC_DATA_LEN]{};
     uint8_t cmd{0};
+    bool isTruncated{false};
   };
 
   static inline TcFrames toTcFrames(const Packet& p) {
     TcFrames out;
-    out.cmd = p.buf[0]; // Piの先頭CMDを最後(9bit=1)に送る用
+    out.cmd = p.buf[0]; 
     for (uint8_t i = 0; i < TC_DATA_LEN; i++) out.data[i] = p.buf[1 + i];
+    out.isTruncated = (p.len > PI_LEN_SEND);
     return out;
   }
 }

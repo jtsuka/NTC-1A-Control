@@ -2,7 +2,6 @@
 #include <HardwareSerial.h>
 #include "tc_packet.hpp"
 
-/* --- ピン割り当て (確定版) --- */
 #define PIN_TC_TX 2
 #define PIN_TC_RX 3
 #define UART_PI_TX 43
@@ -12,23 +11,21 @@
 #define PIN_OE2 7
 #define PIN_DIR2 8
 
-/* --- パラメータ --- */
 #define TC_BAUD 300
 #define BIT_US (1000000UL / TC_BAUD)
-#define TC_INVERT_LOGIC true // 反転ロジック使用
+#define TC_INVERT_LOGIC true 
 
 HardwareSerial SerialPi(1);
 static QueueHandle_t qJobs;
 struct Job { tc::TcFrames f; };
 
-// 物理レベル出力
+// 論理レベル関数：極性反転をここで一括管理
 void writeLevel(bool logical) {
   bool out = TC_INVERT_LOGIC ? !logical : logical;
   digitalWrite(PIN_TC_TX, out ? HIGH : LOW);
   delayMicroseconds(BIT_US);
 }
 
-// 9bit送信：start(0) + 8data + 1cmd + stop(1)
 void send9bitFrame(uint8_t data, bool isCmd) {
   writeLevel(false); // Start
   for (int i = 0; i < 8; i++) writeLevel((data >> i) & 0x01);
@@ -37,15 +34,18 @@ void send9bitFrame(uint8_t data, bool isCmd) {
   writeLevel(true);  // 1bit Idle Gap
 }
 
-/* --- Core 1: TC送信タスク (タイミング最優先) --- */
+/* --- Core 1: TC送信タスク --- */
 void taskTC(void* pv) {
   Job j;
   while (true) {
     if (xQueueReceive(qJobs, &j, portMAX_DELAY)) {
-      for (int i=0; i<3; i++) writeLevel(true); // 送信前アイドル
+      // 送信前アイドル（論理HIGHで統一）
+      for (int i=0; i<3; i++) writeLevel(true); 
+      
       for (int i=0; i<tc::TC_DATA_LEN; i++) send9bitFrame(j.f.data[i], false);
-      send9bitFrame(j.f.cmd, true); // 最後だけコマンド
-      Serial.printf("[TC TX] Sent CMD:0x%02X\n", j.f.cmd);
+      send9bitFrame(j.f.cmd, true); 
+      
+      Serial.printf("[TcTX] CMD:0x%02X Sent.\n", j.f.cmd);
     }
   }
 }
@@ -62,7 +62,9 @@ void taskPi(void* pv) {
       if (const tc::Packet* p = tc::PacketFactory::tryParse(ring, head, lastSig)) {
         Job j; j.f = tc::toTcFrames(*p);
         xQueueSend(qJobs, &j, 0);
-        Serial.printf("[Pi RX] Recv Len:%d CMD:0x%02X\n", p->len, p->cmd());
+        
+        Serial.printf("[PiRX] Len:%d CMD:0x%02X %s\n", 
+                      p->len, p->cmd(), j.f.isTruncated ? "(TRUNCATED)" : "");
       }
     }
     vTaskDelay(1);
@@ -73,18 +75,17 @@ void setup() {
   Serial.begin(115200);
   SerialPi.begin(9600, SERIAL_8N1, UART_PI_RX, UART_PI_TX);
   
-  // レベルシフタ全ピン固定
   pinMode(PIN_OE1, OUTPUT); digitalWrite(PIN_OE1, LOW);
   pinMode(PIN_DIR1, OUTPUT); digitalWrite(PIN_DIR1, HIGH);
   pinMode(PIN_OE2, OUTPUT); digitalWrite(PIN_OE2, LOW);
   pinMode(PIN_DIR2, OUTPUT); digitalWrite(PIN_DIR2, LOW);
 
-  pinMode(PIN_TC_TX, OUTPUT); writeLevel(true); // Idle電位
+  pinMode(PIN_TC_TX, OUTPUT); writeLevel(true); 
   qJobs = xQueueCreate(8, sizeof(Job));
 
   xTaskCreatePinnedToCore(taskPi, "Pi", 4096, NULL, 2, NULL, 0);
   xTaskCreatePinnedToCore(taskTC, "TC", 4096, NULL, 5, NULL, 1);
-  Serial.println("ESP32 Bridge Fusion v1 清書版 READY");
+  Serial.println("ESP32 Fusion v1.2 READY");
 }
 
 void loop() { vTaskDelay(portMAX_DELAY); }

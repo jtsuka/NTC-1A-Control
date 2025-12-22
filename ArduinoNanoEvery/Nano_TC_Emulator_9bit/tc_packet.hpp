@@ -1,44 +1,52 @@
-#pragma once
 #include <Arduino.h>
+#include "tc_packet.hpp"
 
-namespace tc {
-    // パケット長定義（実機およびメインコントローラ仕様）
-    constexpr uint8_t FRAME_LEN_SEND = 6;
-    constexpr uint8_t FRAME_LEN_SENS = 8;
-    constexpr uint8_t FRAME_LEN_RESET = 12;
-    constexpr uint8_t FRAME_MAX = 12;
-    constexpr uint8_t RING_SIZE = 64;
+#define PIN_TX 2
+#define PIN_RX 3
+#define TC_INVERT_LOGIC true
+#define BIT_US 3333
 
-    // 7-bit 加算チェックサム（実機 rxreset 互換）
-    static inline uint8_t checksum7(const uint8_t* d, uint8_t n) {
-        uint16_t s = 0;
-        for (uint8_t i = 0; i < n; i++) s += d[i];
-        return (uint8_t)(s & 0x7F);
+bool tcRead() {
+  bool val = (digitalRead(PIN_RX) == HIGH);
+  return TC_INVERT_LOGIC ? !val : val;
+}
+
+void tcWrite(bool logical) {
+  bool out = TC_INVERT_LOGIC ? !logical : logical;
+  digitalWrite(PIN_TX, out ? HIGH : LOW);
+  delayMicroseconds(BIT_US);
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(PIN_RX, INPUT_PULLUP);
+  pinMode(PIN_TX, OUTPUT);
+  tcWrite(true);
+  Serial.println("Nano TC Emulator Fusion READY.");
+}
+
+void loop() {
+  static uint8_t data[5];
+  static uint8_t di = 0;
+  
+  if (tcRead() == false) { // Start検出
+    delayMicroseconds(BIT_US + BIT_US/2); // データ中央へ
+    uint8_t d = 0;
+    for (int i=0; i<8; i++) {
+      if (tcRead()) d |= (1 << i);
+      delayMicroseconds(BIT_US);
     }
-
-    struct Packet {
-        uint8_t buf[FRAME_MAX];
-        uint8_t len{0};
-        uint8_t cmd() const { return buf[0] & 0x07; }
-    };
-
-    class PacketFactory {
-    public:
-        static Packet* tryParse(const uint8_t* ring, uint8_t head) {
-            static Packet pkt;
-            const uint8_t lens[] = { 12, 8, 6 };
-            for (uint8_t l : lens) {
-                uint8_t tmp[FRAME_MAX];
-                for (uint8_t i = 0; i < l; i++) {
-                    tmp[i] = ring[(head - l + i + RING_SIZE) & (RING_SIZE - 1)];
-                }
-                if (checksum7(tmp, l - 1) == tmp[l - 1]) {
-                    memcpy(pkt.buf, tmp, l);
-                    pkt.len = l;
-                    return &pkt;
-                }
-            }
-            return nullptr;
-        }
-    };
+    bool isCmd = tcRead();
+    
+    if (!isCmd) {
+      if (di < 5) data[di++] = d;
+      Serial.print(d, HEX); Serial.print(" ");
+    } else {
+      Serial.print("\n[CMD] 0x"); Serial.println(d, HEX);
+      di = 0; // 次のパケットへ
+    }
+    // ストップビット待ちタイムアウト
+    uint32_t t0 = micros();
+    while(tcRead() == false && (micros()-t0) < (BIT_US * 2));
+  }
 }
