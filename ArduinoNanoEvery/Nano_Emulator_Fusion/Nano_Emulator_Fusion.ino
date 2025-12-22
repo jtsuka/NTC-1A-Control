@@ -1,6 +1,10 @@
 #include <Arduino.h>
 #include "tc_packet.hpp"
 
+/*
+  TC Emulator Fusion Final V1.2.1
+*/
+
 #define PIN_TX 2
 #define PIN_RX 3
 #define TC_INVERT_LOGIC true
@@ -30,8 +34,11 @@ void setup() {
   Serial.begin(115200);
   pinMode(PIN_RX, INPUT_PULLUP);
   pinMode(PIN_TX, OUTPUT);
-  tcWrite(true); 
-  Serial.println("Nano TC Emulator Fusion v1.2 (Deglitch) READY.");
+  
+  // 初期電位：Idle HIGH
+  digitalWrite(PIN_TX, TC_INVERT_LOGIC ? LOW : HIGH);
+  
+  Serial.println("Nano TC Emulator Fusion v1.2.1 READY.");
 }
 
 void loop() {
@@ -41,7 +48,7 @@ void loop() {
   if (tcRead() == false) { // 1. スタートビット(論理LOW)検出
     delayMicroseconds(BIT_US / 2); // 2. 半ビット待つ
     
-    if (tcRead() == true) return; // 3. デグリッチ：まだLOWでなければノイズとして捨てる
+    if (tcRead() == true) return; // 3. デグリッチ：ノイズなら捨てる
     
     delayMicroseconds(BIT_US); // 4. データ1ビット目の中央へ
     
@@ -65,7 +72,7 @@ void loop() {
       }
       di = 0; 
     }
-    // Stop待ちタイムアウト
+    // Stop待ちタイムアウト (フリーズ防止)
     uint32_t t0 = micros();
     while(tcRead() == false && (micros()-t0) < (BIT_US * 2));
   }

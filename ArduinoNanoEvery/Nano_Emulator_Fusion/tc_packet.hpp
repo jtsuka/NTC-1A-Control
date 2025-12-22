@@ -23,16 +23,16 @@ namespace tc {
 
   /**
    * 64bitシグネチャ：内容ベースの二重送信ガード
-   * 構成：[Length(8bit) | Checksum(8bit) | Buf0(8bit) | Buf1(8bit) | BufLast-1(8bit)]
+   * [Length(8bit) | Checksum(8bit) | Buf0(8bit) | Buf1(8bit) | BufLast-1(8bit)]
    */
   static inline uint64_t signature(const uint8_t* p, uint8_t len) {
     if (len < 2) return 0;
     uint64_t sig = 0;
     sig |= (uint64_t)len << 32;
-    sig |= (uint64_t)p[len - 1] << 24; // Checksum
-    sig |= (uint64_t)p[0] << 16;       // CMD (Pi[0])
-    sig |= (uint64_t)p[1] << 8;        // Data0 (Pi[1])
-    sig |= (uint64_t)p[len - 2];       // Penultimate Byte
+    sig |= (uint64_t)p[len - 1] << 24; // Checksum (末尾)
+    sig |= (uint64_t)p[0] << 16;       // CMD (先頭)
+    sig |= (uint64_t)p[1] << 8;        // Data0 (2バイト目)
+    sig |= (uint64_t)p[len - 2];       // Penultimate (末尾から2番目)
     return sig;
   }
 
