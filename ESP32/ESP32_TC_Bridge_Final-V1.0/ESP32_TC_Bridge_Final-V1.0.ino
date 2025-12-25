@@ -80,23 +80,45 @@ void taskPi(void* pv) {
 
 void setup() {
   Serial.begin(115200);
+  delay(1000); // シリアルモニタ接続待ち
+
+  Serial.println("\n--- Level Shifter Initialization & Verification ---");
+
+  // 1. レベルシフタ用ピンの初期化
+  pinMode(PIN_OE1, OUTPUT);  digitalWrite(PIN_OE1, LOW);   // 有効化
+  pinMode(PIN_DIR1, OUTPUT); digitalWrite(PIN_DIR1, HIGH); // ESP32 -> TC
+  pinMode(PIN_OE2, OUTPUT);  digitalWrite(PIN_OE2, LOW);   // 有効化
+  pinMode(PIN_DIR2, OUTPUT); digitalWrite(PIN_DIR2, LOW);  // TC -> ESP32
+
+  // 2. ピン状態の再取得 (digitalReadによる確認)
+  bool st_oe1  = digitalRead(PIN_OE1);
+  bool st_dir1 = digitalRead(PIN_DIR1);
+  bool st_oe2  = digitalRead(PIN_OE2);
+  bool st_dir2 = digitalRead(PIN_DIR2);
+
+  // 3. ログ出力
+  Serial.println("[CHECK] Current Pin States (Logic Level):");
+  Serial.printf("  - PIN_OE1  (GPIO %d): %s (Expected: LOW)\n",  PIN_OE1,  st_oe1  ? "HIGH" : "LOW");
+  Serial.printf("  - PIN_DIR1 (GPIO %d): %s (Expected: HIGH)\n", PIN_DIR1, st_dir1 ? "HIGH" : "LOW");
+  Serial.printf("  - PIN_OE2  (GPIO %d): %s (Expected: LOW)\n",  PIN_OE2,  st_oe2  ? "HIGH" : "LOW");
+  Serial.printf("  - PIN_DIR2 (GPIO %d): %s (Expected: LOW)\n",  PIN_DIR2, st_dir2 ? "HIGH" : "LOW");
+
+  // 4. TC TXピンの初期化
+  pinMode(PIN_TC_TX, OUTPUT);
+  digitalWrite(PIN_TC_TX, TC_INVERT_LOGIC ? LOW : HIGH);
+  Serial.printf("[INIT] TC TX (GPIO %d) set to IDLE (Invert:%s)\n", 
+                PIN_TC_TX, TC_INVERT_LOGIC ? "ON" : "OFF");
+
+  // 通信開始
   SerialPi.begin(9600, SERIAL_8N1, UART_PI_RX, UART_PI_TX);
-  
-  // レベルシフタ完全固定
-  pinMode(PIN_OE1, OUTPUT); digitalWrite(PIN_OE1, LOW);
-  pinMode(PIN_DIR1, OUTPUT); digitalWrite(PIN_DIR1, HIGH);
-  pinMode(PIN_OE2, OUTPUT); digitalWrite(PIN_OE2, LOW);
-  pinMode(PIN_DIR2, OUTPUT); digitalWrite(PIN_DIR2, LOW);
-
-  // setup内では delayMicroseconds を含む writeLevel(true) を避ける
-  pinMode(PIN_TC_TX, OUTPUT); 
-  digitalWrite(PIN_TC_TX, TC_INVERT_LOGIC ? LOW : HIGH); // 論理HIGHの電位
-
   qJobs = xQueueCreate(8, sizeof(Job));
 
+  // タスク生成 (Core分離)
   xTaskCreatePinnedToCore(taskPi, "Pi", 4096, NULL, 2, NULL, 0);
   xTaskCreatePinnedToCore(taskTC, "TC", 4096, NULL, 5, NULL, 1);
-  Serial.println("ESP32 Fusion v1.2.1 READY");
+
+  Serial.println("---------------------------------------------------");
+  Serial.println("ESP32 Fusion v1.2.1 READY.");
 }
 
 void loop() { vTaskDelay(portMAX_DELAY); }
