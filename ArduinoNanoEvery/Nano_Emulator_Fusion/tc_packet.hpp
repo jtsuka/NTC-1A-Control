@@ -11,7 +11,7 @@ namespace tc {
 
   static inline uint8_t checksum7(const uint8_t* d, uint8_t n) {
     uint16_t s = 0;
-    for (uint8_t i = 0; i < n; i++) s += d[i];
+    for (uint8_t i = 0; i < n; i++) s += (uint8_t)d[i];
     return (uint8_t)(s & 0x7F);
   }
 
@@ -21,18 +21,14 @@ namespace tc {
     uint8_t cmd() const { return buf[0] & 0x07; }
   };
 
-  /**
-   * 64bitシグネチャ：内容ベースの二重送信ガード
-   * [Length(8bit) | Checksum(8bit) | Buf0(8bit) | Buf1(8bit) | BufLast-1(8bit)]
-   */
   static inline uint64_t signature(const uint8_t* p, uint8_t len) {
     if (len < 2) return 0;
     uint64_t sig = 0;
     sig |= (uint64_t)len << 32;
-    sig |= (uint64_t)p[len - 1] << 24; // Checksum (末尾)
-    sig |= (uint64_t)p[0] << 16;       // CMD (先頭)
-    sig |= (uint64_t)p[1] << 8;        // Data0 (2バイト目)
-    sig |= (uint64_t)p[len - 2];       // Penultimate (末尾から2番目)
+    sig |= (uint64_t)p[len - 1] << 24; 
+    sig |= (uint64_t)p[0] << 16;       
+    sig |= (uint64_t)p[1] << 8;        
+    sig |= (uint64_t)p[len - 2];       
     return sig;
   }
 

@@ -2,11 +2,10 @@
 #include <HardwareSerial.h>
 #include "tc_packet.hpp"
 
-/*
-   ESP32 TC Bridge Final V1.2.1
-*/
+#define DEBUG_TC_TX 0        
+#define TC_INVERT_LOGIC true 
+#define USE_TC_RX_PULLUP 1   
 
-// ---- Pins (固定) ----
 #define PIN_TC_TX 2
 #define PIN_TC_RX 3
 #define UART_PI_TX 43
@@ -16,109 +15,116 @@
 #define PIN_OE2 7
 #define PIN_DIR2 8
 
-// ---- Config ----
 #define TC_BAUD 300
-#define BIT_US (1000000UL / TC_BAUD)
-#define TC_INVERT_LOGIC true 
+#define BIT_US ((1000000UL + (TC_BAUD/2)) / TC_BAUD) 
 
 HardwareSerial SerialPi(1);
 static QueueHandle_t qJobs;
 struct Job { tc::TcFrames f; };
 
-// 論理レベル関数：送信中のビットタイミング生成
+static uint32_t droppedCount = 0;
+static uint32_t lastReportTime = 0;
+
 void writeLevel(bool logical) {
   bool out = TC_INVERT_LOGIC ? !logical : logical;
   digitalWrite(PIN_TC_TX, out ? HIGH : LOW);
   delayMicroseconds(BIT_US);
 }
 
-// 9bitフレーム：start(0) + 8data + 1cmd + stop(1)
 void send9bitFrame(uint8_t data, bool isCmd) {
-  writeLevel(false); // Start
+  writeLevel(false); 
   for (int i = 0; i < 8; i++) writeLevel((data >> i) & 0x01);
-  writeLevel(isCmd); // 9th bit
-  writeLevel(true);  // Stop
-  writeLevel(true);  // 1bit Idle Gap
+  writeLevel(isCmd); 
+  writeLevel(true);  
+  writeLevel(true);  
 }
 
-/* --- Core 1: TC送信タスク --- */
 void taskTC(void* pv) {
   Job j;
   while (true) {
     if (xQueueReceive(qJobs, &j, portMAX_DELAY)) {
-      // 送信前アイドル（論理HIGH）
       for (int i=0; i<3; i++) writeLevel(true); 
-      
       for (int i=0; i<tc::TC_DATA_LEN; i++) send9bitFrame(j.f.data[i], false);
       send9bitFrame(j.f.cmd, true); 
-      
-      Serial.printf("[TcTX] CMD:0x%02X Sent.\n", j.f.cmd);
+      #if DEBUG_TC_TX
+      Serial.printf("[TcTX] Sent CMD:0x%02X\n", j.f.cmd);
+      #endif
     }
   }
 }
 
-/* --- Core 0: Pi受信タスク --- */
 void taskPi(void* pv) {
   uint8_t ring[tc::RING_SIZE]{};
   uint8_t head = 0;
   uint64_t lastSig = 0;
   while (true) {
     while (SerialPi.available()) {
-      ring[head] = SerialPi.read();
-      head = (head + 1) & (tc::RING_SIZE - 1);
+      ring[head] = (uint8_t)SerialPi.read();
+      head = (uint8_t)((head + 1) & (tc::RING_SIZE - 1));
       if (const tc::Packet* p = tc::PacketFactory::tryParse(ring, head, lastSig)) {
         Job j; j.f = tc::toTcFrames(*p);
-        xQueueSend(qJobs, &j, 0);
-        
-        Serial.printf("[PiRX] Len:%d CMD:0x%02X %s\n", 
-                      p->len, p->cmd(), j.f.isTruncated ? "(TRUNCATED)" : "");
+        if (xQueueSend(qJobs, &j, 0) != pdTRUE) {
+          droppedCount++;
+        } else {
+          Serial.printf("[PiRX] Len:%d CMD:0x%02X %s\n", 
+                        p->len, p->cmd(), j.f.isTruncated ? "(TRUNC)" : "");
+        }
       }
     }
-    vTaskDelay(1);
+    uint32_t now = millis();
+    if (now - lastReportTime > 1000) {
+      if (droppedCount > 0) {
+        Serial.printf("[WARN] Dropped %u packets in 1s.\n", droppedCount);
+        droppedCount = 0;
+      }
+      lastReportTime = now;
+    }
+    vTaskDelay(1); 
   }
 }
 
 void setup() {
   Serial.begin(115200);
-  delay(1000); // シリアルモニタ接続待ち
+  delay(1000); 
 
-  Serial.println("\n--- Level Shifter Initialization & Verification ---");
+  Serial.println("\n--- [System Initialization v1.2.5-Final] ---");
 
-  // 1. レベルシフタ用ピンの初期化
-  pinMode(PIN_OE1, OUTPUT);  digitalWrite(PIN_OE1, LOW);   // 有効化
-  pinMode(PIN_DIR1, OUTPUT); digitalWrite(PIN_DIR1, HIGH); // ESP32 -> TC
-  pinMode(PIN_OE2, OUTPUT);  digitalWrite(PIN_OE2, LOW);   // 有効化
-  pinMode(PIN_DIR2, OUTPUT); digitalWrite(PIN_DIR2, LOW);  // TC -> ESP32
+  pinMode(PIN_OE1, OUTPUT);  digitalWrite(PIN_OE1, LOW);
+  pinMode(PIN_DIR1, OUTPUT); digitalWrite(PIN_DIR1, HIGH);
+  pinMode(PIN_OE2, OUTPUT);  digitalWrite(PIN_OE2, LOW);
+  pinMode(PIN_DIR2, OUTPUT); digitalWrite(PIN_DIR2, LOW);
 
-  // 2. ピン状態の再取得 (digitalReadによる確認)
-  bool st_oe1  = digitalRead(PIN_OE1);
-  bool st_dir1 = digitalRead(PIN_DIR1);
-  bool st_oe2  = digitalRead(PIN_OE2);
-  bool st_dir2 = digitalRead(PIN_DIR2);
+  #if USE_TC_RX_PULLUP
+    pinMode(PIN_TC_RX, INPUT_PULLUP);
+  #else
+    pinMode(PIN_TC_RX, INPUT);
+  #endif
 
-  // 3. ログ出力
-  Serial.println("[CHECK] Current Pin States (Logic Level):");
-  Serial.printf("  - PIN_OE1  (GPIO %d): %s (Expected: LOW)\n",  PIN_OE1,  st_oe1  ? "HIGH" : "LOW");
-  Serial.printf("  - PIN_DIR1 (GPIO %d): %s (Expected: HIGH)\n", PIN_DIR1, st_dir1 ? "HIGH" : "LOW");
-  Serial.printf("  - PIN_OE2  (GPIO %d): %s (Expected: LOW)\n",  PIN_OE2,  st_oe2  ? "HIGH" : "LOW");
-  Serial.printf("  - PIN_DIR2 (GPIO %d): %s (Expected: LOW)\n",  PIN_DIR2, st_dir2 ? "HIGH" : "LOW");
+  Serial.println("[CHECK] Software Internal Pin Logic State:");
+  bool results[] = {
+    digitalRead(PIN_OE1) == LOW, digitalRead(PIN_DIR1) == HIGH,
+    digitalRead(PIN_OE2) == LOW, digitalRead(PIN_DIR2) == LOW
+  };
+  const char* labels[] = {"OE1(LOW)", "DIR1(HIGH)", "OE2(LOW)", "DIR2(LOW)"};
+  for(int i=0; i<4; i++) {
+    Serial.printf("  - %-12s: %s\n", labels[i], results[i] ? "OK" : "!! FAIL !!");
+  }
 
-  // 4. TC TXピンの初期化
   pinMode(PIN_TC_TX, OUTPUT);
   digitalWrite(PIN_TC_TX, TC_INVERT_LOGIC ? LOW : HIGH);
-  Serial.printf("[INIT] TC TX (GPIO %d) set to IDLE (Invert:%s)\n", 
-                PIN_TC_TX, TC_INVERT_LOGIC ? "ON" : "OFF");
+  Serial.printf("[INIT] TC TX IDLE (GPIO %d, BIT_US:%lu)\n", PIN_TC_TX, (unsigned long)BIT_US);
 
-  // 通信開始
   SerialPi.begin(9600, SERIAL_8N1, UART_PI_RX, UART_PI_TX);
-  qJobs = xQueueCreate(8, sizeof(Job));
+  qJobs = xQueueCreate(16, sizeof(Job)); // キューを16へ拡張
+  if (qJobs == NULL) {
+    Serial.println("[CRITICAL] Queue Create Failed!");
+    while(1) { delay(1000); }
+  }
 
-  // タスク生成 (Core分離)
   xTaskCreatePinnedToCore(taskPi, "Pi", 4096, NULL, 2, NULL, 0);
   xTaskCreatePinnedToCore(taskTC, "TC", 4096, NULL, 5, NULL, 1);
 
-  Serial.println("---------------------------------------------------");
-  Serial.println("ESP32 Fusion v1.2.1 READY.");
+  Serial.println("--- [READY] v1.2.5-Final Running ---\n");
 }
 
 void loop() { vTaskDelay(portMAX_DELAY); }
