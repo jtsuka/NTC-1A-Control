@@ -1,3 +1,4 @@
+# NTC_1A_serial_comm.py - v1.3.2 clean
 import threading
 import time
 import serial
@@ -5,16 +6,17 @@ import NTC_1A_utils
 
 PORT = "/dev/serial0"
 BAUD = 9600
+
 ser = None
 _running = False
 _thread = None
-[cite_start]USE_LSB = False # [cite: 15-16]
+
+USE_LSB = False  # Fusion仕様に合わせ通常False
 
 def reverse_bits(byte: int) -> int:
     return int(f"{byte:08b}"[::-1], 2)
 
 def checksum7(data) -> int:
-    """7-bit CS: ESP32 Fusion v1.2.5 整合版"""
     return sum(data) & 0x7F
 
 def build_packet(payload):
@@ -28,7 +30,8 @@ def open_port():
     NTC_1A_utils.out(f"[INFO] Port open: {PORT}")
 
 def send_packet(payload):
-    if not ser or not ser.is_open: return False
+    if not ser or not ser.is_open:
+        return False
     pkt = build_packet(payload)
     tx = [reverse_bits(b) for b in pkt] if USE_LSB else pkt
     try:
@@ -37,7 +40,8 @@ def send_packet(payload):
         NTC_1A_utils.out(f"[TX] {' '.join(f'{x:02X}' for x in tx)}")
         return True
     except Exception as e:
-        NTC_1A_utils.out(f"[TX ERROR] {e}"); return False
+        NTC_1A_utils.out(f"[TX ERROR] {e}")
+        return False
 
 def _rx_loop():
     global _running
@@ -54,17 +58,23 @@ def _rx_loop():
                             if pkt[length - 1] == (sum(pkt[:length - 1]) & 0x7F):
                                 NTC_1A_utils.out(f"[RX OK] {' '.join(f'{x:02X}' for x in pkt)}")
                                 del buffer[:length]
-                                matched = True; break
-                    if not matched: buffer.pop(0)
-            else: time.sleep(0.02)
+                                matched = True
+                                break
+                    if not matched:
+                        buffer.pop(0)
+            else:
+                time.sleep(0.02)
         except Exception as e:
-            if _running: NTC_1A_utils.out(f"[RX ERR] {e}")
+            if _running:
+                NTC_1A_utils.out(f"[RX ERR] {e}")
             time.sleep(0.1)
 
 def start_serial_thread(port=None):
     global PORT, _running, _thread
-    if port: PORT = port
-    if _running: return
+    if port:
+        PORT = port
+    if _running:
+        return
     try:
         open_port()
         _running = True
@@ -78,10 +88,16 @@ def stop_serial():
     global _running, _thread, ser
     _running = False
     try:
-        if _thread and _thread.is_alive(): _thread.join(timeout=0.3)
+        if _thread and _thread.is_alive():
+            _thread.join(timeout=0.3)
+    except Exception:
+        pass
+    try:
         if ser and ser.is_open:
             ser.close()
             NTC_1A_utils.out("[INFO] Serial port closed.")
     except Exception as e:
         NTC_1A_utils.out(f"[ERR] Close failed: {e}")
-    finally: ser = None; _thread = None
+    finally:
+        ser = None
+        _thread = None
