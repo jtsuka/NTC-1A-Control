@@ -3,55 +3,108 @@
 #include "tc_packet.hpp"
 
 // ========================================================
-// 【決定版】XIAO ESP32-S3 ピンアサイン (GPIO番号直指定)
+// 【完全固定】GPIO ピンアサイン (XIAO視点の命名に統一)
 // ========================================================
-#define PIN_OE1    5   // OE1  -> LOWで有効 (秋月基板 1OE)
-#define PIN_DIR1   6   // DIR1 -> HIGHで A->B (秋月基板 1DIR)
-#define PIN_OE2    7   // OE2  -> LOWで有効 (秋月基板 2OE)
-#define PIN_DIR2   8   // DIR2 -> LOWで B->A (秋月基板 2DIR)
-#define PIN_TC_TX  43  // TXA  -> Nanoへの送信 (9bit bit-bang用)
-#define PIN_TC_RX  44  // RXA  -> Nanoからの受信 (今回検査用にトグル可能)
-#define PIN_PI_TX  2   // PI_TX -> PiのTXを受けるピン (XIAOのRX)
-#define PIN_PI_RX  1   // PI_RX -> PiのRXへ送るピン (今回検査用にトグル可能)
+// --- レベルシフタ制御系 ---
+#define PIN_LSHIFT_OE1    5   // 1OE: LOWで有効 (Bank1: XIAO->Nano)
+#define PIN_LSHIFT_DIR1   6   // 1DIR: HIGHで A->B 方向固定
+#define PIN_LSHIFT_OE2    7   // 2OE: LOWで有効 (Bank2: Nano->XIAO)
+#define PIN_LSHIFT_DIR2   8   // 2DIR: LOWで B->A 方向固定
 
-#define TC_INVERT_LOGIC false 
-#define TC_BAUD 300
-#define BIT_US ((1000000UL + (TC_BAUD/2)) / TC_BAUD) 
+// --- 信号通信系 ---
+#define PIN_TC_UART_TX    43  // Nanoへの送信 (GPIO43)
+#define PIN_TC_UART_RX    44  // Nanoからの受信 (GPIO44)
+#define PIN_PI_UART_RX    2   // Piからの信号受信 (Pi TXから入力)
+#define PIN_PI_UART_TX    1   // Piへの信号送信 (Pi RXへ出力)
+
+// --- 通信パラメータ ---
+#define TC_INVERT_LOGIC   false 
+#define TC_BAUD           300
+#define BIT_US            ((1000000UL + (TC_BAUD/2)) / TC_BAUD) 
 
 HardwareSerial SerialPi(1);
-static QueueHandle_t qJobs;
+static QueueHandle_t qToTC; // Pi -> TC 送信待ち
+static QueueHandle_t qToPi; // TC -> Pi 転送待ち (双方向用)
+
 struct Job { tc::TcFrames f; };
 
-// 9bit UART用の信号出力
+// ========================================================
+// 9bit UART 送受信処理 (ソフトウェア・ビットバン)
+// ========================================================
+
+// 1ビット送信 (クリティカルセクションでジッタ抑制)
 void writeLevel(bool logical) {
   bool out = TC_INVERT_LOGIC ? !logical : logical;
-  digitalWrite(PIN_TC_TX, out ? HIGH : LOW);
+  digitalWrite(PIN_TC_UART_TX, out ? HIGH : LOW);
   delayMicroseconds(BIT_US);
 }
 
-// 9bitフレーム送信
+// 9bitフレーム送信 (5データ + 1コマンド)
 void send9bitFrame(uint8_t data, bool isCmd) {
+  portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
+  portENTER_CRITICAL(&mux);
   writeLevel(false); // Start
   for (int i = 0; i < 8; i++) writeLevel((data >> i) & 0x01);
   writeLevel(isCmd); // 9th bit
   writeLevel(true);  // Stop
   writeLevel(true);  // Guard
+  portEXIT_CRITICAL(&mux);
 }
 
-// Nano側送信タスク (Core 1)
-void taskTC(void* pv) {
+// 9bitフレーム受信 (簡易実装: スタートビット検出後にサンプリング)
+// ※実運用ではタイマー割り込みが理想ですが、300bpsならこれでも追従可能です
+bool read9bitFrame(uint8_t &data, bool &isCmd) {
+  if (digitalRead(PIN_TC_UART_RX) == HIGH) return false; // アイドル
+
+  uint32_t start = micros();
+  delayMicroseconds(BIT_US / 2); // スタートビットの中央まで待機
+  
+  if (digitalRead(PIN_TC_UART_RX) != LOW) return false; // 偽のスタートビット
+
+  data = 0;
+  for (int i = 0; i < 8; i++) {
+    delayMicroseconds(BIT_US);
+    if (digitalRead(PIN_TC_UART_RX)) data |= (1 << i);
+  }
+  delayMicroseconds(BIT_US);
+  isCmd = digitalRead(PIN_TC_UART_RX);
+  
+  delayMicroseconds(BIT_US); // ストップビット分待機
+  return true;
+}
+
+// ========================================================
+// FreeRTOS タスク
+// ========================================================
+
+// Core 1: Nanoへの送信タスク
+void taskTCSend(void* pv) {
   Job j;
   while (true) {
-    if (xQueueReceive(qJobs, &j, portMAX_DELAY)) {
-      for (int i=0; i<3; i++) writeLevel(true); 
+    if (xQueueReceive(qToTC, &j, portMAX_DELAY)) {
+      for (int i=0; i<3; i++) writeLevel(true); // プリアンブル
       for (int i=0; i<tc::TC_DATA_LEN; i++) send9bitFrame(j.f.data[i], false);
       send9bitFrame(j.f.cmd, true); 
     }
   }
 }
 
-// Raspberry Pi側受信タスク (Core 0)
-void taskPi(void* pv) {
+// Core 1: Nanoからの受信・Piへの転送タスク
+void taskTCRead(void* pv) {
+  uint8_t data;
+  bool isCmd;
+  while (true) {
+    if (read9bitFrame(data, isCmd)) {
+      // 受信した生データをPiへそのまま転送 (必要ならパケット化)
+      SerialPi.write(data);
+      if (isCmd) SerialPi.write(0xFF); // コマンドフラグ代わりのマーカーなど
+    }
+    vTaskDelay(1);
+  }
+}
+
+// Core 0: Piからの受信解析
+void taskPiRead(void* pv) {
   uint8_t ring[tc::RING_SIZE]{};
   uint8_t head = 0;
   uint64_t lastSig = 0;
@@ -61,60 +114,48 @@ void taskPi(void* pv) {
       head = (uint8_t)((head + 1) & (tc::RING_SIZE - 1));
       if (const tc::Packet* p = tc::PacketFactory::tryParse(ring, head, lastSig)) {
         Job j; j.f = tc::toTcFrames(*p);
-        xQueueSend(qJobs, &j, 0);
+        // キューが一杯なら10ms待機して確実に送る
+        xQueueSend(qToTC, &j, pdMS_TO_TICKS(10));
       }
     }
     vTaskDelay(1); 
   }
 }
 
+// ========================================================
+// メイン設定
+// ========================================================
 void setup() {
   Serial.begin(115200);
-  delay(2000); 
-  Serial.println("\n--- [System Initialization v1.5.0-FINAL] ---");
+  delay(1000); 
 
-  // --- レベルシフタ制御ピンの初期設定 ---
-  // 秋月基板のOEはLOWで有効（門が開く）です
-  pinMode(PIN_OE1, OUTPUT);  digitalWrite(PIN_OE1, LOW);  // OE1有効
-  pinMode(PIN_OE2, OUTPUT);  digitalWrite(PIN_OE2, LOW);  // OE2有効
+  // --- レベルシフタ制御設定 ---
+  // 起動時のノイズ回避のため、まずはOEをHIGH(無効)にしてから方向を固める
+  pinMode(PIN_LSHIFT_OE1, OUTPUT);  digitalWrite(PIN_LSHIFT_OE1, HIGH);
+  pinMode(PIN_LSHIFT_OE2, OUTPUT);  digitalWrite(PIN_LSHIFT_OE2, HIGH);
 
-  // DIRA: HIGH(A->B) / DIRB: LOW(B->A)
-  pinMode(PIN_DIR1, OUTPUT); digitalWrite(PIN_DIR1, HIGH); 
-  pinMode(PIN_DIR2, OUTPUT); digitalWrite(PIN_DIR2, LOW);  
+  pinMode(PIN_LSHIFT_DIR1, OUTPUT); digitalWrite(PIN_LSHIFT_DIR1, HIGH); // A->B [cite: 381-382]
+  pinMode(PIN_LSHIFT_DIR2, OUTPUT); digitalWrite(PIN_LSHIFT_DIR2, LOW);  // B->A [cite: 385-386]
 
-  // --- 信号ピンの初期設定 ---
-  pinMode(PIN_TC_TX, OUTPUT);
-  digitalWrite(PIN_TC_TX, HIGH); // アイドルHIGH
+  // 方向が安定してからOEを有効化 [cite: 388, 391]
+  delay(100); 
+  digitalWrite(PIN_LSHIFT_OE1, LOW); 
+  digitalWrite(PIN_LSHIFT_OE2, LOW); 
 
-  // 今回のデバッグ用トグル対象ピンを出力に設定
-  pinMode(PIN_TC_RX, OUTPUT);
-  pinMode(PIN_PI_RX, OUTPUT);
+  // --- 信号ピン設定 ---
+  pinMode(PIN_TC_UART_TX, OUTPUT); digitalWrite(PIN_TC_UART_TX, HIGH);
+  pinMode(PIN_TC_UART_RX, INPUT);
 
-  // --- Piとの通信開始 (XIAO RX = PIN_PI_TX) ---
-  SerialPi.begin(9600, SERIAL_8N1, PIN_PI_TX, -1);
+  // PiとのUART通信 (命名整理版)
+  SerialPi.begin(9600, SERIAL_8N1, PIN_PI_UART_RX, PIN_PI_UART_TX);
   
-  qJobs = xQueueCreate(16, sizeof(Job));
+  qToTC = xQueueCreate(16, sizeof(Job));
   
-  xTaskCreatePinnedToCore(taskPi, "Pi", 4096, NULL, 2, NULL, 0);
-  xTaskCreatePinnedToCore(taskTC, "TC", 4096, NULL, 5, NULL, 1);
+  xTaskCreatePinnedToCore(taskPiRead, "PiRead", 4096, NULL, 2, NULL, 0);
+  xTaskCreatePinnedToCore(taskTCSend, "TCSend", 4096, NULL, 5, NULL, 1);
+  xTaskCreatePinnedToCore(taskTCRead, "TCRead", 4096, NULL, 5, NULL, 1);
 
-  Serial.println("--- [READY] PIN_FIXED_GPIO_MAPPING ---");
+  Serial.println("--- [Bridge v2.1.0] Bi-Directional Ready ---");
 }
 
-void loop() {
-  // 通信テスト: 3秒おきにパケットを Nano(D5/GPIO43) へ送信
-  delay(3000);
-  Serial.println("[TEST] Sending Frame to Nano (GPIO43)...");
-  
-  // 検査用のトグル動作 (RXAとPI_RXを交互に反転)
-  static bool toggle = false;
-  toggle = !toggle;
-  digitalWrite(PIN_TC_RX, toggle ? HIGH : LOW);
-  digitalWrite(PIN_PI_RX, toggle ? LOW : HIGH);
-
-  Job j;
-  j.f.data[0]=0xF0; j.f.data[1]=0x01; j.f.data[2]=0x02;
-  j.f.data[3]=0x03; j.f.data[4]=0x04; j.f.data[5]=0x05;
-  j.f.cmd = 0xF0;
-  xQueueSend(qJobs, &j, 0);
-}
+void loop() { vTaskDelay(1000); }
