@@ -1,91 +1,108 @@
 /*
- * TC Bridge (XIAO ESP32-S3) v2.2.1 "FINAL_FIXED"
- * ---------------------------------------------------------------------------
- * 【接続構成】
- * 1. Pi <-> XIAO: HW UART (9600bps, 8N1)
- * - Pi TX  -> GPIO 44 (XIAO RX)
- * - Pi RX <- GPIO 43 (XIAO TX)
- * 2. Nano Every <-> XIAO: 9bit Software UART (300bps)
- * - Nano RX <- レベルシフタB側 <- GPIO 1 (XIAO TX)
- * - Nano TX  -> レベルシフタB側 -> GPIO 2 (XIAO RX)
- * 3. レベルシフタ(AE-LLCNV-LVCH16T245) 制御
- * - GPIO 5, 6, 7, 8
- * ---------------------------------------------------------------------------
+ * TC Bridge (XIAO ESP32-S3) v2.3.1 "HEADER_FUSED_FINAL"
+ * ------------------------------------------------------------
+ * 【配線（固定）】
+ *  Pi <-> XIAO : HW UART 9600bps
+ *    Pi TX  -> GPIO44 (XIAO RX)
+ *    Pi RX <- GPIO43 (XIAO TX)
+ *
+ *  Nano Every(TC側) <-> XIAO : 9bit BitBang 300bps
+ *    XIAO TX (GPIO1) -> LevelShifter -> Nano RX
+ *    Nano TX -> LevelShifter -> XIAO RX (GPIO2)
+ *
+ *  LevelShifter(AE-LLCNV-LVCH16T245) 制御（固定）
+ *    OE1=GPIO5 LOW enable / DIR1=GPIO6 HIGH (A->B) : XIAO->Nano
+ *    OE2=GPIO7 LOW enable / DIR2=GPIO8 LOW  (B->A) : Nano->XIAO
+ *
+ * 【tc_packet.hpp 整合ポイント】
+ *  - tc::PI_LEN_SEND = 6 （末尾1バイトがchecksum）
+ *  - toTcFrames() は data[0..4]=buf[1..5] なので
+ *      data[0..3]=実データ4バイト
+ *      data[4]=checksum（cmd+data0..3の下位7bit）
+ *  - よって TCへは「data5本（最後checksum）＋cmd」の9bitで送るのが正解
  */
 
 #include <Arduino.h>
 #include <HardwareSerial.h>
+#include "tc_packet.hpp"
 
-// ========================================================
-// 1. ピンアサイン定義 (GPIO番号直指定)
-// ===================== ===================================
-// 秋月レベルシフタ制御ピン [cite: 49-91, 112]
-static constexpr int PIN_LSHIFT_OE1  = 5;  // 1OE: Bank1(XIAO->Nano)有効化。LOWで通電 [cite: 387-388]
-static constexpr int PIN_LSHIFT_DIR1 = 6;  // 1DIR: Bank1の方向。HIGHで A(3.3V)からB(5V)へ [cite: 381-382]
-static constexpr int PIN_LSHIFT_OE2  = 7;  // 2OE: Bank2(Nano->XIAO)有効化。LOWで通電 [cite: 390-391]
-static constexpr int PIN_LSHIFT_DIR2 = 8;  // 2DIR: Bank2の方向。LOWで B(5V)からA(3.3V)へ [cite: 384-386]
+// =====================
+// ピン（固定）
+// =====================
+static constexpr int PIN_LSHIFT_OE1  = 5;
+static constexpr int PIN_LSHIFT_DIR1 = 6;
+static constexpr int PIN_LSHIFT_OE2  = 7;
+static constexpr int PIN_LSHIFT_DIR2 = 8;
 
-// Nano Every (TC側) 通信ピン [cite: 172-177, 247-248]
-static constexpr int PIN_TC_TX = 1;        // XIAOからNanoへ送る信号 (300bps/9bit)
-static constexpr int PIN_TC_RX = 2;        // NanoからXIAOへ受ける信号 (300bps/9bit)
+static constexpr int PIN_TC_TX = 1;   // XIAO -> Nano
+static constexpr int PIN_TC_RX = 2;   // Nano -> XIAO
 
-// Raspberry Pi 通信ピン (Hardware UART)
-static constexpr int PIN_PI_UART_RX = 44;  // XIAOの受信口 (PiのTXを接続)
-static constexpr int PIN_PI_UART_TX = 43;  // XIAOの送信口 (PiのRXを接続)
+static constexpr int PIN_PI_UART_RX = 44; // XIAO RX  (Pi TX)
+static constexpr int PIN_PI_UART_TX = 43; // XIAO TX  (Pi RX)
 
-// ========================================================
-// 2. 通信定数
-// ========================================================
-static constexpr bool     TC_INVERT_LOGIC = false; // 論理反転(74HC04等)がない場合はfalse
-static constexpr uint32_t TC_BAUD         = 300;   // Nano側の特殊低速レート
-static constexpr uint32_t BIT_US          = (1000000UL + (TC_BAUD / 2)) / TC_BAUD; // 1ビット長(約3333us)
+// =====================
+// 通信定数
+// =====================
+static constexpr bool     TC_INVERT_LOGIC = false; // 反転回路があるなら true
+static constexpr uint32_t TC_BAUD = 300;
+static constexpr uint32_t BIT_US  = (1000000UL + (TC_BAUD / 2)) / TC_BAUD;
 
-static constexpr uint32_t PI_BAUD         = 9600;  // Pi側の標準レート
-static constexpr uint8_t  PI_PKT_LEN      = 6;     // Piとの1パケット長(CMD+DATA5)
-static constexpr uint8_t  TC_DATA_LEN     = 5;     // 9bitフレームのデータ構成数
+static constexpr uint32_t PI_BAUD = 9600;
 
-// ========================================================
-// 3. FreeRTOS オブジェクト
-// ========================================================
-HardwareSerial SerialPi(1); // Pi通信用シリアル(UART1)
-static QueueHandle_t qToTC = nullptr; // Piから受信したジョブを送信タスクへ渡す
-static QueueHandle_t qToPi = nullptr; // TCから受信したデータを転送タスクへ渡す
+// =====================
+// FreeRTOS / UART
+// =====================
+HardwareSerial SerialPi(1);
 
-struct JobTxToTC { uint8_t cmd; uint8_t data[TC_DATA_LEN]; };
-struct JobTxToPi { uint8_t b[PI_PKT_LEN]; }; // Piへ送る6バイト形式 [cmd, d0, d1, d2, d3, d4]
+static QueueHandle_t qToTC = nullptr; // Pi -> TC (tc::TcFrames)
+static QueueHandle_t qToPi = nullptr; // TC -> Pi (tc::Packet)
 
-static portMUX_TYPE gMux = portMUX_INITIALIZER_UNLOCKED; // ビットタイミング保護用
+static portMUX_TYPE gMux = portMUX_INITIALIZER_UNLOCKED;
 
-// ========================================================
-// 4. 通信補助関数
-// ========================================================
+// =====================
+// BitBang補助
+// =====================
+static inline bool applyInvert(bool logical) {
+  return TC_INVERT_LOGIC ? !logical : logical;
+}
+
 static inline void writeLevel(bool logicalHigh) {
-  const bool out = TC_INVERT_LOGIC ? !logicalHigh : logicalHigh;
+  const bool out = applyInvert(logicalHigh);
   digitalWrite(PIN_TC_TX, out ? HIGH : LOW);
   delayMicroseconds(BIT_US);
 }
 
 static inline bool readLevel() {
   const bool raw = (digitalRead(PIN_TC_RX) == HIGH);
-  return TC_INVERT_LOGIC ? !raw : raw;
+  return applyInvert(raw);
 }
 
-// 9bitフレーム送信 (スタートビット + データ8bit + モード1bit + ストップビット)
+// 9bit送信（Start + 8bit + 9th + Stop + Guard）
 static void send9bitFrame(uint8_t data, bool isCmd) {
-  portENTER_CRITICAL(&gMux); // 割り込みによるタイミングのズレを防ぐ
-  writeLevel(false); // Start bit
+  // 300bpsはフレームが長いのでクリティカルも長くなる点に注意。
+  // まずはタイミング優先で固定（不安定なら次にRMT化が有効）。
+  portENTER_CRITICAL(&gMux);
+
+  writeLevel(false); // Start
   for (int i = 0; i < 8; i++) writeLevel(((data >> i) & 0x01) != 0);
-  writeLevel(isCmd); // 9th bit (0=Data, 1=Command)
-  writeLevel(true);  // Stop bit
+  writeLevel(isCmd); // 9th
+  writeLevel(true);  // Stop
   writeLevel(true);  // Guard
+
   portEXIT_CRITICAL(&gMux);
 }
 
-// 9bitフレーム受信
+// 9bit受信（簡易：スタート検出→中央サンプル）
+// 成功時 true（Stop=HIGH確認済）
 static bool read9bitFrame(uint8_t &data, bool &isCmd) {
-  if (readLevel() == true) return false; // アイドル状態(HIGH)
-  delayMicroseconds(BIT_US / 2); // スタートビットの中央まで待機
-  if (readLevel() != false) return false; // ノイズ判定
+  // IdleはHIGH
+  if (readLevel() == true) return false;
+
+  // Start中央へ
+  delayMicroseconds(BIT_US / 2);
+  if (readLevel() != false) return false; // ノイズ
+
+  // bit0 を 1.5bit位置で読む
   delayMicroseconds(BIT_US);
 
   data = 0;
@@ -93,116 +110,194 @@ static bool read9bitFrame(uint8_t &data, bool &isCmd) {
     if (readLevel()) data |= (1U << i);
     delayMicroseconds(BIT_US);
   }
-  isCmd = readLevel(); // 9th bitの読み取り
+
+  // 9th
+  isCmd = readLevel();
   delayMicroseconds(BIT_US);
-  return readLevel(); // ストップビットがHIGHなら成功
+
+  // Stop（HIGH必須）
+  const bool stop = readLevel();
+  if (!stop) return false;
+
+  // Guard分進める
+  delayMicroseconds(BIT_US);
+  return true;
 }
 
-// ========================================================
-// 5. 並列タスク定義
-// ========================================================
+// =====================
+// タスク
+// =====================
 
-// 【Core 1】Nano Everyへの送信 (最高優先度)
+// Core1: TC(Nano)へ送信（Pi->TC）
 static void taskTCSend(void *pv) {
-  JobTxToTC j{};
+  tc::TcFrames f{};
   while (true) {
-    if (xQueueReceive(qToTC, &j, portMAX_DELAY) == pdTRUE) {
-      for (int i = 0; i < 3; i++) writeLevel(true); // プリアンブル
-      for (int i = 0; i < TC_DATA_LEN; i++) send9bitFrame(j.data[i], false);
-      send9bitFrame(j.cmd, true);
+    if (xQueueReceive(qToTC, &f, portMAX_DELAY) == pdTRUE) {
+      // Markのプリアンブル
+      for (int i = 0; i < 3; i++) writeLevel(true);
+
+      // data[0..4]（最後はchecksum）を 9th=0 で送る
+      for (int i = 0; i < tc::TC_DATA_LEN; i++) {
+        send9bitFrame(f.data[i], false);
+      }
+
+      // cmd を 9th=1 で送る
+      send9bitFrame(f.cmd, true);
     }
   }
 }
 
-// 【Core 0】Piからの受信解析
+// Core0: Pi受信（PacketFactoryで厳密パース）→ qToTC
 static void taskPiRx(void *pv) {
-  uint8_t buf[PI_PKT_LEN]{};
-  uint8_t idx = 0;
-  uint32_t lastMs = 0;
+  uint8_t ring[tc::RING_SIZE]{};
+  uint8_t head = 0;
+  uint64_t lastSig = 0;
+
   while (true) {
     while (SerialPi.available() > 0) {
-      buf[idx++] = (uint8_t)SerialPi.read();
-      lastMs = millis();
-      if (idx >= PI_PKT_LEN) {
-        JobTxToTC j{};
-        j.cmd = buf[0];
-        for (int i = 0; i < TC_DATA_LEN; i++) j.data[i] = buf[1 + i];
-        xQueueSend(qToTC, &j, pdMS_TO_TICKS(10));
-        idx = 0;
+      const int v = SerialPi.read();
+      if (v < 0) break;
+
+      ring[head] = (uint8_t)v;
+      head = (uint8_t)((head + 1) & (tc::RING_SIZE - 1));
+
+      if (const tc::Packet* p = tc::PacketFactory::tryParse(ring, head, lastSig)) {
+        // 6/8/12 のいずれかで checksum が合ったパケットだけ来る
+        tc::TcFrames f = tc::toTcFrames(*p);
+
+        // 8/12だった場合は追加情報が捨てられる（必要なら将来拡張）
+        if (f.isTruncated) {
+          // 必要ならデバッグログ（うるさければコメントアウト）
+          // Serial.printf("[PiRx] truncated len=%u\n", p->len);
+        }
+
+        (void)xQueueSend(qToTC, &f, pdMS_TO_TICKS(10));
       }
     }
-    if (idx > 0 && (millis() - lastMs) > 20) idx = 0; // タイムアウトでバッファクリア
     vTaskDelay(1);
   }
 }
 
-// 【Core 0】Nano Everyからの受信パケット組み立て
+// Core0: TC(Nano)受信 → 6バイト（PI_LEN_SEND）でパケット化 → qToPi
 static void taskTCRx(void *pv) {
-  uint8_t data[TC_DATA_LEN]{};
-  uint8_t n = 0; uint8_t cmd = 0; bool haveCmd = false;
+  uint8_t data[tc::TC_DATA_LEN]{};
+  uint8_t n = 0;
+  uint8_t cmd = 0;
+  bool haveCmd = false;
+
   uint32_t lastUs = 0;
+
   while (true) {
-    uint8_t b; bool isCmd;
+    uint8_t b = 0;
+    bool isCmd = false;
+
     if (read9bitFrame(b, isCmd)) {
       lastUs = micros();
-      if (!isCmd) { if (n < TC_DATA_LEN) data[n++] = b; }
-      else { cmd = b; haveCmd = true; }
-      if (haveCmd && n == TC_DATA_LEN) {
-        JobTxToPi out{}; out.b[0] = cmd;
-        for (int i = 0; i < TC_DATA_LEN; i++) out.b[1 + i] = data[i];
-        xQueueSend(qToPi, &out, pdMS_TO_TICKS(20));
-        n = 0; haveCmd = false;
+
+      if (!isCmd) {
+        if (n < tc::TC_DATA_LEN) {
+          data[n++] = b;
+        } else {
+          // データが多すぎる → 同期崩れ扱いでリセット
+          n = 0;
+          haveCmd = false;
+        }
+      } else {
+        cmd = b;
+        haveCmd = true;
       }
+
+      // DATA5本 + CMD が揃ったときだけ Piへ返す
+      if (haveCmd && n == tc::TC_DATA_LEN) {
+        tc::Packet p{};
+        p.len = tc::PI_LEN_SEND; // 6固定
+
+        // buf[0]=cmd
+        p.buf[0] = cmd;
+
+        // buf[1..5]=data[0..4]（data[4]はchecksum想定）
+        for (int i = 0; i < tc::TC_DATA_LEN; i++) {
+          p.buf[1 + i] = data[i];
+        }
+
+        // 念のため checksum を再計算して buf[5] を整合させる
+        // （data[4]が既にchecksumのはずだが、ノイズで崩れた場合の安全策）
+        p.buf[tc::PI_LEN_SEND - 1] = tc::checksum7(p.buf, tc::PI_LEN_SEND - 1);
+
+        (void)xQueueSend(qToPi, &p, pdMS_TO_TICKS(20));
+
+        // 次に備えてリセット
+        n = 0;
+        haveCmd = false;
+      }
+
     } else {
-      if ((n > 0 || haveCmd) && (micros() - lastUs) > 150000UL) { n = 0; haveCmd = false; }
+      // 途中で途切れたら破棄（同期回復）
+      if ((n > 0 || haveCmd) && lastUs != 0) {
+        if ((uint32_t)(micros() - lastUs) > 150000UL) { // 150ms
+          n = 0;
+          haveCmd = false;
+        }
+      }
       vTaskDelay(1);
     }
   }
 }
 
-// 【Core 0】Piへの転送送信
+// Core0: Pi送信（SerialPiへのwriteはここ1本に固定）
 static void taskPiTx(void *pv) {
-  JobTxToPi out{};
+  tc::Packet p{};
   while (true) {
-    if (xQueueReceive(qToPi, &out, portMAX_DELAY) == pdTRUE) {
-      SerialPi.write(out.b, PI_PKT_LEN);
+    if (xQueueReceive(qToPi, &p, portMAX_DELAY) == pdTRUE) {
+      SerialPi.write(p.buf, p.len);
     }
   }
 }
 
-// ========================================================
-// 6. メイン設定
-// ========================================================
+// =====================
+// setup / loop
+// =====================
 void setup() {
   Serial.begin(115200);
-  delay(500);
-  Serial.println("\n--- [TC Bridge v2.2.1 FINAL] ---");
+  delay(300);
+  Serial.println();
+  Serial.println("--- [TC Bridge v2.3.1 HEADER_FUSED_FINAL] ---");
+  Serial.printf("Pi UART : RX=%d TX=%d @%lu\n", PIN_PI_UART_RX, PIN_PI_UART_TX, (unsigned long)PI_BAUD);
+  Serial.printf("TC 9bit : TX=%d RX=%d @%lu (BIT_US=%lu)\n", PIN_TC_TX, PIN_TC_RX, (unsigned long)TC_BAUD, (unsigned long)BIT_US);
 
-  // レベルシフタ初期化: 突入ノイズを避けるため無効化→方向決定→有効化の順 [cite: 381-391]
+  // レベルシフタ：起動直後は無効→DIR確定→有効（起動ノイズ低減）
   pinMode(PIN_LSHIFT_OE1, OUTPUT);  digitalWrite(PIN_LSHIFT_OE1, HIGH);
   pinMode(PIN_LSHIFT_OE2, OUTPUT);  digitalWrite(PIN_LSHIFT_OE2, HIGH);
-  pinMode(PIN_LSHIFT_DIR1, OUTPUT); digitalWrite(PIN_LSHIFT_DIR1, HIGH); // A->B (3.3V->5V)
-  pinMode(PIN_LSHIFT_DIR2, OUTPUT); digitalWrite(PIN_LSHIFT_DIR2, LOW);  // B->A (5V->3.3V)
+  pinMode(PIN_LSHIFT_DIR1, OUTPUT); digitalWrite(PIN_LSHIFT_DIR1, HIGH); // A->B
+  pinMode(PIN_LSHIFT_DIR2, OUTPUT); digitalWrite(PIN_LSHIFT_DIR2, LOW);  // B->A
 
-  pinMode(PIN_TC_TX, OUTPUT); digitalWrite(PIN_TC_TX, HIGH); // アイドルはHIGH
-  pinMode(PIN_TC_RX, INPUT_PULLUP); // 浮き防止
+  // TC側 I/O
+  pinMode(PIN_TC_TX, OUTPUT);
+  digitalWrite(PIN_TC_TX, applyInvert(true) ? HIGH : LOW); // idle=HIGH（論理）
+  pinMode(PIN_TC_RX, INPUT_PULLUP); // 浮き防止（idle HIGH）
 
+  // Pi UART開始
   SerialPi.begin(PI_BAUD, SERIAL_8N1, PIN_PI_UART_RX, PIN_PI_UART_TX);
 
   delay(100);
-  digitalWrite(PIN_LSHIFT_OE1, LOW); // Bank1 有効化
-  digitalWrite(PIN_LSHIFT_OE2, LOW); // Bank2 有効化
+  digitalWrite(PIN_LSHIFT_OE1, LOW);
+  digitalWrite(PIN_LSHIFT_OE2, LOW);
 
-  qToTC = xQueueCreate(16, sizeof(JobTxToTC));
-  qToPi = xQueueCreate(16, sizeof(JobTxToPi));
+  // キュー
+  qToTC = xQueueCreate(16, sizeof(tc::TcFrames));
+  qToPi = xQueueCreate(16, sizeof(tc::Packet));
+  if (!qToTC || !qToPi) {
+    Serial.println("[FATAL] Queue create failed.");
+    while (true) vTaskDelay(pdMS_TO_TICKS(1000));
+  }
 
-  // タスクの割り当て: タイミングがシビアな送信をCore1、その他をCore0で分担
-  xTaskCreatePinnedToCore(taskTCSend, "TCSend", 4096, nullptr, 5, nullptr, 1);
-  xTaskCreatePinnedToCore(taskTCRx,   "TCRx",   4096, nullptr, 6, nullptr, 0);
-  xTaskCreatePinnedToCore(taskPiRx,   "PiRx",   4096, nullptr, 3, nullptr, 0);
-  xTaskCreatePinnedToCore(taskPiTx,   "PiTx",   4096, nullptr, 3, nullptr, 0);
+  // タスク
+  xTaskCreatePinnedToCore(taskTCSend, "TCSend", 4096, nullptr, 5, nullptr, 1); // Core1
+  xTaskCreatePinnedToCore(taskTCRx,   "TCRx",   4096, nullptr, 6, nullptr, 0); // Core0
+  xTaskCreatePinnedToCore(taskPiRx,   "PiRx",   4096, nullptr, 3, nullptr, 0); // Core0
+  xTaskCreatePinnedToCore(taskPiTx,   "PiTx",   4096, nullptr, 3, nullptr, 0); // Core0
 
-  Serial.println("--- [READY] GPIO: 43/44, 1/2, 5/6/7/8 ---");
+  Serial.println("--- [READY] GPIO: Pi(43/44) Nano(1/2) LS(5/6/7/8) ---");
 }
 
 void loop() {
