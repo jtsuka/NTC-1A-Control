@@ -12,18 +12,18 @@
 #include "tc_packet.hpp"
 
 // ========================================================
-// 1. ピンアサイン（暫定：ユニバーサル基板配線に合わせる）
+// 1. ピンアサイン（決定：PCB配線に合わせる）
 // ========================================================
 
 // 秋月レベルシフタ (SN74LVC16T245) 制御用
-static constexpr int PIN_LSHIFT_OE1  = 5;   // 出力有効化1: LOWでBank1有効 (XIAO -> Nano)
-static constexpr int PIN_LSHIFT_DIR1 = 6;   // 方向1: HIGHで A(3.3V) -> B(5V)
+static constexpr int PIN_LSHIFT_OE1  = 6;   // 出力有効化1: LOWでBank1有効 (XIAO -> Nano)
+static constexpr int PIN_LSHIFT_DIR1 = 5;   // 方向1: HIGHで A(3.3V) -> B(5V)
 static constexpr int PIN_LSHIFT_OE2  = 7;   // 出力有効化2: LOWでBank2有効 (Nano -> XIAO)
 static constexpr int PIN_LSHIFT_DIR2 = 8;   // 方向2: LOWで B(5V) -> A(3.3V)
 
 // TC/Nano Every 側（レベルシフタ 3.3V側）BitBang 通信ピン
-static constexpr int PIN_TC_TX = 1;         // (暫定) レベルシフタ側へ送信: GPIO1 -> TC/NanoのRX
-static constexpr int PIN_TC_RX = 2;         // (暫定) レベルシフタ側から受信: GPIO2 <- TC/NanoのTX
+static constexpr int PIN_TC_TX = 1;         // (決定) レベルシフタ側へ送信: GPIO1 -> TC/NanoのRX
+static constexpr int PIN_TC_RX = 2;         // (決定) レベルシフタ側から受信: GPIO2 <- TC/NanoのTX
 
 // Raspberry Pi側 通信ピン (HardwareSerial1) ※暫定: GPIO43/44を使用
 static constexpr int PIN_PI_UART_RX = 44;   // PiのTXから受信 (GPIO44)
