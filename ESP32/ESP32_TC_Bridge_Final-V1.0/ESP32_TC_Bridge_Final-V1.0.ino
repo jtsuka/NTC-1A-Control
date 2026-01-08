@@ -16,8 +16,8 @@
 // ========================================================
 
 // 秋月レベルシフタ (SN74LVC16T245) 制御用
-static constexpr int PIN_LSHIFT_OE1  = 5;   // 出力有効化1: LOWでBank1有効 (XIAO -> Nano)
-static constexpr int PIN_LSHIFT_DIR1 = 6;   // 方向1: HIGHで A(3.3V) -> B(5V)
+static constexpr int PIN_LSHIFT_OE1  = 6;   // 出力有効化1: LOWでBank1有効 (XIAO -> Nano)
+static constexpr int PIN_LSHIFT_DIR1 = 5;   // 方向1: HIGHで A(3.3V) -> B(5V)
 static constexpr int PIN_LSHIFT_OE2  = 7;   // 出力有効化2: LOWでBank2有効 (Nano -> XIAO)
 static constexpr int PIN_LSHIFT_DIR2 = 8;   // 方向2: LOWで B(5V) -> A(3.3V)
 
