@@ -22,12 +22,12 @@ static constexpr int PIN_LSHIFT_OE2  = 7;   // 出力有効化2: LOWでBank2有�
 static constexpr int PIN_LSHIFT_DIR2 = 8;   // 方向2: LOWで B(5V) -> A(3.3V)
 
 // Nano Every(TC) 通信ピン
-static constexpr int PIN_TC_TX = 43;        // NanoのRXへ (GPIO43 / TXA)
-static constexpr int PIN_TC_RX = 44;        // NanoのTXから (GPIO44 / RXA)
+static constexpr int PIN_TC_TX = 1;        // NanoのRXへ (GPIO43 / TXA)
+static constexpr int PIN_TC_RX = 2;        // NanoのTXから (GPIO44 / RXA)
 
 // Raspberry Pi側 通信ピン (HardwareSerial1)
-static constexpr int PIN_PI_UART_RX = 2;    // PiのTXから受信 (GPIO2 / D2)
-static constexpr int PIN_PI_UART_TX = 1;    // PiのRXへ送信   (GPIO1 / D1)
+static constexpr int PIN_PI_UART_RX = 43;    // PiのTXから受信 (GPIO2 / D2)
+static constexpr int PIN_PI_UART_TX = 44;    // PiのRXへ送信   (GPIO1 / D1)
 
 // ========================================================
 // 2. 通信パラメータ
