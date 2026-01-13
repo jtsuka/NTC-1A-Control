@@ -153,6 +153,15 @@ static void taskPiRx(void *pv) {
       ring[head] = (uint8_t)SerialPi.read();
       head = (uint8_t)((head + 1) & (tc::RING_SIZE - 1));
       if (const tc::Packet* p = tc::PacketFactory::tryParse(ring, head, lastSig)) {
+        // --- ここにログ出力を追加 ---
+        Serial.print("[Pi -> ESP] Received: ");
+        for (int i = 0; i < p->len; i++) {
+          if (p->buf[i] < 0x10) Serial.print('0');
+          Serial.print(p->buf[i], HEX);
+          Serial.print(' ');
+        }
+        Serial.println();
+        // ------------------------
         tc::TcFrames f = tc::toTcFrames(*p);
         (void)xQueueSend(qToTC, &f, pdMS_TO_TICKS(10));
       }
