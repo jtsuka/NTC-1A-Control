@@ -1,29 +1,40 @@
-// ESP32S3 <-> UART 信号線チェック
-// 9600bps 8N
-// for Pi+USBシリアル<-> ESP32S3 GPIO 43, 44
+/*
+ * TTL-232R-3V3（USBシリアル変換ケーブル）Pi<->ESP32S3 テスト用
+*/
 
 #include <Arduino.h>
 #include <HardwareSerial.h>
+#include <tc_packet.hpp> // せっかく作った共通ライブラリを使用
 
-HardwareSerial PiUart(1);
+// PCB/スケッチ定義に準拠 
+static constexpr int PIN_PI_TX = 43; // ESP32のTX（PiのRXへ）
+static constexpr int PIN_PI_RX = 44; // ESP32のRX（PiのTXから）
+static constexpr uint32_t PI_BAUD = 9600;
 
-// ★この2行だけ、あなたの配線に合わせて変える★
-// SWAP配線（あなたのスケッチの注記どおり）
-static const int PIN_PI_RX = 43;  // ESPが受ける（ここへケーブルTXが来る）
-static const int PIN_PI_TX = 44;  // ESPが出す（ここからケーブルRXへ行く）
+HardwareSerial SerialPi(1);
 
 void setup() {
-  Serial.begin(115200); // USBモニタ
-  PiUart.begin(9600, SERIAL_8N1, PIN_PI_RX, PIN_PI_TX);
-
-  Serial.printf("UART Echo Ready. RX=%d TX=%d\n", PIN_PI_RX, PIN_PI_TX);
-  PiUart.println("ESP32 ready");
+  Serial.begin(115200); // USBデバッグ用
+  delay(500);
+  
+  // Pi側UARTの開始
+  SerialPi.begin(PI_BAUD, SERIAL_8N1, PIN_PI_RX, PIN_PI_TX);
+  
+  Serial.println("--- 通信テスト開始 (Byte Echo Mode) ---");
+  SerialPi.println("READY: ESP32-S3 is waiting for bytes...");
 }
 
 void loop() {
-  while (PiUart.available()) {
-    int c = PiUart.read();
-    PiUart.write(c);   // Piへエコー
-    Serial.write(c);   // USBにも表示（確認用）
+  // Pi側からデータが来たら、そのまま送り返す
+  while (SerialPi.available() > 0) {
+    uint8_t c = SerialPi.read();
+    
+    // 1. Piへエコーバック
+    SerialPi.write(c); 
+    
+    // 2. USBシリアル（PC）にも表示して確認
+    Serial.print("Received from Pi: ");
+    Serial.print((char)c);
+    Serial.print(" [0x"); Serial.print(c, HEX); Serial.println("]");
   }
 }
