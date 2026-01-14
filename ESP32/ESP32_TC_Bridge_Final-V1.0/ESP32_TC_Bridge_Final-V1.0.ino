@@ -1,218 +1,129 @@
 /**
- * TC Bridge (XIAO ESP32-S3) v2.4.6 MASTER_STABLE_FIX
- * * 修正内容：
- * 1. ピンアサインを「本番基板（SWAP配線）」に完全準拠：TC=GPIO1,2 / Pi=GPIO43,44
- * 2. 不足していた TcPacket 構造体の定義を追加（コンパイルエラーの解消）
- * 3. 300bps BitBang 送受信の安定化ロジックを統合
+ * ESP32 TC Bridge (SWAP配線確認用) - 6バイト 簡易ブリッジ
+ * * 【目的】
+ * - 本番基板の SWAP配線（Pi/Nanoの交差）における電気的な接続確認。
+ * - データフロー: Pi(9600bps) -> ESP32 -> Nano(300bps) -> (Echo) -> ESP32 -> Pi
+ * * 【注意】
+ * - これは「9ビット通信プロトコル」の実装ではありません。
+ * - あくまで「標準的な8ビット通信」で信号が正しくレベルシフタを通るかを確認します。 [cite: 48, 49]
+ * Ver 2.4.7 at 2026.1.14
  */
 
 #include <Arduino.h>
 #include <HardwareSerial.h>
 #include "tc_packet.hpp"
 
-// =====================
-// 0. 足りなかった型定義 (コンパイルエラー対策)
-// =====================
-struct TcPacket {
-  static constexpr int LEN = 6; // コマンド1 + データ5
-  uint8_t b[LEN];
+// ========================================================
+// レベルシフタ (SN74LVC16T245) 制御ピン設定
+// ========================================================
+static constexpr int PIN_LSHIFT_OE1  = 6;  // LOWで有効 (Nano側) [cite: 50]
+static constexpr int PIN_LSHIFT_DIR1 = 5;  // HIGHで A(ESP) -> B(Nano) 方向
+static constexpr int PIN_LSHIFT_OE2  = 7;  // LOWで有効 (Pi側への予備/その他) [cite: 51]
+static constexpr int PIN_LSHIFT_DIR2 = 8;  // LOWで B(Nano) -> A(ESP) 方向
 
-  void dumpTo(Print &p) const {
-    for (int i = 0; i < LEN; i++) {
-      if (b[i] < 0x10) p.print('0');
-      p.print(b[i], HEX);
-      if (i < LEN - 1) p.print(' ');
+// ========================================================
+// SWAP配線マッピング
+//  - Nano/TC側: GPIO1(TX) / GPIO2(RX) [cite: 52]
+//  - Pi側:      GPIO43(TX) / GPIO44(RX) [cite: 53, 54]
+// ========================================================
+static constexpr int PIN_TC_TX = 1;  // ESPからNanoのRXへ送信 [cite: 52]
+static constexpr int PIN_TC_RX = 2;  // NanoのTXからESPで受信
+static constexpr int PIN_PI_TX = 43; // ESPからPiのRXへ送信 [cite: 53]
+static constexpr int PIN_PI_RX = 44; // PiのTXからESPで受信 [cite: 54]
+
+// 通信速度設定
+static constexpr uint32_t PI_BAUD   = 9600;
+static constexpr uint32_t NANO_BAUD = 300;
+// 300bpsは非常に低速なため、受信タイムアウトを長め(450ms)に設定 [cite: 55]
+static constexpr uint32_t NANO_RX_TIMEOUT_MS = 450;
+
+HardwareSerial SerialPi(1);
+HardwareSerial SerialNano(2);
+
+/**
+ * タイムアウト付きで固定6バイトを受信する関数 [cite: 56]
+ */
+static bool readFixed6WithTimeout(Stream& s, tc::Fixed6& out, uint32_t timeoutMs) {
+  uint32_t t0 = millis();
+  uint8_t idx = 0;
+  while (idx < tc::Fixed6::LEN) { [cite: 57]
+    if (s.available() > 0) {
+      out.b[idx++] = (uint8_t)s.read(); [cite: 58]
+      t0 = millis(); // 1バイト受信するごとにタイマーリセット
+    } else {
+      if ((millis() - t0) > timeoutMs) return false;
+      delay(1); [cite: 59]
     }
   }
-};
-
-// =====================
-// 1. ピンアサイン (本番基板の SWAP 配線に固定) [cite: 483, 488-491]
-// =====================
-
-// 秋月レベルシフタ (SN74LVC16T245) 制御用
-static constexpr int PIN_LSHIFT_OE1  = 6;
-static constexpr int PIN_LSHIFT_DIR1 = 5;
-static constexpr int PIN_LSHIFT_OE2  = 7;
-static constexpr int PIN_LSHIFT_DIR2 = 8;
-
-// TC側 (Nano Every) 通信ピン: SWAP配線 
-static constexpr int PIN_TC_TX = 1; // ESP32 TX -> Nano RX
-static constexpr int PIN_TC_RX = 2; // Nano TX -> ESP32 RX
-
-// Pi側 (Raspberry Pi) 通信ピン: SWAP配線 
-static constexpr int PIN_PI_UART_RX = 43; // Pi TX -> ESP32 RX
-static constexpr int PIN_PI_UART_TX = 44; // ESP32 TX -> Pi RX
-
-// =====================
-// 2. 通信パラメータ
-// =====================
-static constexpr uint32_t TC_BAUD = 300;
-static constexpr uint32_t BIT_US  = 3334; // 1/300s
-static constexpr uint32_t PI_BAUD = 9600;
-
-HardwareSerial SerialPi(1); 
-static QueueHandle_t qToTC = nullptr;
-static QueueHandle_t qToPi = nullptr;
-static volatile bool gTcTxActive = false;
-
-// =====================
-// 3. BitBang 補助関数 (Core 1で使用) [cite: 495-503]
-// =====================
-
-static inline void writeLevel(bool high) {
-  digitalWrite(PIN_TC_TX, high ? HIGH : LOW);
-  delayMicroseconds(BIT_US);
-}
-
-static inline bool readLevel() {
-  return (digitalRead(PIN_TC_RX) == HIGH);
-}
-
-static void send9bitFrame(uint8_t data, bool isCmd) {
-  writeLevel(false); // Start bit (LOW)
-  for (int i = 0; i < 8; i++) writeLevel(((data >> i) & 0x01) != 0);
-  writeLevel(isCmd); // 9th bit
-  writeLevel(true);  // Stop bit (HIGH)
-  writeLevel(true);  // Guard
-}
-
-static bool read9bitFrame(uint8_t &data, bool &isCmd) {
-  if (readLevel()) return false; 
-  delayMicroseconds(BIT_US / 2); 
-  if (readLevel()) return false; 
-  delayMicroseconds(BIT_US);
-
-  data = 0;
-  for (int i = 0; i < 8; i++) {
-    if (readLevel()) data |= (1U << i);
-    delayMicroseconds(BIT_US);
-  }
-  isCmd = readLevel(); 
-  delayMicroseconds(BIT_US); 
-  if (!readLevel()) return false;
-  delayMicroseconds(BIT_US);
   return true;
 }
 
-// =====================
-// 4. FreeRTOS タスク [cite: 504-532]
-// =====================
-
-static void taskTCSend(void *pv) {
-  tc::TcFrames f{};
-  while (true) {
-    if (xQueueReceive(qToTC, &f, portMAX_DELAY) == pdTRUE) {
-      gTcTxActive = true;
-      for (int i = 0; i < 3; i++) writeLevel(true);
-      for (int i = 0; i < tc::TC_DATA_LEN; i++) send9bitFrame(f.data[i], false);
-      send9bitFrame(f.cmd, true);
-      gTcTxActive = false;
-    }
-  }
+static void dumpFixed6(const char* tag, const tc::Fixed6& p) {
+  Serial.print(tag);
+  Serial.print(' ');
+  p.dumpTo(Serial); [cite: 60]
+  Serial.println();
 }
 
-static void taskTCRx(void *pv) {
-  uint8_t data[tc::TC_DATA_LEN]{};
-  uint8_t n = 0;
-  bool haveCmd = false;
-  uint32_t lastUs = 0;
-
-  while (true) {
-    if (gTcTxActive) { n = 0; haveCmd = false; vTaskDelay(1); continue; }
-
-    uint8_t b; bool isCmd;
-    if (read9bitFrame(b, isCmd)) {
-      lastUs = micros();
-      if (!isCmd) {
-        if (n < tc::TC_DATA_LEN) data[n++] = b;
-        else n = 0;
-        continue;
-      }
-      // コマンド受信時
-      if (n == tc::TC_DATA_LEN) {
-        TcPacket p{};
-        p.b[0] = b; // cmd
-        for (int i = 0; i < tc::TC_DATA_LEN; i++) p.b[1 + i] = data[i];
-        (void)xQueueSend(qToPi, &p, 0);
-      }
-      n = 0;
-    } else {
-      if (n > 0 && (micros() - lastUs) > 150000UL) n = 0;
-      vTaskDelay(1);
-    }
-  }
-}
-
-static void taskPiRx(void *pv) {
-  uint8_t ring[tc::RING_SIZE]{};
-  uint8_t head = 0;
-  uint64_t lastSig = 0;
-  while (true) {
-    while (SerialPi.available() > 0) {
-      ring[head] = (uint8_t)SerialPi.read();
-      head = (uint8_t)((head + 1) & (tc::RING_SIZE - 1));
-      if (const tc::Packet* p = tc::PacketFactory::tryParse(ring, head, lastSig)) {
-        // --- ここにログ出力を追加 ---
-        Serial.print("[Pi -> ESP] Received: ");
-        for (int i = 0; i < p->len; i++) {
-          if (p->buf[i] < 0x10) Serial.print('0');
-          Serial.print(p->buf[i], HEX);
-          Serial.print(' ');
-        }
-        Serial.println();
-        // ------------------------
-        tc::TcFrames f = tc::toTcFrames(*p);
-        (void)xQueueSend(qToTC, &f, pdMS_TO_TICKS(10));
-      }
-    }
-    vTaskDelay(1);
-  }
-}
-
-static void taskPiTx(void *pv) {
-  TcPacket p{};
-  while (true) {
-    if (xQueueReceive(qToPi, &p, portMAX_DELAY) == pdTRUE) {
-      SerialPi.write(p.b, TcPacket::LEN);
-    }
-  }
-}
-
-// =====================
-// 5. 初期設定 (setup) [cite: 533-540]
-// =====================
 void setup() {
   Serial.begin(115200);
-  delay(300);
-  Serial.println("\n--- [TC Bridge v2.4.6 MASTER (SWAP Wiring)] ---");
+  delay(200);
+  Serial.println("\n--- ESP32 SWAP 疎通テスト (tc::Fixed6) ---");
 
-  // レベルシフタ安全起動
+  // レベルシフタの安全起動: まずは全てHIGH(無効)から開始 [cite: 61]
   pinMode(PIN_LSHIFT_OE1, OUTPUT);  digitalWrite(PIN_LSHIFT_OE1, HIGH);
   pinMode(PIN_LSHIFT_OE2, OUTPUT);  digitalWrite(PIN_LSHIFT_OE2, HIGH);
-  pinMode(PIN_LSHIFT_DIR1, OUTPUT); digitalWrite(PIN_LSHIFT_DIR1, HIGH);
-  pinMode(PIN_LSHIFT_DIR2, OUTPUT); digitalWrite(PIN_LSHIFT_DIR2, LOW);
+  pinMode(PIN_LSHIFT_DIR1, OUTPUT); digitalWrite(PIN_LSHIFT_DIR1, HIGH); // 1系は ESP -> Nano
+  pinMode(PIN_LSHIFT_DIR2, OUTPUT); digitalWrite(PIN_LSHIFT_DIR2, LOW);  // 2系は Nano -> ESP [cite: 62]
 
-  pinMode(PIN_TC_TX, OUTPUT); digitalWrite(PIN_TC_TX, HIGH); 
-  pinMode(PIN_TC_RX, INPUT_PULLUP);
+  // 各シリアルの初期化
+  SerialPi.setRxBufferSize(256);
+  SerialPi.begin(PI_BAUD, SERIAL_8N1, PIN_PI_RX, PIN_PI_TX);
 
-  SerialPi.begin(PI_BAUD, SERIAL_8N1, PIN_PI_UART_RX, PIN_PI_UART_TX);
+  SerialNano.setRxBufferSize(128);
+  SerialNano.begin(NANO_BAUD, SERIAL_8N1, PIN_TC_RX, PIN_TC_TX);
 
   delay(100);
-  digitalWrite(PIN_LSHIFT_OE1, LOW); 
+  // レベルシフタを有効化 (LOW) [cite: 63]
+  digitalWrite(PIN_LSHIFT_OE1, LOW);
   digitalWrite(PIN_LSHIFT_OE2, LOW);
 
-  qToTC = xQueueCreate(16, sizeof(tc::TcFrames));
-  qToPi = xQueueCreate(16, sizeof(TcPacket));
-
-  xTaskCreatePinnedToCore(taskPiRx,   "PiRx",   4096, nullptr, 3, nullptr, 0);
-  xTaskCreatePinnedToCore(taskPiTx,   "PiTx",   4096, nullptr, 3, nullptr, 0);
-  xTaskCreatePinnedToCore(taskTCSend, "TCSend", 4096, nullptr, 5, nullptr, 1);
-  xTaskCreatePinnedToCore(taskTCRx,   "TCRx",   4096, nullptr, 5, nullptr, 1);
-
-  Serial.println("--- [READY] SWAP pins: TC(1/2) Pi(43/44) ---");
+  Serial.printf("Pi UART  : RX=%d TX=%d @%lu\n", PIN_PI_RX, PIN_PI_TX, (unsigned long)PI_BAUD); [cite: 64]
+  Serial.printf("Nano UART: RX=%d TX=%d @%lu\n", PIN_TC_RX, PIN_TC_TX, (unsigned long)NANO_BAUD); [cite: 64]
+  Serial.println("フロー: Piからの6byte送信待ち -> Nanoへ転送 -> NanoからのEchoをPiへ返送"); [cite: 65]
 }
 
 void loop() {
-  vTaskDelay(pdMS_TO_TICKS(1000));
+  // 1) Piからの6バイト入力を待機 [cite: 66]
+  tc::Fixed6 tx{};
+  if (!readFixed6WithTimeout(SerialPi, tx, 2000)) {
+    delay(1);
+    return; [cite: 67]
+  }
+
+  // 2) 受信バッファをクリア（ゴミデータの混入防止） [cite: 68]
+  while (SerialNano.available() > 0) (void)SerialNano.read();
+
+  // 3) Nanoへデータを転送
+  SerialNano.write(tx.b, tc::Fixed6::LEN);
+  SerialNano.flush();
+
+  // 4) Nanoからの折り返し（エコーバック）を待機 [cite: 69]
+  tc::Fixed6 rx{};
+  if (!readFixed6WithTimeout(SerialNano, rx, NANO_RX_TIMEOUT_MS)) {
+    Serial.println("[TIMEOUT] Nanoからの応答がありません"); [cite: 70]
+    dumpFixed6("[PIからの送信データ]", tx);
+    
+    // タイムアウト時はPiへ0埋めパケットを返して同期を維持 [cite: 71]
+    tc::Fixed6 z{};
+    SerialPi.write(z.b, tc::Fixed6::LEN);
+    return;
+  }
+
+  // 5) 正常に受信できればPiへ返送
+  SerialPi.write(rx.b, tc::Fixed6::LEN);
+
+  // デバッグログ出力
+  dumpFixed6("[送信]", tx);
+  dumpFixed6("[受信]", rx);
 }
