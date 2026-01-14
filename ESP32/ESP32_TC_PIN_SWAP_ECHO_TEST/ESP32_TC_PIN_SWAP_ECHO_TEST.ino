@@ -12,7 +12,7 @@
 
 #include <Arduino.h>
 #include <HardwareSerial.h>
-#include "tc_packet.hpp"
+#include <tc_packet.hpp>
 
 // =====================
 // 0. 型定義 (コンパイルエラー対策)

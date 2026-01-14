@@ -9,7 +9,7 @@
 
 #include <Arduino.h>
 #include <HardwareSerial.h>
-#include "tc_packet.hpp"
+#include <tc_packet.hpp>
 
 // ※ Fixed6 の定義は tc_packet.hpp にあるものを使用するため、ここでは書きません。
 
