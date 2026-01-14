@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+# ntc_pygame_ui_v2.py - 修正版 (引用タグ排除・ボタン反応バグ修正済み)
+
 import pygame, sys
-import serial.tools.list_ports  # ポート一覧取得用
+import serial.tools.list_ports
 from collections import deque
 import NTC_1A_utils
 from NTC_1A_serial_comm import start_serial_thread, send_packet, stop_serial
@@ -13,7 +15,6 @@ def log_callback(msg):
     log_lines.append(msg)
 NTC_1A_utils.out = log_callback
 
-# 初期ポートで開始（Dropdownのデフォルトと合わせる）
 start_serial_thread('/dev/serial0')
 
 # ==========================================
@@ -43,7 +44,7 @@ def on_pad(val):
         send_packet([0x01, t & 0xFF, 0, 0, 0])
 
 # ==========================================
-# 3. UIクラス定義 (使用する前に定義する)
+# 3. UIクラス定義
 # ==========================================
 class Button:
     def __init__(self, rect, label, action):
@@ -63,13 +64,12 @@ class Dropdown:
     def __init__(self, rect, font):
         self.rect = pygame.Rect(rect)
         self.font = font
-        self.options = ["/dev/serial0"] # デフォルト
+        self.options = ["/dev/serial0"]
         self.active_option = 0
         self.expanded = False
         self.refresh_ports()
 
     def refresh_ports(self):
-        """システムに接続されているシリアルポートを再スキャン"""
         ports = serial.tools.list_ports.comports()
         new_options = [p.device for p in ports]
         if "/dev/serial0" not in new_options:
@@ -84,7 +84,6 @@ class Dropdown:
         pygame.draw.rect(surf, (200, 200, 200), self.rect, 1, 3)
         txt = self.font.render(self.options[self.active_option], True, (255, 255, 255))
         surf.blit(txt, (self.rect.x + 10, self.rect.centery - txt.get_height()//2))
-
         if self.expanded:
             for i, opt in enumerate(self.options):
                 opt_rect = self.rect.copy()
@@ -113,7 +112,6 @@ class Dropdown:
 # ==========================================
 # 4. UIインスタンス生成
 # ==========================================
-# メイン画面のボタンリスト
 buttons = []
 buttons.append(Button((50, 20, 150, 50), 'SAFE ON',  lambda: send_packet([0xF0, 1, 0, 0, 0])))
 buttons.append(Button((220, 20, 150, 50), 'SAFE OFF', lambda: send_packet([0xF0, 0, 0, 0, 0])))
@@ -124,7 +122,6 @@ for r, row in enumerate(pad_layout):
         if not lbl: continue
         buttons.append(Button((500 + c*110, 320 + r*65, 100, 60), lbl, lambda l=lbl: on_pad(l)))
 
-# ポート選択ドロップダウン
 port_dropdown = Dropdown((400, 20, 250, 50), font)
 
 # ==========================================
@@ -132,30 +129,32 @@ port_dropdown = Dropdown((400, 20, 250, 50), font)
 # ==========================================
 try:
     while True:
-        pos=None; is_down=False
+        pos = None; is_down = False
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT: raise SystemExit
             if ev.type == pygame.MOUSEBUTTONDOWN:
-                pos=ev.pos; is_down=True
+                pos = ev.pos; is_down = True
             if ev.type == pygame.MOUSEBUTTONUP:
-                pos=ev.pos; is_down=False
+                pos = ev.pos; is_down = False
         
         if pos:
-            # ドロップダウンのクリック判定を優先
             new_port = port_dropdown.handle(pos)
             if new_port:
                 NTC_1A_utils.out(f"[UI] Port change: {new_port}")
                 stop_serial()
                 start_serial_thread(new_port)
             
-            # ドロップダウンが閉じていれば他のボタンの判定をする
-            if not port_dropdown.expanded and is_down:
+            if not port_dropdown.expanded:
+                # ボタンの判定 (離したときのアクションを拾うため is_down 条件を外す)
                 for b in buttons: b.handle(pos, is_down)
-                for idx in range(len(field_keys)):
-                    fx, fy = 50 + (idx//3) * 320 + 150, 100 + (idx%3) * 60
-                    if pygame.Rect(fx, fy, 120, 40).collidepoint(pos): current_field = idx
+                
+                # フィールド選択 (押した瞬間に反応させる)
+                if is_down:
+                    for idx in range(len(field_keys)):
+                        fx, fy = 50 + (idx//3) * 320 + 150, 100 + (idx%3) * 60
+                        if pygame.Rect(fx, fy, 120, 40).collidepoint(pos):
+                            current_field = idx
         
-        # 描画
         screen.fill((30,30,35))
         for b in buttons: b.draw(screen)
         
@@ -170,12 +169,12 @@ try:
         for i, line in enumerate(list(log_lines)):
             screen.blit(font.render(line, True, (150,150,150)), (50, 420 + i*20))
             
-        # ドロップダウンは最前面に表示するため最後に描画
         port_dropdown.draw(screen)
-
         pygame.display.flip()
         clock.tick(30)
 
 except SystemExit: pass
 finally:
-    stop_serial(); pygame.quit(); sys.exit(0)
+    stop_serial()
+    pygame.quit()
+    sys.exit(0)
