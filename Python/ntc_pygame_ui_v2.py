@@ -157,7 +157,7 @@ try:
                             # 入力フィールド列を左側に詰め(0.25)てテンキーとの距離を確保
                             fx = int(SCREEN_W * (0.05 + col * 0.25))
                             fy = int(SCREEN_H * (0.15 + row * 0.11))
-                            field_rect = pygame.Rect(fx + int(SCREEN_W*0.15), fy, int(SCREEN_W*0.12), int(SCREEN_H*0.08))
+                            field_rect = pygame.Rect(fx + int(SCREEN_W*0.15), fy, int(SCREEN_W*0.08), int(SCREEN_H*0.08))
                             if field_rect.collidepoint(click_pos):
                                 current_field = idx
 
@@ -171,7 +171,7 @@ try:
             fy = int(SCREEN_H * (0.15 + row * 0.11))
             screen.blit(font.render(label_map[key], True, (200,200,200)), (lx, fy + 5))
             
-            rect = pygame.Rect(lx + int(SCREEN_W*0.15), fy, int(SCREEN_W*0.12), int(SCREEN_H*0.08))
+            rect = pygame.Rect(lx + int(SCREEN_W*0.15), fy, int(SCREEN_W*0.08), int(SCREEN_H*0.08))
             pygame.draw.rect(screen, (255,255,255) if idx==current_field else (100,100,100), rect, 2)
             val_txt = font.render(fields[key], True, (255,255,0) if idx==current_field else (255,255,255))
             screen.blit(val_txt, (rect.right - val_txt.get_width() - 5, rect.y + 5))
