@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ntc_pygame_ui_v2.py - レイアウト微調整版 (重なり解消・完全置換用)
+# ntc_pygame_ui_v2.py - 最終レイアウト調整版 (重なり解消・完全置換用)
 
 import pygame, sys
 import serial.tools.list_ports
@@ -7,18 +7,27 @@ from collections import deque
 import NTC_1A_utils
 from NTC_1A_serial_comm import start_serial_thread, send_packet, stop_serial
 
-# 1. ログ・通信設定
+# ==========================================
+# 1. ログ・通信の初期設定
+# ==========================================
 log_lines = deque(maxlen=8)
 def log_callback(msg):
     log_lines.append(msg)
 NTC_1A_utils.out = log_callback
+
+# シリアル通信開始
 start_serial_thread('/dev/serial0')
 
-# 2. 基本設定 (自動取得)
+# ==========================================
+# 2. Pygame 基本設定 (自動取得)
+# ==========================================
 pygame.init()
 info = pygame.display.Info()
 SCREEN_W, SCREEN_H = info.current_w, info.current_h
+
 screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
+pygame.display.set_caption("NTC-1A Universal UI")
+
 FONT_SIZE = int(SCREEN_H * 0.05)
 font = pygame.font.Font(None, FONT_SIZE)
 small_font = pygame.font.Font(None, int(FONT_SIZE * 0.7))
@@ -41,10 +50,15 @@ def on_pad(val):
         t = int(fields['CH1_TENSION'] or 0)
         send_packet([0x01, t & 0xFF, 0, 0, 0])
 
-# 3. UIクラス
+# ==========================================
+# 3. 汎用UIクラス定義
+# ==========================================
 class Button:
     def __init__(self, rect_ratio, label, action):
-        self.rect = pygame.Rect(rect_ratio[0]*SCREEN_W, rect_ratio[1]*SCREEN_H, rect_ratio[2]*SCREEN_W, rect_ratio[3]*SCREEN_H)
+        self.rect = pygame.Rect(
+            rect_ratio[0] * SCREEN_W, rect_ratio[1] * SCREEN_H,
+            rect_ratio[2] * SCREEN_W, rect_ratio[3] * SCREEN_H
+        )
         self.label = label; self.action = action; self.pressed = False
     def draw(self, surf):
         color = (30,90,140) if self.pressed else (70,130,180)
@@ -59,7 +73,10 @@ class Button:
 
 class Dropdown:
     def __init__(self, rect_ratio, font):
-        self.rect = pygame.Rect(rect_ratio[0]*SCREEN_W, rect_ratio[1]*SCREEN_H, rect_ratio[2]*SCREEN_W, rect_ratio[3]*SCREEN_H)
+        self.rect = pygame.Rect(
+            rect_ratio[0] * SCREEN_W, rect_ratio[1] * SCREEN_H,
+            rect_ratio[2] * SCREEN_W, rect_ratio[3] * SCREEN_H
+        )
         self.font = font; self.options = ["/dev/serial0"]; self.active_option = 0; self.expanded = False
         self.refresh_ports()
     def refresh_ports(self):
@@ -92,7 +109,9 @@ class Dropdown:
             self.expanded = False
         return None
 
-# 4. 配置 (重なり防止微調整)
+# ==========================================
+# 4. 配置 (重なり防止のため比率を微調整)
+# ==========================================
 buttons = []
 buttons.append(Button((0.05, 0.05, 0.15, 0.08), 'SAFE ON',  lambda: send_packet([0xF0, 1, 0, 0, 0])))
 buttons.append(Button((0.22, 0.05, 0.15, 0.08), 'SAFE OFF', lambda: send_packet([0xF0, 0, 0, 0, 0])))
@@ -101,50 +120,71 @@ pad_layout = [['7','8','9','CLR'],['4','5','6','ENT'],['1','2','3','SEND'],['0',
 for r, row in enumerate(pad_layout):
     for c, lbl in enumerate(row):
         if not lbl: continue
-        buttons.append(Button((0.57 + c*0.10, 0.52 + r*0.11, 0.09, 0.10), lbl, lambda l=lbl: on_pad(l)))
+        # テンキーをさらに右側に寄せて(0.62)、被りを解消
+        buttons.append(Button((0.62 + c*0.09, 0.52 + r*0.11, 0.08, 0.10), lbl, lambda l=lbl: on_pad(l)))
 
 port_dropdown = Dropdown((0.40, 0.05, 0.25, 0.08), font)
 
-# 5. ループ
+# ==========================================
+# 5. メインループ
+# ==========================================
 try:
     while True:
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT: raise SystemExit
-            click_pos = None; is_down = False
+            
+            click_pos = None
+            is_down = False
+
             if ev.type in (pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP):
-                click_pos = ev.pos; is_down = (ev.type == pygame.MOUSEBUTTONDOWN)
+                click_pos = ev.pos
+                is_down = (ev.type == pygame.MOUSEBUTTONDOWN)
             elif ev.type in (pygame.FINGERDOWN, pygame.FINGERUP):
-                click_pos = (int(ev.x * SCREEN_W), int(ev.y * SCREEN_H)); is_down = (ev.type == pygame.FINGERDOWN)
+                click_pos = (int(ev.x * SCREEN_W), int(ev.y * SCREEN_H))
+                is_down = (ev.type == pygame.FINGERDOWN)
 
             if click_pos:
                 new_port = port_dropdown.handle(click_pos)
                 if new_port:
                     NTC_1A_utils.out(f"[UI] Port change: {new_port}")
                     stop_serial(); start_serial_thread(new_port)
+                
                 if not port_dropdown.expanded:
                     for b in buttons: b.handle(click_pos, is_down)
                     if is_down:
                         for idx in range(len(field_keys)):
                             col, row = idx // 3, idx % 3
-                            fx, fy = int(SCREEN_W*(0.05+col*0.28)), int(SCREEN_H*(0.15+row*0.11))
-                            if pygame.Rect(fx+int(SCREEN_W*0.15), fy, int(SCREEN_W*0.13), int(SCREEN_H*0.08)).collidepoint(click_pos):
+                            # 入力フィールド列を左側に詰め(0.25)てテンキーとの距離を確保
+                            fx = int(SCREEN_W * (0.05 + col * 0.25))
+                            fy = int(SCREEN_H * (0.15 + row * 0.11))
+                            field_rect = pygame.Rect(fx + int(SCREEN_W*0.15), fy, int(SCREEN_W*0.12), int(SCREEN_H*0.08))
+                            if field_rect.collidepoint(click_pos):
                                 current_field = idx
 
+        # --- 描画処理 ---
         screen.fill((30,30,35))
         for b in buttons: b.draw(screen)
+        
         for idx, key in enumerate(field_keys):
             col, row = idx // 3, idx % 3
-            lx, fy = int(SCREEN_W*(0.05+col*0.28)), int(SCREEN_H*(0.15+row*0.11))
+            lx = int(SCREEN_W * (0.05 + col * 0.25))
+            fy = int(SCREEN_H * (0.15 + row * 0.11))
             screen.blit(font.render(label_map[key], True, (200,200,200)), (lx, fy + 5))
-            rect = pygame.Rect(lx + int(SCREEN_W*0.15), fy, int(SCREEN_W*0.13), int(SCREEN_H*0.08))
+            
+            rect = pygame.Rect(lx + int(SCREEN_W*0.15), fy, int(SCREEN_W*0.12), int(SCREEN_H*0.08))
             pygame.draw.rect(screen, (255,255,255) if idx==current_field else (100,100,100), rect, 2)
             val_txt = font.render(fields[key], True, (255,255,0) if idx==current_field else (255,255,255))
-            screen.blit(val_txt, (rect.right - val_txt.get_width() - 5, rect.y + 10))
+            screen.blit(val_txt, (rect.right - val_txt.get_width() - 5, rect.y + 5))
+            
         for i, line in enumerate(list(log_lines)):
             screen.blit(small_font.render(line, True, (150,150,150)), (int(SCREEN_W*0.05), int(SCREEN_H*0.65) + i*int(SCREEN_H*0.04)))
+            
         port_dropdown.draw(screen)
         pygame.display.flip()
         clock.tick(30)
+
 except SystemExit: pass
 finally:
-    stop_serial(); pygame.quit(); sys.exit(0)
+    stop_serial()
+    pygame.quit()
+    sys.exit(0)
