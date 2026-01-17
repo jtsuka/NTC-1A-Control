@@ -1,115 +1,69 @@
+// Nano Every (ATmega4809)
+// 300bps, 6-byte fixed packet echo-back
+// RX=D10, TX=D11 (SoftwareSerial)
+//
+// Wiring:
+//   ESP32 TX (GPIO43) -> Nano D10 (RX)
+//   ESP32 RX (GPIO44) <- Nano D11 (TX)
+//   GND common
+
 #include <Arduino.h>
-#include <tc_packet.hpp>
+#include <SoftwareSerial.h>
 
-/*
-  TC Emulator Fusion Final V1.2.6
-  - ESP32 側との安定通信のため D10(RX) / D11(TX) を使用
-  - 9ビット UART 形式を維持しつつ、反転ロジックを最適化
-*/
+static const uint8_t PIN_RX = 10;
+static const uint8_t PIN_TX = 11;
 
-// ピン定義を修正
-#define PIN_RX 10 // D10: 受信
-#define PIN_TX 11 // D11: 送信
+static const uint32_t BAUD = 300;
+static const size_t PKT_LEN = 6;
 
-// 通信設定
-#define TC_INVERT_LOGIC true
-#define ECHO_REPLY true
+// 300bps: 1byte(10bit) ≒ 33ms。余裕を見て50ms。
+static const uint16_t INTERBYTE_TIMEOUT_MS = 50;
 
-// 300bps: 精密な 3334us に設定 (ESP32側と同期)
-#define BIT_US 3334 
+SoftwareSerial tcSerial(PIN_RX, PIN_TX); // RX, TX
+static uint8_t buf[PKT_LEN];
 
-// --- ビット制御関数 ---
-
-void tcWrite(bool logical) {
-  // 論理反転：true(1)なら物理LOW、false(0)なら物理HIGH
-  bool out = TC_INVERT_LOGIC ? !logical : logical;
-  digitalWrite(PIN_TX, out ? HIGH : LOW);
-  delayMicroseconds(BIT_US);
-}
-
-bool tcRead() {
-  bool val = (digitalRead(PIN_RX) == HIGH);
-  // 論理反転：物理HIGHなら論理false(0)として返す
-  return TC_INVERT_LOGIC ? !val : val;
-}
-
-// 9ビット送信（データ8bit + コマンドフラグ1bit）
-void send9bit(uint8_t d, bool isCmd) {
-  tcWrite(false); // Start bit (論理0)
-  for (int i = 0; i < 8; i++) {
-    tcWrite((d >> i) & 0x01); // Data 8bits (LSB first)
+static void dumpHex(const char* tag, const uint8_t* p, size_t n) {
+  Serial.print(tag);
+  for (size_t i = 0; i < n; i++) {
+    if (p[i] < 0x10) Serial.print('0');
+    Serial.print(p[i], HEX);
+    Serial.print(' ');
   }
-  tcWrite(isCmd); // 9th bit (Command Flag)
-  tcWrite(true);  // Stop bit (論理1 / Idle)
-  tcWrite(true);  // Gap
+  Serial.println();
 }
-
-// --- メイン処理 ---
 
 void setup() {
   Serial.begin(115200);
-  while (!Serial) { ; } // Nano Every のシリアル準備待ち
+  while (!Serial) { ; }
 
-  pinMode(PIN_RX, INPUT_PULLUP); // 浮き防止のため Pullup 推奨
-  pinMode(PIN_TX, OUTPUT);
-  
-  // 初期状態：Idle HIGH (反転ロジック時は物理LOW)
-  digitalWrite(PIN_TX, TC_INVERT_LOGIC ? LOW : HIGH);
-  
-  Serial.println(F("\n--- [Nano TC Emulator v1.2.6 (D10/D11)] ---"));
-  Serial.print(F("Pins: RX=D10, TX=D11 | Baud: 300bps ("));
-  Serial.print(BIT_US); Serial.println(F("us)"));
-  Serial.println(F("Ready to emulate TC Controller..."));
+  tcSerial.begin(BAUD);
+
+  Serial.println(F("[Nano] Echo-back ready: SoftSerial D10(RX)/D11(TX) 300bps, 6 bytes"));
 }
 
 void loop() {
-  static uint8_t data[tc::TC_DATA_LEN];
-  static uint8_t di = 0;
-  
-  // スタートビット検出：反転時は物理HIGHが論理false(0)
-  if (tcRead() == false) { 
-    delayMicroseconds(BIT_US / 2); // ビット中央まで待機
-    
-    if (tcRead() == true) return; // ノイズ除去（デグリッチ）
-    
-    delayMicroseconds(BIT_US); // 最初のデータビットの中央へ移動
-    
-    // データ 8ビット読み取り
-    uint8_t d = 0;
-    for (int i = 0; i < 8; i++) {
-      if (tcRead()) d |= (1 << i);
-      delayMicroseconds(BIT_US);
-    }
-    
-    // 9ビット目（コマンドフラグ）の判定
-    bool isCmd = tcRead(); 
-    
-    if (!isCmd) {
-      // データバイトの場合：バッファに蓄積
-      if (di < tc::TC_DATA_LEN) {
-        data[di++] = d;
-        Serial.print(d, HEX); Serial.print(" ");
-      }
+  size_t got = 0;
+  uint32_t last = millis();
+
+  while (got < PKT_LEN) {
+    if (tcSerial.available()) {
+      buf[got++] = (uint8_t)tcSerial.read();
+      last = millis();
     } else {
-      // コマンドバイトの場合：パケット完成とみなしてエコーバック
-      Serial.print(F("\n[COMMAND] 0x")); Serial.println(d, HEX);
-      
-      if (ECHO_REPLY && di == tc::TC_DATA_LEN) {
-        // 返信前のわずかなギャップ
-        for (int i = 0; i < 3; i++) tcWrite(true); 
-        
-        // 蓄積したデータとコマンドをそのまま返信
-        for (int i = 0; i < tc::TC_DATA_LEN; i++) {
-          send9bit(data[i], false);
-        }
-        send9bit(d, true); 
-        Serial.println(F("[ECHO] Sent response to ESP32."));
-      }
-      di = 0; // バッファリセット
+      if ((millis() - last) > INTERBYTE_TIMEOUT_MS) break;
     }
-    
-    // ストップビットを待機して同期をリセット
-    uint32_t t0 = micros();
-    while(tcRead() == false && (micros() - t0) < (BIT_US * 2));
   }
+
+  if (got == 0) return;
+
+  if (got != PKT_LEN) {
+    Serial.print(F("[Nano][TIMEOUT] partial="));
+    Serial.println(got);
+    while (tcSerial.available()) (void)tcSerial.read();
+    return;
+  }
+
+  dumpHex("[Nano][RX] ", buf, PKT_LEN);
+  tcSerial.write(buf, PKT_LEN);
+  dumpHex("[Nano][TX] ", buf, PKT_LEN);
 }
