@@ -21,8 +21,8 @@ start_serial_thread('/dev/serial0') #
 # 2. Pygame 基本設定
 # ==========================================
 pygame.init()
-# 解像度は現在の画面に合わせて設定
-SCREEN_W, SCREEN_H = 1024, 600
+# ハードウェアに合わせて 1024x600 から 800x480 に変更
+SCREEN_W, SCREEN_H = 800, 480
 screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
 font = pygame.font.Font(None, 32)
 clock = pygame.time.Clock()
