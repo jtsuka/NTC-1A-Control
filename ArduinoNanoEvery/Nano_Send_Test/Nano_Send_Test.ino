@@ -2,7 +2,7 @@
  * Nano Every: TC Controller Emulator (Echo Back Test)
  * --------------------------------------------------
  * 【本番基板（Swap配線）専用設定】
- * 接続先：XIAO ESP32-S3 (GPIO 1, 2) ※レベルシフタ経由
+ * 接続先：XIAO ESP32-S3 (GPIO 43, 44) ※レベルシフタ経由
  * * 役割：
  * 1. ESP32から送られてくる 300bps の信号を受信
  * 2. 6バイト揃ったら LEDを5回点滅（受信確認）
@@ -10,6 +10,7 @@
  * * なぜ D10/D11 か：
  * Nano EveryのハードウェアUART(Serial1)の干渉を避け、
  * Swap回路で安定通信が確認された SoftwareSerial 用のピン。
+ * Ver 2026.1.17
  */
 
 #include <Arduino.h>

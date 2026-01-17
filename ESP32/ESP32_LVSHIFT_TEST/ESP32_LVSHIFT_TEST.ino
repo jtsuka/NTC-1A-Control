@@ -14,8 +14,11 @@ static constexpr int PIN_LSHIFT_OE2  = 7;
 static constexpr int PIN_LSHIFT_DIR2 = 8;
 
 // ★暫定デバッグ配線（必要ならここだけ変える）
-static constexpr int PIN_TC_TX = 1; // ESP->Nano（往路）
-static constexpr int PIN_TC_RX = 2; // Nano->ESP（復路）
+// static constexpr int PIN_TC_TX = 1; // ESP->Nano（往路）
+// static constexpr int PIN_TC_RX = 2; // Nano->ESP（復路）
+static constexpr int PIN_TC_TX = 43;  // ESP32 -> Nano RX
+static constexpr int PIN_TC_RX = 44;  // Nano TX -> ESP32
+
 
 static constexpr uint32_t BAUD_USB = 115200;
 static constexpr uint32_t BAUD_TC  = 300;
