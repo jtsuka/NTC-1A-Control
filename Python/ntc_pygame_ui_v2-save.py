@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ntc_pygame_ui_v2.py - デバッグ支援機能追加版 (EXITボタン・Esc終了)
+# ntc_pygame_ui_v2.py - 最終レイアウト調整版 (重なり解消・完全置換用)
 
 import pygame, sys
 import serial.tools.list_ports
@@ -15,20 +15,16 @@ def log_callback(msg):
     log_lines.append(msg)
 NTC_1A_utils.out = log_callback
 
+# シリアル通信開始
 start_serial_thread('/dev/serial0')
 
 # ==========================================
-# 2. Pygame 基本設定
+# 2. Pygame 基本設定 (自動取得)
 # ==========================================
 pygame.init()
 info = pygame.display.Info()
-
-# デバッグ用に少し小さめのウィンドウにする場合はここを調整
-# SCREEN_W, SCREEN_H = 1024, 600  # 固定サイズにする場合
 SCREEN_W, SCREEN_H = info.current_w, info.current_h
 
-# Windows/Macで背面アプリが見えるようにするには、解像度を少し下げて実行するか、
-# pygame.RESIZABLE フラグを検討してください
 screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
 pygame.display.set_caption("NTC-1A Universal UI")
 
@@ -58,15 +54,14 @@ def on_pad(val):
 # 3. 汎用UIクラス定義
 # ==========================================
 class Button:
-    def __init__(self, rect_ratio, label, action, color=(70,130,180)):
+    def __init__(self, rect_ratio, label, action):
         self.rect = pygame.Rect(
             rect_ratio[0] * SCREEN_W, rect_ratio[1] * SCREEN_H,
             rect_ratio[2] * SCREEN_W, rect_ratio[3] * SCREEN_H
         )
         self.label = label; self.action = action; self.pressed = False
-        self.base_color = color
     def draw(self, surf):
-        color = (30,90,140) if self.pressed else self.base_color
+        color = (30,90,140) if self.pressed else (70,130,180)
         pygame.draw.rect(surf, color, self.rect, 0, 5)
         txt = font.render(self.label, True, (255,255,255))
         surf.blit(txt, (self.rect.centerx - txt.get_width()//2, self.rect.centery - txt.get_height()//2))
@@ -77,44 +72,55 @@ class Button:
             if self.rect.collidepoint(pos): self.action()
 
 class Dropdown:
-    # (既存のDropdownクラスの内容。変更なしのため省略して実装してください)
     def __init__(self, rect_ratio, font):
-        self.rect = pygame.Rect(rect_ratio[0] * SCREEN_W, rect_ratio[1] * SCREEN_H, rect_ratio[2] * SCREEN_W, rect_ratio[3] * SCREEN_H)
-        self.font = font; self.options = ["/dev/serial0"]; self.active_option = 0; self.expanded = False; self.refresh_ports()
+        self.rect = pygame.Rect(
+            rect_ratio[0] * SCREEN_W, rect_ratio[1] * SCREEN_H,
+            rect_ratio[2] * SCREEN_W, rect_ratio[3] * SCREEN_H
+        )
+        self.font = font; self.options = ["/dev/serial0"]; self.active_option = 0; self.expanded = False
+        self.refresh_ports()
     def refresh_ports(self):
-        ports = serial.tools.list_ports.comports(); new_options = [p.device for p in ports]
+        ports = serial.tools.list_ports.comports()
+        new_options = [p.device for p in ports]
         if "/dev/serial0" not in new_options: new_options.insert(0, "/dev/serial0")
         self.options = new_options
     def draw(self, surf):
-        color = (50, 50, 60) if not self.expanded else (80, 80, 90); pygame.draw.rect(surf, color, self.rect, 0, 3)
-        txt = self.font.render(self.options[self.active_option], True, (255, 255, 255)); surf.blit(txt, (self.rect.x + 10, self.rect.centery - txt.get_height()//2))
+        color = (50, 50, 60) if not self.expanded else (80, 80, 90)
+        pygame.draw.rect(surf, color, self.rect, 0, 3)
+        txt = self.font.render(self.options[self.active_option], True, (255, 255, 255))
+        surf.blit(txt, (self.rect.x + 10, self.rect.centery - txt.get_height()//2))
         if self.expanded:
             for i, opt in enumerate(self.options):
-                opt_rect = self.rect.copy(); opt_rect.y += self.rect.height * (i + 1); pygame.draw.rect(surf, (40, 40, 45), opt_rect)
-                opt_txt = self.font.render(opt, True, (255, 255, 255)); surf.blit(opt_txt, (opt_rect.x + 10, opt_rect.centery - opt_txt.get_height()//2))
+                opt_rect = self.rect.copy(); opt_rect.y += self.rect.height * (i + 1)
+                pygame.draw.rect(surf, (40, 40, 45), opt_rect)
+                opt_txt = self.font.render(opt, True, (255, 255, 255))
+                surf.blit(opt_txt, (opt_rect.x + 10, opt_rect.centery - opt_txt.get_height()//2))
     def handle(self, pos):
-        if self.rect.collidepoint(pos): self.expanded = not self.expanded; (self.refresh_ports() if self.expanded else None); return None
+        if self.rect.collidepoint(pos):
+            self.expanded = not self.expanded
+            if self.expanded: self.refresh_ports()
+            return None
         if self.expanded:
             for i in range(len(self.options)):
                 opt_rect = self.rect.copy(); opt_rect.y += self.rect.height * (i + 1)
-                if opt_rect.collidepoint(pos): self.active_option = i; self.expanded = False; return self.options[i]
+                if opt_rect.collidepoint(pos):
+                    self.active_option = i; self.expanded = False
+                    return self.options[i]
             self.expanded = False
         return None
 
 # ==========================================
-# 4. 配置
+# 4. 配置 (重なり防止のため比率を微調整)
 # ==========================================
 buttons = []
 buttons.append(Button((0.05, 0.05, 0.15, 0.08), 'SAFE ON',  lambda: send_packet([0xF0, 1, 0, 0, 0])))
 buttons.append(Button((0.22, 0.05, 0.15, 0.08), 'SAFE OFF', lambda: send_packet([0xF0, 0, 0, 0, 0])))
 
-# --- [追加] 終了ボタン (右上に赤色で配置) ---
-buttons.append(Button((0.85, 0.02, 0.12, 0.06), 'EXIT', lambda: pygame.event.post(pygame.event.Event(pygame.QUIT)), color=(180, 50, 50)))
-
 pad_layout = [['7','8','9','CLR'],['4','5','6','ENT'],['1','2','3','SEND'],['0','STOP','RESET','']]
 for r, row in enumerate(pad_layout):
     for c, lbl in enumerate(row):
         if not lbl: continue
+        # テンキーをさらに右側に寄せて(0.62)、被りを解消
         buttons.append(Button((0.62 + c*0.09, 0.52 + r*0.11, 0.08, 0.10), lbl, lambda l=lbl: on_pad(l)))
 
 port_dropdown = Dropdown((0.40, 0.05, 0.25, 0.08), font)
@@ -125,15 +131,8 @@ port_dropdown = Dropdown((0.40, 0.05, 0.25, 0.08), font)
 try:
     while True:
         for ev in pygame.event.get():
-            # 終了イベントのハンドリング
             if ev.type == pygame.QUIT: raise SystemExit
             
-            # --- [追加] キーボード操作 ---
-            if ev.type == pygame.KEYDOWN:
-                if ev.key == pygame.K_ESCAPE: raise SystemExit  # Escキーで終了
-                # Alt+TabやCmd+TabはOS標準機能として動作しますが、
-                # ウィンドウを最小化したい場合は pygame.display.iconify() を呼ぶキーを作ることも可能です。
-
             click_pos = None
             is_down = False
 
@@ -155,6 +154,7 @@ try:
                     if is_down:
                         for idx in range(len(field_keys)):
                             col, row = idx // 3, idx % 3
+                            # 入力フィールド列を左側に詰め(0.25)てテンキーとの距離を確保
                             fx = int(SCREEN_W * (0.05 + col * 0.25))
                             fy = int(SCREEN_H * (0.15 + row * 0.11))
                             field_rect = pygame.Rect(fx + int(SCREEN_W*0.15), fy, int(SCREEN_W*0.08), int(SCREEN_H*0.08))
@@ -185,7 +185,6 @@ try:
 
 except SystemExit: pass
 finally:
-    # ここでシリアルポートを確実に閉じる処理が行われます 
     stop_serial()
     pygame.quit()
     sys.exit(0)
