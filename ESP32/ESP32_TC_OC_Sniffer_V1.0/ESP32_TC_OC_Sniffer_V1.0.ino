@@ -1,7 +1,8 @@
 /*
  * ===========================================================================================
- * Project:  FOR-TC-OC Ver 1.3.2 - ESP32-S3 Sniffer
+ * Project:  FOR-TC-OC Ver 1.3.2 - ESP32-S3 Sniffer (Stable Edition)
  * Platform: XIXO ESP32-S3 (Custom PCB)
+ * Author:   Junichi (Planning Office) & Thought Partners
  * Pins:     TX = GPIO 4 (Q1 Driver), RX = GPIO 9 (Input Protected)
  * Logic:    Standard UART (Idle=High, Start=Low, 300bps, 9-bit)
  * ===========================================================================================
@@ -9,7 +10,7 @@
 
 #include <Arduino.h>
 
-// --- 回路図 (Ver 1.3.2) に基づくピン定義 --- [cite: 191, 197-201]
+// --- 回路図 (Ver 1.3.2) に基づくピン定義 ---
 const int RX_PIN = 9;  // 受信保護回路 (D1, D2, R3) 経由
 const int TX_PIN = 4;  // Q1-2N7000 MOSFET ゲート駆動用
 
@@ -17,14 +18,14 @@ const int TX_PIN = 4;  // Q1-2N7000 MOSFET ゲート駆動用
 const uint32_t BAUD   = 300;
 const uint32_t BIT_US = 1000000UL / BAUD; // 約3333us
 
-#define USE_INTERNAL_PULLUP 0 // 外部プルアップ(R6等)が正常なら0
+#define USE_INTERNAL_PULLUP 0 // 外部プルアップ(R6等)が正常なら0。故障診断時のみ1。
 
 // 統計用カウンター
-uint32_t total_attempts = 0;  // スタートエッジを検出した総数
+uint32_t total_attempts = 0;  // スタートビットを検出した総数
 uint32_t good_frames    = 0;  // 正常に受信完了した数
 uint32_t framing_errors = 0;  // ストップビット異常の数
 
-/** 物理的なバスの電圧状態を確認 (High = true) */
+/** 物理的なバスの電圧状態を確認 (High = true / Idle) */
 static inline bool busPhysicalHigh() {
   return digitalRead(RX_PIN) == HIGH;
 }
@@ -42,13 +43,13 @@ void setup() {
     pinMode(RX_PIN, INPUT); 
   #endif
 
-  Serial.println("\n--- TC106 Sniffer V3.3 (GPIO 4/9) FINAL ---");
+  Serial.println("\n--- TC106 Sniffer V3.4 (GPIO 4/9) FINAL ---");
 }
 
 uint16_t read9BitFrame() {
   uint32_t t0;
 
-  // 2. Bus Stuck LOW 監視 (200ms)
+  // 2. Bus Stuck LOW 監視 (200ms) - 起動時やフレーム間のバス異常を検知
   t0 = millis();
   while (!busPhysicalHigh()) {
     if (millis() - t0 > 200) {
@@ -57,7 +58,7 @@ uint16_t read9BitFrame() {
     }
   }
 
-  // 3. No START 監視 (1秒)
+  // 3. No START 監視 (1秒) - 送信側が動いているか、接続されているかを確認
   t0 = millis();
   while (busPhysicalHigh()) {
     if (millis() - t0 > 1000) {
@@ -66,10 +67,10 @@ uint16_t read9BitFrame() {
     }
   }
 
-  // フレーム受信開始
+  // フレーム受信プロセスの開始
   total_attempts++;
 
-  // 4. サンプリング点へ移動 (スタートビット1.5倍分後)
+  // 4. サンプリング点へ移動 (スタートビットの1.5倍分待機して Bit 0 の中央へ)
   delayMicroseconds(BIT_US + (BIT_US / 2));
 
   uint16_t data = 0;
@@ -82,11 +83,16 @@ uint16_t read9BitFrame() {
   delayMicroseconds(BIT_US / 2); 
   if (!busPhysicalHigh()) {
     framing_errors++;
-    Serial.printf("[WARNING] Framing Error (#%lu): Recovery...\n", (unsigned long)framing_errors);
+    Serial.printf("[WARNING] Framing Error (#%lu): Recovery started...\n", (unsigned long)framing_errors);
     
+    // フレーミングエラーからの復帰監視 (200ms)
     uint32_t t1 = millis();
     while (!busPhysicalHigh()) {
-      if (millis() - t1 > 200) return 0xFFFF; // 復帰失敗
+      if (millis() - t1 > 200) {
+        // ChatGPT案を反映：復帰失敗時の理由ログを明示
+        Serial.println("[ERROR] Recovery failed: Still LOW after framing error");
+        return 0xFFFF; 
+      }
       delay(1);
     }
   } else {
@@ -99,8 +105,8 @@ uint16_t read9BitFrame() {
 void loop() {
   uint16_t v = read9BitFrame();
   
+  // エラーコード (0xFFFF, 0xFFFE) でない場合のみ詳細を表示
   if (v != 0xFFFF && v != 0xFFFE) {
-    // 成功時のみ詳細を表示（型指定を%luで安全に表示）
     Serial.printf("RX: 0x%03X (b9=%d) [Att:%lu Good:%lu Err:%lu]\n", 
                   (unsigned int)(v & 0x1FF),
                   (int)((v >> 8) & 1),
