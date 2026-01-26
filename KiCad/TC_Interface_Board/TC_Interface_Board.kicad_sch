@@ -2056,6 +2056,16 @@
 	)
 	(wire
 		(pts
+			(xy 30.48 33.02) (xy 36.83 33.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0f626053-a232-41ff-b915-f4a4244337f5")
+	)
+	(wire
+		(pts
 			(xy 104.14 53.34) (xy 104.14 43.18)
 		)
 		(stroke
@@ -2176,16 +2186,6 @@
 	)
 	(wire
 		(pts
-			(xy 30.48 33.02) (xy 52.07 33.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b1b18877-63fd-4c64-b538-8b496bae5a4d")
-	)
-	(wire
-		(pts
 			(xy 52.07 43.18) (xy 52.07 40.64)
 		)
 		(stroke
@@ -2193,6 +2193,16 @@
 			(type default)
 		)
 		(uuid "cf601975-1665-40ef-9bae-0b05e8a015b3")
+	)
+	(wire
+		(pts
+			(xy 44.45 33.02) (xy 52.07 33.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d34a6d65-27fc-4233-a183-e83aae185dae")
 	)
 	(symbol
 		(lib_id "Device:R")
@@ -2567,7 +2577,7 @@
 	)
 	(symbol
 		(lib_id "Device:D")
-		(at 146.05 153.67 0)
+		(at 40.64 33.02 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2576,7 +2586,7 @@
 		(fields_autoplaced yes)
 		(uuid "443b002c-edbe-40ac-a989-da98ccc7fc97")
 		(property "Reference" "D5"
-			(at 146.05 147.32 0)
+			(at 40.64 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2584,7 +2594,7 @@
 			)
 		)
 		(property "Value" "24V?"
-			(at 146.05 149.86 0)
+			(at 40.64 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2592,7 +2602,7 @@
 			)
 		)
 		(property "Footprint" "Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal"
-			(at 146.05 153.67 0)
+			(at 40.64 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2601,7 +2611,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 146.05 153.67 0)
+			(at 40.64 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2610,7 +2620,7 @@
 			)
 		)
 		(property "Description" "Diode"
-			(at 146.05 153.67 0)
+			(at 40.64 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2619,7 +2629,7 @@
 			)
 		)
 		(property "Sim.Device" "D"
-			(at 146.05 153.67 0)
+			(at 40.64 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2628,7 +2638,7 @@
 			)
 		)
 		(property "Sim.Pins" "1=K 2=A"
-			(at 146.05 153.67 0)
+			(at 40.64 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
