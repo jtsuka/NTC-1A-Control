@@ -2282,7 +2282,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R"
+		(property "Value" "0.55Ω"
 			(at 52.0699 93.98 0)
 			(effects
 				(font
@@ -2813,7 +2813,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "120Ω"
+		(property "Value" "10KΩ"
 			(at 35.56 152.3999 0)
 			(effects
 				(font
@@ -3245,7 +3245,7 @@
 				)
 			)
 		)
-		(property "Value" "1kΩ"
+		(property "Value" "110Ω"
 			(at 130.81 36.83 90)
 			(effects
 				(font
@@ -3528,7 +3528,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R"
+		(property "Value" "11KΩ"
 			(at 55.88 137.1599 0)
 			(effects
 				(font
