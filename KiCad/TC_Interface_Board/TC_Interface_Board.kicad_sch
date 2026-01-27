@@ -2600,7 +2600,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Diode_THT:D_5W_P5.08mm_Vertical_AnodeUp"
+		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
 			(at 35.052 44.704 0)
 			(effects
 				(font
@@ -2670,12 +2670,13 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 31.242 151.13 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
 		(property "Datasheet" "~"
@@ -2964,7 +2965,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Diode_THT:D_DO-15_P12.70mm_Horizontal"
+		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
 			(at 87.3252 143.51 0)
 			(effects
 				(font
@@ -3151,7 +3152,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "bb4b1da2-5dab-4535-b95c-e00a465d14d2")
 		(property "Reference" "J4_BUS_MONITER1"
 			(at 26.67 80.01 0)
@@ -3169,13 +3169,12 @@
 				)
 			)
 		)
-		(property "Footprint" ""
-			(at 26.67 91.44 0)
+		(property "Footprint" "Connector_JST:JST_VH_B5P-VH-B_1x05_P3.96mm_Vertical"
+			(at 44.958 103.124 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Datasheet" "~"
@@ -3248,7 +3247,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_THT:CP_Radial_D13.0mm_P7.50mm"
 			(at 165.1 36.83 0)
 			(effects
 				(font
@@ -3317,7 +3316,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Diode_THT:D_DO-15_P5.08mm_Vertical_AnodeUp"
+		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
 			(at 155.702 56.134 0)
 			(effects
 				(font
