@@ -3247,7 +3247,7 @@
 	(footprint "Package_TO_SOT_THT:TO-92_Inline"
 		(layer "F.Cu")
 		(uuid "4f79fd13-23a7-4ad1-9f4e-189035acb08a")
-		(at 168.42 110.62 180)
+		(at 168.5 110.62 180)
 		(descr "TO-92 leads in-line, narrow, oval pads, drill 0.75mm (see NXP sot054_po.pdf)")
 		(tags "to-92 sc-43 sc-43a sot54 PA33 transistor")
 		(property "Reference" "Q2"
