@@ -2085,13 +2085,43 @@
 	)
 	(wire
 		(pts
-			(xy 52.07 33.02) (xy 52.07 34.29)
+			(xy 33.02 29.21) (xy 41.91 29.21)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "88b10c57-3591-4a5c-ab7c-698765ef4854")
+		(uuid "027d373d-c3a7-4ef5-9476-b4638883c129")
+	)
+	(wire
+		(pts
+			(xy 74.93 35.56) (xy 92.71 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "28db9dc6-2237-43db-b612-9aff2670aaad")
+	)
+	(wire
+		(pts
+			(xy 49.53 29.21) (xy 64.77 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6ccf07cc-da6e-4263-bb61-efcd9238e477")
+	)
+	(wire
+		(pts
+			(xy 64.77 29.21) (xy 64.77 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "72801ffc-0d96-43c4-b459-9f29550607cf")
 	)
 	(symbol
 		(lib_id "Device:R")
@@ -2235,7 +2265,7 @@
 	)
 	(symbol
 		(lib_id "Regulator_Switching:MC34063AP")
-		(at 101.6 35.56 0)
+		(at 173.99 38.1 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2244,7 +2274,7 @@
 		(fields_autoplaced yes)
 		(uuid "11cca238-f24b-434c-9f9a-851bb57e5234")
 		(property "Reference" "U1"
-			(at 101.6 22.86 0)
+			(at 173.99 25.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2252,7 +2282,7 @@
 			)
 		)
 		(property "Value" "MC34063AP"
-			(at 101.6 25.4 0)
+			(at 173.99 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2260,7 +2290,7 @@
 			)
 		)
 		(property "Footprint" "Package_DIP:DIP-8_W7.62mm"
-			(at 102.87 46.99 0)
+			(at 175.26 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2270,7 +2300,7 @@
 			)
 		)
 		(property "Datasheet" "http://www.onsemi.com/pub_link/Collateral/MC34063A-D.PDF"
-			(at 114.3 38.1 0)
+			(at 186.69 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2279,7 +2309,7 @@
 			)
 		)
 		(property "Description" "1.5A, step-up/down/inverting switching regulator, 3-40V Vin, 100kHz, DIP-8"
-			(at 101.6 35.56 0)
+			(at 173.99 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2322,7 +2352,7 @@
 	)
 	(symbol
 		(lib_id "Device:D")
-		(at 147.32 36.83 270)
+		(at 219.71 39.37 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2331,7 +2361,7 @@
 		(fields_autoplaced yes)
 		(uuid "1e4215b2-1bb1-4523-92ff-926f75fa6c97")
 		(property "Reference" "D5"
-			(at 149.86 35.5599 90)
+			(at 222.25 38.0999 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2340,7 +2370,7 @@
 			)
 		)
 		(property "Value" "24V?"
-			(at 149.86 38.0999 90)
+			(at 222.25 40.6399 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2349,7 +2379,7 @@
 			)
 		)
 		(property "Footprint" "Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal"
-			(at 147.32 36.83 0)
+			(at 219.71 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2358,7 +2388,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 147.32 36.83 0)
+			(at 219.71 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2367,7 +2397,7 @@
 			)
 		)
 		(property "Description" "Diode"
-			(at 147.32 36.83 0)
+			(at 219.71 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2376,7 +2406,7 @@
 			)
 		)
 		(property "Sim.Device" "D"
-			(at 147.32 36.83 0)
+			(at 219.71 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2385,7 +2415,7 @@
 			)
 		)
 		(property "Sim.Pins" "1=K 2=A"
-			(at 147.32 36.83 0)
+			(at 219.71 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2480,7 +2510,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_BJT:DTC143E")
-		(at 81.28 172.72 0)
+		(at 97.79 33.02 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2489,25 +2519,23 @@
 		(fields_autoplaced yes)
 		(uuid "2ae65ddd-6324-4d04-bad6-64f58e1055a7")
 		(property "Reference" "Q2"
-			(at 86.36 171.4499 0)
+			(at 97.79 39.37 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "DTC143E"
-			(at 86.36 173.9899 0)
+			(at 97.79 41.91 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
-			(at 81.28 172.72 0)
+			(at 97.79 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2517,7 +2545,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 81.28 172.72 0)
+			(at 97.79 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2527,7 +2555,7 @@
 			)
 		)
 		(property "Description" "Digital NPN Transistor, 4k7/4k7, SOT-23"
-			(at 81.28 172.72 0)
+			(at 97.79 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2555,7 +2583,7 @@
 	)
 	(symbol
 		(lib_id "Device:D")
-		(at 40.64 33.02 0)
+		(at 45.72 29.21 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2564,7 +2592,7 @@
 		(fields_autoplaced yes)
 		(uuid "443b002c-edbe-40ac-a989-da98ccc7fc97")
 		(property "Reference" "D1"
-			(at 40.64 26.67 0)
+			(at 45.72 22.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2572,7 +2600,7 @@
 			)
 		)
 		(property "Value" "24V?"
-			(at 40.64 29.21 0)
+			(at 45.72 25.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2580,7 +2608,7 @@
 			)
 		)
 		(property "Footprint" "Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal"
-			(at 40.64 33.02 0)
+			(at 45.72 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2589,7 +2617,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 40.64 33.02 0)
+			(at 45.72 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2598,7 +2626,7 @@
 			)
 		)
 		(property "Description" "Diode"
-			(at 40.64 33.02 0)
+			(at 45.72 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2607,7 +2635,7 @@
 			)
 		)
 		(property "Sim.Device" "D"
-			(at 40.64 33.02 0)
+			(at 45.72 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2616,7 +2644,7 @@
 			)
 		)
 		(property "Sim.Pins" "1=K 2=A"
-			(at 40.64 33.02 0)
+			(at 45.72 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2641,7 +2669,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x04")
-		(at 25.4 38.1 180)
+		(at 81.28 69.85 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2650,7 +2678,7 @@
 		(fields_autoplaced yes)
 		(uuid "4cc1e52f-a762-470e-880c-744b1780a313")
 		(property "Reference" "J1_24V_ROW1"
-			(at 25.4 26.67 0)
+			(at 81.28 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2658,7 +2686,7 @@
 			)
 		)
 		(property "Value" "Conn_01x04"
-			(at 25.4 29.21 0)
+			(at 81.28 60.96 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2666,7 +2694,7 @@
 			)
 		)
 		(property "Footprint" "Connector_JST:JST_VH_B4P-VH-B_1x04_P3.96mm_Vertical"
-			(at 25.4 38.1 0)
+			(at 81.28 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2675,7 +2703,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 25.4 38.1 0)
+			(at 81.28 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2684,7 +2712,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 25.4 38.1 0)
+			(at 81.28 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2715,7 +2743,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 52.07 36.83 180)
+		(at 160.02 85.09 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2723,7 +2751,7 @@
 		(dnp no)
 		(uuid "628cb638-fd3d-4a41-87d6-fa75aaeaf522")
 		(property "Reference" "C1"
-			(at 55.88 34.2899 0)
+			(at 163.83 82.5499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2732,7 +2760,7 @@
 			)
 		)
 		(property "Value" "1000uF 35V"
-			(at 55.88 36.8299 0)
+			(at 163.83 85.0899 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2741,7 +2769,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
-			(at 35.052 44.704 0)
+			(at 143.002 92.964 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2750,7 +2778,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 52.07 36.83 0)
+			(at 160.02 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2759,7 +2787,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 52.07 36.83 0)
+			(at 160.02 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2938,7 +2966,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x03")
-		(at 231.14 107.95 0)
+		(at 27.94 31.75 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2946,7 +2974,7 @@
 		(dnp no)
 		(uuid "814b0da3-baa0-4989-8513-693f7b4a3e68")
 		(property "Reference" "J1_CN1_24V1"
-			(at 233.68 106.6799 0)
+			(at 25.4 33.0201 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2955,7 +2983,7 @@
 			)
 		)
 		(property "Value" "Conn_01x03"
-			(at 233.68 109.2199 0)
+			(at 25.4 30.4801 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2964,15 +2992,16 @@
 			)
 		)
 		(property "Footprint" "Connector_JST:JST_VH_B3P-VH-B_1x03_P3.96mm_Vertical"
-			(at 231.14 115.316 0)
+			(at 40.894 45.974 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
 		(property "Datasheet" "~"
-			(at 231.14 107.95 0)
+			(at 27.94 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2981,7 +3010,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 231.14 107.95 0)
+			(at 27.94 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3218,7 +3247,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 130.81 40.64 270)
+		(at 203.2 43.18 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3227,7 +3256,7 @@
 		(fields_autoplaced yes)
 		(uuid "ae775e73-239c-4962-b24e-696385f5a662")
 		(property "Reference" "R6"
-			(at 130.81 34.29 90)
+			(at 203.2 36.83 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3235,7 +3264,7 @@
 			)
 		)
 		(property "Value" "110Ω"
-			(at 130.81 36.83 90)
+			(at 203.2 39.37 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3243,7 +3272,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 130.81 38.862 90)
+			(at 203.2 41.402 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3252,7 +3281,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 130.81 40.64 0)
+			(at 203.2 43.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3261,7 +3290,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 130.81 40.64 0)
+			(at 203.2 43.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3361,7 +3390,7 @@
 	)
 	(symbol
 		(lib_id "Device:L_Ferrite")
-		(at 165.1 36.83 0)
+		(at 237.49 39.37 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3370,7 +3399,7 @@
 		(fields_autoplaced yes)
 		(uuid "c47cd150-4817-4aba-82d6-e6d71f465ab7")
 		(property "Reference" "L1_Inductor1"
-			(at 167.64 35.5599 0)
+			(at 240.03 38.0999 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3379,7 +3408,7 @@
 			)
 		)
 		(property "Value" "L_Ferrite"
-			(at 167.64 38.0999 0)
+			(at 240.03 40.6399 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3388,7 +3417,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_THT:CP_Radial_D13.0mm_P7.50mm"
-			(at 165.1 36.83 0)
+			(at 237.49 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3397,7 +3426,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 165.1 36.83 0)
+			(at 237.49 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3406,7 +3435,7 @@
 			)
 		)
 		(property "Description" "Inductor with ferrite core"
-			(at 165.1 36.83 0)
+			(at 237.49 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3431,7 +3460,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 165.1 49.53 0)
+		(at 237.49 52.07 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3439,7 +3468,7 @@
 		(dnp no)
 		(uuid "ca2d7932-d4df-4799-807b-905ab4337d69")
 		(property "Reference" "C3"
-			(at 168.91 48.2599 0)
+			(at 241.3 50.7999 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3448,7 +3477,7 @@
 			)
 		)
 		(property "Value" "470uF 16V"
-			(at 168.91 50.7999 0)
+			(at 241.3 53.3399 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3457,7 +3486,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
-			(at 155.702 56.134 0)
+			(at 228.092 58.674 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3465,7 +3494,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 165.1 49.53 0)
+			(at 237.49 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3474,7 +3503,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 165.1 49.53 0)
+			(at 237.49 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3740,7 +3769,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_BJT:DTC143E")
-		(at 80.01 160.02 0)
+		(at 69.85 33.02 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3748,7 +3777,7 @@
 		(dnp no)
 		(uuid "eb50836b-6195-4813-a01b-1a236f41cfb5")
 		(property "Reference" "Q1"
-			(at 85.09 158.7499 0)
+			(at 71.1201 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3757,7 +3786,7 @@
 			)
 		)
 		(property "Value" "DTC143E"
-			(at 85.09 161.2899 0)
+			(at 68.5801 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3766,16 +3795,17 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
-			(at 68.072 153.162 0)
+			(at 76.708 21.082 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
+				(hide yes)
 			)
 		)
 		(property "Datasheet" ""
-			(at 80.01 160.02 0)
+			(at 69.85 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3785,7 +3815,7 @@
 			)
 		)
 		(property "Description" "Digital NPN Transistor, 4k7/4k7, SOT-23"
-			(at 80.01 160.02 0)
+			(at 69.85 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
