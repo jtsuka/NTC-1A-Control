@@ -1660,7 +1660,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Transistor_BJT:DTC143X"
+		(symbol "Transistor_BJT:DTC143E"
 			(pin_names
 				(offset 0)
 				(hide yes)
@@ -1677,7 +1677,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "DTC143X"
+			(property "Value" "DTC143E"
 				(at 5.08 0 0)
 				(effects
 					(font
@@ -1706,7 +1706,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Digital NPN Transistor, 4k7/10k, SOT-23"
+			(property "Description" "Digital NPN Transistor, 4k7/4k7, SOT-23"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1733,7 +1733,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "DTC143X_0_0"
+			(symbol "DTC143E_0_0"
 				(text "4k7"
 					(at -3.302 0.889 0)
 					(effects
@@ -1742,7 +1742,7 @@
 						)
 					)
 				)
-				(text "10k"
+				(text "4k7"
 					(at -2.159 -1.524 900)
 					(effects
 						(font
@@ -1751,7 +1751,7 @@
 					)
 				)
 			)
-			(symbol "DTC143X_0_1"
+			(symbol "DTC143E_0_1"
 				(polyline
 					(pts
 						(xy -3.429 0) (xy -3.81 0)
@@ -1921,7 +1921,7 @@
 					)
 				)
 			)
-			(symbol "DTC143X_1_1"
+			(symbol "DTC143E_1_1"
 				(pin input line
 					(at -6.35 0 0)
 					(length 2.54)
@@ -2345,79 +2345,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_BJT:DTC143X")
-		(at 73.66 95.25 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "16669fb4-0edd-4e84-93c6-6d1be793ff1f")
-		(property "Reference" "Q1"
-			(at 78.74 93.9799 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "DTC143X (C143 NPN)"
-			(at 78.74 96.5199 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
-			(at 67.31 86.614 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Datasheet" ""
-			(at 73.66 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Description" "Digital NPN Transistor, 4k7/10k, SOT-23"
-			(at 73.66 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "985c638b-14b3-42e0-a822-eea50b6c6c48")
-		)
-		(pin "1"
-			(uuid "5c5b88a7-c523-4b3e-8361-61f8f5158516")
-		)
-		(pin "3"
-			(uuid "3c18f2be-80d1-4af4-a012-9601b3939339")
-		)
-		(instances
-			(project ""
-				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "Q1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:D")
 		(at 147.32 36.83 270)
 		(unit 1)
@@ -2570,6 +2497,81 @@
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
 					(reference "J3_CN3_9V_Main01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_BJT:DTC143E")
+		(at 81.28 172.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2ae65ddd-6324-4d04-bad6-64f58e1055a7")
+		(property "Reference" "Q2"
+			(at 86.36 171.4499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "DTC143E"
+			(at 86.36 173.9899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 81.28 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 81.28 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "Digital NPN Transistor, 4k7/4k7, SOT-23"
+			(at 81.28 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2fd3436a-4e8b-491c-892d-de4aa6a0f1fa")
+		)
+		(pin "2"
+			(uuid "950a8d5b-6a1a-4250-a3f0-190040756b12")
+		)
+		(pin "3"
+			(uuid "1c1e84fd-fd42-40a8-a86e-539ed23a6621")
+		)
+		(instances
+			(project ""
+				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
+					(reference "Q2")
 					(unit 1)
 				)
 			)
@@ -3590,80 +3592,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_BJT:DTC143X")
-		(at 83.82 179.07 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "d0b245f6-3e35-469e-a70e-09a4253cddc3")
-		(property "Reference" "Q2"
-			(at 88.9 177.7999 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "DTC143X (C143 NPN)"
-			(at 88.9 180.3399 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
-			(at 77.47 170.434 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 83.82 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Description" "Digital NPN Transistor, 4k7/10k, SOT-23"
-			(at 83.82 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "367d30a9-0168-46aa-93e3-d91955433be7")
-		)
-		(pin "1"
-			(uuid "3848de73-d7e0-4b0e-b7f5-77546adc2dc4")
-		)
-		(pin "3"
-			(uuid "cafdf547-6edd-4ca7-b153-8d4fc4edfa1d")
-		)
-		(instances
-			(project "TC_Interface_Board"
-				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "Q2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:D")
 		(at 123.19 167.64 0)
 		(unit 1)
@@ -3830,6 +3758,79 @@
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
 					(reference "D2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_BJT:DTC143E")
+		(at 80.01 160.02 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "eb50836b-6195-4813-a01b-1a236f41cfb5")
+		(property "Reference" "Q1"
+			(at 85.09 158.7499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "DTC143E"
+			(at 85.09 161.2899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 68.072 153.162 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" ""
+			(at 80.01 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "Digital NPN Transistor, 4k7/4k7, SOT-23"
+			(at 80.01 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "3678e9f4-8128-4f53-b222-8620bf058d3f")
+		)
+		(pin "2"
+			(uuid "07950f15-3a59-4246-be46-9623b0fe57f0")
+		)
+		(pin "1"
+			(uuid "c4237a12-0086-4e49-a484-a41bdd90f6f0")
+		)
+		(instances
+			(project ""
+				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
+					(reference "Q1")
 					(unit 1)
 				)
 			)
