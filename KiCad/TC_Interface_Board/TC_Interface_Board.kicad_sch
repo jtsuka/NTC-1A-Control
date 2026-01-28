@@ -2033,7 +2033,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "Pin 1	GND	太配線／C2・C3マイナスと導通／実機でGND基準\nPin 2	不明\nPin 3	SIG（信号）	Q1/Q2 INへ入る系統\nPin 4	+9V	IR3M03A降圧後／基板シルク「+9V」あり\nPin 5	+24V	D5通過後の24V太配線／外部供給実績あり"
+	(text "Pin 1	RX CN4のみ結線\nPin 2	不明\nPin 3	GND\nPin 4	+9V	\nPin 5	+24V	D5通過後の24V太配線／外部供給実績あり"
 		(exclude_from_sim no)
 		(at 185.674 116.84 0)
 		(effects
