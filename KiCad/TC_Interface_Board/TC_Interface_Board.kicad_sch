@@ -2033,6 +2033,17 @@
 			(embedded_fonts no)
 		)
 	)
+	(text "Pin 1	GND	太配線／C2・C3マイナスと導通／実機でGND基準\nPin 2	不明\nPin 3	SIG（信号）	Q1/Q2 INへ入る系統\nPin 4	+9V	IR3M03A降圧後／基板シルク「+9V」あり\nPin 5	+24V	D5通過後の24V太配線／外部供給実績あり"
+		(exclude_from_sim no)
+		(at 205.994 128.27 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "06ed003e-a714-4eb8-8446-1a3455386079")
+	)
 	(text "24V +"
 		(exclude_from_sim no)
 		(at 75.946 129.54 0)
@@ -2200,6 +2211,18 @@
 		(uuid "2ef2fb9f-524a-4a09-a76c-d640ff432f3b")
 	)
 	(junction
+		(at 156.21 128.27)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3ae34538-f602-432c-a089-40a189b6b93c")
+	)
+	(junction
+		(at 153.67 153.67)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3b417675-8c69-47bd-bf26-725906d009f5")
+	)
+	(junction
 		(at 135.89 151.13)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2290,10 +2313,22 @@
 		(uuid "7acfb3fe-333c-4d78-afcd-c85fd22b20d4")
 	)
 	(junction
+		(at 153.67 128.27)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7b7fe69e-1611-4cd4-8d9f-5cf617ca8bee")
+	)
+	(junction
 		(at 153.67 120.65)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8795f0b4-08a2-4902-ac48-1a380a1d034d")
+	)
+	(junction
+		(at 102.87 45.72)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8927c7c1-6c2a-46a6-9f3d-a523a0345bf8")
 	)
 	(junction
 		(at 167.64 81.28)
@@ -2437,6 +2472,16 @@
 	)
 	(wire
 		(pts
+			(xy 156.21 101.6) (xy 156.21 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "065dcbb3-8483-4101-bd4e-58b39b509be0")
+	)
+	(wire
+		(pts
 			(xy 105.41 120.65) (xy 119.38 120.65)
 		)
 		(stroke
@@ -2464,6 +2509,36 @@
 			(type default)
 		)
 		(uuid "0c48664a-dc58-4391-b683-95a2833e17c3")
+	)
+	(wire
+		(pts
+			(xy 102.87 54.61) (xy 95.25 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0e7f02a6-5bdc-4a75-82e8-739a387b0c71")
+	)
+	(wire
+		(pts
+			(xy 156.21 153.67) (xy 153.67 153.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0e999069-a4a0-43c8-9f41-ef761320cbc4")
+	)
+	(wire
+		(pts
+			(xy 156.21 128.27) (xy 156.21 153.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0f27178f-5575-4bc7-8802-ca291532f0b9")
 	)
 	(wire
 		(pts
@@ -2827,7 +2902,7 @@
 	)
 	(wire
 		(pts
-			(xy 100.33 45.72) (xy 115.57 45.72)
+			(xy 100.33 45.72) (xy 102.87 45.72)
 		)
 		(stroke
 			(width 0)
@@ -2944,6 +3019,16 @@
 			(type default)
 		)
 		(uuid "686c25ab-ce24-44a6-9b65-f06ec89ed685")
+	)
+	(wire
+		(pts
+			(xy 156.21 128.27) (xy 153.67 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6b59adf6-1e45-4b2f-9810-824e02cf1908")
 	)
 	(wire
 		(pts
@@ -3277,6 +3362,16 @@
 	)
 	(wire
 		(pts
+			(xy 95.25 54.61) (xy 95.25 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b2f70861-618f-4e8c-afbe-33953e61a594")
+	)
+	(wire
+		(pts
 			(xy 250.19 52.07) (xy 250.19 120.65)
 		)
 		(stroke
@@ -3294,6 +3389,16 @@
 			(type default)
 		)
 		(uuid "ba7e0f2c-b50b-4a34-bbba-692f1a3c5070")
+	)
+	(wire
+		(pts
+			(xy 95.25 101.6) (xy 156.21 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bb463012-1340-4984-9090-9cb0a6603b9a")
 	)
 	(wire
 		(pts
@@ -3497,6 +3602,16 @@
 	)
 	(wire
 		(pts
+			(xy 102.87 45.72) (xy 115.57 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d9676dad-8a2c-4f46-b892-a90bb58fcd01")
+	)
+	(wire
+		(pts
 			(xy 73.66 59.69) (xy 73.66 57.15)
 		)
 		(stroke
@@ -3604,6 +3719,16 @@
 			(type default)
 		)
 		(uuid "f28e7528-0226-40a1-b5dd-8538fe9b4e81")
+	)
+	(wire
+		(pts
+			(xy 102.87 45.72) (xy 102.87 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f311f285-cb32-4270-86c5-4d879858ab9b")
 	)
 	(wire
 		(pts
