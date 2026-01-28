@@ -4073,7 +4073,7 @@
 				)
 			)
 		)
-		(property "Value" "24V?"
+		(property "Value" "24V  1N4006"
 			(at 68.58 53.34 0)
 			(effects
 				(font
@@ -5617,7 +5617,7 @@
 				)
 			)
 		)
-		(property "Value" "630mV"
+		(property "Value" "630mV 1N5819"
 			(at 162.56 76.2 0)
 			(effects
 				(font
