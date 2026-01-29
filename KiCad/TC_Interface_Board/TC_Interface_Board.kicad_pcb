@@ -3439,7 +3439,7 @@
 			(uuid "927ec7a1-ddfb-4b96-9d03-fc7cdfeb2045")
 		)
 		(fp_text user "K"
-			(at 0 -2.1 90)
+			(at 0.12 2.11 180)
 			(layer "F.SilkS")
 			(uuid "73eb10c1-1b0c-4d03-ad00-882d6dd64706")
 			(effects
@@ -8280,7 +8280,7 @@
 		(at 156.7725 140.91)
 		(descr "JST VH PBT series connector, B2P-VH-B (http://www.jst-mfg.com/product/pdf/eng/eVH.pdf), generated with kicad-footprint-generator")
 		(tags "connector JST VH vertical")
-		(property "Reference" "J3_CN3_9V_Main1"
+		(property "Reference" "J3_CN3"
 			(at 2.31 -5.51 0)
 			(layer "F.SilkS")
 			(uuid "ba915568-f4dc-49dc-b230-7f55f243ecac")
@@ -8741,7 +8741,7 @@
 		(at 143.4825 140.91)
 		(descr "JST VH PBT series connector, B2P-VH-B (http://www.jst-mfg.com/product/pdf/eng/eVH.pdf), generated with kicad-footprint-generator")
 		(tags "connector JST VH vertical")
-		(property "Reference" "J2_CN2_9V_Main1"
+		(property "Reference" "J2_CN2"
 			(at 2.0775 -5.93 0)
 			(layer "F.SilkS")
 			(uuid "2e32aeb1-732b-4640-8586-a5cee3255e6a")
@@ -10814,7 +10814,7 @@
 			(uuid "2bf13c04-b15a-46b6-b970-0ec4ecb2f3f4")
 		)
 		(fp_text user "K"
-			(at 0 -2.1 90)
+			(at -0.01 2.323572 90)
 			(layer "F.SilkS")
 			(uuid "f5f1c825-83c5-470d-a6f8-7eb20906addd")
 			(effects
@@ -10836,7 +10836,7 @@
 			)
 		)
 		(fp_text user "K"
-			(at 0 -2.1 90)
+			(at 0 2.323572 90)
 			(layer "F.Fab")
 			(uuid "5999ee92-6a2a-4094-8e54-c1b276833c18")
 			(effects
@@ -11209,7 +11209,7 @@
 		(descr "8-lead though-hole mounted DIP package, row spacing 7.62mm (300 mils)")
 		(tags "THT DIP DIL PDIP 2.54mm 7.62mm 300mil")
 		(property "Reference" "U1"
-			(at 3.81 -2.33 90)
+			(at 3.785 11.62 90)
 			(layer "F.SilkS")
 			(uuid "9f27602d-5fce-49bf-bcb7-0a4d33f92478")
 			(effects
@@ -12129,7 +12129,7 @@
 		(at 123.74 141.01)
 		(descr "JST VH PBT series connector, B3P-VH-B (http://www.jst-mfg.com/product/pdf/eng/eVH.pdf), generated with kicad-footprint-generator")
 		(tags "connector JST VH vertical")
-		(property "Reference" "J1_CN1_24V1"
+		(property "Reference" "J1_CN1"
 			(at 4.07 -5.93 0)
 			(layer "F.SilkS")
 			(uuid "16391e9d-6fcb-4009-b2ac-73b41612d0ed")
@@ -13378,7 +13378,7 @@
 	(footprint "Connector_JST:JST_VH_B5P-VH-B_1x05_P3.96mm_Vertical"
 		(layer "F.Cu")
 		(uuid "f519d2d3-4fa0-4e4b-8dc6-7ef60671ccd5")
-		(at 123.93 69.57)
+		(at 123.88 70.24)
 		(descr "JST VH PBT series connector, B5P-VH-B (http://www.jst-mfg.com/product/pdf/eng/eVH.pdf), generated with kicad-footprint-generator")
 		(tags "connector JST VH vertical")
 		(property "Reference" "J7"
@@ -13897,6 +13897,17 @@
 				(xyz 0 0 0)
 			)
 		)
+	)
+	(gr_rect
+		(start 108.8 32.13)
+		(end 177.69 153.68)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "Edge.Cuts")
+		(uuid "d9000e58-f290-48e8-afb7-8d1688c6672a")
 	)
 	(image
 		(at 143.028214 93.288861)
@@ -30178,14 +30189,6 @@
 		(uuid "d6d92900-70c4-475e-b584-90f793f2a356")
 	)
 	(segment
-		(start 163.696428 124.24)
-		(end 163.696428 124.116428)
-		(width 0.2)
-		(layer "F.Cu")
-		(net 4)
-		(uuid "dcfd9bb5-229a-4211-8929-49515c3fffce")
-	)
-	(segment
 		(start 160.7325 140.91)
 		(end 160.7325 137.7125)
 		(width 1)
@@ -31036,7 +31039,7 @@
 	(segment
 		(start 132.87 55.08)
 		(end 129.13 51.34)
-		(width 4)
+		(width 2)
 		(layer "F.Cu")
 		(net 16)
 		(uuid "a05115a4-535c-498f-bfc4-c3326d2bb28b")
@@ -31060,7 +31063,7 @@
 	(segment
 		(start 139.75 61.96)
 		(end 132.87 55.08)
-		(width 4)
+		(width 2)
 		(layer "F.Cu")
 		(net 16)
 		(uuid "bb47d4f1-5485-4f5a-98de-ee3a5250bf2f")
