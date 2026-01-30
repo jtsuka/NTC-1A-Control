@@ -1,4 +1,4 @@
 (sym_lib_table
   (version 7)
-  (lib (name "MOUDLE-SEEEDUINO-XIAO-ESP32S3")(type "KiCad")(uri "F:/Users/塚田淳一/Seeeduino-xiao-ESP32S3-KiCAD-Library/MOUDLE-SEEEDUINO-XIAO-ESP32S3.kicad_sym")(options "")(descr ""))
+  (lib (name "MOUDLE-SEEEDUINO-XIAO-ESP32S3")(type "KiCad")(uri "E:/Users/塚田淳一/Documents/GitHub/NTC-1A-Control/NTC-1A-Control/KiCad/Seeeduino-xiao-ESP32S3-KiCAD-Library/MOUDLE-SEEEDUINO-XIAO-ESP32S3.kicad_sym")(options "")(descr ""))
 )
