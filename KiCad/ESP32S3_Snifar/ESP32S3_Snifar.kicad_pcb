@@ -3565,7 +3565,7 @@
 	(segment
 		(start 91.20925 81.81925)
 		(end 53.68925 81.81925)
-		(width 0.2)
+		(width 0.6)
 		(layer "F.Cu")
 		(net 19)
 		(uuid "26d76dea-98d6-427d-9838-66329183f403")
@@ -3573,7 +3573,7 @@
 	(segment
 		(start 114.73 65.32175)
 		(end 114.73 81.68)
-		(width 0.2)
+		(width 0.6)
 		(layer "F.Cu")
 		(net 19)
 		(uuid "4b14cdae-851a-421d-a109-b7d4c96bd5bb")
@@ -3581,7 +3581,7 @@
 	(segment
 		(start 37.26925 51.16925)
 		(end 40.51925 51.16925)
-		(width 0.2)
+		(width 0.6)
 		(layer "F.Cu")
 		(net 19)
 		(uuid "59021f3d-c361-4f81-bc8c-35cf1132aaf4")
@@ -3589,7 +3589,7 @@
 	(segment
 		(start 114.83925 81.78925)
 		(end 91.23925 81.78925)
-		(width 0.2)
+		(width 0.6)
 		(layer "F.Cu")
 		(net 19)
 		(uuid "61dc0c30-8b0e-45de-8ade-501cabfb8d2d")
@@ -3597,7 +3597,7 @@
 	(segment
 		(start 49.54925 81.81925)
 		(end 40.75925 81.81925)
-		(width 0.2)
+		(width 0.6)
 		(layer "F.Cu")
 		(net 19)
 		(uuid "6cd66efb-3166-439a-b4f8-18393a69dfc9")
@@ -3605,7 +3605,7 @@
 	(segment
 		(start 91.30925 71.49925)
 		(end 91.30925 81.81925)
-		(width 0.2)
+		(width 0.6)
 		(layer "F.Cu")
 		(net 19)
 		(uuid "7c360fdd-0588-492e-b6d1-1513db96e5b7")
@@ -3613,7 +3613,7 @@
 	(segment
 		(start 53.67925 50.73925)
 		(end 53.67925 81.80925)
-		(width 0.2)
+		(width 0.6)
 		(layer "F.Cu")
 		(net 19)
 		(uuid "87d389c9-0d8a-4c32-ae20-ffd5482e87c0")
@@ -3637,7 +3637,7 @@
 	(segment
 		(start 49.54925 75.03925)
 		(end 49.54925 81.81925)
-		(width 0.2)
+		(width 0.6)
 		(layer "F.Cu")
 		(net 19)
 		(uuid "a6e64a87-3559-4579-83dd-a832773eea40")
@@ -3645,7 +3645,7 @@
 	(segment
 		(start 40.72925 51.37925)
 		(end 40.72925 81.78925)
-		(width 0.2)
+		(width 0.6)
 		(layer "F.Cu")
 		(net 19)
 		(uuid "b2c397f5-7d56-41f1-80f6-bac92e5f4e5f")
@@ -3653,7 +3653,7 @@
 	(segment
 		(start 49.54925 81.81925)
 		(end 53.68925 81.81925)
-		(width 0.2)
+		(width 0.6)
 		(layer "F.Cu")
 		(net 19)
 		(uuid "b6192858-8e1b-421e-bb96-eb13ebeb23d7")
@@ -3685,7 +3685,7 @@
 	(segment
 		(start 91.41925 50.96925)
 		(end 91.41925 71.38925)
-		(width 0.2)
+		(width 0.6)
 		(layer "B.Cu")
 		(net 19)
 		(uuid "7a08d28f-08c5-4859-8a51-4f6179ccd4df")
