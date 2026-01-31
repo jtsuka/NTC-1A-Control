@@ -1818,7 +1818,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0e850454-cdf3-4d95-b839-e575b300030c")
-		(property "Reference" "D2"
+		(property "Reference" "D1"
 			(at 164.338 29.972 0)
 			(effects
 				(font
@@ -1870,7 +1870,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "D2")
+					(reference "D1")
 					(unit 1)
 				)
 			)
@@ -2097,7 +2097,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "4b1ba1d6-48d3-4cec-a0f4-db29912e772d")
-		(property "Reference" "D4"
+		(property "Reference" "D2"
 			(at 164.592 39.878 0)
 			(effects
 				(font
@@ -2149,7 +2149,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "D4")
+					(reference "D2")
 					(unit 1)
 				)
 			)
@@ -2367,7 +2367,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b62eea2f-cfbd-46b1-ab87-cf92a011e779")
-		(property "Reference" "D1"
+		(property "Reference" "D3"
 			(at 166.116 52.578 0)
 			(effects
 				(font
@@ -2419,7 +2419,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "D1")
+					(reference "D3")
 					(unit 1)
 				)
 			)
@@ -2741,7 +2741,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "fdca5bdd-f377-4e28-b021-192f1ce43ebb")
-		(property "Reference" "D3"
+		(property "Reference" "D4"
 			(at 165.608 65.024 0)
 			(effects
 				(font
@@ -2793,7 +2793,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "D3")
+					(reference "D4")
 					(unit 1)
 				)
 			)
