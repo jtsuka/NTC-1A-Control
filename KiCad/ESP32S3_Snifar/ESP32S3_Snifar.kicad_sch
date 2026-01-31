@@ -1391,6 +1391,16 @@
 	)
 	(wire
 		(pts
+			(xy 213.36 120.65) (xy 213.36 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "18f5379c-6323-49b4-984d-ac8075c61755")
+	)
+	(wire
+		(pts
 			(xy 148.59 63.5) (xy 148.59 57.15)
 		)
 		(stroke
@@ -1601,16 +1611,6 @@
 	)
 	(wire
 		(pts
-			(xy 213.36 127) (xy 213.36 120.65)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "95d0dbfe-538c-40e4-a040-da59088d3a2f")
-	)
-	(wire
-		(pts
 			(xy 165.1 63.5) (xy 173.99 63.5)
 		)
 		(stroke
@@ -1698,6 +1698,16 @@
 			(type default)
 		)
 		(uuid "c025bb18-f642-4d03-925f-edebebe50f53")
+	)
+	(wire
+		(pts
+			(xy 217.17 120.65) (xy 217.17 139.7)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c673a384-f951-4bbc-afea-cef10b08174e")
 	)
 	(wire
 		(pts
@@ -1798,16 +1808,6 @@
 			(type default)
 		)
 		(uuid "f8de33e9-7f4a-4538-96dd-970ae5d65299")
-	)
-	(wire
-		(pts
-			(xy 217.17 120.65) (xy 217.17 139.7)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fa9cb973-59a9-423e-8f84-f57fdd75d2f0")
 	)
 	(symbol
 		(lib_id "Diode:BAT43")
@@ -2226,6 +2226,111 @@
 		)
 	)
 	(symbol
+		(lib_id "MOUDLE-SEEEDUINO-XIAO-ESP32S3:MOUDLE-SEEEDUINO-XIAO-ESP32S3")
+		(at 209.55 96.52 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5e94c57b-97cf-4aa0-887d-98528b81af01")
+		(property "Reference" "U1"
+			(at 224.79 94.6149 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MOUDLE-SEEEDUINO-XIAO-ESP32S3"
+			(at 224.79 97.1549 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MOUDLE14P-SMD-2.54-21X17.8MM"
+			(at 242.316 102.108 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Datasheet" ""
+			(at 209.55 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 209.55 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "9"
+			(uuid "2a8c7fdb-75d2-450b-93c0-efff7b555694")
+		)
+		(pin "7"
+			(uuid "a7a35b8e-72be-46dc-82d3-dbeb2239cb48")
+		)
+		(pin "6"
+			(uuid "f5a2940b-81ee-49ca-8542-308f08dc4c62")
+		)
+		(pin "8"
+			(uuid "b7e38a57-a741-45b4-a5c5-cecc874a5830")
+		)
+		(pin "5"
+			(uuid "b67040ae-f18e-45cd-ad09-d784de473689")
+		)
+		(pin "4"
+			(uuid "8bb80de1-0e9c-4c84-9a13-56c80d7e133e")
+		)
+		(pin "10"
+			(uuid "e174657c-84b5-482a-bdf2-90c6ff0427b4")
+		)
+		(pin "1"
+			(uuid "64070d73-f9f4-4199-9afc-a4da776caee7")
+		)
+		(pin "14"
+			(uuid "2b599da3-1f21-48b9-98d8-0244f05c50d3")
+		)
+		(pin "2"
+			(uuid "7bf1659c-713f-4693-8106-9705c2e84a59")
+		)
+		(pin "3"
+			(uuid "63784d25-2e78-4aa8-b634-ce033dbfcff3")
+		)
+		(pin "12"
+			(uuid "a7105871-1d11-4b31-a05b-b2e653d475c4")
+		)
+		(pin "13"
+			(uuid "4a0a98c3-79c1-4b5b-b3ed-66fc03ef6abd")
+		)
+		(pin "11"
+			(uuid "7095c9c0-05b5-4625-bafe-3a8bad84c338")
+		)
+		(instances
+			(project ""
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:TestPoint")
 		(at 134.62 29.21 0)
 		(unit 1)
@@ -2486,111 +2591,6 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "TP2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MOUDLE-SEEEDUINO-XIAO-ESP32S3:MOUDLE-SEEEDUINO-XIAO-ESP32S3")
-		(at 209.55 96.52 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "d42c2022-d06e-406e-a52c-de6c81c0dbcb")
-		(property "Reference" "U1"
-			(at 224.79 94.6149 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MOUDLE-SEEEDUINO-XIAO-ESP32S3"
-			(at 224.79 97.1549 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "MOUDLE14P-SMD-2.54-21X17.8MM"
-			(at 242.824 102.87 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Datasheet" ""
-			(at 209.55 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 209.55 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "14"
-			(uuid "cb43481a-da3f-484f-99e9-b8f14c55ef18")
-		)
-		(pin "3"
-			(uuid "7fccfbcb-8c5a-4cda-a928-bb365de6fb35")
-		)
-		(pin "7"
-			(uuid "598a97f1-498a-4ee9-8487-ad6af1efe1c6")
-		)
-		(pin "10"
-			(uuid "f5c88e81-2a39-4ec5-b6d1-419c2113b8a1")
-		)
-		(pin "12"
-			(uuid "adeeeef1-379e-475c-a9bb-f2aa023f478e")
-		)
-		(pin "13"
-			(uuid "424fb45a-ccb1-45da-8aee-6760e5f84e88")
-		)
-		(pin "2"
-			(uuid "70c256b8-df9d-494f-8386-fc4792806d62")
-		)
-		(pin "4"
-			(uuid "7d0e5fb7-b6be-4df8-88a6-16115ef5af05")
-		)
-		(pin "9"
-			(uuid "88c01e3a-3b2b-4a79-adc7-5530aef985ae")
-		)
-		(pin "11"
-			(uuid "32104805-0783-4ec4-afa1-796827324eb5")
-		)
-		(pin "1"
-			(uuid "d1ca98e2-9977-499a-8194-1944299c5093")
-		)
-		(pin "5"
-			(uuid "a61d584a-43de-4c77-bb49-5700f2ef7626")
-		)
-		(pin "6"
-			(uuid "160553e3-cf3f-4072-b4e9-0ccbd0cf6910")
-		)
-		(pin "8"
-			(uuid "6dbf6583-684f-46ce-b868-c9f3c5c9613e")
-		)
-		(instances
-			(project ""
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "U1")
 					(unit 1)
 				)
 			)
