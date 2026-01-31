@@ -1,4 +1,4 @@
-26564312425139332
+26567852125320528
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -69641,6 +69641,20 @@ MOUDLE14P-SMD-2.54-21X17.8MM
 
 0
 14
+14
+MOUDLE-SEEEDUINO-XIAO-ESP32S3
+XIAO-ESP32C3-DIP
+
+
+0
+28
+14
+MOUDLE-SEEEDUINO-XIAO-ESP32S3
+XIAO-ESP32S3-DIP
+
+
+0
+28
 14
 Module
 A20_OLINUXINO_LIME2

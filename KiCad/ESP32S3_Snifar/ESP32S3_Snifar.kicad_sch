@@ -2691,7 +2691,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MOUDLE-SEEEDUINO-XIAO-ESP32S3:MOUDLE14P-SMD-2.54-21X17.8MM"
+		(property "Footprint" "MOUDLE-SEEEDUINO-XIAO-ESP32S3:XIAO-ESP32S3-DIP"
 			(at 209.55 96.52 0)
 			(effects
 				(font
