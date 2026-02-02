@@ -5521,6 +5521,26 @@
 			)
 		)
 	)
+	(label "TC_TX_MAIN"
+		(at 48.26 31.75 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "28579f2b-b9c7-48a0-9bd3-2260b8781284")
+	)
+	(label "SIG_BUS_R"
+		(at 106.68 88.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "92e5b086-6636-47b1-953d-e4254c4af712")
+	)
 	(symbol
 		(lib_id "Device:R")
 		(at 175.26 40.64 90)
