@@ -7977,7 +7977,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "f3613abb-7bb6-4130-b1e6-2ee2009b873d")
 		(property "Reference" "#PWR02"
 			(at 66.04 120.65 0)
@@ -7988,8 +7987,8 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "-24V"
-			(at 66.04 111.76 0)
+		(property "Value" "24V"
+			(at 68.834 114.554 0)
 			(effects
 				(font
 					(size 1.27 1.27)
