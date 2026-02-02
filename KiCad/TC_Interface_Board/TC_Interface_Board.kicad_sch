@@ -5521,6 +5521,26 @@
 			)
 		)
 	)
+	(label "TC_TX_MAIN"
+		(at 48.26 31.75 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "28579f2b-b9c7-48a0-9bd3-2260b8781284")
+	)
+	(label "SIG_BUS_R"
+		(at 106.68 88.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "92e5b086-6636-47b1-953d-e4254c4af712")
+	)
 	(symbol
 		(lib_id "Device:R")
 		(at 175.26 40.64 90)
@@ -5539,7 +5559,7 @@
 				)
 			)
 		)
-		(property "Value" "1.2k"
+		(property "Value" "1k2R"
 			(at 175.26 36.83 90)
 			(effects
 				(font
@@ -5607,7 +5627,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "6.2k"
+		(property "Value" "6k2R"
 			(at 162.56 88.9 90)
 			(effects
 				(font
@@ -6503,7 +6523,7 @@
 				)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "10kR"
 			(at 137.922 50.546 90)
 			(effects
 				(font
@@ -7018,7 +7038,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "220"
+		(property "Value" "220R"
 			(at 147.32 38.0999 0)
 			(effects
 				(font
@@ -7086,7 +7106,7 @@
 				)
 			)
 		)
-		(property "Value" "1k"
+		(property "Value" "1kR"
 			(at 166.624 101.6 90)
 			(effects
 				(font
@@ -7499,7 +7519,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "0.22"
+		(property "Value" "0R22"
 			(at 111.76 62.484 90)
 			(effects
 				(font
@@ -7957,7 +7977,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "f3613abb-7bb6-4130-b1e6-2ee2009b873d")
 		(property "Reference" "#PWR02"
 			(at 66.04 120.65 0)
@@ -7968,8 +7987,8 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "-24V"
-			(at 66.04 111.76 0)
+		(property "Value" "24V"
+			(at 68.834 114.554 0)
 			(effects
 				(font
 					(size 1.27 1.27)
