@@ -29707,6 +29707,42 @@
 			(justify left bottom)
 		)
 	)
+	(gr_text "TC_TX (ONLY CN4)"
+		(at 121.9962 121.7676 0)
+		(layer "F.SilkS")
+		(uuid "68c1173e-5a07-4283-8f7f-f051eee25ef9")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "SIG_BUS_RX"
+		(at 136.3472 84.5058 90)
+		(layer "F.SilkS")
+		(uuid "da762d95-3f62-4de5-aa2d-ef2fc8aa47ee")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "GND"
+		(at 132.5118 83.7438 90)
+		(layer "F.SilkS")
+		(uuid "f3341ce9-0b43-42f8-b755-2dc91f05767b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
 	(dimension
 		(type orthogonal)
 		(layer "User.1")
