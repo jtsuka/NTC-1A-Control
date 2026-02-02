@@ -5539,7 +5539,7 @@
 				)
 			)
 		)
-		(property "Value" "1.2k"
+		(property "Value" "1k2R"
 			(at 175.26 36.83 90)
 			(effects
 				(font
@@ -5607,7 +5607,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "6.2k"
+		(property "Value" "6k2R"
 			(at 162.56 88.9 90)
 			(effects
 				(font
@@ -6503,7 +6503,7 @@
 				)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "10kR"
 			(at 137.922 50.546 90)
 			(effects
 				(font
@@ -7018,7 +7018,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "220"
+		(property "Value" "220R"
 			(at 147.32 38.0999 0)
 			(effects
 				(font
@@ -7086,7 +7086,7 @@
 				)
 			)
 		)
-		(property "Value" "1k"
+		(property "Value" "1kR"
 			(at 166.624 101.6 90)
 			(effects
 				(font
@@ -7499,7 +7499,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "0.22"
+		(property "Value" "0R22"
 			(at 111.76 62.484 90)
 			(effects
 				(font
