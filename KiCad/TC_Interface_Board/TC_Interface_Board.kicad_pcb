@@ -1472,7 +1472,7 @@
 				)
 			)
 		)
-		(property "Value" "1K"
+		(property "Value" "1k"
 			(at 3.81 2.37 0)
 			(layer "F.Fab")
 			(uuid "a5b0a4bc-4f6c-426e-8855-976b5183f3cd")
@@ -2198,7 +2198,7 @@
 				)
 			)
 		)
-		(property "Value" "10K"
+		(property "Value" "10k"
 			(at 3.81 2.37 90)
 			(layer "F.Fab")
 			(uuid "98387399-256c-412b-be58-cfbc7c14efef")
@@ -2721,7 +2721,7 @@
 				)
 			)
 		)
-		(property "Value" "1.2K"
+		(property "Value" "1.2k"
 			(at 10.83 -2.243572 90)
 			(layer "F.Fab")
 			(uuid "b4356457-9499-4cb0-9734-e565e112ca33")
@@ -3181,7 +3181,7 @@
 				)
 			)
 		)
-		(property "Value" "24V?"
+		(property "Value" "1N4148"
 			(at 3.81 2.47 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -3496,7 +3496,7 @@
 				)
 			)
 		)
-		(property "Value" "630mV"
+		(property "Value" "1N4148"
 			(at 3.81 2.47 90)
 			(layer "F.Fab")
 			(uuid "593d586a-a9fd-45ec-b707-b58a933f93c6")
@@ -4130,7 +4130,7 @@
 				)
 			)
 		)
-		(property "Value" "630mV 1N5819"
+		(property "Value" "1N5819"
 			(at 3.81 2.47 0)
 			(layer "F.Fab")
 			(uuid "4fb08c2f-a290-40a3-974f-9df0ca21a51c")
@@ -8567,7 +8567,7 @@
 		(descr "Resistor, Axial_DIN0207 series, Axial, Horizontal, pin pitch=10.16mm, 0.25W = 1/4W, length*diameter=6.3*2.5mm^2, http://cdn-reichelt.de/documents/datenblatt/B400/1_4W%23YAG.pdf")
 		(tags "Resistor Axial_DIN0207 series Axial Horizontal pin pitch 10.16mm 0.25W = 1/4W length 6.3mm diameter 2.5mm")
 		(property "Reference" "R5"
-			(at 6.42 -2.5 90)
+			(at 5.08 -2.37 270)
 			(layer "F.SilkS")
 			(uuid "e7b22c1d-9bff-4e8d-84e0-986f25762612")
 			(effects
@@ -8578,7 +8578,7 @@
 			)
 		)
 		(property "Value" "0.22"
-			(at 5.08 2.37 90)
+			(at 5.08 2.37 270)
 			(layer "F.Fab")
 			(uuid "2d419aa8-ad24-4ab4-ae14-cf659a194f43")
 			(effects
@@ -8589,7 +8589,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 0 0 90)
+			(at 0 0 270)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "47fec958-8b42-48cd-af28-223dee6f4875")
@@ -8601,7 +8601,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 0 0 90)
+			(at 0 0 270)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "c292ea7e-cfc7-414a-8b65-4f87657f6821")
@@ -8625,7 +8625,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "0735704b-07f3-4c8e-9bf8-d16ed0e77f0b")
+			(uuid "d07d089b-3b4d-4e46-92ab-cad70be28e68")
 		)
 		(fp_line
 			(start 9.12 0)
@@ -8635,7 +8635,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "d629cc45-0012-4312-a061-7a61c4db08d3")
+			(uuid "b28ea3d9-2897-4de2-942c-08120e4806eb")
 		)
 		(fp_rect
 			(start 1.81 -1.37)
@@ -8646,7 +8646,7 @@
 			)
 			(fill no)
 			(layer "F.SilkS")
-			(uuid "51303631-0e09-4c13-bad4-9b9193e2df60")
+			(uuid "79ece333-aa03-4e65-888b-98c43d4333df")
 		)
 		(fp_rect
 			(start -1.05 -1.5)
@@ -8657,7 +8657,7 @@
 			)
 			(fill no)
 			(layer "F.CrtYd")
-			(uuid "7f1fda1f-6fb5-46c3-94cb-179ff353231f")
+			(uuid "46310bfe-5cec-494b-891d-b6fe629d651b")
 		)
 		(fp_line
 			(start 0 0)
@@ -8667,7 +8667,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "2482418e-6fb8-4fb3-8035-61193b16d6b6")
+			(uuid "858069f2-6e74-4c0f-9865-54969b37f056")
 		)
 		(fp_line
 			(start 10.16 0)
@@ -8677,7 +8677,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "24f28552-2f3f-42fa-8d3a-178a68fa6f7d")
+			(uuid "fa4ca3b3-8de3-4bec-bc71-43d3ccb71cee")
 		)
 		(fp_rect
 			(start 1.93 -1.25)
@@ -8688,10 +8688,10 @@
 			)
 			(fill no)
 			(layer "F.Fab")
-			(uuid "ee3f9391-c977-4d06-a14e-691672c55b86")
+			(uuid "5ff46b5c-8f73-4036-a073-95b3674a5f27")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 5.08 0 90)
+			(at 5.08 0 270)
 			(layer "F.Fab")
 			(uuid "7fc45585-d693-4215-af3c-aaf189e0fdf9")
 			(effects
@@ -10326,7 +10326,7 @@
 				)
 			)
 		)
-		(property "Value" "850mV"
+		(property "Value" "1N4148"
 			(at 5.08 2.47 90)
 			(layer "F.Fab")
 			(uuid "593dda6a-79c6-4f65-b86a-348a1796f873")
@@ -12469,7 +12469,7 @@
 				)
 			)
 		)
-		(property "Value" "24V  1N4006"
+		(property "Value" "1N4007"
 			(at 3.81 2.47 0)
 			(layer "F.Fab")
 			(uuid "59f1ebbb-194c-401b-b9d9-326b55faa4da")
@@ -13709,7 +13709,7 @@
 				)
 			)
 		)
-		(property "Value" "6.2K"
+		(property "Value" "6.2k"
 			(at 3.81 2.37 0)
 			(layer "F.Fab")
 			(uuid "bba7115a-2bbd-47ac-a657-563a55182307")
