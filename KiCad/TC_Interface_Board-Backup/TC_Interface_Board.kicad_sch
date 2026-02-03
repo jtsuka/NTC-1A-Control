@@ -3784,16 +3784,6 @@
 	)
 	(wire
 		(pts
-			(xy 45.72 45.72) (xy 44.45 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "67d6ab16-bd2d-4262-8170-561beecf9484")
-	)
-	(wire
-		(pts
 			(xy 41.91 38.1) (xy 53.34 38.1)
 		)
 		(stroke
@@ -3884,7 +3874,7 @@
 	)
 	(wire
 		(pts
-			(xy 46.99 29.21) (xy 41.91 29.21)
+			(xy 44.45 29.21) (xy 41.91 29.21)
 		)
 		(stroke
 			(width 0)
@@ -3951,16 +3941,6 @@
 			(type default)
 		)
 		(uuid "8677f772-ce84-467b-8c12-a907afb0b670")
-	)
-	(wire
-		(pts
-			(xy 45.72 36.83) (xy 46.99 36.83)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "87cde21b-39bf-4b2d-b2e5-07dda24709e9")
 	)
 	(wire
 		(pts
@@ -4114,16 +4094,6 @@
 	)
 	(wire
 		(pts
-			(xy 44.45 45.72) (xy 44.45 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9f2e0007-ac2b-4ee1-bfcc-a8544259064e")
-	)
-	(wire
-		(pts
 			(xy 158.75 82.55) (xy 158.75 91.44)
 		)
 		(stroke
@@ -4194,7 +4164,7 @@
 	)
 	(wire
 		(pts
-			(xy 45.72 45.72) (xy 45.72 36.83)
+			(xy 44.45 29.21) (xy 44.45 93.98)
 		)
 		(stroke
 			(width 0)
@@ -4411,16 +4381,6 @@
 			(type default)
 		)
 		(uuid "cd7a3148-5e2c-4449-a534-90c85b02efae")
-	)
-	(wire
-		(pts
-			(xy 46.99 36.83) (xy 46.99 29.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cd82f15b-5f90-47ea-a2cd-25c92964a695")
 	)
 	(wire
 		(pts
@@ -8408,7 +8368,7 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "-24V"
+		(property "Value" "+24V"
 			(at 66.04 111.76 0)
 			(effects
 				(font
@@ -8435,7 +8395,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Power symbol creates a global label with name \"-24V\""
+		(property "Description" "Power symbol creates a global label with name \"+24V\""
 			(at 66.04 116.84 0)
 			(effects
 				(font
