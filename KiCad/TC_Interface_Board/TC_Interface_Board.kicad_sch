@@ -747,6 +747,325 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "DTC143E_1"
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "Q1"
+				(at -1.778 -9.398 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify right)
+				)
+			)
+			(property "Value" "DTC143E"
+				(at 0.762 -6.096 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify right)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+				(at -11.938 6.858 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Description" "Digital NPN Transistor, 4k7/4k7, SOT-23"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "ROHM Digital NPN Transistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "SOT?23* SC?59*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "DTC143E_1_0_0"
+				(text "4k7"
+					(at -3.302 0.889 0)
+					(effects
+						(font
+							(size 0.508 0.508)
+						)
+					)
+				)
+				(text "4k7"
+					(at -2.159 -1.524 900)
+					(effects
+						(font
+							(size 0.508 0.508)
+						)
+					)
+				)
+			)
+			(symbol "DTC143E_1_0_1"
+				(polyline
+					(pts
+						(xy -3.429 0) (xy -3.81 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 3.175) (xy 0.635 3.175)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center -1.27 0)
+					(radius 0.127)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 0) (xy -1.27 -0.381) (xy -0.762 -0.508) (xy -1.778 -0.762) (xy -0.762 -1.016) (xy -1.778 -1.27)
+						(xy -0.762 -1.524) (xy -1.778 -1.778) (xy -1.27 -1.905) (xy -1.27 -2.286) (xy 2.54 -2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -3.175) (xy 0.635 -3.175)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -1.27 -3.175)
+					(mid -4.4312 0)
+					(end -1.27 3.175)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy -1.905 0) (xy -2.032 0.508) (xy -2.286 -0.508) (xy -2.54 0.508) (xy -2.794 -0.508)
+						(xy -3.048 0.508) (xy -3.302 -0.508) (xy -3.429 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -0.254) (xy 2.54 2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.127 1.524) (xy 0.127 -1.651)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(arc
+					(start 0.635 3.175)
+					(mid 3.7962 0)
+					(end 0.635 -3.175)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.889 -1.143) (xy 1.397 -0.635) (xy 1.905 -1.651) (xy 0.889 -1.143)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 2.286) (xy 2.54 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 -2.286) (xy 0 0.254) (xy 0 0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.54 -2.286)
+					(radius 0.127)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "DTC143E_1_1_1"
+				(pin input line
+					(at -6.35 0 0)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 5.08 270)
+					(length 2.54)
+					(name "C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(name "E"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:C"
 			(pin_numbers
 				(hide yes)
@@ -1721,25 +2040,23 @@
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "Q"
-				(at 5.08 1.905 0)
+			(property "Reference" "Q2"
+				(at -2.54 -9.652 90)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
 			(property "Value" "DTC143E"
-				(at 5.08 0 0)
+				(at 0 -9.652 90)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
-			(property "Footprint" ""
+			(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1985,7 +2302,7 @@
 							)
 						)
 					)
-					(number "1"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2003,7 +2320,7 @@
 							)
 						)
 					)
-					(number "3"
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2021,7 +2338,7 @@
 							)
 						)
 					)
-					(number "2"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2418,6 +2735,12 @@
 		(uuid "c2c43dbc-2187-41ac-9485-0b11dd08840f")
 	)
 	(junction
+		(at 95.25 57.15)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "00491522-b69c-4f45-aa0d-507c2cfc4fa2")
+	)
+	(junction
 		(at 153.67 109.22)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2490,10 +2813,10 @@
 		(uuid "281520dc-25b8-4730-9326-8ae103e18d84")
 	)
 	(junction
-		(at 123.19 40.64)
+		(at 119.38 57.15)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "2878b0a8-02a7-4602-a3d8-a648fbc63eeb")
+		(uuid "2de9c8d3-bf3f-4a34-ba43-4430e97299f9")
 	)
 	(junction
 		(at 111.76 116.84)
@@ -2524,12 +2847,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "4aad3441-c200-415d-89ba-9cc3959c1fb1")
-	)
-	(junction
-		(at 187.96 87.63)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "4e118c78-baa3-4e5c-83cb-522334ea8f5e")
 	)
 	(junction
 		(at 97.79 116.84)
@@ -2694,10 +3011,10 @@
 		(uuid "b2e90e19-ba93-41a8-97ab-61cc480e17c2")
 	)
 	(junction
-		(at 144.78 40.64)
+		(at 144.78 31.75)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "bd2580fc-ce3f-4282-8dea-a6c4b6fa9cb5")
+		(uuid "bbc57fb9-bced-4a9b-b15d-f70361f8193e")
 	)
 	(junction
 		(at 182.88 64.77)
@@ -2728,6 +3045,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "cdbe4bd4-e3b4-4697-b81d-7aff8dc27727")
+	)
+	(junction
+		(at 105.41 34.29)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "cedbd16e-3994-4651-a909-c11e00f37d02")
 	)
 	(junction
 		(at 111.76 111.76)
@@ -2915,7 +3238,7 @@
 	)
 	(wire
 		(pts
-			(xy 170.18 96.52) (xy 187.96 96.52)
+			(xy 170.18 96.52) (xy 215.9 96.52)
 		)
 		(stroke
 			(width 0)
@@ -2972,16 +3295,6 @@
 			(type default)
 		)
 		(uuid "0fdf907a-c6e1-4bc3-8e4a-8e9637321f00")
-	)
-	(wire
-		(pts
-			(xy 187.96 87.63) (xy 187.96 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "10ee4b8e-5112-4c19-9912-ec2cedd393f0")
 	)
 	(wire
 		(pts
@@ -3105,6 +3418,16 @@
 	)
 	(wire
 		(pts
+			(xy 119.38 40.64) (xy 119.38 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "267bd5ae-2fc2-4ca1-8ca6-8a9e889e390e")
+	)
+	(wire
+		(pts
 			(xy 124.46 80.01) (xy 90.17 80.01)
 		)
 		(stroke
@@ -3132,16 +3455,6 @@
 			(type default)
 		)
 		(uuid "27cc045b-65f3-4c40-adfc-5c37a537943f")
-	)
-	(wire
-		(pts
-			(xy 105.41 40.64) (xy 123.19 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "28db9dc6-2237-43db-b612-9aff2670aaad")
 	)
 	(wire
 		(pts
@@ -3315,6 +3628,26 @@
 	)
 	(wire
 		(pts
+			(xy 105.41 34.29) (xy 133.35 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "520a706c-cc3d-40b0-b35a-48236cc15b20")
+	)
+	(wire
+		(pts
+			(xy 95.25 40.64) (xy 95.25 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "54844d5b-a150-463f-9cd6-faf4d606d287")
+	)
+	(wire
+		(pts
 			(xy 147.32 69.85) (xy 147.32 72.39)
 		)
 		(stroke
@@ -3332,6 +3665,16 @@
 			(type default)
 		)
 		(uuid "581ba503-f969-45e8-a1eb-018d56c76ceb")
+	)
+	(wire
+		(pts
+			(xy 133.35 40.64) (xy 133.35 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5836f455-d4ce-4b96-b3e4-bf9a62308777")
 	)
 	(wire
 		(pts
@@ -3465,6 +3808,16 @@
 	)
 	(wire
 		(pts
+			(xy 95.25 57.15) (xy 119.38 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "69378a26-e4e6-4ca2-85b5-91d669bb8ce4")
+	)
+	(wire
+		(pts
 			(xy 125.73 111.76) (xy 153.67 111.76)
 		)
 		(stroke
@@ -3492,16 +3845,6 @@
 			(type default)
 		)
 		(uuid "6da8edbc-0b4f-484c-802f-a0427a30c610")
-	)
-	(wire
-		(pts
-			(xy 95.25 34.29) (xy 95.25 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "72801ffc-0d96-43c4-b459-9f29550607cf")
 	)
 	(wire
 		(pts
@@ -3715,6 +4058,16 @@
 	)
 	(wire
 		(pts
+			(xy 105.41 34.29) (xy 105.41 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "99815110-52fc-44c1-9cbf-b693713df9a3")
+	)
+	(wire
+		(pts
 			(xy 69.85 139.7) (xy 69.85 133.35)
 		)
 		(stroke
@@ -3805,6 +4158,16 @@
 	)
 	(wire
 		(pts
+			(xy 123.19 40.64) (xy 119.38 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa725ab6-d030-41cb-963b-ff677995e239")
+	)
+	(wire
+		(pts
 			(xy 77.47 57.15) (xy 81.28 57.15)
 		)
 		(stroke
@@ -3822,6 +4185,16 @@
 			(type default)
 		)
 		(uuid "b049264c-696c-4c0f-8d48-60de07b1c60f")
+	)
+	(wire
+		(pts
+			(xy 119.38 57.15) (xy 204.47 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b0b927c2-d3b5-48ec-a59b-218fc5085e48")
 	)
 	(wire
 		(pts
@@ -3975,16 +4348,6 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 40.64) (xy 144.78 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cd110ebf-c0a9-4901-9b74-ec91f0bcc3b0")
-	)
-	(wire
-		(pts
 			(xy 85.09 114.3) (xy 97.79 114.3)
 		)
 		(stroke
@@ -4022,16 +4385,6 @@
 			(type default)
 		)
 		(uuid "d08bd7de-6b35-4121-9ee5-246b8f7390bb")
-	)
-	(wire
-		(pts
-			(xy 123.19 52.07) (xy 123.19 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d0e894e4-201d-4c61-a4b3-861397b80457")
 	)
 	(wire
 		(pts
@@ -4115,7 +4468,7 @@
 	)
 	(wire
 		(pts
-			(xy 82.55 34.29) (xy 95.25 34.29)
+			(xy 82.55 34.29) (xy 105.41 34.29)
 		)
 		(stroke
 			(width 0)
@@ -4145,7 +4498,7 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 57.15) (xy 204.47 57.15)
+			(xy 88.9 57.15) (xy 95.25 57.15)
 		)
 		(stroke
 			(width 0)
@@ -4235,6 +4588,16 @@
 	)
 	(wire
 		(pts
+			(xy 215.9 96.52) (xy 215.9 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ef8b59e9-d412-4521-8ce5-90a2f506815d")
+	)
+	(wire
+		(pts
 			(xy 168.91 40.64) (xy 168.91 45.72)
 		)
 		(stroke
@@ -4282,6 +4645,16 @@
 			(type default)
 		)
 		(uuid "fdac17b8-23e7-4548-b485-6829f32f9167")
+	)
+	(wire
+		(pts
+			(xy 215.9 31.75) (xy 144.78 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fe286926-624b-4af8-8a64-7a286ee35446")
 	)
 	(table
 		(column_count 3)
@@ -7876,6 +8249,7 @@
 		)
 	)
 	(symbol
+		(lib_name "DTC143E_1")
 		(lib_id "Transistor_BJT:DTC143E")
 		(at 100.33 38.1 270)
 		(unit 1)
