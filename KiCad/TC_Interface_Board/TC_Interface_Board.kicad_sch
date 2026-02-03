@@ -5521,16 +5521,6 @@
 		)
 		(uuid "ebdcb512-ffd6-4b02-aa78-fdebfed884b4")
 	)
-	(label "+24V"
-		(at 67.31 116.84 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f38bd839-08d5-4d69-8a3e-abf77a673985")
-	)
 	(symbol
 		(lib_id "Device:R")
 		(at 175.26 40.64 90)
