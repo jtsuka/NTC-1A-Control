@@ -6564,7 +6564,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "443b002c-edbe-40ac-a989-da98ccc7fc97")
-		(property "Reference" "D1"
+		(property "Reference" "D2"
 			(at 76.454 37.338 0)
 			(effects
 				(font
@@ -6634,7 +6634,7 @@
 		(instances
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "D1")
+					(reference "D2")
 					(unit 1)
 				)
 			)
@@ -7001,7 +7001,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "64ba95ce-82ee-42f1-9891-dfb5a7cf1bf6")
-		(property "Reference" "D2"
+		(property "Reference" "D1"
 			(at 162.306 37.592 0)
 			(effects
 				(font
@@ -7071,7 +7071,7 @@
 		(instances
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "D2")
+					(reference "D1")
 					(unit 1)
 				)
 			)
