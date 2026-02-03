@@ -5884,6 +5884,16 @@
 		)
 		(uuid "83724142-2e1e-4c15-b9dc-09fe3a59413c")
 	)
+	(label "TC_TX_REP"
+		(at 49.53 31.75 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "95e49839-5e97-48b6-9431-0ceb40272b22")
+	)
 	(label "+24V"
 		(at 67.31 116.84 0)
 		(effects
