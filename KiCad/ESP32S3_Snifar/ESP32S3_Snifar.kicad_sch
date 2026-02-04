@@ -5065,7 +5065,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d5a8df89-92c3-4603-a6bc-8686db5c87f4")
-		(property "Reference" "(R4)2k2"
+		(property "Reference" "(R4)22k1"
 			(at 119.38 45.72 90)
 			(effects
 				(font
@@ -5073,7 +5073,7 @@
 				)
 			)
 		)
-		(property "Value" "2k2"
+		(property "Value" "22k"
 			(at 119.38 48.26 90)
 			(effects
 				(font
@@ -5117,7 +5117,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "(R4)2k2")
+					(reference "(R4)22k1")
 					(unit 1)
 				)
 			)
@@ -5199,7 +5199,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f4cd9452-9a1b-4a57-a731-ae0dd1c382df")
-		(property "Reference" "(R1)2k2"
+		(property "Reference" "(R1)22k1"
 			(at 118.11 22.86 90)
 			(effects
 				(font
@@ -5207,7 +5207,7 @@
 				)
 			)
 		)
-		(property "Value" "2k2"
+		(property "Value" "22k"
 			(at 118.11 25.4 90)
 			(effects
 				(font
@@ -5251,7 +5251,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "(R1)2k2")
+					(reference "(R1)22k1")
 					(unit 1)
 				)
 			)
