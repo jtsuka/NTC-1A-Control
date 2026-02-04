@@ -2560,10 +2560,6 @@
 		(uuid "3e5c8c71-9cc2-4e3e-8980-c8a501c5f9c3")
 	)
 	(no_connect
-		(at 106.68 163.83)
-		(uuid "58ea5235-f71b-43ce-bbc5-5abdd90e9939")
-	)
-	(no_connect
 		(at 139.7 151.13)
 		(uuid "5e1a2693-114e-40b5-9a3d-3994734e6d83")
 	)
@@ -2672,6 +2668,16 @@
 			(type default)
 		)
 		(uuid "04ddad2e-481f-42b9-82c6-1c3836fca446")
+	)
+	(wire
+		(pts
+			(xy 102.87 167.64) (xy 102.87 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "056fbb93-1c69-488b-9595-4aec8370727d")
 	)
 	(wire
 		(pts
@@ -2812,6 +2818,16 @@
 			(type default)
 		)
 		(uuid "4773d66c-d755-43ab-84bd-b19e6e8d1691")
+	)
+	(wire
+		(pts
+			(xy 102.87 163.83) (xy 106.68 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4ea600d5-a44d-42d2-95e8-48c9420c4930")
 	)
 	(wire
 		(pts
@@ -3652,7 +3668,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2b45eb9c-f26e-4524-9d88-496bf4012908")
-		(property "Reference" "(R2)100K1"
+		(property "Reference" "(R2)3k3"
 			(at 128.27 35.5599 0)
 			(effects
 				(font
@@ -3661,7 +3677,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100kΩ"
+		(property "Value" "3k3"
 			(at 128.27 38.0999 0)
 			(effects
 				(font
@@ -3706,7 +3722,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "(R2)100K1")
+					(reference "(R2)3k3")
 					(unit 1)
 				)
 			)
@@ -3924,7 +3940,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "546a8468-c50d-463b-8d58-fd9813f938d7")
-		(property "Reference" "(R5)100K1"
+		(property "Reference" "(R5)3k3"
 			(at 135.89 59.6899 0)
 			(effects
 				(font
@@ -3933,7 +3949,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100kΩ"
+		(property "Value" "3k3"
 			(at 135.89 62.2299 0)
 			(effects
 				(font
@@ -3978,7 +3994,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "(R5)100K1")
+					(reference "(R5)3k3")
 					(unit 1)
 				)
 			)
@@ -4392,7 +4408,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1kΩ"
+		(property "Value" "100"
 			(at 110.4899 88.9 0)
 			(effects
 				(font
@@ -5049,7 +5065,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d5a8df89-92c3-4603-a6bc-8686db5c87f4")
-		(property "Reference" "(R4)100K1"
+		(property "Reference" "(R4)2k2"
 			(at 119.38 45.72 90)
 			(effects
 				(font
@@ -5057,7 +5073,7 @@
 				)
 			)
 		)
-		(property "Value" "100kΩ"
+		(property "Value" "2k2"
 			(at 119.38 48.26 90)
 			(effects
 				(font
@@ -5101,7 +5117,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "(R4)100K1")
+					(reference "(R4)2k2")
 					(unit 1)
 				)
 			)
@@ -5183,7 +5199,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f4cd9452-9a1b-4a57-a731-ae0dd1c382df")
-		(property "Reference" "(R1)100K1"
+		(property "Reference" "(R1)2k2"
 			(at 118.11 22.86 90)
 			(effects
 				(font
@@ -5191,7 +5207,7 @@
 				)
 			)
 		)
-		(property "Value" "100kΩ"
+		(property "Value" "2k2"
 			(at 118.11 25.4 90)
 			(effects
 				(font
@@ -5235,7 +5251,73 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "(R1)100K1")
+					(reference "(R1)2k2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 102.87 167.64 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f64ebe7d-54be-430f-aee1-87bafc26a722")
+		(property "Reference" "#PWR08"
+			(at 102.87 173.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 102.87 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 102.87 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 102.87 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 102.87 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8d0aa805-c8ca-42d8-a05a-c22aac3bac2c")
+		)
+		(instances
+			(project ""
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "#PWR08")
 					(unit 1)
 				)
 			)
