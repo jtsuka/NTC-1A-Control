@@ -6002,7 +6002,7 @@
 		)
 		(uuid "95e49839-5e97-48b6-9431-0ceb40272b22")
 	)
-	(label "MC34063_SW_NODE"
+	(label "TC_CMD_BUS"
 		(at 151.13 74.93 90)
 		(effects
 			(font
