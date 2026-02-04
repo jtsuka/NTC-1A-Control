@@ -93,7 +93,7 @@
 	(net 13 "unconnected-(J1-Pin_1-Pad1)")
 	(net 14 "unconnected-(J2-Pin_1-Pad1)")
 	(net 15 "unconnected-(J3-Pin_1-Pad1)")
-	(net 16 "/MC34063_SW_NODE")
+	(net 16 "Net-(U1-DC)")
 	(net 17 "Net-(D3-A)")
 	(net 18 "unconnected-(J7-Pin_1-Pad1)")
 	(net 19 "/Q2_BASE")
@@ -1790,7 +1790,7 @@
 				)
 			)
 		)
-		(property "Value" "1.2k"
+		(property "Value" "1k"
 			(at 3.81 1.92 0)
 			(layer "F.Fab")
 			(uuid "a5b0a4bc-4f6c-426e-8855-976b5183f3cd")
@@ -1964,7 +1964,7 @@
 				)
 			)
 		)
-		(property "Value" "0.22"
+		(property "Value" "220"
 			(at 5.08 2.37 0)
 			(layer "F.Fab")
 			(uuid "a0d16c27-eefb-4a7e-8a64-df01c4f83f44")
@@ -2458,7 +2458,7 @@
 				)
 			)
 		)
-		(property "Value" "220"
+		(property "Value" "10k"
 			(at 3.81 2.37 90)
 			(layer "F.Fab")
 			(uuid "98387399-256c-412b-be58-cfbc7c14efef")
@@ -2661,7 +2661,7 @@
 				)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "1k2"
 			(at 5.08 2.37 90)
 			(layer "F.Fab")
 			(uuid "b4356457-9499-4cb0-9734-e565e112ca33")
@@ -4288,7 +4288,7 @@
 				)
 			)
 		)
-		(property "Value" "L_Ferrite"
+		(property "Value" "330uH"
 			(at 3.75 7.75 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -8201,7 +8201,7 @@
 				)
 			)
 		)
-		(property "Value" "1k"
+		(property "Value" "0R22"
 			(at 6.35 2.72 90)
 			(layer "F.Fab")
 			(uuid "2d419aa8-ad24-4ab4-ae14-cf659a194f43")
@@ -8331,7 +8331,7 @@
 			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 16 "/MC34063_SW_NODE")
+			(net 16 "Net-(U1-DC)")
 			(pintype "passive")
 			(uuid "5b7e4d1d-9962-48bd-b9d2-c6ea5c3bda8d")
 		)
@@ -11083,7 +11083,7 @@
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(roundrect_rratio 0.15625)
-			(net 16 "/MC34063_SW_NODE")
+			(net 16 "Net-(U1-DC)")
 			(pinfunction "SwC")
 			(pintype "open_collector")
 			(uuid "85aac2c9-2237-42ea-b218-744ec5bc6de3")
@@ -11149,7 +11149,7 @@
 			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 16 "/MC34063_SW_NODE")
+			(net 16 "Net-(U1-DC)")
 			(pinfunction "Ipk")
 			(pintype "input")
 			(uuid "e9207913-39aa-447f-abeb-3c4c0ded457a")
@@ -11160,7 +11160,7 @@
 			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 16 "/MC34063_SW_NODE")
+			(net 16 "Net-(U1-DC)")
 			(pinfunction "DC")
 			(pintype "open_collector")
 			(uuid "7bfd58f0-be16-498e-9329-fe5c5a164e07")
@@ -13616,7 +13616,7 @@
 				)
 			)
 		)
-		(property "Value" "6.2k"
+		(property "Value" "6k2"
 			(at 3.81 2.37 0)
 			(layer "F.Fab")
 			(uuid "bba7115a-2bbd-47ac-a657-563a55182307")

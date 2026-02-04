@@ -2653,7 +2653,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "Pin 1	RX CN4のみ結線\nPin 2	不明(推定TX)\nPin 3	GND\nPin 4	+9V	\nPin 5	+24V	D5通過後の24V太配線／外部供給実績あり"
+	(text "Pin 1	RX CN4のみ結線\nPin 2	TC_BUS\nPin 3	GND\nPin 4	+5V out	\nPin 5	+24V	D5通過後の24V太配線／外部供給実績あり"
 		(exclude_from_sim no)
 		(at 221.488 153.924 0)
 		(effects
@@ -2724,7 +2724,7 @@
 		)
 		(uuid "aaab1ed0-f91b-4a4f-b8c3-dba7e6b1c62a")
 	)
-	(text "2026.2.1"
+	(text "2026.2.5"
 		(exclude_from_sim no)
 		(at 213.868 193.294 0)
 		(effects
