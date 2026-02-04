@@ -6042,7 +6042,7 @@
 		(dnp no)
 		(uuid "0f77d588-665b-44be-aec3-8c9b20480d17")
 		(property "Reference" "R6"
-			(at 164.592 99.314 90)
+			(at 167.386 99.06 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6050,7 +6050,7 @@
 			)
 		)
 		(property "Value" "1.2k"
-			(at 164.592 101.854 90)
+			(at 167.386 101.6 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6109,7 +6109,7 @@
 		(dnp no)
 		(uuid "0fe817f8-81a7-4f81-b144-1b432f35c067")
 		(property "Reference" "R4"
-			(at 162.814 86.868 90)
+			(at 168.91 92.456 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6118,7 +6118,7 @@
 			)
 		)
 		(property "Value" "6.2k"
-			(at 162.56 88.9 90)
+			(at 168.656 94.488 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6266,7 +6266,7 @@
 		(dnp no)
 		(uuid "1e4215b2-1bb1-4523-92ff-926f75fa6c97")
 		(property "Reference" "D3"
-			(at 65.532 55.372 0)
+			(at 68.326 55.372 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6274,7 +6274,7 @@
 			)
 		)
 		(property "Value" "1N4007"
-			(at 65.532 52.832 0)
+			(at 68.326 52.832 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7013,7 +7013,7 @@
 				)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "1k2"
 			(at 89.662 54.102 90)
 			(effects
 				(font
@@ -7528,7 +7528,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "220"
+		(property "Value" "10k"
 			(at 67.31 71.1199 0)
 			(effects
 				(font
@@ -7596,7 +7596,7 @@
 				)
 			)
 		)
-		(property "Value" "1k"
+		(property "Value" "0R22"
 			(at 114.554 64.77 90)
 			(effects
 				(font
@@ -7806,7 +7806,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "L_Ferrite"
+		(property "Value" "330uH"
 			(at 161.29 69.8499 0)
 			(effects
 				(font
@@ -7944,7 +7944,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "0.22"
+		(property "Value" "220"
 			(at 81.28 45.974 90)
 			(effects
 				(font
