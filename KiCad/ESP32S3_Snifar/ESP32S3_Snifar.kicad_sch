@@ -3239,6 +3239,76 @@
 		)
 		(uuid "f8de33e9-7f4a-4538-96dd-970ae5d65299")
 	)
+	(label "SNIFF_DIV"
+		(at 121.92 29.21 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "05da3c64-9628-4f0d-bf44-0d5152a48060")
+	)
+	(label "SNIFF_RAW"
+		(at 83.82 29.21 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "29b5bd56-c7d4-405e-97c5-ed2983824f20")
+	)
+	(label "SEND_BUS_OUT"
+		(at 85.09 91.44 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "751e17c3-7ed6-4c42-903c-aa990c200061")
+	)
+	(label "MOS_DRAIN"
+		(at 115.57 91.44 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "96706dac-3175-4c17-b3e8-675f145ca78c")
+	)
+	(label "MCU_TX_TRIG"
+		(at 186.69 123.19 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "974a8c4a-e688-4ff8-97f9-70a0badc6fc8")
+	)
+	(label "MOS_GATE"
+		(at 157.48 114.3 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b412dd2a-1db0-4d64-b466-fb2cc0c19c22")
+	)
+	(label "MCU_RX_IN"
+		(at 179.07 20.32 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e5b8174f-56a5-41e2-88b3-4d990455044a")
+	)
 	(symbol
 		(lib_id "Diode:BAT43")
 		(at 160.02 31.75 180)
@@ -4408,7 +4478,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "100k"
+		(property "Value" "100R"
 			(at 104.902 88.9 90)
 			(effects
 				(font
