@@ -2391,9 +2391,9 @@
 		)
 		(uuid "8a0ca78b-3ae3-4960-bcf0-cd62115a6d17")
 	)
-	(text "TX"
+	(text "TX CN2-2"
 		(exclude_from_sim no)
-		(at 76.2 43.688 0)
+		(at 79.502 43.688 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2401,9 +2401,9 @@
 		)
 		(uuid "8a50e23d-d257-49c4-b0fa-8183b82f28a8")
 	)
-	(text "RX"
+	(text "RX TC_TX"
 		(exclude_from_sim no)
-		(at 76.2 37.846 0)
+		(at 78.994 38.354 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3812,7 +3812,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100R"
+		(property "Value" "100k"
 			(at 160.02 129.5399 0)
 			(effects
 				(font
@@ -4408,7 +4408,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "100R"
+		(property "Value" "100k"
 			(at 104.902 88.9 90)
 			(effects
 				(font

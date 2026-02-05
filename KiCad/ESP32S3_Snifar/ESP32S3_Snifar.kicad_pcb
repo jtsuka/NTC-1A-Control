@@ -517,7 +517,7 @@
 				)
 			)
 		)
-		(property "Value" "100R"
+		(property "Value" "100k"
 			(at 2.54 1.92 90)
 			(layer "F.Fab")
 			(uuid "5870bd7b-53d6-4630-8405-4abe4da183d3")
@@ -1712,7 +1712,7 @@
 				)
 			)
 		)
-		(property "Value" "100R"
+		(property "Value" "100k"
 			(at 2.54 1.92 90)
 			(layer "F.Fab")
 			(uuid "12737b25-3fe2-45f9-85f7-9a2577c7906d")
