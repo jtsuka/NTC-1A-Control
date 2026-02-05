@@ -489,7 +489,7 @@
       "netlist": "",
       "plot": "",
       "pos_files": "",
-      "specctra_dsn": "",
+      "specctra_dsn": "TC_Interface_Board.dsn",
       "step": "",
       "svg": "",
       "vrml": ""
