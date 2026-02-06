@@ -2391,9 +2391,9 @@
 		)
 		(uuid "8a0ca78b-3ae3-4960-bcf0-cd62115a6d17")
 	)
-	(text "TX CN2-2"
+	(text "BUS"
 		(exclude_from_sim no)
-		(at 79.502 43.688 0)
+		(at 76.962 43.434 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2401,25 +2401,15 @@
 		)
 		(uuid "8a50e23d-d257-49c4-b0fa-8183b82f28a8")
 	)
-	(text "RX TC_TX"
+	(text "SIG"
 		(exclude_from_sim no)
-		(at 78.994 38.354 0)
+		(at 75.946 38.1 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 		)
 		(uuid "b6a2a288-35d7-49b1-9d51-adf89a79ad41")
-	)
-	(text "SIG"
-		(exclude_from_sim no)
-		(at 76.454 40.894 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "bbf6906b-2d38-48c5-9341-3f440f151858")
 	)
 	(junction
 		(at 73.66 46.99)
@@ -2440,12 +2430,6 @@
 		(uuid "1dcdb5a0-b6d2-4ac5-8b3b-6cb6a150967f")
 	)
 	(junction
-		(at 185.42 57.15)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "229a13a2-c5ef-45c2-b0ce-e269153b6155")
-	)
-	(junction
 		(at 160.02 20.32)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2464,18 +2448,6 @@
 		(uuid "432aedea-b46c-4df1-a645-bce1edc2072a")
 	)
 	(junction
-		(at 160.02 45.72)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "774bdf88-6181-4577-9a03-76706c8179cb")
-	)
-	(junction
-		(at 133.35 52.07)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "8b9cb9dc-3df4-47dd-8ad3-fe5ee294867a")
-	)
-	(junction
 		(at 147.32 31.75)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2486,30 +2458,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "a297fd03-b879-48fa-bc2a-5067bda87965")
-	)
-	(junction
-		(at 148.59 52.07)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "ac4fda73-5c60-4bb0-a116-ba83375ca08a")
-	)
-	(junction
-		(at 148.59 57.15)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "b278f80b-bb9d-4af1-a5a9-8126a88d5924")
-	)
-	(junction
-		(at 135.89 52.07)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "c8149705-6fbe-489f-a337-69d65847232b")
-	)
-	(junction
-		(at 173.99 63.5)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f0d5fd95-9d7a-4bfa-9470-f9bf307e97fa")
 	)
 	(no_connect
 		(at 144.78 176.53)
@@ -2701,26 +2649,6 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 45.72) (xy 148.59 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "14a4a58d-44db-4405-baf0-5b672444e70f")
-	)
-	(wire
-		(pts
-			(xy 148.59 63.5) (xy 148.59 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2677bcc4-f950-4298-b76c-0bf739812ef4")
-	)
-	(wire
-		(pts
 			(xy 167.64 123.19) (xy 167.64 106.68)
 		)
 		(stroke
@@ -2761,16 +2689,6 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 41.91) (xy 87.63 41.91)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "33939708-fbd0-43a1-986b-10bf1b05bd23")
-	)
-	(wire
-		(pts
 			(xy 147.32 20.32) (xy 160.02 20.32)
 		)
 		(stroke
@@ -2791,36 +2709,6 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 52.07) (xy 87.63 52.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3c9e2ac7-e3c4-4369-8989-d16850eae828")
-	)
-	(wire
-		(pts
-			(xy 133.35 64.77) (xy 133.35 139.7)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4731dc26-bbb1-455f-8a5a-8509c76f0233")
-	)
-	(wire
-		(pts
-			(xy 160.02 45.72) (xy 201.93 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4773d66c-d755-43ab-84bd-b19e6e8d1691")
-	)
-	(wire
-		(pts
 			(xy 102.87 163.83) (xy 106.68 163.83)
 		)
 		(stroke
@@ -2831,7 +2719,7 @@
 	)
 	(wire
 		(pts
-			(xy 185.42 57.15) (xy 185.42 127)
+			(xy 185.42 31.75) (xy 185.42 127)
 		)
 		(stroke
 			(width 0)
@@ -2861,16 +2749,6 @@
 	)
 	(wire
 		(pts
-			(xy 185.42 31.75) (xy 185.42 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5ff30495-3d7b-4c88-829c-25cd2e18dec1")
-	)
-	(wire
-		(pts
 			(xy 167.64 123.19) (xy 209.55 123.19)
 		)
 		(stroke
@@ -2888,16 +2766,6 @@
 			(type default)
 		)
 		(uuid "6ec284cf-72c7-4892-b788-3440ba5ff945")
-	)
-	(wire
-		(pts
-			(xy 148.59 57.15) (xy 148.59 52.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6f271687-ae50-4f47-b5b4-66d1d2810da2")
 	)
 	(wire
 		(pts
@@ -2971,16 +2839,6 @@
 	)
 	(wire
 		(pts
-			(xy 157.48 63.5) (xy 148.59 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "94f3ba25-5eca-4211-89d7-6d14694a8d2e")
-	)
-	(wire
-		(pts
 			(xy 156.21 38.1) (xy 147.32 38.1)
 		)
 		(stroke
@@ -2988,36 +2846,6 @@
 			(type default)
 		)
 		(uuid "95255832-3f9c-428b-9946-96a6ee81cdf4")
-	)
-	(wire
-		(pts
-			(xy 165.1 63.5) (xy 173.99 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9adfe3f5-8bda-436c-adcc-55bed299c09c")
-	)
-	(wire
-		(pts
-			(xy 148.59 57.15) (xy 157.48 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9dc4d695-dce3-4a7a-992e-d67e978ba207")
-	)
-	(wire
-		(pts
-			(xy 123.19 52.07) (xy 133.35 52.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9fb62d2c-7ff0-4b92-b741-38a72ef28ee3")
 	)
 	(wire
 		(pts
@@ -3091,16 +2919,6 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 57.15) (xy 133.35 52.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "be4254a6-8b78-47fd-bdef-56476a629909")
-	)
-	(wire
-		(pts
 			(xy 73.66 46.99) (xy 73.66 139.7)
 		)
 		(stroke
@@ -3108,26 +2926,6 @@
 			(type default)
 		)
 		(uuid "bf4ebcc7-4b85-414f-9572-40188d9fb1e6")
-	)
-	(wire
-		(pts
-			(xy 148.59 45.72) (xy 148.59 52.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bf983dd1-2e3e-48c4-a649-d1bafd35fcb2")
-	)
-	(wire
-		(pts
-			(xy 87.63 52.07) (xy 87.63 41.91)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c025bb18-f642-4d03-925f-edebebe50f53")
 	)
 	(wire
 		(pts
@@ -3191,26 +2989,6 @@
 	)
 	(wire
 		(pts
-			(xy 135.89 52.07) (xy 140.97 52.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e81fe7e4-a326-4c26-b348-dc52afd1ea6c")
-	)
-	(wire
-		(pts
-			(xy 133.35 52.07) (xy 135.89 52.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ebe1100e-2803-494f-8e2b-821fc6914991")
-	)
-	(wire
-		(pts
 			(xy 147.32 29.21) (xy 147.32 31.75)
 		)
 		(stroke
@@ -3218,16 +2996,6 @@
 			(type default)
 		)
 		(uuid "f19f7cce-901f-4b04-83af-1436d7c7ae3a")
-	)
-	(wire
-		(pts
-			(xy 165.1 57.15) (xy 185.42 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f3b5c4c4-cd72-44f4-b67d-bdb36930b3a2")
 	)
 	(wire
 		(pts
@@ -3239,7 +3007,7 @@
 		)
 		(uuid "f8de33e9-7f4a-4538-96dd-970ae5d65299")
 	)
-	(label "SNIFF_DIV"
+	(label "SIG_DIV"
 		(at 121.92 29.21 0)
 		(effects
 			(font
@@ -3249,7 +3017,7 @@
 		)
 		(uuid "05da3c64-9628-4f0d-bf44-0d5152a48060")
 	)
-	(label "SNIFF_RAW"
+	(label "SIG"
 		(at 83.82 29.21 0)
 		(effects
 			(font
@@ -3258,26 +3026,6 @@
 			(justify left bottom)
 		)
 		(uuid "29b5bd56-c7d4-405e-97c5-ed2983824f20")
-	)
-	(label "SIG"
-		(at 106.68 52.07 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "61a74462-80e0-4b54-951d-953ef2555fcc")
-	)
-	(label "SIG_DIV"
-		(at 123.19 52.07 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "7157c231-ed97-420b-b1b7-ec913e372a6a")
 	)
 	(label "SEND_BUS_OUT"
 		(at 85.09 91.44 0)
@@ -4021,76 +3769,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 133.35 60.96 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "546a8468-c50d-463b-8d58-fd9813f938d7")
-		(property "Reference" "R5"
-			(at 135.89 59.6899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "3k3"
-			(at 135.89 62.2299 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Vertical"
-			(at 131.572 60.96 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 133.35 60.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 133.35 60.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "5ab2054a-1bb8-4419-a22e-364887ff327e")
-		)
-		(pin "2"
-			(uuid "6334c1d2-8345-443b-b021-ea66da0fec0c")
-		)
-		(instances
-			(project "ESP32S3_Snifar"
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 148.59 139.7 0)
 		(unit 1)
@@ -4257,6 +3935,7 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+				(hide yes)
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_THTPad_D1.0mm_Drill0.5mm"
@@ -4814,206 +4493,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 144.78 52.07 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "b2d5334e-3a91-4722-8c6b-108a64e273cf")
-		(property "Reference" "R6"
-			(at 143.256 46.99 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "2k2"
-			(at 143.256 49.53 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Vertical"
-			(at 144.78 53.848 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 144.78 52.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 144.78 52.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "047a48cc-75a8-4d5d-be35-af5c4cf7de49")
-		)
-		(pin "2"
-			(uuid "0e445cb6-4512-46d2-8f7e-cea5b0f4d70f")
-		)
-		(instances
-			(project "ESP32S3_Snifar"
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Diode:BAT43")
-		(at 161.29 57.15 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "b62eea2f-cfbd-46b1-ab87-cf92a011e779")
-		(property "Reference" "D3"
-			(at 166.116 52.578 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT43"
-			(at 166.116 55.118 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal"
-			(at 161.29 52.705 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.vishay.com/docs/85660/bat42.pdf"
-			(at 161.29 57.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "30V 0.2A Small Signal Schottky Diode, DO-35"
-			(at 161.29 57.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "c2566d85-0b19-416e-a262-207b94bb3474")
-		)
-		(pin "2"
-			(uuid "ab65a881-2daf-444d-acfa-f1ec04784f10")
-		)
-		(instances
-			(project ""
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "D3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 135.89 52.07 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "b9e501a8-0cda-429c-b6cf-ad006d3d94ce")
-		(property "Reference" "TP2"
-			(at 128.016 43.688 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "TestPoint"
-			(at 128.016 46.228 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D1.0mm_Drill0.5mm"
-			(at 140.97 52.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 140.97 52.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "test point"
-			(at 135.89 52.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "f82b3ae6-e530-4939-ae35-712ad531dc3c")
-		)
-		(instances
-			(project "ESP32S3_Snifar"
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 217.17 139.7 0)
 		(unit 1)
@@ -5140,74 +4619,6 @@
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "#PWR01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 119.38 52.07 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d5a8df89-92c3-4603-a6bc-8686db5c87f4")
-		(property "Reference" "R4"
-			(at 119.38 45.72 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "22k"
-			(at 119.38 48.26 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Vertical"
-			(at 119.38 53.848 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 119.38 52.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 119.38 52.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "3fa9019f-c3a3-470e-80dd-9da0ea51bd1a")
-		)
-		(pin "2"
-			(uuid "bf4713a9-9980-448a-8e37-6fd292f8b059")
-		)
-		(instances
-			(project "ESP32S3_Snifar"
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R4")
 					(unit 1)
 				)
 			)
@@ -5408,73 +4819,6 @@
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "#PWR02")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Diode:BAT43")
-		(at 161.29 63.5 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "fdca5bdd-f377-4e28-b021-192f1ce43ebb")
-		(property "Reference" "D4"
-			(at 165.608 65.024 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT43"
-			(at 165.608 67.564 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal"
-			(at 161.29 67.945 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.vishay.com/docs/85660/bat42.pdf"
-			(at 161.29 63.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "30V 0.2A Small Signal Schottky Diode, DO-35"
-			(at 161.29 63.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "390efab2-52d8-41b4-845d-c3d8a6902849")
-		)
-		(pin "2"
-			(uuid "8db70266-7245-4279-94a3-a659a9417346")
-		)
-		(instances
-			(project "ESP32S3_Snifar"
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "D4")
 					(unit 1)
 				)
 			)
