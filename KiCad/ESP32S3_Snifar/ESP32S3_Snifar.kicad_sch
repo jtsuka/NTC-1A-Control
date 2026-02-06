@@ -2779,16 +2779,6 @@
 	)
 	(wire
 		(pts
-			(xy 201.93 71.12) (xy 201.93 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "859632ba-e7de-49da-89f0-12f4cc458b0b")
-	)
-	(wire
-		(pts
 			(xy 113.03 91.44) (xy 148.59 91.44)
 		)
 		(stroke
@@ -3017,7 +3007,7 @@
 		)
 		(uuid "05da3c64-9628-4f0d-bf44-0d5152a48060")
 	)
-	(label "SIG"
+	(label "SIG_FOR_CN1_1"
 		(at 83.82 29.21 0)
 		(effects
 			(font
@@ -3027,18 +3017,18 @@
 		)
 		(uuid "29b5bd56-c7d4-405e-97c5-ed2983824f20")
 	)
-	(label "SEND_BUS_OUT"
-		(at 85.09 91.44 0)
+	(label "SEND_BUS_OUT_FOR_CN2_2"
+		(at 83.82 91.44 0)
 		(effects
 			(font
-				(size 1.27 1.27)
+				(size 1 1)
 			)
 			(justify left bottom)
 		)
 		(uuid "751e17c3-7ed6-4c42-903c-aa990c200061")
 	)
 	(label "MOS_DRAIN"
-		(at 115.57 91.44 0)
+		(at 114.3 91.44 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4169,7 +4159,7 @@
 		(dnp no)
 		(uuid "5f1afd65-2b3c-4d1a-be79-ec8f97ad48a9")
 		(property "Reference" "R9"
-			(at 104.902 86.36 90)
+			(at 106.68 86.36 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4178,7 +4168,7 @@
 			)
 		)
 		(property "Value" "100R"
-			(at 104.902 88.9 90)
+			(at 106.68 88.9 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4619,72 +4609,6 @@
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "#PWR01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 133.35 139.7 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d8cb08f2-0a8d-478c-aa8f-a0af6dd9d628")
-		(property "Reference" "#PWR04"
-			(at 133.35 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 133.35 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 133.35 139.7 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 133.35 139.7 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 133.35 139.7 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "f3348eb8-ca63-4b81-b884-3919e16e3540")
-		)
-		(instances
-			(project ""
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR04")
 					(unit 1)
 				)
 			)
