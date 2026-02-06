@@ -3259,6 +3259,26 @@
 		)
 		(uuid "29b5bd56-c7d4-405e-97c5-ed2983824f20")
 	)
+	(label "SIG"
+		(at 106.68 52.07 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "61a74462-80e0-4b54-951d-953ef2555fcc")
+	)
+	(label "SIG_DIV"
+		(at 123.19 52.07 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7157c231-ed97-420b-b1b7-ec913e372a6a")
+	)
 	(label "SEND_BUS_OUT"
 		(at 85.09 91.44 0)
 		(effects
