@@ -2278,7 +2278,7 @@
 			)
 		)
 		(property "Value" "220R"
-			(at 2.54 1.92 0)
+			(at 7.1574 2.09975 0)
 			(layer "F.Fab")
 			(uuid "12d03b08-e982-456e-84de-c2cc8d8d1bfd")
 			(effects
@@ -2537,7 +2537,7 @@
 			)
 		)
 		(property "Value" "100k"
-			(at 2.54 1.92 90)
+			(at 1.87155 1.6502 90)
 			(layer "F.Fab")
 			(uuid "12737b25-3fe2-45f9-85f7-9a2577c7906d")
 			(effects
@@ -6664,14 +6664,6 @@
 		(uuid "0d9fe865-04ff-4803-866c-28b58c5199f2")
 	)
 	(segment
-		(start 80.4926 78.96075)
-		(end 80.4926 79.1718)
-		(width 0.6)
-		(layer "F.Cu")
-		(net 11)
-		(uuid "11e1b236-3e53-4bd8-9ad9-f2a72e6e8d33")
-	)
-	(segment
 		(start 76.073 62.357)
 		(end 76.03955 62.39045)
 		(width 0.2)
@@ -6862,14 +6854,6 @@
 		(layer "F.Cu")
 		(net 11)
 		(uuid "c8a9558b-3cbf-453c-bdda-99d04319b845")
-	)
-	(segment
-		(start 80.4926 79.1718)
-		(end 80.5 79.1792)
-		(width 0.6)
-		(layer "F.Cu")
-		(net 11)
-		(uuid "ca571b6b-7291-4f7b-89de-be375eb8f073")
 	)
 	(segment
 		(start 53.467 51.0794)
