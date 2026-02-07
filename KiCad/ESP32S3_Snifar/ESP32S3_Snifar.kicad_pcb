@@ -4787,6 +4787,160 @@
 	)
 	(footprint "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Vertical"
 		(layer "F.Cu")
+		(uuid "d35a618c-839c-4787-bc0b-e181c4d16b84")
+		(at 61.976 68.3768)
+		(descr "Resistor, Axial_DIN0204 series, Axial, Vertical, pin pitch=5.08mm, 0.167W, length*diameter=3.6*1.6mm^2, http://cdn-reichelt.de/documents/datenblatt/B400/1_4W%23YAG.pdf")
+		(tags "Resistor Axial_DIN0204 series Axial Vertical pin pitch 5.08mm 0.167W length 3.6mm diameter 1.6mm")
+		(property "Reference" "R11"
+			(at -0.635 1.9558 0)
+			(layer "F.SilkS")
+			(uuid "9acaffc6-5d40-4e31-a7d6-c1a65ce8040c")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 2.54 1.92 0)
+			(layer "F.Fab")
+			(uuid "b9ed500d-acf6-43a6-ae11-db827f81a414")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "8c6c2fa8-11b7-49a4-a9cb-1fa72cf7668b")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "83534215-202b-454d-b725-bee1ffec7871")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "R_*")
+		(path "/c35fc59c-7d6c-4e18-b1f2-c9602333368d")
+		(sheetname "/")
+		(sheetfile "ESP32S3_Snifar.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start 0.92 0)
+			(end 4.08 0)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "7037e4bb-13bf-4d73-880d-ea518c5aafc9")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 0.92 0)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "98f2d891-e234-4883-a225-d29100749599")
+		)
+		(fp_rect
+			(start -1.05 -1.05)
+			(end 6.03 1.05)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "c12de0d5-63b1-4c3a-be26-63ec69a9321f")
+		)
+		(fp_line
+			(start 0 0)
+			(end 5.08 0)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "b4c9f729-1d6f-456d-aa44-5e2ff5e2e0aa")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 0.8 0)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "9eac4178-4ea7-4cb4-bfeb-7f35d61fc95d")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 2.54 -1.92 0)
+			(layer "F.Fab")
+			(uuid "dc5e7c78-4a16-41c5-9af1-f428d3f85b70")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" thru_hole circle
+			(at 0 0)
+			(size 1.4 1.4)
+			(drill 0.7)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net 57 "Net-(Q2-G)")
+			(pintype "passive")
+			(uuid "9840011f-5b8e-4b77-af05-85834885175b")
+		)
+		(pad "2" thru_hole circle
+			(at 5.08 0)
+			(size 1.4 1.4)
+			(drill 0.7)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net 12 "GND")
+			(pintype "passive")
+			(uuid "84953ba5-ac02-4871-bcef-0af0f76e7de0")
+		)
+		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/Resistor_THT.3dshapes/R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Vertical.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
+	(footprint "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Vertical"
+		(layer "F.Cu")
 		(uuid "d7839012-ae16-48c1-8eaa-352edfdeb8e8")
 		(at 76.073 46.1002 -90)
 		(descr "Resistor, Axial_DIN0204 series, Axial, Vertical, pin pitch=5.08mm, 0.167W, length*diameter=3.6*1.6mm^2, http://cdn-reichelt.de/documents/datenblatt/B400/1_4W%23YAG.pdf")
@@ -7135,12 +7289,44 @@
 		(uuid "16499456-d646-41fa-a450-ec15c3546187")
 	)
 	(segment
+		(start 61.849 66.7004)
+		(end 62.0014 66.8528)
+		(width 0.2)
+		(layer "F.Cu")
+		(net 57)
+		(uuid "2ce08a3a-0698-4ce7-abda-aa93423f23e4")
+	)
+	(segment
+		(start 62.0014 66.8528)
+		(end 61.976 66.8782)
+		(width 0.2)
+		(layer "F.Cu")
+		(net 57)
+		(uuid "46f2f3da-0d69-4cd7-8309-dcfed786f0eb")
+	)
+	(segment
 		(start 51.0032 65.8884)
 		(end 51.0032 66.675)
 		(width 0.2)
 		(layer "F.Cu")
 		(net 57)
 		(uuid "4a2b88ef-5c3b-4217-8c39-d8e19c5831c0")
+	)
+	(segment
+		(start 61.976 66.8782)
+		(end 61.976 68.3768)
+		(width 0.2)
+		(layer "F.Cu")
+		(net 57)
+		(uuid "72325971-0707-4c96-83e0-2ee716e3eb4c")
+	)
+	(segment
+		(start 57.658 66.7004)
+		(end 61.849 66.7004)
+		(width 0.2)
+		(layer "F.Cu")
+		(net 57)
+		(uuid "c4c6819f-e5fb-4179-940f-a24da7683242")
 	)
 	(segment
 		(start 51.0286 66.7004)
