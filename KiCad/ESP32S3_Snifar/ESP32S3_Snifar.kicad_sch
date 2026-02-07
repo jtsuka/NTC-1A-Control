@@ -2642,12 +2642,6 @@
 		(uuid "6c218053-dea2-40dc-80fb-ccdcb294cec0")
 	)
 	(junction
-		(at 185.42 91.44)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "7f317c5b-dc1b-40ae-a58f-d98d7fb936b8")
-	)
-	(junction
 		(at 209.55 41.91)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2682,6 +2676,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c664f145-63af-4a5a-b4cc-e19375631dcc")
+	)
+	(junction
+		(at 185.42 91.44)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "cf4021fb-beab-4ae0-b73b-87b35627e706")
 	)
 	(junction
 		(at 167.64 123.19)
@@ -3011,6 +3011,16 @@
 	)
 	(wire
 		(pts
+			(xy 185.42 81.28) (xy 185.42 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "30c2c7cd-2759-40cc-9a56-4add0729dff9")
+	)
+	(wire
+		(pts
 			(xy 147.32 20.32) (xy 160.02 20.32)
 		)
 		(stroke
@@ -3231,6 +3241,16 @@
 	)
 	(wire
 		(pts
+			(xy 185.42 91.44) (xy 185.42 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9dd40227-a6d9-4fb5-9cf7-82119ec2c553")
+	)
+	(wire
+		(pts
 			(xy 213.36 120.65) (xy 213.36 127)
 		)
 		(stroke
@@ -3238,16 +3258,6 @@
 			(type default)
 		)
 		(uuid "a120ec4c-5363-4fe2-826f-789d5dbb3ac3")
-	)
-	(wire
-		(pts
-			(xy 185.42 91.44) (xy 185.42 127)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a1cbc470-8f2e-4866-8f56-9c301c07bfe7")
 	)
 	(wire
 		(pts
@@ -3318,16 +3328,6 @@
 			(type default)
 		)
 		(uuid "b5bcfaa6-f2f7-42a1-8522-034aff3fa948")
-	)
-	(wire
-		(pts
-			(xy 185.42 81.28) (xy 185.42 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ba8f67c9-2487-44cb-8ce1-b8bed594379a")
 	)
 	(wire
 		(pts
@@ -3639,6 +3639,16 @@
 		)
 		(uuid "27f908b4-f7c1-4971-8066-7809e631500c")
 	)
+	(label "MCU_RX"
+		(at 209.55 53.34 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2933303e-a45a-4e67-b6d8-ae9c3b2b588b")
+	)
 	(label "SIG_FOR_CN1_1"
 		(at 83.82 29.21 0)
 		(effects
@@ -3689,7 +3699,7 @@
 		)
 		(uuid "b412dd2a-1db0-4d64-b466-fb2cc0c19c22")
 	)
-	(label "MCU_RX_IN"
+	(label "MCU_RX"
 		(at 179.07 20.32 0)
 		(effects
 			(font
@@ -4034,7 +4044,7 @@
 	)
 	(symbol
 		(lib_id "Jumper:Jumper_2_Open")
-		(at 185.42 76.2 90)
+		(at 185.42 76.2 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4042,7 +4052,7 @@
 		(dnp no)
 		(uuid "1b0ffff2-7462-4fd2-a973-c5a9dc4bf18b")
 		(property "Reference" "JP4"
-			(at 179.07 75.184 0)
+			(at 191.77 77.216 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4050,7 +4060,7 @@
 			)
 		)
 		(property "Value" "Jumper_2_Open"
-			(at 181.61 75.184 0)
+			(at 189.23 77.216 0)
 			(effects
 				(font
 					(size 1.27 1.27)
