@@ -2800,6 +2800,10 @@
 		(uuid "ec935306-04dc-463b-8192-838a4561660b")
 	)
 	(no_connect
+		(at 201.93 71.12)
+		(uuid "f12a1888-8635-4101-9427-2d42c12f671e")
+	)
+	(no_connect
 		(at 147.32 176.53)
 		(uuid "f5bd40dc-adbc-4e5c-8862-6884a8277f66")
 	)
@@ -3658,16 +3662,6 @@
 			(justify left bottom)
 		)
 		(uuid "e5b8174f-56a5-41e2-88b3-4d990455044a")
-	)
-	(label "SIG_DIV_FROM_Arduino_nano"
-		(at 57.15 111.76 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "f3e3a935-595a-4153-b2d6-003879ec6316")
 	)
 	(symbol
 		(lib_id "power:GND")
