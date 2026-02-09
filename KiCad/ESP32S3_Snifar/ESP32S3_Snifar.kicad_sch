@@ -3699,15 +3699,15 @@
 		)
 		(uuid "b412dd2a-1db0-4d64-b466-fb2cc0c19c22")
 	)
-	(label "MCU_RX"
-		(at 179.07 20.32 0)
+	(label "MUC_RX"
+		(at 172.72 20.32 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left bottom)
 		)
-		(uuid "e5b8174f-56a5-41e2-88b3-4d990455044a")
+		(uuid "c64bc55b-fc76-444f-a490-f069fe7c054c")
 	)
 	(symbol
 		(lib_id "power:GND")
