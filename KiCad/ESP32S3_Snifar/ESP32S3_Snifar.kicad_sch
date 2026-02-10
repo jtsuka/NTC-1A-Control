@@ -4158,7 +4158,7 @@
 		)
 		(uuid "5ee500bd-5612-499e-ba66-1ab061fc109e")
 	)
-	(label "Pi_RX"
+	(label "Pi_Rx"
 		(at 247.65 33.02 90)
 		(effects
 			(font
@@ -5347,7 +5347,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "5cd6774c-068a-4e46-87f8-12e6325057ad")
-		(property "Reference" "TP5"
+		(property "Reference" "TP3"
 			(at 149.606 44.45 0)
 			(effects
 				(font
@@ -5398,7 +5398,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP5")
+					(reference "TP3")
 					(unit 1)
 				)
 			)
@@ -5681,7 +5681,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical"
 			(at 242.57 20.32 0)
 			(effects
 				(font
@@ -5744,7 +5744,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "6ca3d3e7-c7ae-45af-bf04-645d920b186e")
-		(property "Reference" "TP4"
+		(property "Reference" "TP2"
 			(at 150.114 15.748 0)
 			(effects
 				(font
@@ -5795,7 +5795,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP4")
+					(reference "TP2")
 					(unit 1)
 				)
 			)
@@ -6548,7 +6548,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a1ccdd5b-57db-4f2b-901d-60c81e37653c")
-		(property "Reference" "TP3"
+		(property "Reference" "TP4"
 			(at 139.192 87.376 0)
 			(effects
 				(font
@@ -6599,7 +6599,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP3")
+					(reference "TP4")
 					(unit 1)
 				)
 			)
@@ -6613,27 +6613,26 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "b5d29a37-2a7d-4e0e-8bea-2bd180dd640d")
 		(property "Reference" "R13"
-			(at 251.4599 33.02 0)
+			(at 250.19 30.226 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
 		(property "Value" "1k"
-			(at 253.9999 33.02 0)
+			(at 250.19 32.766 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Horizontal"
 			(at 252.73 37.338 90)
 			(effects
 				(font
@@ -6683,27 +6682,26 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "b8a043dc-9d8e-4d1c-807e-4e766ab0e447")
 		(property "Reference" "R12"
-			(at 251.4599 40.64 0)
+			(at 250.444 38.608 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
 		(property "Value" "1k"
-			(at 253.9999 40.64 0)
+			(at 250.444 41.148 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Horizontal"
 			(at 252.73 44.958 90)
 			(effects
 				(font
