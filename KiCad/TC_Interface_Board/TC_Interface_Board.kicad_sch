@@ -2724,7 +2724,7 @@
 		)
 		(uuid "aaab1ed0-f91b-4a4f-b8c3-dba7e6b1c62a")
 	)
-	(text "2026.2.6"
+	(text "2026.2.11"
 		(exclude_from_sim no)
 		(at 213.868 193.294 0)
 		(effects
@@ -6002,6 +6002,16 @@
 		)
 		(uuid "794f37fe-b00c-4147-bddc-1f296ffd3f1b")
 	)
+	(label "TC_CMD_BUS"
+		(at 92.71 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79ddd9b1-6dfb-4c2e-900f-066f5de76308")
+	)
 	(label "CMD_IN"
 		(at 46.99 38.1 0)
 		(effects
@@ -6041,6 +6051,16 @@
 			(justify left bottom)
 		)
 		(uuid "9f5bd637-1b3b-4ef3-8164-1c8a53c82998")
+	)
+	(label "TC_CMD_BUS"
+		(at 124.46 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a8fd06ec-2bc4-4724-8aa2-7e2ee49da1ae")
 	)
 	(label "CMD_IN_PROT"
 		(at 76.2 57.15 0)
