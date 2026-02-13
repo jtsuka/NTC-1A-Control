@@ -9414,7 +9414,7 @@
 		(dnp no)
 		(uuid "3cdcc77c-6dcb-4dee-b550-4181dc9a8658")
 		(property "Reference" "J5_CN2"
-			(at 28.448 181.102 0)
+			(at 27.178 180.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9423,7 +9423,7 @@
 			)
 		)
 		(property "Value" "JST_VH_01x03"
-			(at 27.94 183.642 0)
+			(at 27.178 182.88 0)
 			(effects
 				(font
 					(size 1.27 1.27)
