@@ -59,7 +59,7 @@
     "ssh_key": ""
   },
   "meta": {
-    "filename": "TC_Interface_Board.kicad_prl",
+    "filename": "TC106_Overall_circuit_diagram.kicad_prl",
     "version": 5
   },
   "net_inspector_panel": {
@@ -97,7 +97,7 @@
       89,
       53,
       89,
-      0
+      10
     ],
     "custom_group_rules": [],
     "expanded_rows": [],
