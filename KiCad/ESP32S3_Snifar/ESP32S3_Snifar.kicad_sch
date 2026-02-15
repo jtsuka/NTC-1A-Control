@@ -2904,16 +2904,6 @@
 		)
 		(uuid "8a0ca78b-3ae3-4960-bcf0-cd62115a6d17")
 	)
-	(text "BUS"
-		(exclude_from_sim no)
-		(at 68.072 48.514 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "8a50e23d-d257-49c4-b0fa-8183b82f28a8")
-	)
 	(text "SIG"
 		(exclude_from_sim no)
 		(at 67.056 43.18 0)
@@ -3037,6 +3027,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "cf4021fb-beab-4ae0-b73b-87b35627e706")
+	)
+	(junction
+		(at 73.66 46.99)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "db7b19a9-ef3c-4c07-829f-947080b9fa84")
 	)
 	(junction
 		(at 158.75 128.27)
@@ -3387,16 +3383,6 @@
 			(type default)
 		)
 		(uuid "2c1472f2-6592-4dc0-8f53-7bcf76a2fc54")
-	)
-	(wire
-		(pts
-			(xy 73.66 96.52) (xy 73.66 49.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2e74aa8e-951d-4f4c-a797-acff02020bac")
 	)
 	(wire
 		(pts
@@ -4000,16 +3986,6 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 49.53) (xy 64.77 49.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e03418b9-726f-4dd3-8e66-e58aaff182f6")
-	)
-	(wire
-		(pts
 			(xy 238.76 30.48) (xy 238.76 40.64)
 		)
 		(stroke
@@ -4050,7 +4026,7 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 46.99) (xy 97.79 46.99)
+			(xy 64.77 46.99) (xy 73.66 46.99)
 		)
 		(stroke
 			(width 0)
@@ -4067,6 +4043,16 @@
 			(type default)
 		)
 		(uuid "e7d332e8-3391-4991-abe2-0cff7a33972e")
+	)
+	(wire
+		(pts
+			(xy 73.66 46.99) (xy 97.79 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ed74d610-4803-4f82-a01e-30ff3f1ef59b")
 	)
 	(wire
 		(pts
@@ -4087,6 +4073,16 @@
 			(type default)
 		)
 		(uuid "f3275fa4-ce22-4117-af8a-4bffd284c212")
+	)
+	(wire
+		(pts
+			(xy 73.66 46.99) (xy 73.66 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f8a8b940-ebb1-48b7-9d09-a01646115f11")
 	)
 	(wire
 		(pts
@@ -4128,7 +4124,7 @@
 		)
 		(uuid "10ed4a68-60bc-4a3b-bc12-7f0c0b70bdda")
 	)
-	(label "SIG_FOR_Arduino_nano"
+	(label "TC_CMD_BUS"
 		(at 72.39 46.99 0)
 		(effects
 			(font
