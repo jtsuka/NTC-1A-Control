@@ -10005,7 +10005,7 @@
 		)
 		(uuid "61ad2c35-7c9b-486e-b002-b5a25c62f742")
 	)
-	(label "TC_RX"
+	(label "TC_RX_BUS"
 		(at 139.7 41.91 0)
 		(effects
 			(font
@@ -10015,7 +10015,7 @@
 		)
 		(uuid "6f73d5bc-a8b9-43c7-8a88-4da07516b744")
 	)
-	(label "TC_RX"
+	(label "INT_TC_S2"
 		(at 106.68 41.91 0)
 		(effects
 			(font
@@ -10055,7 +10055,7 @@
 		)
 		(uuid "7992f767-85ae-409a-a7db-0acfb14965e9")
 	)
-	(label "TC_RX"
+	(label "TC_RX_BUS"
 		(at 106.68 142.24 0)
 		(effects
 			(font
@@ -10075,7 +10075,7 @@
 		)
 		(uuid "7ce20627-1ad2-4b03-8a54-0c40c52cb948")
 	)
-	(label "TC_RX"
+	(label "TC_RX_BUS"
 		(at 195.58 130.81 0)
 		(effects
 			(font
@@ -10095,7 +10095,7 @@
 		)
 		(uuid "83724142-2e1e-4c15-b9dc-09fe3a59413c")
 	)
-	(label "TC_RX"
+	(label "TC_RX_IN"
 		(at 88.9 36.83 0)
 		(effects
 			(font
@@ -10115,7 +10115,7 @@
 		)
 		(uuid "95e49839-5e97-48b6-9431-0ceb40272b22")
 	)
-	(label "TC_RX"
+	(label "TC_RX_BUS"
 		(at 151.13 74.93 90)
 		(effects
 			(font
@@ -10125,7 +10125,7 @@
 		)
 		(uuid "9f5bd637-1b3b-4ef3-8164-1c8a53c82998")
 	)
-	(label "TC_RX"
+	(label "TC_RX_BUS"
 		(at 106.68 116.84 0)
 		(effects
 			(font
