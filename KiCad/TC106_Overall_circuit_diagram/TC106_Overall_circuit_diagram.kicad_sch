@@ -6010,6 +6010,12 @@
 		(uuid "1f5c8a18-fede-4ccb-b79b-a71281a42275")
 	)
 	(junction
+		(at 189.23 147.32)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2684e46f-b569-4725-9634-7acdd8235cf8")
+	)
+	(junction
 		(at 147.32 114.3)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6242,12 +6248,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "abe700ac-69cf-41a8-b3c6-33e0f2a81cf3")
-	)
-	(junction
-		(at 194.31 147.32)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "abf89c78-45d0-4601-8239-ad7bbaaa2284")
 	)
 	(junction
 		(at 66.04 116.84)
@@ -6678,16 +6678,6 @@
 			(type default)
 		)
 		(uuid "05cbf124-3b19-4031-b557-9d402bf679b0")
-	)
-	(wire
-		(pts
-			(xy 180.34 152.4) (xy 180.34 157.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0729175a-b86c-4932-aedd-f2c08cccded9")
 	)
 	(wire
 		(pts
@@ -7231,6 +7221,16 @@
 	)
 	(wire
 		(pts
+			(xy 203.2 152.4) (xy 198.12 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "40a26877-5388-4b13-803c-a79d26f2150d")
+	)
+	(wire
+		(pts
 			(xy 58.42 191.77) (xy 62.23 191.77)
 		)
 		(stroke
@@ -7441,23 +7441,13 @@
 	)
 	(wire
 		(pts
-			(xy 184.15 147.32) (xy 194.31 147.32)
+			(xy 184.15 147.32) (xy 189.23 147.32)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "5d326506-494d-4058-8fb5-10c73c739310")
-	)
-	(wire
-		(pts
-			(xy 194.31 157.48) (xy 194.31 162.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5e0aba2f-3496-4de8-9a9a-5349cfc26c90")
 	)
 	(wire
 		(pts
@@ -7508,6 +7498,16 @@
 			(type default)
 		)
 		(uuid "637ca685-eeee-4e81-bb04-84ad3560c4d7")
+	)
+	(wire
+		(pts
+			(xy 189.23 147.32) (xy 194.31 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "63e17421-3f48-4663-8316-afa5e71a77e0")
 	)
 	(wire
 		(pts
@@ -7611,6 +7611,16 @@
 	)
 	(wire
 		(pts
+			(xy 262.89 162.56) (xy 203.2 162.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7045aec0-b20c-4b38-adb6-c604cf9b505c")
+	)
+	(wire
+		(pts
 			(xy 102.87 31.75) (xy 130.81 31.75)
 		)
 		(stroke
@@ -7661,16 +7671,6 @@
 	)
 	(wire
 		(pts
-			(xy 180.34 152.4) (xy 185.42 152.4)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "78a2fbbb-a5ba-41c1-bbd5-92f840016a0d")
-	)
-	(wire
-		(pts
 			(xy 138.43 93.98) (xy 138.43 109.22)
 		)
 		(stroke
@@ -7708,16 +7708,6 @@
 			(type default)
 		)
 		(uuid "7e0c26d7-8e1b-4eb5-a73c-c67bc2bc4b24")
-	)
-	(wire
-		(pts
-			(xy 194.31 162.56) (xy 262.89 162.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7e459bda-df1a-4a51-8177-eada9f5916b1")
 	)
 	(wire
 		(pts
@@ -7938,6 +7928,26 @@
 			(type default)
 		)
 		(uuid "9b7e1a44-3fcb-4371-aa2a-326acf661cc3")
+	)
+	(wire
+		(pts
+			(xy 189.23 157.48) (xy 189.23 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9c0bab3e-aff6-479f-b660-944a916e8db3")
+	)
+	(wire
+		(pts
+			(xy 203.2 162.56) (xy 203.2 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9e59b778-ba39-4914-9251-a8e160140af7")
 	)
 	(wire
 		(pts
@@ -10177,7 +10187,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 180.34 157.48 0)
+		(at 189.23 161.29 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10185,7 +10195,7 @@
 		(dnp no)
 		(uuid "090a4d30-c861-4e72-9cfa-7ccea0b78964")
 		(property "Reference" "#PWR0102"
-			(at 180.34 163.83 0)
+			(at 189.23 167.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10194,7 +10204,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 178.054 161.29 0)
+			(at 185.674 161.798 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10202,7 +10212,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 180.34 157.48 0)
+			(at 189.23 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10211,7 +10221,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 180.34 157.48 0)
+			(at 189.23 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10220,7 +10230,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 180.34 157.48 0)
+			(at 189.23 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11528,15 +11538,15 @@
 		(lib_name "DTC143E_2")
 		(lib_id "Transistor_BJT:DTC143E")
 		(at 191.77 152.4 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "4245307a-41c1-4705-a332-f0ac53da31f3")
 		(property "Reference" "Q5"
-			(at 196.85 151.1299 0)
+			(at 186.69 151.1299 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11545,7 +11555,7 @@
 			)
 		)
 		(property "Value" "DTC143E"
-			(at 196.85 153.6699 0)
+			(at 186.69 153.6699 0)
 			(effects
 				(font
 					(size 1.27 1.27)
