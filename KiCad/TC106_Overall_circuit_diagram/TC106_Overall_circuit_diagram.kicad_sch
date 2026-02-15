@@ -9935,7 +9935,7 @@
 		)
 		(uuid "1606ad7f-45af-4d6a-ae27-a45698cee2f5")
 	)
-	(label "TC_CMD_U3"
+	(label "TC_RX_U3"
 		(at 243.84 134.62 0)
 		(effects
 			(font
@@ -10075,7 +10075,7 @@
 		)
 		(uuid "7ce20627-1ad2-4b03-8a54-0c40c52cb948")
 	)
-	(label "TC_CMD_BUS"
+	(label "TC_RX"
 		(at 195.58 130.81 0)
 		(effects
 			(font
