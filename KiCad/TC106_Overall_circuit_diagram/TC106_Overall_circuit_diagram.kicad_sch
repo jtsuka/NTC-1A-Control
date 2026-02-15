@@ -9654,6 +9654,16 @@
 			)
 		)
 	)
+	(label "TC_TX_U3"
+		(at 223.52 162.56 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "02d58c6b-256e-42de-b200-744ce484affc")
+	)
 	(label "TC_RX"
 		(at 45.72 157.48 0)
 		(effects
@@ -9663,6 +9673,16 @@
 			(justify left bottom)
 		)
 		(uuid "1606ad7f-45af-4d6a-ae27-a45698cee2f5")
+	)
+	(label "TC_CMD_U3"
+		(at 243.84 134.62 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2d60c637-935b-4dd3-b273-e041cae80c8d")
 	)
 	(label "+24V"
 		(at 177.8 123.19 0)
@@ -14499,7 +14519,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 186.69 128.27 0)
+		(at 186.69 128.27 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -14507,7 +14527,7 @@
 		(dnp no)
 		(uuid "e92b081d-053e-4427-838e-c5970025f9f0")
 		(property "Reference" "#PWR011"
-			(at 186.69 134.62 0)
+			(at 193.04 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14516,7 +14536,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 191.516 129.286 0)
+			(at 187.706 123.444 0)
 			(effects
 				(font
 					(size 1.27 1.27)
