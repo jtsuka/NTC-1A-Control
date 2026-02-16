@@ -6058,12 +6058,6 @@
 		(uuid "3d476ab3-2450-43da-8800-d9740f4b9daa")
 	)
 	(junction
-		(at 80.01 34.29)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "3d6400f0-4e73-4333-84f5-5d962c8fa920")
-	)
-	(junction
 		(at 227.33 143.51)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6152,6 +6146,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6f241688-b76b-4b69-875a-13a81b24c1fe")
+	)
+	(junction
+		(at 80.01 34.29)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7020958c-9123-4f24-8e94-3dd4b8522bc5")
 	)
 	(junction
 		(at 138.43 109.22)
@@ -6671,16 +6671,6 @@
 	)
 	(wire
 		(pts
-			(xy 153.67 110.49) (xy 209.55 110.49)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "05cbf124-3b19-4031-b557-9d402bf679b0")
-	)
-	(wire
-		(pts
 			(xy 190.5 123.19) (xy 190.5 120.65)
 		)
 		(stroke
@@ -6978,16 +6968,6 @@
 			(type default)
 		)
 		(uuid "2259d2c7-614c-4c15-9e6f-290e3168e12a")
-	)
-	(wire
-		(pts
-			(xy 227.33 133.35) (xy 227.33 135.89)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "22ffa5dd-2bb0-4c65-a6ff-1a48dae184e6")
 	)
 	(wire
 		(pts
@@ -7831,7 +7811,7 @@
 	)
 	(wire
 		(pts
-			(xy 153.67 109.22) (xy 138.43 109.22)
+			(xy 138.43 109.22) (xy 209.55 109.22)
 		)
 		(stroke
 			(width 0)
@@ -8031,7 +8011,7 @@
 	)
 	(wire
 		(pts
-			(xy 209.55 110.49) (xy 209.55 54.61)
+			(xy 209.55 109.22) (xy 209.55 54.61)
 		)
 		(stroke
 			(width 0)
@@ -8508,16 +8488,6 @@
 			(type default)
 		)
 		(uuid "d639f244-bb7e-4113-90d5-ccc7cd91ec31")
-	)
-	(wire
-		(pts
-			(xy 153.67 110.49) (xy 153.67 109.22)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d64ed519-4c0a-4c3b-95fa-07e1f38c4346")
 	)
 	(wire
 		(pts
@@ -10186,7 +10156,7 @@
 		(uuid "c07c3319-2d19-45fc-a43a-0348d6d8ce68")
 	)
 	(label "V_FB"
-		(at 158.75 86.36 0)
+		(at 146.05 82.55 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -11285,6 +11255,70 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:Conn_01x01_Pin")
+		(at 199.39 134.62 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "34c3029f-8c7e-4350-8cd6-68a1317cbfef")
+		(property "Reference" "U4"
+			(at 208.788 131.826 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "DC-DC_Inverter"
+			(at 208.788 134.366 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 199.39 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 199.39 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x01, script generated"
+			(at 199.39 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "62c7defd-9bce-4181-b9cf-6703d27b7973")
+		)
+		(instances
+			(project "TC106_Overall_circuit_diagram"
+				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
+					(reference "U4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector_Generic:Conn_01x03")
 		(at 27.94 189.23 0)
 		(mirror y)
@@ -11642,7 +11676,7 @@
 	)
 	(symbol
 		(lib_id "Device:D")
-		(at 76.2 34.29 0)
+		(at 76.2 34.29 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11650,7 +11684,7 @@
 		(dnp no)
 		(uuid "443b002c-edbe-40ac-a989-da98ccc7fc97")
 		(property "Reference" "D1"
-			(at 75.946 31.242 0)
+			(at 76.2 27.432 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11658,7 +11692,7 @@
 			)
 		)
 		(property "Value" "1N4148"
-			(at 75.946 28.702 0)
+			(at 76.2 29.972 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11720,71 +11754,6 @@
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
 					(reference "D1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 227.33 133.35 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "443ffc14-fc43-4153-b865-bb37402cf155")
-		(property "Reference" "#U11_POWER_5V01"
-			(at 227.33 131.445 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+5V"
-			(at 233.426 131.318 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 227.33 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 227.33 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 227.33 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "2b3eeac6-05d8-4631-9d00-1cdd07e8e65a")
-		)
-		(instances
-			(project "TC106_Overall_circuit_diagram"
-				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "#U11_POWER_5V01")
 					(unit 1)
 				)
 			)
@@ -12785,7 +12754,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "DC-DC_Converter"
+		(property "Value" "DC-DC_Inverter"
 			(at 191.77 117.4749 90)
 			(effects
 				(font
@@ -13529,6 +13498,70 @@
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
 					(reference "R7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Conn_01x01_Pin")
+		(at 232.41 135.89 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ac817c10-006d-4e66-9e71-af63199c3400")
+		(property "Reference" "U6"
+			(at 229.362 132.334 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "DC-DC_Inverter"
+			(at 233.68 133.858 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 232.41 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 232.41 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x01, script generated"
+			(at 232.41 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4d8f4c34-e755-4d0a-b803-c4f9f27f8a62")
+		)
+		(instances
+			(project "TC106_Overall_circuit_diagram"
+				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
+					(reference "U6")
 					(unit 1)
 				)
 			)
@@ -14849,16 +14882,16 @@
 	)
 	(symbol
 		(lib_id "Transistor_BJT:Q_NPN_ECB")
-		(at 87.63 162.56 180)
+		(at 87.63 162.56 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "e7b1159c-46ff-4561-91fe-20dac2bae3c9")
 		(property "Reference" "Q3"
-			(at 82.55 161.2899 0)
+			(at 82.55 163.8301 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14867,7 +14900,7 @@
 			)
 		)
 		(property "Value" "2SD1863"
-			(at 82.55 163.8299 0)
+			(at 82.55 161.2901 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14876,7 +14909,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
-			(at 82.55 165.1 0)
+			(at 82.55 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15074,71 +15107,6 @@
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
 					(reference "Q2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 194.31 134.62 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "ef145a1c-e287-43fb-8d27-4661dd216847")
-		(property "Reference" "#U11_POWER_5V0101"
-			(at 194.31 132.715 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+5V"
-			(at 200.406 132.588 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 194.31 134.62 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 194.31 134.62 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 194.31 134.62 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1c7c197b-9411-467d-a98c-bc3c61d9ce77")
-		)
-		(instances
-			(project ""
-				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "#U11_POWER_5V0101")
 					(unit 1)
 				)
 			)
