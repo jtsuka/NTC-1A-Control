@@ -2939,12 +2939,6 @@
 		(uuid "1630a428-d060-490f-a7f4-422e4329f44b")
 	)
 	(junction
-		(at 64.77 46.99)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "1c309229-9371-44a2-bb60-3696e663fe1b")
-	)
-	(junction
 		(at 116.84 34.29)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3009,6 +3003,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9be385de-cd61-492a-8c8c-917589a32865")
+	)
+	(junction
+		(at 69.85 46.99)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "9e55f2b9-ceed-48ce-a806-c9fd2f0824a8")
 	)
 	(junction
 		(at 148.59 111.76)
@@ -3196,7 +3196,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 156.21) (xy 115.57 153.67)
+			(xy 115.57 156.21) (xy 115.57 154.94)
 		)
 		(stroke
 			(width 0)
@@ -3273,16 +3273,6 @@
 			(type default)
 		)
 		(uuid "0ea9b722-fd6f-4e5c-b5d9-ef73ed3a6cc9")
-	)
-	(wire
-		(pts
-			(xy 48.26 153.67) (xy 48.26 46.99)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0f323651-918e-4912-a5bb-958fbb2d9496")
 	)
 	(wire
 		(pts
@@ -3396,6 +3386,16 @@
 	)
 	(wire
 		(pts
+			(xy 69.85 107.95) (xy 69.85 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2dd935e0-942b-4037-aa03-3dc02b9eb4a8")
+	)
+	(wire
+		(pts
 			(xy 113.03 34.29) (xy 116.84 34.29)
 		)
 		(stroke
@@ -3453,6 +3453,16 @@
 			(type default)
 		)
 		(uuid "3ca2a06b-6d28-47ac-99c6-70535952147e")
+	)
+	(wire
+		(pts
+			(xy 69.85 46.99) (xy 73.66 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3e7defb3-b1e6-49d7-b585-c414a72176d5")
 	)
 	(wire
 		(pts
@@ -3716,7 +3726,7 @@
 	)
 	(wire
 		(pts
-			(xy 48.26 46.99) (xy 64.77 46.99)
+			(xy 64.77 46.99) (xy 69.85 46.99)
 		)
 		(stroke
 			(width 0)
@@ -3826,7 +3836,7 @@
 	)
 	(wire
 		(pts
-			(xy 48.26 153.67) (xy 115.57 153.67)
+			(xy 69.85 154.94) (xy 115.57 154.94)
 		)
 		(stroke
 			(width 0)
@@ -3996,6 +4006,16 @@
 	)
 	(wire
 		(pts
+			(xy 69.85 46.99) (xy 69.85 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dc088db0-91b4-420d-92ae-4f278b45df81")
+	)
+	(wire
+		(pts
 			(xy 137.16 46.99) (xy 186.69 46.99)
 		)
 		(stroke
@@ -4053,16 +4073,6 @@
 			(type default)
 		)
 		(uuid "e4dbe991-67a9-4a28-9349-7f18ff0ad8c6")
-	)
-	(wire
-		(pts
-			(xy 64.77 46.99) (xy 73.66 46.99)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e754ef8f-2d11-4418-89ae-9f46db6885ba")
 	)
 	(wire
 		(pts
@@ -6694,6 +6704,73 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "JP7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:Jumper_2_Open")
+		(at 69.85 102.87 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ace22d75-def2-450c-82d3-f5afe5ff6c8a")
+		(property "Reference" "JP8"
+			(at 76.2 103.886 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Jumper_2_Open"
+			(at 73.66 103.886 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
+			(at 69.85 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 69.85 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Jumper, 2-pole, open"
+			(at 69.85 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "7900399f-4fc5-4241-a443-f8e9680462e8")
+		)
+		(pin "1"
+			(uuid "7f0b8d95-faa1-44a2-a071-a482c62eec4b")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "JP8")
 					(unit 1)
 				)
 			)
