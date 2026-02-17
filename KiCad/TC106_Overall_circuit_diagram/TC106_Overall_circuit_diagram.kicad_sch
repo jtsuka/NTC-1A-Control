@@ -6036,7 +6036,7 @@
 		)
 		(uuid "aaab1ed0-f91b-4a4f-b8c3-dba7e6b1c62a")
 	)
-	(text "2026.2.11"
+	(text "2026.2.21"
 		(exclude_from_sim no)
 		(at 213.868 193.294 0)
 		(effects
@@ -10556,7 +10556,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "0fc37ea7-f977-4980-a96e-2875bd19348d")
 		(property "Reference" "#PWR04"
 			(at 58.42 171.45 0)
@@ -10568,7 +10567,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 58.42 170.18 0)
+			(at 62.484 167.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11561,7 +11560,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "3d8e02e1-d037-47e7-8a51-ddebb85a89c2")
 		(property "Reference" "#PWR0103"
 			(at 66.04 130.81 0)
@@ -11573,7 +11571,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 66.04 129.54 0)
+			(at 65.786 128.778 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11875,7 +11873,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 51.816 114.808 0)
+			(at 51.054 115.316 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12004,15 +12002,15 @@
 		(dnp no)
 		(uuid "4e1e8559-0bab-4dfa-8675-62c37e7c6f1f")
 		(property "Reference" "#POWER_5V_FROM_MAIN_INVERTER0101"
-			(at 48.514 174.498 0)
+			(at 49.53 174.498 0)
 			(effects
 				(font
 					(size 0.508 0.508)
 				)
 			)
 		)
-		(property "Value" "+5V"
-			(at 43.688 172.974 0)
+		(property "Value" "+5V_EXT"
+			(at 45.72 172.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12066,7 +12064,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "543e5895-4e05-4cf3-ab0f-6b48c2d42487")
 		(property "Reference" "#PWR03"
 			(at 45.72 170.18 0)
@@ -12078,7 +12075,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 45.72 168.91 0)
+			(at 49.022 167.132 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12132,7 +12129,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "55dcec63-d092-4725-8c1b-738bcb67da81")
 		(property "Reference" "#PWR05"
 			(at 85.09 173.99 0)
@@ -12144,7 +12140,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 85.09 172.72 0)
+			(at 88.392 170.434 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13322,15 +13318,15 @@
 		(dnp no)
 		(uuid "951b0ae0-8e9f-45e3-ae80-f53785ac0510")
 		(property "Reference" "#PWR_5V_FROM_TC106_INVERTER0101"
-			(at 201.422 133.604 0)
+			(at 201.93 133.604 0)
 			(effects
 				(font
 					(size 0.508 0.508)
 				)
 			)
 		)
-		(property "Value" "+5V"
-			(at 196.596 132.08 0)
+		(property "Value" "+5V_INT"
+			(at 198.374 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13889,7 +13885,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 55.88 127.762 0)
+			(at 51.562 126.238 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15216,7 +15212,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "f3613abb-7bb6-4130-b1e6-2ee2009b873d")
 		(property "Reference" "#PWR01"
 			(at 66.04 120.65 0)
@@ -15227,13 +15222,12 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "+24V"
-			(at 66.04 111.76 0)
+		(property "Value" "+24V_EXT"
+			(at 65.024 112.522 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" ""
