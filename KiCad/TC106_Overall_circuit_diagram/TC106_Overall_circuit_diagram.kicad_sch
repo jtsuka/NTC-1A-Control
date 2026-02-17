@@ -11300,7 +11300,7 @@
 		(dnp no)
 		(uuid "34c3029f-8c7e-4350-8cd6-68a1317cbfef")
 		(property "Reference" "U4"
-			(at 208.788 129.286 0)
+			(at 198.12 133.604 0)
 			(effects
 				(font
 					(size 1.27 1.27)
