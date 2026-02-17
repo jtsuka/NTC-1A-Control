@@ -12003,13 +12003,12 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "4e1e8559-0bab-4dfa-8675-62c37e7c6f1f")
-		(property "Reference" "#POWER_5V_FROM_INVERTER"
-			(at 40.64 173.355 0)
+		(property "Reference" "#POWER_5V_FROM_MAIN_INVERTER0101"
+			(at 48.514 174.498 0)
 			(effects
 				(font
-					(size 1.27 1.27)
+					(size 0.508 0.508)
 				)
-				(hide yes)
 			)
 		)
 		(property "Value" "+5V"
@@ -12053,7 +12052,7 @@
 		(instances
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "#POWER_5V_FROM_INVERTER")
+					(reference "#POWER_5V_FROM_MAIN_INVERTER0101")
 					(unit 1)
 				)
 			)
@@ -13322,13 +13321,12 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "951b0ae0-8e9f-45e3-ae80-f53785ac0510")
-		(property "Reference" "#PWR02"
-			(at 194.31 135.89 0)
+		(property "Reference" "#PWR_5V_FROM_TC106_INVERTER0101"
+			(at 201.422 133.604 0)
 			(effects
 				(font
-					(size 1.27 1.27)
+					(size 0.508 0.508)
 				)
-				(hide yes)
 			)
 		)
 		(property "Value" "+5V"
@@ -13372,7 +13370,7 @@
 		(instances
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "#PWR02")
+					(reference "#PWR_5V_FROM_TC106_INVERTER0101")
 					(unit 1)
 				)
 			)
