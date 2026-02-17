@@ -5962,6 +5962,12 @@
 		(uuid "0a5877fb-f608-4b02-8d00-2de43e3aba66")
 	)
 	(junction
+		(at 194.31 134.62)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0bdbc1db-5699-4faa-a9cf-ee066b096c58")
+	)
+	(junction
 		(at 115.57 109.22)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6951,6 +6957,16 @@
 	)
 	(wire
 		(pts
+			(xy 227.33 135.89) (xy 227.33 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1ff67bda-9e7c-4e4b-9011-da95811293c1")
+	)
+	(wire
+		(pts
 			(xy 129.54 142.24) (xy 151.13 142.24)
 		)
 		(stroke
@@ -7488,6 +7504,16 @@
 			(type default)
 		)
 		(uuid "63e17421-3f48-4663-8316-afa5e71a77e0")
+	)
+	(wire
+		(pts
+			(xy 194.31 132.08) (xy 194.31 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "645d9df8-54b2-4067-a37a-00b219f7890b")
 	)
 	(wire
 		(pts
@@ -8678,6 +8704,16 @@
 			(type default)
 		)
 		(uuid "ee44800d-461a-4979-b67c-9699d16e2354")
+	)
+	(wire
+		(pts
+			(xy 194.31 134.62) (xy 227.33 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ee62eeb6-5f9f-4057-a2eb-67d632e143c4")
 	)
 	(wire
 		(pts
@@ -11256,7 +11292,7 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x01_Pin")
-		(at 199.39 134.62 180)
+		(at 199.39 132.08 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11264,7 +11300,7 @@
 		(dnp no)
 		(uuid "34c3029f-8c7e-4350-8cd6-68a1317cbfef")
 		(property "Reference" "U4"
-			(at 208.788 131.826 0)
+			(at 208.788 129.286 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11272,7 +11308,7 @@
 			)
 		)
 		(property "Value" "DC-DC_Inverter"
-			(at 208.788 134.366 0)
+			(at 208.28 132.842 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11280,7 +11316,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 199.39 134.62 0)
+			(at 199.39 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11289,7 +11325,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 199.39 134.62 0)
+			(at 199.39 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11298,7 +11334,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x01, script generated"
-			(at 199.39 134.62 0)
+			(at 199.39 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13498,70 +13534,6 @@
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
 					(reference "R7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:Conn_01x01_Pin")
-		(at 232.41 135.89 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "ac817c10-006d-4e66-9e71-af63199c3400")
-		(property "Reference" "U6"
-			(at 229.362 132.334 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "DC-DC_Inverter"
-			(at 233.68 133.858 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 232.41 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 232.41 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x01, script generated"
-			(at 232.41 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "4d8f4c34-e755-4d0a-b803-c4f9f27f8a62")
-		)
-		(instances
-			(project "TC106_Overall_circuit_diagram"
-				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "U6")
 					(unit 1)
 				)
 			)
