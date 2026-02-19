@@ -5228,11 +5228,11 @@
 	(footprint "Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal"
 		(layer "F.Cu")
 		(uuid "3c057f0b-0386-4704-ae84-b5dbdbe21928")
-		(at 166.3446 124.5108 -90)
+		(at 166.32 98.32 90)
 		(descr "Diode, DO-41_SOD81 series, Axial, Horizontal, pin pitch=7.62mm, length*diameter=5.2*2.7mm^2, https://www.diodes.com/assets/Package-Files/DO-41-Plastic.pdf")
 		(tags "Diode DO-41_SOD81 series Axial Horizontal pin pitch 7.62mm  length 5.2mm diameter 2.7mm")
 		(property "Reference" "D2"
-			(at 3.81 -2.47 270)
+			(at 3.81 -2.47 90)
 			(layer "F.SilkS")
 			(uuid "0918d6c5-5b97-4f13-9d72-52d2d5888ded")
 			(effects
@@ -5242,8 +5242,8 @@
 				)
 			)
 		)
-		(property "Value" "1N4007"
-			(at 3.81 2.47 270)
+		(property "Value" "1N4148"
+			(at 3.81 2.47 90)
 			(layer "F.Fab")
 			(uuid "72c9b9b1-c435-4a4c-a71f-8496086f2335")
 			(effects
@@ -5254,7 +5254,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 0 0 270)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "58cd4720-e38f-42b0-b02e-bb7aada8fb9d")
@@ -5266,7 +5266,7 @@
 			)
 		)
 		(property "Description" "Diode"
-			(at 0 0 270)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "5446e0e3-d615-42ea-9c33-eaa5039d98bf")
@@ -5278,7 +5278,7 @@
 			)
 		)
 		(property "Sim.Device" "D"
-			(at 0 0 270)
+			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -5291,7 +5291,7 @@
 			)
 		)
 		(property "Sim.Pins" "1=K 2=A"
-			(at 0 0 270)
+			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -5304,79 +5304,19 @@
 			)
 		)
 		(property ki_fp_filters "TO-???* *_Diode_* *SingleDiode* D_*")
-		(path "/1e4215b2-1bb1-4523-92ff-926f75fa6c97")
+		(path "/443b002c-edbe-40ac-a989-da98ccc7fc97")
 		(sheetname "/")
 		(sheetfile "TC106_Overall_circuit_diagram.kicad_sch")
 		(attr through_hole)
 		(fp_line
-			(start 1.09 1.47)
-			(end 6.53 1.47)
+			(start 6.53 -1.47)
+			(end 6.53 -1.34)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "a298b0c8-c25a-4645-843f-a71f24b4197b")
-		)
-		(fp_line
-			(start 6.53 1.47)
-			(end 6.53 1.34)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "920f2c4a-b796-4d3a-8e84-1049a8850f7e")
-		)
-		(fp_line
-			(start 1.09 1.34)
-			(end 1.09 1.47)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "5c27648a-4144-487c-b670-4f43f65824ce")
-		)
-		(fp_line
-			(start 1.09 -1.34)
-			(end 1.09 -1.47)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "e208ab66-86f8-439b-81f6-d9901282b4c7")
-		)
-		(fp_line
-			(start 1.09 -1.47)
-			(end 6.53 -1.47)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "b0507de7-91de-4ade-8ceb-45f9235ae9f6")
-		)
-		(fp_line
-			(start 1.87 -1.47)
-			(end 1.87 1.47)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "05dbbd44-ea5d-4086-8d96-b45c0d4c2690")
-		)
-		(fp_line
-			(start 1.99 -1.47)
-			(end 1.99 1.47)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "82906b47-dfbd-4a60-905c-0758744448d9")
+			(uuid "33bd5b13-8b34-4e75-b1dc-5043b9b38ba6")
 		)
 		(fp_line
 			(start 2.11 -1.47)
@@ -5389,14 +5329,74 @@
 			(uuid "31b181cc-6245-49b1-b99b-dfcec1a2252d")
 		)
 		(fp_line
-			(start 6.53 -1.47)
-			(end 6.53 -1.34)
+			(start 1.99 -1.47)
+			(end 1.99 1.47)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "33bd5b13-8b34-4e75-b1dc-5043b9b38ba6")
+			(uuid "82906b47-dfbd-4a60-905c-0758744448d9")
+		)
+		(fp_line
+			(start 1.87 -1.47)
+			(end 1.87 1.47)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "05dbbd44-ea5d-4086-8d96-b45c0d4c2690")
+		)
+		(fp_line
+			(start 1.09 -1.47)
+			(end 6.53 -1.47)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "b0507de7-91de-4ade-8ceb-45f9235ae9f6")
+		)
+		(fp_line
+			(start 1.09 -1.34)
+			(end 1.09 -1.47)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "e208ab66-86f8-439b-81f6-d9901282b4c7")
+		)
+		(fp_line
+			(start 1.09 1.34)
+			(end 1.09 1.47)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "5c27648a-4144-487c-b670-4f43f65824ce")
+		)
+		(fp_line
+			(start 6.53 1.47)
+			(end 6.53 1.34)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "920f2c4a-b796-4d3a-8e84-1049a8850f7e")
+		)
+		(fp_line
+			(start 1.09 1.47)
+			(end 6.53 1.47)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "a298b0c8-c25a-4645-843f-a71f24b4197b")
 		)
 		(fp_rect
 			(start -1.35 -1.6)
@@ -5410,34 +5410,14 @@
 			(uuid "853eb962-49b6-4b39-a914-aa4ed73a7bde")
 		)
 		(fp_line
-			(start 0 0)
-			(end 1.21 0)
+			(start 2.09 -1.35)
+			(end 2.09 1.35)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "5f6ecc73-c071-40b0-8010-64651001d108")
-		)
-		(fp_line
-			(start 7.62 0)
-			(end 6.41 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "16d7f4b8-0299-4e58-bc6c-7e2cdf3ea6a7")
-		)
-		(fp_line
-			(start 1.89 -1.35)
-			(end 1.89 1.35)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "b14a6075-1e5c-473f-8d5a-947ed532391a")
+			(uuid "53b34f6e-5443-4f02-9ad9-2fd25ffc528e")
 		)
 		(fp_line
 			(start 1.99 -1.35)
@@ -5450,14 +5430,34 @@
 			(uuid "15583066-835e-45e2-9fac-095cd8b23297")
 		)
 		(fp_line
-			(start 2.09 -1.35)
-			(end 2.09 1.35)
+			(start 1.89 -1.35)
+			(end 1.89 1.35)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "53b34f6e-5443-4f02-9ad9-2fd25ffc528e")
+			(uuid "b14a6075-1e5c-473f-8d5a-947ed532391a")
+		)
+		(fp_line
+			(start 7.62 0)
+			(end 6.41 0)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "16d7f4b8-0299-4e58-bc6c-7e2cdf3ea6a7")
+		)
+		(fp_line
+			(start 0 0)
+			(end 1.21 0)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "5f6ecc73-c071-40b0-8010-64651001d108")
 		)
 		(fp_rect
 			(start 1.21 -1.35)
@@ -5471,7 +5471,7 @@
 			(uuid "f5791caf-3e32-4557-a2f1-8b7d96c52622")
 		)
 		(fp_text user "K"
-			(at 0 -2.1 270)
+			(at 0 -2.1 90)
 			(layer "F.SilkS")
 			(uuid "8afd1b7c-8238-4e78-9d44-31bd1a5d9ff8")
 			(effects
@@ -5482,7 +5482,7 @@
 			)
 		)
 		(fp_text user "K"
-			(at 0 -2.1 270)
+			(at 0 -2.1 90)
 			(layer "F.Fab")
 			(uuid "d86c7d11-ce1d-4a57-b354-ff2332196b32")
 			(effects
@@ -5493,7 +5493,7 @@
 			)
 		)
 		(fp_text user "${REFERENCE}"
-			(at 4.2 0 270)
+			(at 4.2 0 90)
 			(layer "F.Fab")
 			(uuid "fe0c7621-8c08-4c76-ac30-369f51d6dd9d")
 			(effects
@@ -5504,24 +5504,24 @@
 			)
 		)
 		(pad "1" thru_hole roundrect
-			(at 0 0 270)
+			(at 0 0 90)
 			(size 2.2 2.2)
 			(drill 1.1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(roundrect_rratio 0.113636)
-			(net 1 "+24V_EXT")
+			(net 15 "/TC_RX_IN")
 			(pinfunction "K")
 			(pintype "passive")
 			(uuid "95739383-f73e-4b7f-b508-48a1f565101f")
 		)
 		(pad "2" thru_hole circle
-			(at 7.62 0 270)
+			(at 7.62 0 90)
 			(size 2.2 2.2)
 			(drill 1.1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 3 "/CMD_IN_PROT")
+			(net 19 "/TC_RX")
 			(pinfunction "A")
 			(pintype "passive")
 			(uuid "c1cfc7b3-1ada-4553-8325-5b0dd153657c")
@@ -5542,7 +5542,7 @@
 	(footprint "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal"
 		(layer "F.Cu")
 		(uuid "3ec4117f-9850-4194-856a-6641c0a6c24d")
-		(at 166.34 89.92 -90)
+		(at 166.51 124.4 -90)
 		(descr "Diode, DO-35_SOD27 series, Axial, Horizontal, pin pitch=7.62mm, length*diameter=4*2mm^2, http://www.diodes.com/_files/packages/DO-35.pdf")
 		(tags "Diode DO-35_SOD27 series Axial Horizontal pin pitch 7.62mm  length 4mm diameter 2mm")
 		(property "Reference" "D1"
@@ -5556,7 +5556,7 @@
 				)
 			)
 		)
-		(property "Value" "HZ24"
+		(property "Value" "1N4148"
 			(at 3.81 2.12 270)
 			(layer "F.Fab")
 			(uuid "593d586a-a9fd-45ec-b707-b58a933f93c6")
@@ -5579,7 +5579,7 @@
 				)
 			)
 		)
-		(property "Description" "Zener diode"
+		(property "Description" "Diode"
 			(at 0 0 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -5591,8 +5591,34 @@
 				)
 			)
 		)
+		(property "Sim.Device" "D"
+			(at 0 0 270)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "200d9330-2a3e-45c8-9f90-69d46d4dc52b")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 0 0 270)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "de86e6f0-90ac-45a1-9728-97875f805197")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(property ki_fp_filters "TO-???* *_Diode_* *SingleDiode* D_*")
-		(path "/6a93ae82-76a5-493d-9766-84df2209fdcf")
+		(path "/64ba95ce-82ee-42f1-9891-dfb5a7cf1bf6")
 		(sheetname "/")
 		(sheetfile "TC106_Overall_circuit_diagram.kicad_sch")
 		(attr through_hole)
@@ -5769,7 +5795,7 @@
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(roundrect_rratio 0.15625)
-			(net 19 "/TC_RX")
+			(net 16 "/TC_RX_BUS")
 			(pinfunction "K")
 			(pintype "passive")
 			(uuid "cb2fe228-4be5-41c1-b06b-662723330c3b")
@@ -9177,7 +9203,7 @@
 				)
 			)
 		)
-		(property "Value" "1N4148"
+		(property "Value" "1N4007"
 			(at 3.81 2.47 90)
 			(layer "F.Fab")
 			(uuid "de7782af-3273-4982-a489-d6f343461fc1")
@@ -9239,7 +9265,7 @@
 			)
 		)
 		(property ki_fp_filters "TO-???* *_Diode_* *SingleDiode* D_*")
-		(path "/443b002c-edbe-40ac-a989-da98ccc7fc97")
+		(path "/1e4215b2-1bb1-4523-92ff-926f75fa6c97")
 		(sheetname "/")
 		(sheetfile "TC106_Overall_circuit_diagram.kicad_sch")
 		(attr through_hole)
@@ -9445,7 +9471,7 @@
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(roundrect_rratio 0.113636)
-			(net 15 "/TC_RX_IN")
+			(net 1 "+24V_EXT")
 			(pinfunction "K")
 			(pintype "passive")
 			(uuid "641de4e2-4bc4-4075-bf97-1f43a7f2959f")
@@ -9456,7 +9482,7 @@
 			(drill 1.1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 19 "/TC_RX")
+			(net 3 "/CMD_IN_PROT")
 			(pinfunction "A")
 			(pintype "passive")
 			(uuid "0b9bcb2b-2072-4e17-9fcf-db6072b1910a")
@@ -15640,7 +15666,7 @@
 				)
 			)
 		)
-		(property "Value" "1N4148"
+		(property "Value" "HZ24"
 			(at 3.81 2.12 180)
 			(layer "F.Fab")
 			(uuid "59f1ebbb-194c-401b-b9d9-326b55faa4da")
@@ -15663,7 +15689,7 @@
 				)
 			)
 		)
-		(property "Description" "Diode"
+		(property "Description" "Zener diode"
 			(at 0 0 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -15702,7 +15728,7 @@
 			)
 		)
 		(property ki_fp_filters "TO-???* *_Diode_* *SingleDiode* D_*")
-		(path "/64ba95ce-82ee-42f1-9891-dfb5a7cf1bf6")
+		(path "/6a93ae82-76a5-493d-9766-84df2209fdcf")
 		(sheetname "/")
 		(sheetfile "TC106_Overall_circuit_diagram.kicad_sch")
 		(attr through_hole)
@@ -15879,7 +15905,7 @@
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(roundrect_rratio 0.15625)
-			(net 16 "/TC_RX_BUS")
+			(net 19 "/TC_RX")
 			(pinfunction "K")
 			(pintype "passive")
 			(uuid "90ce9d8d-721f-45a4-98c2-898ca4d880b1")
