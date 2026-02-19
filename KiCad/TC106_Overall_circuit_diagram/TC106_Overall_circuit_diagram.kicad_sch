@@ -5905,17 +5905,7 @@
 		)
 		(uuid "6fad9d79-24cb-4c22-83c1-1268edc321b2")
 	)
-	(label "+24V"
-		(at 116.84 93.98 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "7628fca8-a5f1-481c-887a-b4acb54d73a1")
-	)
-	(label "TC_RX_24V"
+	(label "TC_RX_CLAMP"
 		(at 93.98 46.99 0)
 		(effects
 			(font
@@ -6035,16 +6025,6 @@
 		)
 		(uuid "d45405de-aab2-4c2e-a69c-befc0e85562d")
 	)
-	(label "+24V"
-		(at 67.31 116.84 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d4553361-b653-4c1d-9166-a910bdb536aa")
-	)
 	(symbol
 		(lib_id "Device:R")
 		(at 166.37 96.52 90)
@@ -6054,7 +6034,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0f77d588-665b-44be-aec3-8c9b20480d17")
-		(property "Reference" "R10"
+		(property "Reference" "R6"
 			(at 167.386 99.06 90)
 			(effects
 				(font
@@ -6106,7 +6086,7 @@
 		(instances
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "R10")
+					(reference "R6")
 					(unit 1)
 				)
 			)
@@ -6121,7 +6101,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0fe817f8-81a7-4f81-b144-1b432f35c067")
-		(property "Reference" "R9"
+		(property "Reference" "R4"
 			(at 168.91 92.456 90)
 			(effects
 				(font
@@ -6176,7 +6156,7 @@
 		(instances
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "R9")
+					(reference "R4")
 					(unit 1)
 				)
 			)
@@ -6964,7 +6944,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm"
+		(property "Footprint" "Capacitor_THT:CP_Radial_D10.0mm_P7.50mm"
 			(at 104.394 79.248 0)
 			(effects
 				(font
@@ -7595,7 +7575,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ae719d25-9753-4470-973d-ba2976480a71")
-		(property "Reference" "R1"
+		(property "Reference" "R2"
 			(at 67.31 68.5799 0)
 			(effects
 				(font
@@ -7649,7 +7629,7 @@
 		(instances
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "R1")
+					(reference "R2")
 					(unit 1)
 				)
 			)
@@ -7664,7 +7644,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ae775e73-239c-4962-b24e-696385f5a662")
-		(property "Reference" "R7"
+		(property "Reference" "R5"
 			(at 113.284 62.484 90)
 			(effects
 				(font
@@ -7716,7 +7696,7 @@
 		(instances
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "R7")
+					(reference "R5")
 					(unit 1)
 				)
 			)
@@ -7960,7 +7940,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm"
+		(property "Footprint" "Capacitor_THT:CP_Radial_D8.0mm_P5.00mm"
 			(at 178.562 77.724 0)
 			(effects
 				(font
@@ -8011,7 +7991,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ccbdfb2c-b521-44b9-aaa7-7a9b70aadfc0")
-		(property "Reference" "R4"
+		(property "Reference" "R1"
 			(at 83.058 40.894 90)
 			(effects
 				(font
@@ -8066,7 +8046,7 @@
 		(instances
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "R4")
+					(reference "R1")
 					(unit 1)
 				)
 			)
@@ -8082,7 +8062,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d1145241-175e-445f-ad77-daaa97b98988")
-		(property "Reference" "D6"
+		(property "Reference" "D4"
 			(at 162.56 73.66 0)
 			(effects
 				(font
@@ -8152,7 +8132,7 @@
 		(instances
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "D6")
+					(reference "D4")
 					(unit 1)
 				)
 			)
@@ -8168,7 +8148,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d1892b9a-eea5-48a1-a6bb-08a7794890d2")
-		(property "Reference" "D4"
+		(property "Reference" "D5"
 			(at 114.3 48.26 0)
 			(effects
 				(font
@@ -8238,7 +8218,7 @@
 		(instances
 			(project ""
 				(path "/bd09a545-618a-47d2-a0b1-f0d03750b68a"
-					(reference "D4")
+					(reference "D5")
 					(unit 1)
 				)
 			)
