@@ -4034,7 +4034,7 @@
 		)
 		(uuid "05da3c64-9628-4f0d-bf44-0d5152a48060")
 	)
-	(label "SEND_BUS_TO_Aruduino_nano"
+	(label "Nano_MOS_DRAIN"
 		(at 110.49 148.59 90)
 		(effects
 			(font
@@ -4114,7 +4114,7 @@
 		)
 		(uuid "751e17c3-7ed6-4c42-903c-aa990c200061")
 	)
-	(label "MOS_DRAIN"
+	(label "TC_MOS_DRAIN"
 		(at 105.41 96.52 0)
 		(effects
 			(font
