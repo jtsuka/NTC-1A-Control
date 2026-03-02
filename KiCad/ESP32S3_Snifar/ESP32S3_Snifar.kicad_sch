@@ -1118,206 +1118,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Jumper:Jumper_3_Open"
-			(pin_names
-				(offset 0)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom no)
-			(on_board yes)
-			(property "Reference" "JP"
-				(at -2.54 -2.54 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "Jumper_3_Open"
-				(at 0 2.794 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Jumper, 3-pole, both open"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "Jumper SPDT"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "Jumper* TestPoint*3Pads* TestPoint*Bridge*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "Jumper_3_Open_0_0"
-				(circle
-					(center -3.302 0)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 0 0)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 3.302 0)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "Jumper_3_Open_0_1"
-				(arc
-					(start -3.048 1.016)
-					(mid -1.651 1.4992)
-					(end -0.254 1.016)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -0.508) (xy 0 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start 0.254 1.016)
-					(mid 1.651 1.4992)
-					(end 3.048 1.016)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "Jumper_3_Open_1_1"
-				(pin passive line
-					(at -6.35 0 0)
-					(length 2.54)
-					(name "A"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 2.54)
-					(name "C"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 6.35 0 180)
-					(length 2.54)
-					(name "B"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "MCU_Module:Arduino_Nano_Every"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -3175,12 +2975,6 @@
 		(uuid "6c218053-dea2-40dc-80fb-ccdcb294cec0")
 	)
 	(junction
-		(at 64.77 34.29)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "6f296db2-9caf-4552-b8f8-e59c614adca3")
-	)
-	(junction
 		(at 158.75 128.27)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3363,16 +3157,6 @@
 	(no_connect
 		(at 193.04 125.73)
 		(uuid "febd8795-2e60-4d9a-8110-2863f34c8e34")
-	)
-	(wire
-		(pts
-			(xy 60.96 30.48) (xy 64.77 30.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "01ef9226-d614-44c9-a985-97dd29f55184")
 	)
 	(wire
 		(pts
@@ -3686,16 +3470,6 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 30.48) (xy 64.77 34.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4700a31c-096c-4d70-a7bf-275435d8e5bb")
-	)
-	(wire
-		(pts
 			(xy 113.03 22.86) (xy 123.19 22.86)
 		)
 		(stroke
@@ -3723,6 +3497,16 @@
 			(type default)
 		)
 		(uuid "4ea600d5-a44d-42d2-95e8-48c9420c4930")
+	)
+	(wire
+		(pts
+			(xy 63.5 22.86) (xy 63.5 26.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4ed15b47-b55e-4ae8-b6cc-af0f85fddcc2")
 	)
 	(wire
 		(pts
@@ -3826,6 +3610,16 @@
 	)
 	(wire
 		(pts
+			(xy 63.5 22.86) (xy 105.41 22.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7a9bbbf9-55e8-45bb-ad0d-59b3e5c88a0b")
+	)
+	(wire
+		(pts
 			(xy 123.19 17.78) (xy 123.19 22.86)
 		)
 		(stroke
@@ -3833,16 +3627,6 @@
 			(type default)
 		)
 		(uuid "84fd3d6d-6d6d-4a01-ac5a-31237ffec286")
-	)
-	(wire
-		(pts
-			(xy 60.96 26.67) (xy 60.96 30.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "861fc8b2-fbcd-4e3f-b1d6-639e4ab1067e")
 	)
 	(wire
 		(pts
@@ -4223,16 +4007,6 @@
 			(type default)
 		)
 		(uuid "e7d332e8-3391-4991-abe2-0cff7a33972e")
-	)
-	(wire
-		(pts
-			(xy 67.31 22.86) (xy 105.41 22.86)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ea83a70e-1754-48c4-aec3-8dfbcd78b397")
 	)
 	(wire
 		(pts
@@ -4753,77 +4527,6 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "R3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:Jumper_3_Open")
-		(at 67.31 26.67 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "25db33c3-8600-49cb-81f0-ee4c72b110d1")
-		(property "Reference" "JP8"
-			(at 67.31 30.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Jumper_3_Open"
-			(at 67.31 33.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
-			(at 67.31 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 67.31 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Jumper, 3-pole, both open"
-			(at 67.31 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "cde9dbe3-9ac6-4f5b-a9e6-a4a9b792f3d3")
-		)
-		(pin "2"
-			(uuid "f612929c-c3e1-47b7-a07f-b0a4c97e7cbe")
-		)
-		(pin "3"
-			(uuid "036de67c-33ec-43c1-a2c2-f3cdab3c4c0a")
-		)
-		(instances
-			(project ""
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP8")
 					(unit 1)
 				)
 			)
@@ -5785,6 +5488,74 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "R8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:Jumper_2_Open")
+		(at 68.58 26.67 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "638b751a-451f-4a85-90b7-76cb85379b62")
+		(property "Reference" "JP8"
+			(at 66.802 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Jumper_2_Open"
+			(at 67.564 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
+			(at 68.58 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 68.58 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Jumper, 2-pole, open"
+			(at 68.58 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "3afd1172-9ab1-4a79-99a3-c5d385dc4378")
+		)
+		(pin "1"
+			(uuid "fe9015a0-0e31-40b4-8e29-5e938999262b")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "JP8")
 					(unit 1)
 				)
 			)
