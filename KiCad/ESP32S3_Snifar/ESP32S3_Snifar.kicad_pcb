@@ -135,7 +135,7 @@
 	(net 55 "unconnected-(U1-PA9_A5_D5_SCL-Pad6)")
 	(net 56 "Net-(Q2-G)")
 	(net 57 "Net-(JP6-A)")
-	(net 58 "Net-(JP7-A)")
+	(net 58 "Net-(JP6-B)")
 	(net 59 "Net-(JP5-A)")
 	(net 60 "unconnected-(U1-PA9_A5_D5_SCL-Pad6)_1")
 	(net 61 "Net-(JP3-B)")
@@ -147,6 +147,7 @@
 	(net 67 "unconnected-(J1-Pin_2-Pad2)")
 	(net 68 "/SEND_BUS_OUT_FROM_ESP32S3")
 	(net 69 "/SIG_FOR_5V")
+	(net 70 "Net-(JP8-B)")
 	(footprint "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal"
 		(layer "F.Cu")
 		(uuid "07d3b11c-6a3b-4f0a-b467-1da315cdee47")
@@ -582,7 +583,7 @@
 			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 68 "/SEND_BUS_OUT_FROM_ESP32S3")
+			(net 58 "Net-(JP6-B)")
 			(pintype "passive")
 			(uuid "14717c6e-b343-4fe4-b4bd-b4b044383741")
 		)
@@ -625,7 +626,7 @@
 				)
 			)
 		)
-		(property "Value" "MOUDLE-SEEEDUINO-XIAO-ESP32S3"
+		(property "Value" "XIAO-ESP32S3"
 			(at -0.0254 -13.589 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -2820,11 +2821,11 @@
 	(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 		(layer "F.Cu")
 		(uuid "5b443fb0-56d5-48e7-915e-f0b09f86d0ee")
-		(at 46.11 67.33 90)
+		(at 47.83 60.16)
 		(descr "Resistor, Axial_DIN0207 series, Axial, Horizontal, pin pitch=7.62mm, 0.25W = 1/4W, length*diameter=6.3*2.5mm^2, http://cdn-reichelt.de/documents/datenblatt/B400/1_4W%23YAG.pdf")
 		(tags "Resistor Axial_DIN0207 series Axial Horizontal pin pitch 7.62mm 0.25W = 1/4W length 6.3mm diameter 2.5mm")
 		(property "Reference" "R12"
-			(at 3.81 -2.37 90)
+			(at 3.81 -2.37 0)
 			(layer "F.SilkS")
 			(uuid "8aa1e1ca-fda1-4410-b013-fdc9590558b6")
 			(effects
@@ -2834,8 +2835,8 @@
 				)
 			)
 		)
-		(property "Value" "220R"
-			(at 3.81 2.37 90)
+		(property "Value" "100R"
+			(at 3.81 2.37 0)
 			(layer "F.Fab")
 			(uuid "43333cbd-1e8d-4b2e-b080-e1e6e6d7783b")
 			(effects
@@ -2846,7 +2847,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 0 0 90)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "4fa17dd8-a35d-467b-96d0-c8bca82f0ef4")
@@ -2858,7 +2859,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 0 0 90)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "6f5b972b-35c5-45ea-9ffc-a65bbf234cac")
@@ -2870,20 +2871,10 @@
 			)
 		)
 		(property ki_fp_filters "R_*")
-		(path "/c5ba919a-9c12-4b74-8d9a-34222d2693e9")
+		(path "/2cba1dce-c6ed-4605-93d6-140eea9f9d14")
 		(sheetname "/")
 		(sheetfile "ESP32S3_Snifar.kicad_sch")
 		(attr through_hole)
-		(fp_line
-			(start 7.08 -1.37)
-			(end 7.08 -1.04)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "bef44b60-0285-482c-b6d7-e19f5d05ccd2")
-		)
 		(fp_line
 			(start 0.54 -1.37)
 			(end 7.08 -1.37)
@@ -2915,16 +2906,6 @@
 			(uuid "b81b4967-ea26-4c0e-92da-31dab2d4ac19")
 		)
 		(fp_line
-			(start 7.08 1.37)
-			(end 7.08 1.04)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "a9e6a6ba-880a-42f4-98cb-5fae3aef1196")
-		)
-		(fp_line
 			(start 0.54 1.37)
 			(end 7.08 1.37)
 			(stroke
@@ -2933,6 +2914,26 @@
 			)
 			(layer "F.SilkS")
 			(uuid "a9008b39-2722-44ca-81ee-0d41be6f076e")
+		)
+		(fp_line
+			(start 7.08 -1.37)
+			(end 7.08 -1.04)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "bef44b60-0285-482c-b6d7-e19f5d05ccd2")
+		)
+		(fp_line
+			(start 7.08 1.37)
+			(end 7.08 1.04)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "a9e6a6ba-880a-42f4-98cb-5fae3aef1196")
 		)
 		(fp_rect
 			(start -1.05 -1.5)
@@ -2946,16 +2947,6 @@
 			(uuid "d42608ae-62e4-423c-8558-666f98d66ff0")
 		)
 		(fp_line
-			(start 7.62 0)
-			(end 6.96 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "a0572dd2-da56-4226-b3a7-cdc0a3da76e1")
-		)
-		(fp_line
 			(start 0 0)
 			(end 0.66 0)
 			(stroke
@@ -2964,6 +2955,16 @@
 			)
 			(layer "F.Fab")
 			(uuid "d8210225-65ef-47f4-b482-a92b654601bf")
+		)
+		(fp_line
+			(start 7.62 0)
+			(end 6.96 0)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "a0572dd2-da56-4226-b3a7-cdc0a3da76e1")
 		)
 		(fp_rect
 			(start 0.66 -1.25)
@@ -2977,7 +2978,7 @@
 			(uuid "9dd3a155-4ed9-475b-b31f-312e454784ed")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.81 0 90)
+			(at 3.81 0 0)
 			(layer "F.Fab")
 			(uuid "0d72b600-f5ed-49ce-9b91-f7b8869c560a")
 			(effects
@@ -2988,22 +2989,22 @@
 			)
 		)
 		(pad "1" thru_hole circle
-			(at 0 0 90)
+			(at 0 0)
+			(size 1.6 1.6)
+			(drill 0.8)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net 5 "/Nano_CMD_BUS")
+			(pintype "passive")
+			(uuid "b393c1b6-a277-43b2-ad96-6d651ad6da67")
+		)
+		(pad "2" thru_hole circle
+			(at 7.62 0)
 			(size 1.6 1.6)
 			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net 56 "Net-(Q2-G)")
-			(pintype "passive")
-			(uuid "b393c1b6-a277-43b2-ad96-6d651ad6da67")
-		)
-		(pad "2" thru_hole circle
-			(at 7.62 0 90)
-			(size 1.6 1.6)
-			(drill 0.8)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(net 58 "Net-(JP7-A)")
 			(pintype "passive")
 			(uuid "7a9eb965-47f1-4e84-b6f9-e1259a40d91c")
 		)
@@ -3438,7 +3439,7 @@
 				)
 			)
 		)
-		(property "Value" "4k7"
+		(property "Value" "100k"
 			(at 3.81 2.37 0)
 			(layer "F.Fab")
 			(uuid "c7d40b74-fa42-4c76-ac8d-0fd8e262f284")
@@ -3474,7 +3475,7 @@
 			)
 		)
 		(property ki_fp_filters "R_*")
-		(path "/782b04fe-7b6e-4c16-a38e-7a389817541f")
+		(path "/ca05055c-a166-442a-a445-c01465ea0abe")
 		(sheetname "/")
 		(sheetfile "ESP32S3_Snifar.kicad_sch")
 		(attr through_hole)
@@ -3597,7 +3598,7 @@
 			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 3 "/Nano_MOS_DRAIN")
+			(net 56 "Net-(Q2-G)")
 			(pintype "passive")
 			(uuid "15a85496-d017-4233-a770-1fd179636a88")
 		)
@@ -3607,7 +3608,7 @@
 			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 57 "Net-(JP6-A)")
+			(net 11 "GND")
 			(pintype "passive")
 			(uuid "c268138a-2a12-4199-b58d-096bee405ed2")
 		)
@@ -3885,156 +3886,8 @@
 	)
 	(footprint "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
 		(layer "F.Cu")
-		(uuid "9325bafe-f18d-4f33-88aa-6c76b45928ad")
-		(at 64.7806 60.7822)
-		(descr "Soldered wire connection, for 2 times 0.25 mm² wires, reinforced insulation, conductor diameter 0.65mm, outer diameter 2mm, size source Multi-Contact FLEXI-2V 0.25 (https://www.staubli.com/content/dam/ecs/catalogs-brochures/TM/CAB-Main-11014119-en.pdf#page=11), bend radius 3 times outer diameter, generated with kicad-footprint-generator")
-		(tags "connector wire 0.25sqmm")
-		(property "Reference" "JP7"
-			(at -3.2724 -1.1176 0)
-			(layer "F.SilkS")
-			(uuid "2e005a26-b561-4cb9-b3b9-b213cf732826")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Value" "Jumper_2_Open"
-			(at 2.5494 1.4378 0)
-			(layer "F.Fab")
-			(uuid "cff306b4-4868-4ec8-abbe-4ff7a3ec58d7")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "d5fb6624-5b2b-4c41-a52b-5a7d32c12da1")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Description" "Jumper, 2-pole, open"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "ba1d3f61-3087-46a9-866d-0ce2fb91022c")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property ki_fp_filters "Jumper* TestPoint*2Pads* TestPoint*Bridge*")
-		(path "/e197a79a-062e-4cec-a300-6259681b1fa0")
-		(sheetname "/")
-		(sheetfile "ESP32S3_Snifar.kicad_sch")
-		(attr exclude_from_pos_files)
-		(fp_rect
-			(start -1.75 -1.5)
-			(end 1.75 1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "45920f10-aa8b-43c2-b010-2bc8b65f5cb9")
-		)
-		(fp_rect
-			(start 2.75 -1.5)
-			(end 6.25 1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "67467ad4-4734-4591-8c63-bb80cf11d507")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 1 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "f8260f7c-6c8e-4c54-8e6c-49be1534aeb0")
-		)
-		(fp_circle
-			(center 4.5 0)
-			(end 5.5 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "5be71afe-2635-47e9-a76f-3bf7fbdbb174")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 2.25 0 90)
-			(layer "F.Fab")
-			(uuid "6ea9ae23-8501-4d28-942b-a49256f78dc8")
-			(effects
-				(font
-					(size 0.75 0.75)
-					(thickness 0.11)
-				)
-			)
-		)
-		(pad "1" thru_hole roundrect
-			(at 0 0)
-			(size 2 2)
-			(drill 0.85)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(roundrect_rratio 0.125)
-			(net 58 "Net-(JP7-A)")
-			(pinfunction "A")
-			(pintype "passive")
-			(uuid "f4995896-6cce-43e6-95d3-4cb1916e026c")
-		)
-		(pad "2" thru_hole circle
-			(at 4.5 0)
-			(size 2 2)
-			(drill 0.85)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(net 54 "/MCU_TX_TRIG")
-			(pinfunction "B")
-			(pintype "passive")
-			(uuid "8ffbbf78-b12c-44f8-9398-8b7dff882442")
-		)
-		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Connector_Wire.3dshapes/SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
-	(footprint "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
-		(layer "F.Cu")
 		(uuid "9331f56d-5f22-4207-86d6-8d9debfacb28")
-		(at 42.47 42.79 90)
+		(at 33.27 60.89 -90)
 		(descr "Soldered wire connection, for 2 times 0.25 mm² wires, reinforced insulation, conductor diameter 0.65mm, outer diameter 2mm, size source Multi-Contact FLEXI-2V 0.25 (https://www.staubli.com/content/dam/ecs/catalogs-brochures/TM/CAB-Main-11014119-en.pdf#page=11), bend radius 3 times outer diameter, generated with kicad-footprint-generator")
 		(tags "connector wire 0.25sqmm")
 		(property "Reference" "JP8"
@@ -4089,17 +3942,6 @@
 		(sheetfile "ESP32S3_Snifar.kicad_sch")
 		(attr exclude_from_pos_files)
 		(fp_rect
-			(start 2.75 -1.5)
-			(end 6.25 1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "7f22ad26-3d8f-4473-a69b-b370514d300e")
-		)
-		(fp_rect
 			(start -1.75 -1.5)
 			(end 1.75 1.5)
 			(stroke
@@ -4110,16 +3952,16 @@
 			(layer "F.CrtYd")
 			(uuid "0a0bf06c-211b-427e-bc73-ea80c273e3a2")
 		)
-		(fp_circle
-			(center 4.5 0)
-			(end 5.5 0)
+		(fp_rect
+			(start 2.75 -1.5)
+			(end 6.25 1.5)
 			(stroke
-				(width 0.1)
+				(width 0.05)
 				(type solid)
 			)
 			(fill no)
-			(layer "F.Fab")
-			(uuid "6fb2c1dc-e9fb-42b8-9177-8803d491795d")
+			(layer "F.CrtYd")
+			(uuid "7f22ad26-3d8f-4473-a69b-b370514d300e")
 		)
 		(fp_circle
 			(center 0 0)
@@ -4131,6 +3973,17 @@
 			(fill no)
 			(layer "F.Fab")
 			(uuid "24b8a6b8-903d-48ec-9ea7-44b6f7612a8f")
+		)
+		(fp_circle
+			(center 4.5 0)
+			(end 5.5 0)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "6fb2c1dc-e9fb-42b8-9177-8803d491795d")
 		)
 		(fp_text user "${REFERENCE}"
 			(at 2.25 0 0)
@@ -4144,24 +3997,24 @@
 			)
 		)
 		(pad "1" thru_hole roundrect
-			(at 0 0 90)
+			(at 0 0 270)
 			(size 2 2)
 			(drill 0.85)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(roundrect_rratio 0.125)
-			(net 5 "/Nano_CMD_BUS")
+			(net 69 "/SIG_FOR_5V")
 			(pinfunction "A")
 			(pintype "passive")
 			(uuid "8619e21a-dc61-4558-84b4-7b566564343c")
 		)
 		(pad "2" thru_hole circle
-			(at 4.5 0 90)
+			(at 4.5 0 270)
 			(size 2 2)
 			(drill 0.85)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 69 "/SIG_FOR_5V")
+			(net 70 "Net-(JP8-B)")
 			(pinfunction "B")
 			(pintype "passive")
 			(uuid "84777559-1969-48b5-9a21-e5f0cacdeecd")
@@ -5717,14 +5570,14 @@
 			)
 		)
 	)
-	(footprint "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
+	(footprint "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
 		(layer "F.Cu")
 		(uuid "adbb374a-7838-447f-8341-1c87d8183070")
 		(at 71.39 68.39)
-		(descr "Soldered wire connection, for 2 times 0.25 mm² wires, reinforced insulation, conductor diameter 0.65mm, outer diameter 2mm, size source Multi-Contact FLEXI-2V 0.25 (https://www.staubli.com/content/dam/ecs/catalogs-brochures/TM/CAB-Main-11014119-en.pdf#page=11), bend radius 3 times outer diameter, generated with kicad-footprint-generator")
-		(tags "connector wire 0.25sqmm")
+		(descr "Through hole straight pin header, 1x03, 2.54mm pitch, single row")
+		(tags "Through hole pin header THT 1x03 2.54mm single row")
 		(property "Reference" "JP6"
-			(at 8.0412 0.127 0)
+			(at 0 -2.38 0)
 			(layer "F.SilkS")
 			(uuid "e4658420-d929-47ac-a03b-7358cd9aa0a3")
 			(effects
@@ -5734,8 +5587,8 @@
 				)
 			)
 		)
-		(property "Value" "Jumper_2_Open"
-			(at 2.25 2.2 0)
+		(property "Value" "Jumper_3_Open"
+			(at 0 7.46 0)
 			(layer "F.Fab")
 			(uuid "b27a2d9d-022d-4523-8dbe-821993844026")
 			(effects
@@ -5757,7 +5610,7 @@
 				)
 			)
 		)
-		(property "Description" "Jumper, 2-pole, open"
+		(property "Description" "Jumper, 3-pole, both open"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -5769,91 +5622,178 @@
 				)
 			)
 		)
-		(property ki_fp_filters "Jumper* TestPoint*2Pads* TestPoint*Bridge*")
-		(path "/9a73efb2-3654-4894-a019-9e04b8473bcb")
+		(property ki_fp_filters "Jumper* TestPoint*3Pads* TestPoint*Bridge*")
+		(path "/b79c85e7-f56f-493a-97dd-beb379bf0c0c")
 		(sheetname "/")
 		(sheetfile "ESP32S3_Snifar.kicad_sch")
-		(attr exclude_from_pos_files)
+		(attr through_hole exclude_from_bom)
+		(fp_line
+			(start -1.38 -1.38)
+			(end 0 -1.38)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "01b471de-de52-4e4c-9445-f46c75dd5218")
+		)
+		(fp_line
+			(start -1.38 0)
+			(end -1.38 -1.38)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "3ed0cb66-2b41-49df-af0a-26e7827f2c07")
+		)
+		(fp_line
+			(start -1.38 1.27)
+			(end -1.38 6.46)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "f2c8789d-3ad2-48bd-acb6-fdf761e51937")
+		)
+		(fp_line
+			(start -1.38 1.27)
+			(end 1.38 1.27)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "06ec5d50-14ed-4f45-899d-a16be67282ca")
+		)
+		(fp_line
+			(start -1.38 6.46)
+			(end 1.38 6.46)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "b2f83501-ee8f-46f2-bf1e-41554c2b250e")
+		)
+		(fp_line
+			(start 1.38 1.27)
+			(end 1.38 6.46)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "922dbaab-7536-479b-afb8-74630b819003")
+		)
 		(fp_rect
-			(start -1.75 -1.5)
-			(end 1.75 1.5)
+			(start -1.77 -1.77)
+			(end 1.77 6.85)
 			(stroke
 				(width 0.05)
 				(type solid)
 			)
 			(fill no)
 			(layer "F.CrtYd")
-			(uuid "9af07258-847a-47ae-a612-3d67c0af4c4e")
+			(uuid "e408c703-4b99-4221-a38c-f1b65714b2ad")
 		)
-		(fp_rect
-			(start 2.75 -1.5)
-			(end 6.25 1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "3e840eb9-7ffd-4cbe-9af3-dcac701e7b19")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 1 0)
+		(fp_line
+			(start -1.27 -0.635)
+			(end -0.635 -1.27)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
-			(fill no)
 			(layer "F.Fab")
-			(uuid "e61b7575-2095-4904-a7e8-0ce40c6ffb0f")
+			(uuid "d80f4dcf-2042-47d9-a929-f8f9a06f325b")
 		)
-		(fp_circle
-			(center 4.5 0)
-			(end 5.5 0)
+		(fp_line
+			(start -1.27 6.35)
+			(end -1.27 -0.635)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
-			(fill no)
 			(layer "F.Fab")
-			(uuid "e7e9a281-d5d2-4ca8-9c9e-e3bb91c18e83")
+			(uuid "ed05c852-d9f1-4836-af31-5d29a2ef89ee")
+		)
+		(fp_line
+			(start -0.635 -1.27)
+			(end 1.27 -1.27)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "1aaaf931-8170-4c74-878c-d8049e72fff5")
+		)
+		(fp_line
+			(start 1.27 -1.27)
+			(end 1.27 6.35)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "ce265ac7-c7a3-41dd-aa1d-248162cfe87a")
+		)
+		(fp_line
+			(start 1.27 6.35)
+			(end -1.27 6.35)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "335766c6-c276-488f-9f99-5a350bafc427")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 2.25 0 90)
+			(at 0 2.54 90)
 			(layer "F.Fab")
 			(uuid "bcc7f910-fe7c-4806-89bc-b7025d3de2f3")
 			(effects
 				(font
-					(size 0.75 0.75)
-					(thickness 0.11)
+					(size 1 1)
+					(thickness 0.15)
 				)
 			)
 		)
-		(pad "1" thru_hole roundrect
+		(pad "1" thru_hole rect
 			(at 0 0)
-			(size 2 2)
-			(drill 0.85)
+			(size 1.7 1.7)
+			(drill 1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(roundrect_rratio 0.125)
-			(net 57 "Net-(JP6-A)")
+			(net 68 "/SEND_BUS_OUT_FROM_ESP32S3")
 			(pinfunction "A")
 			(pintype "passive")
 			(uuid "450a0966-2677-44a6-9665-afd5cf5c4533")
 		)
 		(pad "2" thru_hole circle
-			(at 4.5 0)
-			(size 2 2)
-			(drill 0.85)
+			(at 0 2.54)
+			(size 1.7 1.7)
+			(drill 1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 63 "Net-(JP4-B)")
-			(pinfunction "B")
+			(net 3 "/Nano_MOS_DRAIN")
+			(pinfunction "C")
 			(pintype "passive")
 			(uuid "802eda19-d7c4-48c0-9186-44503cd9c56c")
 		)
+		(pad "3" thru_hole circle
+			(at 0 5.08)
+			(size 1.7 1.7)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net 58 "Net-(JP6-B)")
+			(pinfunction "B")
+			(pintype "passive")
+			(uuid "71214685-50e7-47fa-8404-7c28348ae9db")
+		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Connector_Wire.3dshapes/SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm.step"
+		(model "${KICAD9_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x03_P2.54mm_Vertical.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -6362,209 +6302,6 @@
 			(net 11 "GND")
 			(pintype "passive")
 			(uuid "ad707581-2892-4ddd-95de-3e79d164d1ca")
-		)
-		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Resistor_THT.3dshapes/R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
-	(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-		(layer "F.Cu")
-		(uuid "d35a618c-839c-4787-bc0b-e181c4d16b84")
-		(at 59.45 67.41)
-		(descr "Resistor, Axial_DIN0207 series, Axial, Horizontal, pin pitch=7.62mm, 0.25W = 1/4W, length*diameter=6.3*2.5mm^2, http://cdn-reichelt.de/documents/datenblatt/B400/1_4W%23YAG.pdf")
-		(tags "Resistor Axial_DIN0207 series Axial Horizontal pin pitch 7.62mm 0.25W = 1/4W length 6.3mm diameter 2.5mm")
-		(property "Reference" "R14"
-			(at -0.146 2.4832 0)
-			(layer "F.SilkS")
-			(uuid "9acaffc6-5d40-4e31-a7d6-c1a65ce8040c")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Value" "100k"
-			(at 3.81 2.37 0)
-			(layer "F.Fab")
-			(uuid "b9ed500d-acf6-43a6-ae11-db827f81a414")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "8c6c2fa8-11b7-49a4-a9cb-1fa72cf7668b")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "83534215-202b-454d-b725-bee1ffec7871")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property ki_fp_filters "R_*")
-		(path "/c35fc59c-7d6c-4e18-b1f2-c9602333368d")
-		(sheetname "/")
-		(sheetfile "ESP32S3_Snifar.kicad_sch")
-		(attr through_hole)
-		(fp_line
-			(start 0.54 -1.37)
-			(end 7.08 -1.37)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "592e7451-7be3-4c30-89d9-55a11e92e0c8")
-		)
-		(fp_line
-			(start 0.54 -1.04)
-			(end 0.54 -1.37)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "6abd26db-80f4-49b6-a17e-3120424df16e")
-		)
-		(fp_line
-			(start 0.54 1.04)
-			(end 0.54 1.37)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "1d539e12-1711-4eba-8b7a-cc61842b6eb1")
-		)
-		(fp_line
-			(start 0.54 1.37)
-			(end 7.08 1.37)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "1bdc121c-8f9f-4bb4-81ed-f369bc916665")
-		)
-		(fp_line
-			(start 7.08 -1.37)
-			(end 7.08 -1.04)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "1fa45ea4-d601-48ca-908e-d0a2376cf085")
-		)
-		(fp_line
-			(start 7.08 1.37)
-			(end 7.08 1.04)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "09e605fc-3cc3-411d-8a53-ed1b0219cf19")
-		)
-		(fp_rect
-			(start -1.05 -1.5)
-			(end 8.67 1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "f80049c3-a95c-4706-b90c-ecef18a808fc")
-		)
-		(fp_line
-			(start 0 0)
-			(end 0.66 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "2a52175c-7a53-4cfa-966b-be92f211f0f4")
-		)
-		(fp_line
-			(start 7.62 0)
-			(end 6.96 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "cb602ebf-56b4-4026-8d56-e37479f7ef7c")
-		)
-		(fp_rect
-			(start 0.66 -1.25)
-			(end 6.96 1.25)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "0a6e4ff9-f3e7-446a-9e87-ec53ff2b2463")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 3.81 0 0)
-			(layer "F.Fab")
-			(uuid "dc5e7c78-4a16-41c5-9af1-f428d3f85b70")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(pad "1" thru_hole circle
-			(at 0 0)
-			(size 1.6 1.6)
-			(drill 0.8)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(net 56 "Net-(Q2-G)")
-			(pintype "passive")
-			(uuid "9840011f-5b8e-4b77-af05-85834885175b")
-		)
-		(pad "2" thru_hole circle
-			(at 7.62 0)
-			(size 1.6 1.6)
-			(drill 0.8)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(net 11 "GND")
-			(pintype "passive")
-			(uuid "84953ba5-ac02-4871-bcef-0af0f76e7de0")
 		)
 		(embedded_fonts no)
 		(model "${KICAD9_3DMODEL_DIR}/Resistor_THT.3dshapes/R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal.step"
@@ -7249,7 +6986,7 @@
 			)
 		)
 		(property ki_fp_filters "TO?92*")
-		(path "/4251ad58-a29b-49ce-b0ef-7162b3bdb66a")
+		(path "/9b0cb1bc-1553-4114-b7be-a669b100f70a")
 		(sheetname "/")
 		(sheetfile "ESP32S3_Snifar.kicad_sch")
 		(attr through_hole)
@@ -7396,7 +7133,7 @@
 			(drill 0.75)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 3 "/Nano_MOS_DRAIN")
+			(net 70 "Net-(JP8-B)")
 			(pinfunction "D")
 			(pintype "passive")
 			(uuid "9006136c-9be8-4a47-8550-75917d618760")
@@ -9198,54 +8935,6 @@
 		(uuid "df53fe72-9dcf-4826-8e83-9ab06084f083")
 	)
 	(segment
-		(start 55.92 59.7)
-		(end 55.92 60.84)
-		(width 0.2)
-		(layer "F.Cu")
-		(net 58)
-		(uuid "1a8f1dc1-c45b-4022-a614-b4f9e388fa11")
-	)
-	(segment
-		(start 55.9778 60.7822)
-		(end 55.92 60.84)
-		(width 0.2)
-		(layer "F.Cu")
-		(net 58)
-		(uuid "26c09f28-afe9-4c0a-9dc4-5112cc6ea80f")
-	)
-	(segment
-		(start 46.11 59.71)
-		(end 55.91 59.71)
-		(width 0.2)
-		(layer "F.Cu")
-		(net 58)
-		(uuid "7ff99118-f6d5-44ad-973a-bed405cfb475")
-	)
-	(segment
-		(start 55.92 60.84)
-		(end 55.95 60.84)
-		(width 0.2)
-		(layer "F.Cu")
-		(net 58)
-		(uuid "a9633fc6-1f2c-4819-86d3-8b7483847f6b")
-	)
-	(segment
-		(start 64.7806 60.7822)
-		(end 55.9778 60.7822)
-		(width 0.2)
-		(layer "F.Cu")
-		(net 58)
-		(uuid "c9ec2c6d-08a9-4c9a-b259-69020698f51d")
-	)
-	(segment
-		(start 55.91 59.71)
-		(end 55.92 59.7)
-		(width 0.2)
-		(layer "F.Cu")
-		(net 58)
-		(uuid "f4e56e43-716a-4df7-9cb8-4aeacc27f0f6")
-	)
-	(segment
 		(start 72.8671 46.45)
 		(end 72.60355 46.18645)
 		(width 0.2)
@@ -9404,14 +9093,6 @@
 		(layer "B.Cu")
 		(net 63)
 		(uuid "20039972-5a0c-40b5-b660-690e52261651")
-	)
-	(segment
-		(start 108.04 68.39)
-		(end 75.89 68.39)
-		(width 0.2)
-		(layer "B.Cu")
-		(net 63)
-		(uuid "9a0f26b2-7df4-4ce1-a2ca-a8aa0dbfc0ed")
 	)
 	(segment
 		(start 113.19 62.48)
