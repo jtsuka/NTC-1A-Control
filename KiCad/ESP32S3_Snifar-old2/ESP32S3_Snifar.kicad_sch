@@ -1118,206 +1118,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Jumper:Jumper_3_Open"
-			(pin_names
-				(offset 0)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom no)
-			(on_board yes)
-			(property "Reference" "JP"
-				(at -2.54 -2.54 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "Jumper_3_Open"
-				(at 0 2.794 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Jumper, 3-pole, both open"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "Jumper SPDT"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "Jumper* TestPoint*3Pads* TestPoint*Bridge*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "Jumper_3_Open_0_0"
-				(circle
-					(center -3.302 0)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 0 0)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 3.302 0)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "Jumper_3_Open_0_1"
-				(arc
-					(start -3.048 1.016)
-					(mid -1.651 1.4992)
-					(end -0.254 1.016)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -0.508) (xy 0 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start 0.254 1.016)
-					(mid 1.651 1.4992)
-					(end 3.048 1.016)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "Jumper_3_Open_1_1"
-				(pin passive line
-					(at -6.35 0 0)
-					(length 2.54)
-					(name "A"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 2.54)
-					(name "C"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 6.35 0 180)
-					(length 2.54)
-					(name "B"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "MCU_Module:Arduino_Nano_Every"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -3169,6 +2969,18 @@
 		(uuid "46393dae-23c9-487e-99b9-ad0e809f68df")
 	)
 	(junction
+		(at 127 128.27)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6c218053-dea2-40dc-80fb-ccdcb294cec0")
+	)
+	(junction
+		(at 158.75 128.27)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "79239530-cad4-40fe-90bc-9955f5fe91ae")
+	)
+	(junction
 		(at 125.73 34.29)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3181,10 +2993,22 @@
 		(uuid "8c953f59-114b-408d-8d1d-643bfb73a534")
 	)
 	(junction
+		(at 118.11 119.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8ede91e7-64c7-4027-846d-713ae4990ce1")
+	)
+	(junction
 		(at 138.43 36.83)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9be385de-cd61-492a-8c8c-917589a32865")
+	)
+	(junction
+		(at 167.64 119.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a06fbcc0-f848-44df-8e60-7c48f13cd1cb")
 	)
 	(no_connect
 		(at 135.89 181.61)
@@ -3376,16 +3200,6 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 100.33) (xy 99.06 119.38)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "09e46fea-888d-4d77-8b44-15bbc678152e")
-	)
-	(wire
-		(pts
 			(xy 247.65 48.26) (xy 259.08 48.26)
 		)
 		(stroke
@@ -3403,16 +3217,6 @@
 			(type default)
 		)
 		(uuid "0f9ae6ef-552b-4d28-8326-c7b589b4cd49")
-	)
-	(wire
-		(pts
-			(xy 105.41 96.52) (xy 110.49 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "109417bf-4bbd-4101-8f1c-5efd3c367dc9")
 	)
 	(wire
 		(pts
@@ -3556,6 +3360,16 @@
 	)
 	(wire
 		(pts
+			(xy 125.73 119.38) (xy 128.27 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2a0930e6-b201-4449-8eca-c09e1dd3e960")
+	)
+	(wire
+		(pts
 			(xy 158.75 128.27) (xy 200.66 128.27)
 		)
 		(stroke
@@ -3696,6 +3510,16 @@
 	)
 	(wire
 		(pts
+			(xy 118.11 119.38) (xy 118.11 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "55717374-b378-486e-8ee4-73bc902531d5")
+	)
+	(wire
+		(pts
 			(xy 125.73 34.29) (xy 128.27 34.29)
 		)
 		(stroke
@@ -3736,13 +3560,33 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 96.52) (xy 92.71 96.52)
+			(xy 127 134.62) (xy 127 128.27)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "65e6187f-2c6b-4271-bf89-be999ae024df")
+		(uuid "5e772b25-74a8-4b2b-953c-6de7069b80c8")
+	)
+	(wire
+		(pts
+			(xy 125.73 128.27) (xy 127 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "607d96bd-d590-4166-a070-59a95bb5c558")
+	)
+	(wire
+		(pts
+			(xy 118.11 133.35) (xy 118.11 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6af50c06-8845-4844-8470-b96637cae840")
 	)
 	(wire
 		(pts
@@ -3756,13 +3600,13 @@
 	)
 	(wire
 		(pts
-			(xy 110.49 119.38) (xy 99.06 119.38)
+			(xy 127 128.27) (xy 129.54 128.27)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7264e48e-39ed-4322-ba7d-f807fc8600f5")
+		(uuid "76c86329-17bf-4029-85f9-dfad362aa11d")
 	)
 	(wire
 		(pts
@@ -3783,6 +3627,16 @@
 			(type default)
 		)
 		(uuid "84fd3d6d-6d6d-4a01-ac5a-31237ffec286")
+	)
+	(wire
+		(pts
+			(xy 104.14 96.52) (xy 139.7 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "866542a1-2a3a-4dd7-bebc-8a669c9e3d7d")
 	)
 	(wire
 		(pts
@@ -3866,6 +3720,16 @@
 	)
 	(wire
 		(pts
+			(xy 96.52 96.52) (xy 73.66 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a26b6bb1-19f6-4067-a539-e95e86211447")
+	)
+	(wire
+		(pts
 			(xy 64.77 46.99) (xy 73.66 46.99)
 		)
 		(stroke
@@ -3936,6 +3800,16 @@
 	)
 	(wire
 		(pts
+			(xy 110.49 119.38) (xy 118.11 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bac6adf2-d304-4e3a-a077-127fe9c7ca34")
+	)
+	(wire
+		(pts
 			(xy 151.13 96.52) (xy 156.21 96.52)
 		)
 		(stroke
@@ -3943,6 +3817,16 @@
 			(type default)
 		)
 		(uuid "bd5f8e4c-d8fa-45ad-861d-e609a6fa25d8")
+	)
+	(wire
+		(pts
+			(xy 167.64 137.16) (xy 167.64 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bd77141e-8ae7-4aa7-adae-3b1c068298a7")
 	)
 	(wire
 		(pts
@@ -3956,7 +3840,7 @@
 	)
 	(wire
 		(pts
-			(xy 167.64 96.52) (xy 167.64 137.16)
+			(xy 167.64 119.38) (xy 167.64 96.52)
 		)
 		(stroke
 			(width 0)
@@ -3983,6 +3867,26 @@
 			(type default)
 		)
 		(uuid "d04ecfee-3ed9-4570-ab42-7e503a859273")
+	)
+	(wire
+		(pts
+			(xy 127 142.24) (xy 127 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d096018d-efef-43d3-b671-555f4ddf6ec9")
+	)
+	(wire
+		(pts
+			(xy 137.16 128.27) (xy 143.51 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d1800a57-3732-45b3-b118-62f409099741")
 	)
 	(wire
 		(pts
@@ -4026,6 +3930,16 @@
 	)
 	(wire
 		(pts
+			(xy 138.43 119.38) (xy 167.64 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "de06edd8-fa09-4f9f-920b-4b62163784c3")
+	)
+	(wire
+		(pts
 			(xy 123.19 22.86) (xy 123.19 53.34)
 		)
 		(stroke
@@ -4063,6 +3977,16 @@
 			(type default)
 		)
 		(uuid "e1ea969c-f920-4cee-8231-7c3bce14d26f")
+	)
+	(wire
+		(pts
+			(xy 153.67 128.27) (xy 158.75 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e2b4dbc0-b595-461f-a1f8-1653541ee9c5")
 	)
 	(wire
 		(pts
@@ -4123,16 +4047,6 @@
 			(type default)
 		)
 		(uuid "f8de33e9-7f4a-4538-96dd-970ae5d65299")
-	)
-	(wire
-		(pts
-			(xy 118.11 96.52) (xy 139.7 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f9509b1b-bfeb-46f8-bbcf-e80e8313daee")
 	)
 	(label "Pi_Tx_MCU"
 		(at 218.44 60.96 0)
@@ -4225,7 +4139,7 @@
 		(uuid "751e17c3-7ed6-4c42-903c-aa990c200061")
 	)
 	(label "TC_MOS_DRAIN"
-		(at 116.84 91.44 0)
+		(at 105.41 96.52 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4412,6 +4326,72 @@
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "#PWR09")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 118.11 144.78 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "11823053-1e0e-406f-87b7-9e704fa9bb6f")
+		(property "Reference" "#PWR06"
+			(at 118.11 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 118.11 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 118.11 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 118.11 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 118.11 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "63d93e6b-fec1-4051-82d3-1511fa5c3d28")
+		)
+		(instances
+			(project ""
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "#PWR06")
 					(unit 1)
 				)
 			)
@@ -4909,6 +4889,82 @@
 		)
 	)
 	(symbol
+		(lib_id "Transistor_FET:2N7000")
+		(at 120.65 128.27 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4251ad58-a29b-49ce-b0ef-7162b3bdb66a")
+		(property "Reference" "Q2"
+			(at 125.984 125.222 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2N7000"
+			(at 125.984 122.682 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 115.57 130.175 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.vishay.com/docs/70226/70226.pdf"
+			(at 115.57 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "0.2A Id, 200V Vds, N-Channel MOSFET, 2.6V Logic Level, TO-92"
+			(at 120.65 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "197aeb88-b3d8-458c-b5c6-f1c596932e37")
+		)
+		(pin "3"
+			(uuid "1621d247-bb9d-4c95-9fc6-cf7b1ffd42f1")
+		)
+		(pin "1"
+			(uuid "45a7d86c-9e13-436f-90fe-2cf6bafcfa91")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "Q2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 148.59 133.35 0)
 		(unit 1)
@@ -5370,7 +5426,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 114.3 96.52 90)
+		(at 100.33 96.52 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5378,7 +5434,7 @@
 		(dnp no)
 		(uuid "5f1afd65-2b3c-4d1a-be79-ec8f97ad48a9")
 		(property "Reference" "R8"
-			(at 111.76 91.44 90)
+			(at 97.79 91.44 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5387,7 +5443,7 @@
 			)
 		)
 		(property "Value" "100R"
-			(at 111.76 93.98 90)
+			(at 97.79 93.98 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5396,7 +5452,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 114.3 98.298 90)
+			(at 100.33 98.298 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5405,7 +5461,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 114.3 96.52 0)
+			(at 100.33 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5414,7 +5470,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 114.3 96.52 0)
+			(at 100.33 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5714,6 +5770,139 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "R1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 121.92 119.38 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "782b04fe-7b6e-4c16-a38e-7a389817541f")
+		(property "Reference" "R11"
+			(at 120.396 114.3 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "4k7"
+			(at 120.396 116.84 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 121.92 121.158 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 121.92 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 121.92 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4c4ddea1-3abc-4543-aacc-bb18f428dd5d")
+		)
+		(pin "2"
+			(uuid "218eb9d7-1fc8-4e16-8875-eec9ddb62274")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "R11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 127 144.78 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "79b85728-ae1a-4a28-abcd-8db2f85b9677")
+		(property "Reference" "#PWR07"
+			(at 127 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 127 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 127 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 127 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 127 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "721a5eb3-710a-41de-b6e7-242041353ee2")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "#PWR07")
 					(unit 1)
 				)
 			)
@@ -6189,6 +6378,74 @@
 		)
 	)
 	(symbol
+		(lib_id "Jumper:Jumper_2_Open")
+		(at 133.35 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9a73efb2-3654-4894-a019-9e04b8473bcb")
+		(property "Reference" "JP6"
+			(at 130.81 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Jumper_2_Open"
+			(at 131.318 116.586 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
+			(at 133.35 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 133.35 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Jumper, 2-pole, open"
+			(at 133.35 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "71ce8c8e-d0ab-4775-973a-7f77e3be160f")
+		)
+		(pin "1"
+			(uuid "3cb0035d-e027-4449-b583-b85c191b6bf0")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "JP6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:TestPoint")
 		(at 139.7 96.52 0)
 		(unit 1)
@@ -6386,77 +6643,6 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "R4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:Jumper_3_Open")
-		(at 99.06 96.52 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b79c85e7-f56f-493a-97dd-beb379bf0c0c")
-		(property "Reference" "JP6"
-			(at 99.06 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Jumper_3_Open"
-			(at 99.06 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 99.06 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 99.06 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Jumper, 3-pole, both open"
-			(at 99.06 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "5aa2ff98-3375-4785-bcbe-f5efecdba04e")
-		)
-		(pin "2"
-			(uuid "7a10a779-5939-42b8-be2c-67cdbd475da6")
-		)
-		(pin "3"
-			(uuid "f934627a-e65e-4147-913f-3ea09214d542")
-		)
-		(instances
-			(project ""
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP6")
 					(unit 1)
 				)
 			)
@@ -6664,6 +6850,142 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 127 138.43 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c35fc59c-7d6c-4e18-b1f2-c9602333368d")
+		(property "Reference" "R14"
+			(at 129.54 137.1599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100k"
+			(at 129.54 139.6999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 125.222 138.43 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 127 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 127 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d3ade120-3946-4a03-99a5-d3bbf829a150")
+		)
+		(pin "2"
+			(uuid "65dfcded-bd01-43e9-901f-f4dae041e10b")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "R14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 133.35 128.27 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c5ba919a-9c12-4b74-8d9a-34222d2693e9")
+		(property "Reference" "R12"
+			(at 131.826 123.19 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "220R"
+			(at 131.826 125.73 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 133.35 130.048 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 133.35 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 133.35 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d5337cb6-390d-4dd9-acc6-bcd132007239")
+		)
+		(pin "2"
+			(uuid "f830643d-6f46-4b4f-bd56-c9d4c55f4fae")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "R12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 228.6 30.48 0)
 		(unit 1)
@@ -6794,6 +7116,74 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "R7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:Jumper_2_Open")
+		(at 148.59 128.27 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e197a79a-062e-4cec-a300-6259681b1fa0")
+		(property "Reference" "JP7"
+			(at 151.13 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Jumper_2_Open"
+			(at 150.876 124.714 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
+			(at 148.59 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 148.59 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Jumper, 2-pole, open"
+			(at 148.59 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "cf22700c-01f4-4f51-ad55-52dfb79c90c7")
+		)
+		(pin "1"
+			(uuid "54e26b67-9637-4dfa-b3b7-16faaec502a0")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "JP7")
 					(unit 1)
 				)
 			)
