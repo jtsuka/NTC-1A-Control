@@ -5375,7 +5375,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "MOUDLE-SEEEDUINO-XIAO-ESP32S3"
+		(property "Value" "XIAO-ESP32S3"
 			(at 215.9 102.2349 90)
 			(effects
 				(font
