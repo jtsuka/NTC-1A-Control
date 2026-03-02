@@ -3115,6 +3115,12 @@
 		(uuid "b6a2a288-35d7-49b1-9d51-adf89a79ad41")
 	)
 	(junction
+		(at 88.9 153.67)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0776ccb3-315b-42c1-9a26-2746ef194c66")
+	)
+	(junction
 		(at 138.43 34.29)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3336,16 +3342,6 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 156.21) (xy 115.57 154.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "03f70d00-13b5-4b63-972c-8b312127dbd2")
-	)
-	(wire
-		(pts
 			(xy 151.13 25.4) (xy 200.66 25.4)
 		)
 		(stroke
@@ -3426,23 +3422,13 @@
 	)
 	(wire
 		(pts
-			(xy 69.85 30.48) (xy 73.66 30.48)
+			(xy 115.57 153.67) (xy 88.9 153.67)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "137863f9-725e-4420-a26e-f22cbc586c4b")
-	)
-	(wire
-		(pts
-			(xy 69.85 154.94) (xy 115.57 154.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "14608768-4eab-4d91-b941-b056320632ed")
+		(uuid "139132e7-a92c-4a25-9b02-2fe7a0eb627b")
 	)
 	(wire
 		(pts
@@ -3536,6 +3522,16 @@
 	)
 	(wire
 		(pts
+			(xy 88.9 153.67) (xy 86.36 153.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2751031d-cd06-479a-8f7b-1a996fcecbef")
+	)
+	(wire
+		(pts
 			(xy 247.65 40.64) (xy 259.08 40.64)
 		)
 		(stroke
@@ -3626,6 +3622,16 @@
 	)
 	(wire
 		(pts
+			(xy 69.85 148.59) (xy 78.74 148.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "40b057ed-e00a-4ec6-ab4c-8379987f6e77")
+	)
+	(wire
+		(pts
 			(xy 147.32 104.14) (xy 148.59 104.14)
 		)
 		(stroke
@@ -3686,13 +3692,13 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 22.86) (xy 63.5 26.67)
+			(xy 69.85 33.02) (xy 69.85 134.62)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "4ed15b47-b55e-4ae8-b6cc-af0f85fddcc2")
+		(uuid "54aea2ef-1f7f-4982-90c6-da0531ca0983")
 	)
 	(wire
 		(pts
@@ -3746,6 +3752,26 @@
 	)
 	(wire
 		(pts
+			(xy 115.57 156.21) (xy 115.57 153.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "68114c8b-9131-4db9-a873-546778393811")
+	)
+	(wire
+		(pts
+			(xy 69.85 22.86) (xy 105.41 22.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6dc83d62-6fb3-4980-983a-845f45cd795a")
+	)
+	(wire
+		(pts
 			(xy 116.84 38.1) (xy 116.84 34.29)
 		)
 		(stroke
@@ -3766,13 +3792,13 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 22.86) (xy 105.41 22.86)
+			(xy 88.9 153.67) (xy 88.9 158.75)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7a9bbbf9-55e8-45bb-ad0d-59b3e5c88a0b")
+		(uuid "73a201a6-1bac-4a79-a218-b885d0618963")
 	)
 	(wire
 		(pts
@@ -3843,16 +3869,6 @@
 			(type default)
 		)
 		(uuid "99319b77-c089-4f26-8009-e61132eb96c6")
-	)
-	(wire
-		(pts
-			(xy 73.66 30.48) (xy 73.66 26.67)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9b08f73c-1a9b-4b9a-a27a-1c5a2ecc449d")
 	)
 	(wire
 		(pts
@@ -4006,6 +4022,16 @@
 	)
 	(wire
 		(pts
+			(xy 88.9 166.37) (xy 88.9 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d9850395-6d61-49aa-84b7-971361b62ec5")
+	)
+	(wire
+		(pts
 			(xy 208.28 60.96) (xy 259.08 60.96)
 		)
 		(stroke
@@ -4036,13 +4062,13 @@
 	)
 	(wire
 		(pts
-			(xy 69.85 30.48) (xy 69.85 154.94)
+			(xy 69.85 142.24) (xy 69.85 148.59)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "e04debf5-ae02-43dd-be8a-af650bc4a05f")
+		(uuid "dfd63e29-b82b-4f67-9573-eef0f85097b9")
 	)
 	(wire
 		(pts
@@ -4134,6 +4160,16 @@
 		)
 		(uuid "f9509b1b-bfeb-46f8-bbcf-e80e8313daee")
 	)
+	(wire
+		(pts
+			(xy 78.74 158.75) (xy 78.74 162.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ff55c082-e996-48eb-aa66-7bb873336ab0")
+	)
 	(label "Pi_Tx_MCU"
 		(at 218.44 60.96 0)
 		(effects
@@ -4165,7 +4201,7 @@
 		(uuid "10ed4a68-60bc-4a3b-bc12-7f0c0b70bdda")
 	)
 	(label "Nano_CMD_BUS"
-		(at 74.93 154.94 0)
+		(at 90.17 153.67 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4225,7 +4261,7 @@
 		(uuid "751e17c3-7ed6-4c42-903c-aa990c200061")
 	)
 	(label "TC_MOS_DRAIN"
-		(at 116.84 91.44 0)
+		(at 120.65 96.52 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4560,10 +4596,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "28b6bbe9-6c42-4bb0-8fd4-923055993301")
 		(property "Reference" "A1"
-			(at 88.9 162.4898 90)
+			(at 143.764 182.88 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4571,7 +4606,7 @@
 			)
 		)
 		(property "Value" "Arduino_Nano_Every"
-			(at 88.9 165.0298 90)
+			(at 143.764 185.42 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4770,6 +4805,75 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "R5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 69.85 138.43 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2cba1dce-c6ed-4605-93d6-140eea9f9d14")
+		(property "Reference" "R12"
+			(at 74.93 135.89 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "100R"
+			(at 72.39 135.89 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 68.072 138.43 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 69.85 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 69.85 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d2d93751-7e31-4a10-815f-7e48edb66bb5")
+		)
+		(pin "2"
+			(uuid "a782e167-48bd-458c-92f4-4a4e7df23e7e")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "R12")
 					(unit 1)
 				)
 			)
@@ -5039,6 +5143,72 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "D2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 88.9 168.91 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "52bb2bc8-742c-4b89-b8fe-7761a48c3f70")
+		(property "Reference" "#PWR06"
+			(at 88.9 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 88.9 173.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 88.9 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 88.9 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 88.9 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5a56ce19-68d8-4926-b0b0-69177db32ac8")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "#PWR06")
 					(unit 1)
 				)
 			)
@@ -5439,7 +5609,7 @@
 	)
 	(symbol
 		(lib_id "Jumper:Jumper_2_Open")
-		(at 68.58 26.67 180)
+		(at 69.85 27.94 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5447,7 +5617,7 @@
 		(dnp no)
 		(uuid "638b751a-451f-4a85-90b7-76cb85379b62")
 		(property "Reference" "JP8"
-			(at 66.802 30.48 0)
+			(at 73.66 29.718 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5455,7 +5625,7 @@
 			)
 		)
 		(property "Value" "Jumper_2_Open"
-			(at 67.564 30.48 0)
+			(at 73.66 28.956 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5464,7 +5634,7 @@
 			)
 		)
 		(property "Footprint" "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
-			(at 68.58 26.67 0)
+			(at 69.85 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5473,7 +5643,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 68.58 26.67 0)
+			(at 69.85 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5482,7 +5652,7 @@
 			)
 		)
 		(property "Description" "Jumper, 2-pole, open"
-			(at 68.58 26.67 0)
+			(at 69.85 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5780,6 +5950,72 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "#PWR04")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 78.74 162.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "853dfc0e-3eeb-416d-bf6d-a37c21bac15b")
+		(property "Reference" "#PWR07"
+			(at 78.74 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 78.74 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 78.74 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 78.74 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 78.74 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "43c8e368-ee15-4ff9-b0f6-a6d84c954c13")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "#PWR07")
 					(unit 1)
 				)
 			)
@@ -6189,6 +6425,82 @@
 		)
 	)
 	(symbol
+		(lib_id "Transistor_FET:2N7000")
+		(at 81.28 153.67 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9b0cb1bc-1553-4114-b7be-a669b100f70a")
+		(property "Reference" "Q2"
+			(at 75.184 155.702 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2N7000"
+			(at 75.184 153.162 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 76.2 155.575 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.vishay.com/docs/70226/70226.pdf"
+			(at 76.2 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "0.2A Id, 200V Vds, N-Channel MOSFET, 2.6V Logic Level, TO-92"
+			(at 81.28 153.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "efa71314-9dcb-40ac-986e-e6a42ed1533f")
+		)
+		(pin "3"
+			(uuid "b3edddbf-aaca-4722-b133-618bec8a15c5")
+		)
+		(pin "1"
+			(uuid "0ef12e8c-e35a-4322-b677-e5c8f23aa5c4")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "Q2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:TestPoint")
 		(at 139.7 96.52 0)
 		(unit 1)
@@ -6198,7 +6510,7 @@
 		(dnp no)
 		(uuid "a1ccdd5b-57db-4f2b-901d-60c81e37653c")
 		(property "Reference" "TP5"
-			(at 130.302 92.456 0)
+			(at 131.064 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6207,7 +6519,7 @@
 			)
 		)
 		(property "Value" "TestPoint"
-			(at 130.302 94.996 0)
+			(at 131.064 91.44 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6658,6 +6970,75 @@
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "#PWR05")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 88.9 162.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ca05055c-a166-442a-a445-c01465ea0abe")
+		(property "Reference" "R11"
+			(at 91.44 161.2899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100k"
+			(at 91.44 163.8299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 87.122 162.56 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 88.9 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 88.9 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "127e5b3d-7e58-4bc2-880d-d439b88b3b00")
+		)
+		(pin "2"
+			(uuid "787ab383-41e8-42a4-b7c4-e91ba19a7ed3")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "R11")
 					(unit 1)
 				)
 			)
