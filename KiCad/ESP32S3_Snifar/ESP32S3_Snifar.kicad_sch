@@ -5317,7 +5317,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "5ca367f3-9e65-45c7-a8e3-e13d54985b91")
-		(property "Reference" "JP9"
+		(property "Reference" "JP4"
 			(at 128.778 16.002 90)
 			(effects
 				(font
@@ -5374,7 +5374,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP9")
+					(reference "JP4")
 					(unit 1)
 				)
 			)
@@ -6055,7 +6055,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8afd1b77-1b4d-4976-a95c-05320ed212ab")
-		(property "Reference" "JP8"
+		(property "Reference" "JP7"
 			(at 203.2 35.5599 90)
 			(effects
 				(font
@@ -6110,7 +6110,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP8")
+					(reference "JP7")
 					(unit 1)
 				)
 			)
@@ -6191,7 +6191,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "8e19931d-3d96-4c61-a808-eeaf93b4d644")
-		(property "Reference" "JP6"
+		(property "Reference" "JP5"
 			(at 156.21 112.522 90)
 			(effects
 				(font
@@ -6244,7 +6244,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP6")
+					(reference "JP5")
 					(unit 1)
 				)
 			)
@@ -7213,7 +7213,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ef568332-6193-49aa-a436-44cdc5f062f4")
-		(property "Reference" "JP7"
+		(property "Reference" "JP6"
 			(at 158.496 93.218 0)
 			(effects
 				(font
@@ -7266,7 +7266,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP7")
+					(reference "JP6")
 					(unit 1)
 				)
 			)
