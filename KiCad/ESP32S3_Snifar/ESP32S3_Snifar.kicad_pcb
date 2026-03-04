@@ -1792,14 +1792,14 @@
 			)
 		)
 	)
-	(footprint "TestPoint:TestPoint_THTPad_2.0x2.0mm_Drill1.0mm"
+	(footprint "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
 		(layer "F.Cu")
 		(uuid "302bc372-c773-401e-a60e-64fd73c76c44")
 		(at 60.7 40.515)
-		(descr "THT rectangular pad as test Point, square 2.0mm_Drill1.0mm  side length, hole diameter 1.0mm")
-		(tags "test point THT pad rectangle square")
+		(descr "wire loop as test point, loop diameter 2.5mm, hole diameter 1.0mm")
+		(tags "test point wire loop bead")
 		(property "Reference" "TP2"
-			(at 0 -1.998 0)
+			(at 0.7 2.5 0)
 			(layer "F.SilkS")
 			(uuid "5d6d7df8-3b25-40b6-8958-4ab31e1f66b3")
 			(effects
@@ -1810,7 +1810,7 @@
 			)
 		)
 		(property "Value" "TestPoint"
-			(at 0 2.05 0)
+			(at 0 -2.8 0)
 			(layer "F.Fab")
 			(uuid "743f1480-aa93-4472-9ea3-470897bc626b")
 			(effects
@@ -1850,89 +1850,71 @@
 		(path "/a1ccdd5b-57db-4f2b-901d-60c81e37653c")
 		(sheetname "/")
 		(sheetfile "ESP32S3_Snifar.kicad_sch")
-		(attr exclude_from_pos_files)
-		(fp_line
-			(start -1.2 -1.2)
-			(end 1.2 -1.2)
+		(attr through_hole)
+		(fp_circle
+			(center 0 0)
+			(end 1.5 0)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
+			(fill no)
 			(layer "F.SilkS")
-			(uuid "24f8986e-b2fd-4632-b4a6-6cc51458c18b")
+			(uuid "d5d0c5be-bf15-4e4c-a430-01161e372570")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.8 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "223e408a-ca3a-4cef-ac46-45a692682062")
 		)
 		(fp_line
-			(start -1.2 1.2)
-			(end -1.2 -1.2)
+			(start -1.3 -0.2)
+			(end -1.3 0.2)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
-			(layer "F.SilkS")
-			(uuid "f1b6c7ac-9f59-4b24-a94c-752a3e5aa32e")
+			(layer "F.Fab")
+			(uuid "55fa72f4-4487-43b1-bf47-b760ab94a345")
 		)
 		(fp_line
-			(start 1.2 -1.2)
-			(end 1.2 1.2)
+			(start -1.3 0.2)
+			(end 1.3 0.2)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
-			(layer "F.SilkS")
-			(uuid "2f2ba564-b237-443f-8dec-8eb50b8fa2a2")
+			(layer "F.Fab")
+			(uuid "c563b1ae-5f8e-49d3-adc0-8ee3131a5431")
 		)
 		(fp_line
-			(start 1.2 1.2)
-			(end -1.2 1.2)
+			(start 1.3 -0.2)
+			(end -1.3 -0.2)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
-			(layer "F.SilkS")
-			(uuid "9fc2b5aa-9156-4288-bef0-434092e26de7")
+			(layer "F.Fab")
+			(uuid "01fbf622-7d5b-464e-9896-a85ff66b2f7d")
 		)
 		(fp_line
-			(start -1.5 -1.5)
-			(end -1.5 1.5)
+			(start 1.3 0.2)
+			(end 1.3 -0.2)
 			(stroke
-				(width 0.05)
+				(width 0.12)
 				(type solid)
 			)
-			(layer "F.CrtYd")
-			(uuid "00327aee-eae3-4fce-9919-25734975a9ec")
-		)
-		(fp_line
-			(start -1.5 -1.5)
-			(end 1.5 -1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "F.CrtYd")
-			(uuid "8d5acf51-15a2-49b1-9e94-2357fe27a978")
-		)
-		(fp_line
-			(start 1.5 1.5)
-			(end -1.5 1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "F.CrtYd")
-			(uuid "ab7a7862-a7f3-4baa-a653-6e6066990089")
-		)
-		(fp_line
-			(start 1.5 1.5)
-			(end 1.5 -1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "F.CrtYd")
-			(uuid "8d296aa7-83b5-4c35-990d-71410ec4d27f")
+			(layer "F.Fab")
+			(uuid "4fdadd7a-d337-475d-96be-366eb132aed3")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 -2 0)
+			(at 0.7 2.5 0)
 			(layer "F.Fab")
 			(uuid "22bfe85a-f3a7-4ba7-965a-728cd7ce25e7")
 			(effects
@@ -1942,7 +1924,7 @@
 				)
 			)
 		)
-		(pad "1" thru_hole rect
+		(pad "1" thru_hole circle
 			(at 0 0)
 			(size 2 2)
 			(drill 1)
@@ -1954,11 +1936,22 @@
 			(uuid "beb549c7-9941-412d-a570-da6efb2de639")
 		)
 		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/TestPoint.3dshapes/TestPoint_Loop_D2.50mm_Drill1.0mm.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
 		(layer "F.Cu")
 		(uuid "34ad546b-16ac-462d-a24e-a9d88df91e68")
-		(at 118.29 66.1)
+		(at 118.34 63.92)
 		(descr "wire loop as test point, loop diameter 2.5mm, hole diameter 1.0mm")
 		(tags "test point wire loop bead")
 		(property "Reference" "TP4"
@@ -2077,7 +2070,7 @@
 			(uuid "fc5d5799-74bb-4fbf-a54e-d41e5ce5db6d")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0.7 2.5 0)
+			(at 0.05 2.47 0)
 			(layer "F.Fab")
 			(uuid "fa1f88a2-dc8a-4cf8-babd-c736a0d6f809")
 			(effects
@@ -2665,14 +2658,14 @@
 			)
 		)
 	)
-	(footprint "TestPoint:TestPoint_THTPad_2.0x2.0mm_Drill1.0mm"
+	(footprint "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
 		(layer "F.Cu")
 		(uuid "438ea7ba-b3df-43c9-9f97-506d8337d00d")
-		(at 122.14 66.06)
-		(descr "THT rectangular pad as test Point, square 2.0mm_Drill1.0mm  side length, hole diameter 1.0mm")
-		(tags "test point THT pad rectangle square")
+		(at 122.08 64.05)
+		(descr "wire loop as test point, loop diameter 2.5mm, hole diameter 1.0mm")
+		(tags "test point wire loop bead")
 		(property "Reference" "TP3"
-			(at 0 -1.998 0)
+			(at 0.7 2.5 0)
 			(layer "F.SilkS")
 			(uuid "f29ac99c-19a8-4cae-9ca3-06b6325b95d2")
 			(effects
@@ -2683,7 +2676,7 @@
 			)
 		)
 		(property "Value" "TestPoint"
-			(at 0 2.05 0)
+			(at 0 -2.8 0)
 			(layer "F.Fab")
 			(uuid "3d6d7429-2dae-4e88-b45d-b07093bb03b2")
 			(effects
@@ -2723,89 +2716,71 @@
 		(path "/6ca3d3e7-c7ae-45af-bf04-645d920b186e")
 		(sheetname "/")
 		(sheetfile "ESP32S3_Snifar.kicad_sch")
-		(attr exclude_from_pos_files)
-		(fp_line
-			(start -1.2 -1.2)
-			(end 1.2 -1.2)
+		(attr through_hole)
+		(fp_circle
+			(center 0 0)
+			(end 1.5 0)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
+			(fill no)
 			(layer "F.SilkS")
-			(uuid "17bf0314-523f-4543-8c1d-83b1fceb56e2")
+			(uuid "3af30d5d-dd37-4b45-8983-b023c5dd2ea3")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.8 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "f0b35847-ca30-45e8-9cea-f343ea5de068")
 		)
 		(fp_line
-			(start -1.2 1.2)
-			(end -1.2 -1.2)
+			(start -1.3 -0.2)
+			(end -1.3 0.2)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
-			(layer "F.SilkS")
-			(uuid "4055b250-d095-4f9e-8730-baaaebe311d9")
+			(layer "F.Fab")
+			(uuid "cbd7db94-f1e5-4f68-98ae-dff75b7145fd")
 		)
 		(fp_line
-			(start 1.2 -1.2)
-			(end 1.2 1.2)
+			(start -1.3 0.2)
+			(end 1.3 0.2)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
-			(layer "F.SilkS")
-			(uuid "ced59960-aac4-42a0-9f02-8627088026e2")
+			(layer "F.Fab")
+			(uuid "19e4baa1-283b-491b-8432-82d2f3539ab7")
 		)
 		(fp_line
-			(start 1.2 1.2)
-			(end -1.2 1.2)
+			(start 1.3 -0.2)
+			(end -1.3 -0.2)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
-			(layer "F.SilkS")
-			(uuid "59acd8a8-b223-4949-8ef3-2ff779512cd1")
+			(layer "F.Fab")
+			(uuid "b48e23dc-e022-4a3c-b56e-5968501764b9")
 		)
 		(fp_line
-			(start -1.5 -1.5)
-			(end -1.5 1.5)
+			(start 1.3 0.2)
+			(end 1.3 -0.2)
 			(stroke
-				(width 0.05)
+				(width 0.12)
 				(type solid)
 			)
-			(layer "F.CrtYd")
-			(uuid "95f7107b-6b97-4f9f-a3f8-861716577a30")
-		)
-		(fp_line
-			(start -1.5 -1.5)
-			(end 1.5 -1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "F.CrtYd")
-			(uuid "06a6547a-b4d0-4cb1-910d-57c413347930")
-		)
-		(fp_line
-			(start 1.5 1.5)
-			(end -1.5 1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "F.CrtYd")
-			(uuid "c0f88a4c-97f1-4d54-b4c7-fb38dd0f1cb3")
-		)
-		(fp_line
-			(start 1.5 1.5)
-			(end 1.5 -1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "F.CrtYd")
-			(uuid "b451f9d8-e7a0-44bf-8b8d-2eccb96c2908")
+			(layer "F.Fab")
+			(uuid "95d06405-5029-4aac-a60b-2ce9da940a5a")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 -2 0)
+			(at 0.7 2.5 0)
 			(layer "F.Fab")
 			(uuid "3fe6674a-e1db-4cc4-bd06-fcb3c921b51f")
 			(effects
@@ -2815,7 +2790,7 @@
 				)
 			)
 		)
-		(pad "1" thru_hole rect
+		(pad "1" thru_hole circle
 			(at 0 0)
 			(size 2 2)
 			(drill 1)
@@ -2827,6 +2802,17 @@
 			(uuid "65588a39-c3b4-430c-9e6a-973d6d1b8e01")
 		)
 		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/TestPoint.3dshapes/TestPoint_Loop_D2.50mm_Drill1.0mm.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 		(layer "F.Cu")
@@ -5773,14 +5759,14 @@
 			)
 		)
 	)
-	(footprint "TestPoint:TestPoint_THTPad_2.0x2.0mm_Drill1.0mm"
+	(footprint "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
 		(layer "F.Cu")
 		(uuid "b466b038-e87a-4f40-9206-4b0f589e0c3d")
 		(at 83.9 36.51)
-		(descr "THT rectangular pad as test Point, square 2.0mm_Drill1.0mm  side length, hole diameter 1.0mm")
-		(tags "test point THT pad rectangle square")
+		(descr "wire loop as test point, loop diameter 2.5mm, hole diameter 1.0mm")
+		(tags "test point wire loop bead")
 		(property "Reference" "TP1"
-			(at -3.54 -1.14 0)
+			(at 0.7 2.5 0)
 			(layer "F.SilkS")
 			(uuid "35d439bf-c261-478a-bbfc-0f28d70fd080")
 			(effects
@@ -5791,7 +5777,7 @@
 			)
 		)
 		(property "Value" "TestPoint"
-			(at 0 2.05 0)
+			(at 0 -2.8 0)
 			(layer "F.Fab")
 			(uuid "efd7c667-9a9f-49f6-9db8-232bd728bf70")
 			(effects
@@ -5831,89 +5817,71 @@
 		(path "/9a01642b-2dd7-4157-a789-ca234bfbccaf")
 		(sheetname "/")
 		(sheetfile "ESP32S3_Snifar.kicad_sch")
-		(attr exclude_from_pos_files)
-		(fp_line
-			(start -1.2 -1.2)
-			(end 1.2 -1.2)
+		(attr through_hole)
+		(fp_circle
+			(center 0 0)
+			(end 1.5 0)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
+			(fill no)
 			(layer "F.SilkS")
-			(uuid "c8e8a8eb-58b1-4679-9f8a-7a5e46d4ab90")
+			(uuid "c0ebace1-e407-40b4-9e84-d0f88f533488")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.8 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "a9a2d672-6ff1-4c06-8060-7afb29ab67fb")
 		)
 		(fp_line
-			(start -1.2 1.2)
-			(end -1.2 -1.2)
+			(start -1.3 -0.2)
+			(end -1.3 0.2)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
-			(layer "F.SilkS")
-			(uuid "c48eb72e-3812-4565-8cb8-9e604b02b912")
+			(layer "F.Fab")
+			(uuid "37c95e35-2d04-4d0c-8fb1-756eb308ca2d")
 		)
 		(fp_line
-			(start 1.2 -1.2)
-			(end 1.2 1.2)
+			(start -1.3 0.2)
+			(end 1.3 0.2)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
-			(layer "F.SilkS")
-			(uuid "236ffcb0-820d-4e9c-83c5-936c33e8ed35")
+			(layer "F.Fab")
+			(uuid "f910e264-6e1f-4f67-b289-86db3a73b291")
 		)
 		(fp_line
-			(start 1.2 1.2)
-			(end -1.2 1.2)
+			(start 1.3 -0.2)
+			(end -1.3 -0.2)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
-			(layer "F.SilkS")
-			(uuid "5a054a18-40c3-4087-aaba-af75c378d384")
+			(layer "F.Fab")
+			(uuid "c801da38-d0d4-4414-88b9-e06db13c1799")
 		)
 		(fp_line
-			(start -1.5 -1.5)
-			(end -1.5 1.5)
+			(start 1.3 0.2)
+			(end 1.3 -0.2)
 			(stroke
-				(width 0.05)
+				(width 0.12)
 				(type solid)
 			)
-			(layer "F.CrtYd")
-			(uuid "0ae92499-0c1e-478f-bc58-d40a563d52e4")
-		)
-		(fp_line
-			(start -1.5 -1.5)
-			(end 1.5 -1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "F.CrtYd")
-			(uuid "27f0f4db-ef79-46e8-8cde-86c6be26b780")
-		)
-		(fp_line
-			(start 1.5 1.5)
-			(end -1.5 1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "F.CrtYd")
-			(uuid "6635d8d7-8644-4929-9812-4901c90a1e74")
-		)
-		(fp_line
-			(start 1.5 1.5)
-			(end 1.5 -1.5)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "F.CrtYd")
-			(uuid "1ba4ae3e-7746-40e9-a1fb-c5754d4491d5")
+			(layer "F.Fab")
+			(uuid "981dd2d0-c2eb-4632-8b96-d45a635c7003")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 -2 0)
+			(at 0.7 2.5 0)
 			(layer "F.Fab")
 			(uuid "7593d8b7-3ca1-4e74-9667-d4f32e54585c")
 			(effects
@@ -5923,7 +5891,7 @@
 				)
 			)
 		)
-		(pad "1" thru_hole rect
+		(pad "1" thru_hole circle
 			(at 0 0)
 			(size 2 2)
 			(drill 1)
@@ -5935,6 +5903,17 @@
 			(uuid "2c52647d-73ca-4c81-812c-fc7091a55fd2")
 		)
 		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/TestPoint.3dshapes/TestPoint_Loop_D2.50mm_Drill1.0mm.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 		(layer "F.Cu")
@@ -8228,28 +8207,12 @@
 		(uuid "8e05e08d-bce7-42cf-939f-3f9cf88643f9")
 	)
 	(segment
-		(start 118.32 66.13)
-		(end 118.29 66.1)
-		(width 0.2)
-		(layer "F.Cu")
-		(net 3)
-		(uuid "f695f4fd-de07-4408-926b-1ead2d41c873")
-	)
-	(segment
-		(start 118.29 50.01)
-		(end 118.29 66.1)
+		(start 118.33 50.05)
+		(end 118.33 63.97)
 		(width 0.2)
 		(layer "B.Cu")
 		(net 3)
-		(uuid "059e3832-bad4-479a-b205-b5a930e9c665")
-	)
-	(segment
-		(start 118.21 49.93)
-		(end 118.29 50.01)
-		(width 0.2)
-		(layer "B.Cu")
-		(net 3)
-		(uuid "389728ed-1038-4ea3-99dd-02ec133fa904")
+		(uuid "324f853d-dff8-4eda-b764-c0fa3a9cea44")
 	)
 	(segment
 		(start 112.62 49.93)
@@ -8257,7 +8220,7 @@
 		(width 0.2)
 		(layer "B.Cu")
 		(net 3)
-		(uuid "3fb802a2-1468-4051-868e-68eb238889a8")
+		(uuid "47036dae-0c37-4293-b22f-57fcde3c7112")
 	)
 	(segment
 		(start 111.76 49.07)
@@ -8265,7 +8228,15 @@
 		(width 0.2)
 		(layer "B.Cu")
 		(net 3)
-		(uuid "6303027b-d4bb-4323-839c-27be708250f3")
+		(uuid "ae34cbae-beb5-44f1-9170-a9a416e6a72c")
+	)
+	(segment
+		(start 118.21 49.93)
+		(end 118.33 50.05)
+		(width 0.2)
+		(layer "B.Cu")
+		(net 3)
+		(uuid "b8db0148-48b2-4bd4-9c46-ff450b3b40da")
 	)
 	(segment
 		(start 53.91 60.64)
@@ -8596,14 +8567,6 @@
 		(uuid "6b1f5052-689b-43c7-b26a-a62063a6eddb")
 	)
 	(segment
-		(start 122.16 66.08)
-		(end 122.14 66.06)
-		(width 0.2)
-		(layer "F.Cu")
-		(net 9)
-		(uuid "95e97a10-ec21-4592-a028-36a8039f2489")
-	)
-	(segment
 		(start 79.53 42.06)
 		(end 79.54 42.05)
 		(width 0.2)
@@ -8652,12 +8615,20 @@
 		(uuid "6d72d406-a2ed-498f-af79-02e83d073d2d")
 	)
 	(segment
-		(start 122.14 45.05)
-		(end 122.14 66.06)
+		(start 122.14 63.84)
+		(end 122.04 63.94)
 		(width 0.2)
 		(layer "B.Cu")
 		(net 9)
-		(uuid "d35bd389-0a4f-4a46-9748-36c30434dd03")
+		(uuid "78742ed4-895b-451d-a36f-238a1648e56f")
+	)
+	(segment
+		(start 122.14 45.05)
+		(end 122.14 63.84)
+		(width 0.2)
+		(layer "B.Cu")
+		(net 9)
+		(uuid "8f7123ed-b04c-4bd8-947b-eb0c44adb8ad")
 	)
 	(segment
 		(start 87.36 70.36)
