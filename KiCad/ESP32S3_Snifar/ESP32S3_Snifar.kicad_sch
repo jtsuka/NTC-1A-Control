@@ -3151,12 +3151,6 @@
 		(uuid "485a6895-c7c3-4dee-9238-93b4d4ac5ebe")
 	)
 	(junction
-		(at 138.43 34.29)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "66d1a2c7-d8b6-4758-a4fd-b0007a7111e0")
-	)
-	(junction
 		(at 116.84 34.29)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3191,6 +3185,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d12f7c4d-f910-406c-84ed-ff43bd3c6cef")
+	)
+	(junction
+		(at 138.43 27.94)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fad93554-7a1e-4f7e-b05a-a8bd99a917a3")
 	)
 	(no_connect
 		(at 135.89 181.61)
@@ -3422,6 +3422,16 @@
 	)
 	(wire
 		(pts
+			(xy 138.43 27.94) (xy 138.43 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11fba544-4cb8-466c-a20b-11113c82d158")
+	)
+	(wire
+		(pts
 			(xy 238.76 40.64) (xy 240.03 40.64)
 		)
 		(stroke
@@ -3552,7 +3562,7 @@
 	)
 	(wire
 		(pts
-			(xy 119.38 24.13) (xy 115.57 24.13)
+			(xy 115.57 24.13) (xy 120.65 24.13)
 		)
 		(stroke
 			(width 0)
@@ -3722,6 +3732,16 @@
 	)
 	(wire
 		(pts
+			(xy 120.65 21.59) (xy 128.27 21.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5faa50e2-82db-4194-8eed-d60a44e6a102")
+	)
+	(wire
+		(pts
 			(xy 69.85 39.37) (xy 69.85 148.59)
 		)
 		(stroke
@@ -3792,7 +3812,7 @@
 	)
 	(wire
 		(pts
-			(xy 138.43 34.29) (xy 138.43 36.83)
+			(xy 138.43 25.4) (xy 138.43 27.94)
 		)
 		(stroke
 			(width 0)
@@ -3982,6 +4002,26 @@
 	)
 	(wire
 		(pts
+			(xy 120.65 24.13) (xy 120.65 21.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bff4807c-2349-4af8-ad2e-ecad91f26749")
+	)
+	(wire
+		(pts
+			(xy 132.08 27.94) (xy 138.43 27.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c36953fc-8bef-423e-b251-6bf964b23973")
+	)
+	(wire
+		(pts
 			(xy 167.64 96.52) (xy 167.64 139.7)
 		)
 		(stroke
@@ -4009,16 +4049,6 @@
 			(type default)
 		)
 		(uuid "d04ecfee-3ed9-4570-ab42-7e503a859273")
-	)
-	(wire
-		(pts
-			(xy 129.54 24.13) (xy 138.43 24.13)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d154bf1e-fc26-486e-88a5-093d94335137")
 	)
 	(wire
 		(pts
@@ -4109,16 +4139,6 @@
 			(type default)
 		)
 		(uuid "f0afae28-9f20-49e7-87f2-826c3b94ad38")
-	)
-	(wire
-		(pts
-			(xy 138.43 25.4) (xy 138.43 34.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f19f7cce-901f-4b04-83af-1436d7c7ae3a")
 	)
 	(wire
 		(pts
@@ -4299,6 +4319,16 @@
 			(justify left bottom)
 		)
 		(uuid "c0d903c3-f217-4376-8710-ffaef478d4da")
+	)
+	(label "3.3V_Clamp"
+		(at 176.53 72.39 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c634615a-e849-4473-9920-5563937f3ef2")
 	)
 	(label "TC_MCU_RX"
 		(at 163.83 25.4 0)
@@ -5279,6 +5309,78 @@
 		)
 	)
 	(symbol
+		(lib_id "Jumper:Jumper_3_Open")
+		(at 128.27 27.94 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "5ca367f3-9e65-45c7-a8e3-e13d54985b91")
+		(property "Reference" "JP9"
+			(at 128.778 16.002 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Jumper_3_Open"
+			(at 128.778 18.542 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+			(at 128.27 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 128.27 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Jumper, 3-pole, both open"
+			(at 128.27 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "501853d7-8ffa-4091-9fbd-ee6611cd2c68")
+		)
+		(pin "2"
+			(uuid "37940fb8-458e-49ad-98e5-0cebfa87a45b")
+		)
+		(pin "3"
+			(uuid "9d428c0a-45df-4f69-8e9b-05bf68a56ba4")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "JP9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "MOUDLE-SEEEDUINO-XIAO-ESP32S3:MOUDLE-SEEEDUINO-XIAO-ESP32S3")
 		(at 200.66 101.6 270)
 		(unit 1)
@@ -5592,74 +5694,6 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "JP1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:Jumper_2_Open")
-		(at 124.46 24.13 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "66f6b45c-0b77-4630-9b0d-22eb93bc54d4")
-		(property "Reference" "JP4"
-			(at 126.238 20.32 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Jumper_2_Open"
-			(at 125.476 20.32 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
-			(at 124.46 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 124.46 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Jumper, 2-pole, open"
-			(at 124.46 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "c31cf621-d96c-459b-856f-9529e100c71b")
-		)
-		(pin "1"
-			(uuid "ce339525-eb79-4289-9047-19390e31bffa")
-		)
-		(instances
-			(project "ESP32S3_Snifar"
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP4")
 					(unit 1)
 				)
 			)
@@ -6006,74 +6040,6 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "#PWR02")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:Jumper_2_Open")
-		(at 133.35 34.29 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "885b500f-82c4-43ed-93de-f481a83c2653")
-		(property "Reference" "JP5"
-			(at 135.128 30.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Jumper_2_Open"
-			(at 134.366 30.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
-			(at 133.35 34.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 133.35 34.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Jumper, 2-pole, open"
-			(at 133.35 34.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "ab977f94-786d-4ef6-b2f0-e2d92a0b3987")
-		)
-		(pin "1"
-			(uuid "f4d5dc9d-1521-4657-b35d-0609a679dd83")
-		)
-		(instances
-			(project "ESP32S3_Snifar"
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP5")
 					(unit 1)
 				)
 			)
