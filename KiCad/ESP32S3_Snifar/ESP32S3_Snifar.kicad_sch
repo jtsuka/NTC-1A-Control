@@ -3115,12 +3115,6 @@
 		(uuid "b6a2a288-35d7-49b1-9d51-adf89a79ad41")
 	)
 	(junction
-		(at 138.43 34.29)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "0a5f0a31-3987-45d9-b062-65c1a3f87967")
-	)
-	(junction
 		(at 64.77 52.07)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3131,12 +3125,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "1630a428-d060-490f-a7f4-422e4329f44b")
-	)
-	(junction
-		(at 116.84 34.29)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "1dcdb5a0-b6d2-4ac5-8b3b-6cb6a150967f")
 	)
 	(junction
 		(at 151.13 25.4)
@@ -3151,28 +3139,34 @@
 		(uuid "3228d601-ab8a-4254-88b7-038f4e4df88d")
 	)
 	(junction
-		(at 138.43 25.4)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "3ada3515-659c-4873-a74d-88091e956050")
-	)
-	(junction
-		(at 123.19 22.86)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "41e31d58-32ff-4429-ac21-ef1e618cf9a8")
-	)
-	(junction
 		(at 259.08 48.26)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "46393dae-23c9-487e-99b9-ad0e809f68df")
 	)
 	(junction
-		(at 125.73 34.29)
+		(at 115.57 24.13)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "7a2bfccd-ff01-4fc1-b4f3-9d9a4a5e4efe")
+		(uuid "485a6895-c7c3-4dee-9238-93b4d4ac5ebe")
+	)
+	(junction
+		(at 138.43 34.29)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "66d1a2c7-d8b6-4758-a4fd-b0007a7111e0")
+	)
+	(junction
+		(at 116.84 34.29)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "66d713d3-ae18-4df1-94aa-fc7a8966f3f6")
+	)
+	(junction
+		(at 138.43 25.4)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6c1b735c-f327-4a99-8af6-1c3515547bf5")
 	)
 	(junction
 		(at 88.9 153.67)
@@ -3191,6 +3185,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9be385de-cd61-492a-8c8c-917589a32865")
+	)
+	(junction
+		(at 104.14 34.29)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d12f7c4d-f910-406c-84ed-ff43bd3c6cef")
 	)
 	(no_connect
 		(at 135.89 181.61)
@@ -3362,7 +3362,17 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 132.08) (xy 204.47 132.08)
+			(xy 69.85 24.13) (xy 69.85 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "061401ba-47a3-4348-b673-9c5029d42120")
+	)
+	(wire
+		(pts
+			(xy 176.53 135.89) (xy 204.47 135.89)
 		)
 		(stroke
 			(width 0)
@@ -3392,7 +3402,7 @@
 	)
 	(wire
 		(pts
-			(xy 123.19 60.96) (xy 123.19 69.85)
+			(xy 115.57 54.61) (xy 115.57 63.5)
 		)
 		(stroke
 			(width 0)
@@ -3409,16 +3419,6 @@
 			(type default)
 		)
 		(uuid "109417bf-4bbd-4101-8f1c-5efd3c367dc9")
-	)
-	(wire
-		(pts
-			(xy 138.43 17.78) (xy 138.43 25.4)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "12847e6b-d881-47af-9569-a6e94fe98ac9")
 	)
 	(wire
 		(pts
@@ -3452,17 +3452,17 @@
 	)
 	(wire
 		(pts
-			(xy 123.19 17.78) (xy 138.43 17.78)
+			(xy 64.77 34.29) (xy 91.44 34.29)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "1c6ddadf-1466-414d-be82-500abc376a78")
+		(uuid "18b657fd-1f7f-41c1-9865-38de444127bd")
 	)
 	(wire
 		(pts
-			(xy 212.09 125.73) (xy 212.09 137.16)
+			(xy 212.09 125.73) (xy 212.09 139.7)
 		)
 		(stroke
 			(width 0)
@@ -3532,16 +3532,6 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 34.29) (xy 105.41 34.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2880cfc5-5a57-4e2c-bd1a-2da95b117ff2")
-	)
-	(wire
-		(pts
 			(xy 158.75 128.27) (xy 200.66 128.27)
 		)
 		(stroke
@@ -3552,23 +3542,23 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 34.29) (xy 116.84 34.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2ef68b4a-9920-4af2-a6fa-4ce5040706c5")
-	)
-	(wire
-		(pts
-			(xy 176.53 86.36) (xy 176.53 132.08)
+			(xy 176.53 36.83) (xy 176.53 135.89)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "30c2c7cd-2759-40cc-9a56-4add0729dff9")
+	)
+	(wire
+		(pts
+			(xy 119.38 24.13) (xy 115.57 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "322180d3-c097-4df3-b3a1-96f023f3eab0")
 	)
 	(wire
 		(pts
@@ -3599,6 +3589,16 @@
 			(type default)
 		)
 		(uuid "3b109bca-f5e1-4d2a-828a-8c6cc23adff9")
+	)
+	(wire
+		(pts
+			(xy 115.57 24.13) (xy 115.57 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3be549e4-a7d2-4752-ac05-2e25d8bcdac1")
 	)
 	(wire
 		(pts
@@ -3652,13 +3652,13 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 22.86) (xy 123.19 22.86)
+			(xy 99.06 34.29) (xy 104.14 34.29)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "496a5be2-8aad-4499-b569-202b47c1b4da")
+		(uuid "48575c66-0c8e-41cb-94e9-a203b34a1d2e")
 	)
 	(wire
 		(pts
@@ -3682,23 +3682,13 @@
 	)
 	(wire
 		(pts
-			(xy 69.85 33.02) (xy 69.85 148.59)
+			(xy 115.57 24.13) (xy 113.03 24.13)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "54aea2ef-1f7f-4982-90c6-da0531ca0983")
-	)
-	(wire
-		(pts
-			(xy 125.73 34.29) (xy 128.27 34.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "56b145b1-ce5d-4544-b57d-c1fed071f14e")
+		(uuid "4efb1ad9-4925-4945-82ff-7e403d1046b8")
 	)
 	(wire
 		(pts
@@ -3732,13 +3722,23 @@
 	)
 	(wire
 		(pts
-			(xy 138.43 34.29) (xy 138.43 36.83)
+			(xy 69.85 39.37) (xy 69.85 148.59)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "5e32d963-be24-432b-bd09-3f8cd841d876")
+		(uuid "61e843e1-96b2-4e27-9bf4-731760addea9")
+	)
+	(wire
+		(pts
+			(xy 104.14 34.29) (xy 104.14 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "654c0b4e-9709-456f-a857-805386d2c554")
 	)
 	(wire
 		(pts
@@ -3762,23 +3762,13 @@
 	)
 	(wire
 		(pts
-			(xy 69.85 22.86) (xy 105.41 22.86)
+			(xy 69.85 24.13) (xy 105.41 24.13)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "6dc83d62-6fb3-4980-983a-845f45cd795a")
-	)
-	(wire
-		(pts
-			(xy 116.84 38.1) (xy 116.84 34.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7141c9de-9d2f-403e-aa14-cf1e9b549633")
 	)
 	(wire
 		(pts
@@ -3802,17 +3792,17 @@
 	)
 	(wire
 		(pts
-			(xy 123.19 17.78) (xy 123.19 22.86)
+			(xy 138.43 34.29) (xy 138.43 36.83)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "84fd3d6d-6d6d-4a01-ac5a-31237ffec286")
+		(uuid "7a8a1140-d646-400f-ad62-cbe5cf7de6c8")
 	)
 	(wire
 		(pts
-			(xy 212.09 137.16) (xy 167.64 137.16)
+			(xy 212.09 139.7) (xy 167.64 139.7)
 		)
 		(stroke
 			(width 0)
@@ -3862,17 +3852,17 @@
 	)
 	(wire
 		(pts
-			(xy 135.89 34.29) (xy 138.43 34.29)
+			(xy 138.43 24.13) (xy 138.43 25.4)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "99319b77-c089-4f26-8009-e61132eb96c6")
+		(uuid "a0b5ad94-c1a1-4b9b-b4b2-c8a7903325d3")
 	)
 	(wire
 		(pts
-			(xy 204.47 125.73) (xy 204.47 132.08)
+			(xy 204.47 125.73) (xy 204.47 135.89)
 		)
 		(stroke
 			(width 0)
@@ -3909,6 +3899,16 @@
 			(type default)
 		)
 		(uuid "a8f72c95-5521-4b0c-b097-efd5506586ca")
+	)
+	(wire
+		(pts
+			(xy 116.84 34.29) (xy 120.65 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ac4c9901-87b1-42f7-b6eb-d069cede2bd0")
 	)
 	(wire
 		(pts
@@ -3982,7 +3982,7 @@
 	)
 	(wire
 		(pts
-			(xy 167.64 96.52) (xy 167.64 137.16)
+			(xy 167.64 96.52) (xy 167.64 139.7)
 		)
 		(stroke
 			(width 0)
@@ -3992,7 +3992,7 @@
 	)
 	(wire
 		(pts
-			(xy 116.84 45.72) (xy 116.84 69.85)
+			(xy 104.14 45.72) (xy 104.14 69.85)
 		)
 		(stroke
 			(width 0)
@@ -4009,6 +4009,16 @@
 			(type default)
 		)
 		(uuid "d04ecfee-3ed9-4570-ab42-7e503a859273")
+	)
+	(wire
+		(pts
+			(xy 129.54 24.13) (xy 138.43 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d154bf1e-fc26-486e-88a5-093d94335137")
 	)
 	(wire
 		(pts
@@ -4062,16 +4072,6 @@
 	)
 	(wire
 		(pts
-			(xy 123.19 22.86) (xy 123.19 53.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "de821090-7d44-450d-a6f3-2dcd0a10fcf1")
-	)
-	(wire
-		(pts
 			(xy 238.76 30.48) (xy 238.76 40.64)
 		)
 		(stroke
@@ -4102,16 +4102,6 @@
 	)
 	(wire
 		(pts
-			(xy 116.84 34.29) (xy 125.73 34.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e7d332e8-3391-4991-abe2-0cff7a33972e")
-	)
-	(wire
-		(pts
 			(xy 158.75 104.14) (xy 158.75 106.68)
 		)
 		(stroke
@@ -4129,16 +4119,6 @@
 			(type default)
 		)
 		(uuid "f19f7cce-901f-4b04-83af-1436d7c7ae3a")
-	)
-	(wire
-		(pts
-			(xy 176.53 36.83) (xy 176.53 76.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f3275fa4-ce22-4117-af8a-4bffd284c212")
 	)
 	(wire
 		(pts
@@ -4162,6 +4142,16 @@
 	)
 	(wire
 		(pts
+			(xy 104.14 34.29) (xy 116.84 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fce5cd72-85d4-4c7b-a7b3-5f4db8e6bd40")
+	)
+	(wire
+		(pts
 			(xy 78.74 158.75) (xy 78.74 162.56)
 		)
 		(stroke
@@ -4181,7 +4171,7 @@
 		(uuid "019c4dd6-6cee-47cc-94c2-8a7ad1d250b1")
 	)
 	(label "SIG_DIV"
-		(at 113.03 34.29 0)
+		(at 107.95 34.29 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4221,10 +4211,10 @@
 		(uuid "2933303e-a45a-4e67-b6d8-ae9c3b2b588b")
 	)
 	(label "SIG_FOR_24V_or_15V"
-		(at 77.47 34.29 0)
+		(at 74.93 34.29 0)
 		(effects
 			(font
-				(size 1.27 1.27)
+				(size 1 1)
 			)
 			(justify left bottom)
 		)
@@ -4301,7 +4291,7 @@
 		(uuid "b412dd2a-1db0-4d64-b466-fb2cc0c19c22")
 	)
 	(label "SIG_FOR_5V"
-		(at 88.9 22.86 0)
+		(at 88.9 24.13 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4397,7 +4387,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0ea250d0-4506-4fab-8c9c-06b731b5b8f9")
-		(property "Reference" "#PWR07"
+		(property "Reference" "#PWR08"
 			(at 148.59 151.13 0)
 			(effects
 				(font
@@ -4447,75 +4437,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR07")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:Jumper_2_Open")
-		(at 176.53 81.28 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "1b0ffff2-7462-4fd2-a973-c5a9dc4bf18b")
-		(property "Reference" "JP4"
-			(at 179.832 84.074 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Jumper_2_Open"
-			(at 180.34 82.296 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
-			(at 176.53 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 176.53 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Jumper, 2-pole, open"
-			(at 176.53 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "5a11eb80-0d77-442d-b275-e731490a4b91")
-		)
-		(pin "1"
-			(uuid "45405098-01b4-4571-a268-68f68797f700")
-		)
-		(instances
-			(project "ESP32S3_Snifar"
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP4")
+					(reference "#PWR08")
 					(unit 1)
 				)
 			)
@@ -4523,15 +4445,15 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 132.08 34.29 90)
+		(at 124.46 34.29 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "21142f41-c8fb-4c39-b117-dcacd5d36d0f")
-		(property "Reference" "R3"
-			(at 131.064 28.702 90)
+		(property "Reference" "R8"
+			(at 123.444 28.702 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4539,7 +4461,7 @@
 			)
 		)
 		(property "Value" "2k2"
-			(at 131.064 31.242 90)
+			(at 123.444 31.242 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4547,7 +4469,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 132.08 36.068 90)
+			(at 124.46 36.068 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4556,7 +4478,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 132.08 34.29 0)
+			(at 124.46 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4565,7 +4487,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 132.08 34.29 0)
+			(at 124.46 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4582,7 +4504,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R3")
+					(reference "R8")
 					(unit 1)
 				)
 			)
@@ -4742,7 +4664,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 116.84 41.91 0)
+		(at 104.14 41.91 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4750,8 +4672,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2b45eb9c-f26e-4524-9d88-496bf4012908")
-		(property "Reference" "R5"
-			(at 119.38 40.6399 0)
+		(property "Reference" "R4"
+			(at 106.68 40.6399 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4760,7 +4682,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 119.38 43.1799 0)
+			(at 106.68 43.1799 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4769,7 +4691,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 115.062 41.91 90)
+			(at 102.362 41.91 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4778,7 +4700,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 116.84 41.91 0)
+			(at 104.14 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4787,7 +4709,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 116.84 41.91 0)
+			(at 104.14 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4804,7 +4726,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R5")
+					(reference "R4")
 					(unit 1)
 				)
 			)
@@ -4819,7 +4741,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "2cba1dce-c6ed-4605-93d6-140eea9f9d14")
-		(property "Reference" "R12"
+		(property "Reference" "R3"
 			(at 97.282 150.876 90)
 			(effects
 				(font
@@ -4873,7 +4795,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R12")
+					(reference "R3")
 					(unit 1)
 				)
 			)
@@ -4889,7 +4811,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "334d0da2-1941-44d8-acdf-b6d3f7a4114a")
-		(property "Reference" "#PWR02"
+		(property "Reference" "#PWR09"
 			(at 165.1 74.93 0)
 			(effects
 				(font
@@ -4939,7 +4861,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR02")
+					(reference "#PWR09")
 					(unit 1)
 				)
 			)
@@ -5021,7 +4943,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "42b5e05d-5090-4c96-9dc7-68572dbe7e21")
-		(property "Reference" "R11"
+		(property "Reference" "R10"
 			(at 151.13 132.0799 0)
 			(effects
 				(font
@@ -5075,7 +4997,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R11")
+					(reference "R10")
 					(unit 1)
 				)
 			)
@@ -5158,7 +5080,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "52bb2bc8-742c-4b89-b8fe-7761a48c3f70")
-		(property "Reference" "#PWR010"
+		(property "Reference" "#PWR03"
 			(at 88.9 175.26 0)
 			(effects
 				(font
@@ -5208,7 +5130,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR010")
+					(reference "#PWR03")
 					(unit 1)
 				)
 			)
@@ -5224,7 +5146,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "55e21a41-f708-4a76-a944-ea412f918c0c")
-		(property "Reference" "#PWR06"
+		(property "Reference" "#PWR07"
 			(at 139.7 151.13 0)
 			(effects
 				(font
@@ -5274,7 +5196,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR06")
+					(reference "#PWR07")
 					(unit 1)
 				)
 			)
@@ -5290,7 +5212,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "58aa62ca-bd1f-4ece-a22a-988cd831191e")
-		(property "Reference" "Q1"
+		(property "Reference" "Q2"
 			(at 135.89 102.87 0)
 			(effects
 				(font
@@ -5350,7 +5272,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "Q1")
+					(reference "Q2")
 					(unit 1)
 				)
 			)
@@ -5473,7 +5395,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5f15938e-4bc8-45db-ae86-1869953b1e1f")
-		(property "Reference" "J2"
+		(property "Reference" "J1"
 			(at 60.325 39.37 0)
 			(effects
 				(font
@@ -5532,7 +5454,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "J2")
+					(reference "J1")
 					(unit 1)
 				)
 			)
@@ -5547,7 +5469,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "5f1afd65-2b3c-4d1a-be79-ec8f97ad48a9")
-		(property "Reference" "R8"
+		(property "Reference" "R6"
 			(at 111.76 91.44 90)
 			(effects
 				(font
@@ -5601,7 +5523,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R8")
+					(reference "R6")
 					(unit 1)
 				)
 			)
@@ -5609,7 +5531,7 @@
 	)
 	(symbol
 		(lib_id "Jumper:Jumper_2_Open")
-		(at 69.85 27.94 270)
+		(at 69.85 34.29 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5617,7 +5539,7 @@
 		(dnp no)
 		(uuid "638b751a-451f-4a85-90b7-76cb85379b62")
 		(property "Reference" "JP1"
-			(at 73.66 29.718 0)
+			(at 73.66 36.068 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5625,7 +5547,7 @@
 			)
 		)
 		(property "Value" "Jumper_2_Open"
-			(at 73.66 28.956 0)
+			(at 73.66 35.306 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5634,7 +5556,7 @@
 			)
 		)
 		(property "Footprint" "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
-			(at 69.85 27.94 0)
+			(at 69.85 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5643,7 +5565,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 69.85 27.94 0)
+			(at 69.85 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5652,7 +5574,7 @@
 			)
 		)
 		(property "Description" "Jumper, 2-pole, open"
-			(at 69.85 27.94 0)
+			(at 69.85 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5676,6 +5598,74 @@
 		)
 	)
 	(symbol
+		(lib_id "Jumper:Jumper_2_Open")
+		(at 124.46 24.13 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "66f6b45c-0b77-4630-9b0d-22eb93bc54d4")
+		(property "Reference" "JP4"
+			(at 126.238 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Jumper_2_Open"
+			(at 125.476 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
+			(at 124.46 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 124.46 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Jumper, 2-pole, open"
+			(at 124.46 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "c31cf621-d96c-459b-856f-9529e100c71b")
+		)
+		(pin "1"
+			(uuid "ce339525-eb79-4289-9047-19390e31bffa")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "JP4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:Conn_01x06_Socket")
 		(at 233.68 25.4 90)
 		(unit 1)
@@ -5685,7 +5675,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6c5cc979-91c1-48dc-98ab-95fb5f9cb6ec")
-		(property "Reference" "J1"
+		(property "Reference" "J2"
 			(at 234.95 20.32 90)
 			(effects
 				(font
@@ -5749,7 +5739,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "J1")
+					(reference "J2")
 					(unit 1)
 				)
 			)
@@ -5764,7 +5754,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "6ca3d3e7-c7ae-45af-bf04-645d920b186e")
-		(property "Reference" "TP1"
+		(property "Reference" "TP3"
 			(at 141.224 20.828 0)
 			(effects
 				(font
@@ -5815,7 +5805,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP1")
+					(reference "TP3")
 					(unit 1)
 				)
 			)
@@ -5823,7 +5813,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 109.22 22.86 90)
+		(at 109.22 24.13 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5831,8 +5821,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6da981a0-b9f1-4503-9c64-03765d4e85ea")
-		(property "Reference" "R1"
-			(at 109.22 16.51 90)
+		(property "Reference" "R5"
+			(at 109.22 17.78 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5840,7 +5830,7 @@
 			)
 		)
 		(property "Value" "3k3"
-			(at 109.22 19.05 90)
+			(at 109.22 20.32 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5848,7 +5838,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 109.22 24.638 90)
+			(at 109.22 25.908 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5857,7 +5847,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 109.22 22.86 0)
+			(at 109.22 24.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5866,7 +5856,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 109.22 22.86 0)
+			(at 109.22 24.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5883,7 +5873,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R1")
+					(reference "R5")
 					(unit 1)
 				)
 			)
@@ -5891,7 +5881,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 123.19 69.85 0)
+		(at 115.57 63.5 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5899,8 +5889,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "82465532-9d4b-4f09-92f7-6833247d47cb")
-		(property "Reference" "#PWR04"
-			(at 123.19 76.2 0)
+		(property "Reference" "#PWR06"
+			(at 115.57 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5909,7 +5899,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 123.19 74.93 0)
+			(at 115.57 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5917,7 +5907,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 123.19 69.85 0)
+			(at 115.57 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5926,7 +5916,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 123.19 69.85 0)
+			(at 115.57 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5935,7 +5925,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 123.19 69.85 0)
+			(at 115.57 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5949,7 +5939,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR04")
+					(reference "#PWR06")
 					(unit 1)
 				)
 			)
@@ -5965,7 +5955,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "853dfc0e-3eeb-416d-bf6d-a37c21bac15b")
-		(property "Reference" "#PWR09"
+		(property "Reference" "#PWR02"
 			(at 78.74 168.91 0)
 			(effects
 				(font
@@ -6015,7 +6005,75 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR09")
+					(reference "#PWR02")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:Jumper_2_Open")
+		(at 133.35 34.29 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "885b500f-82c4-43ed-93de-f481a83c2653")
+		(property "Reference" "JP5"
+			(at 135.128 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Jumper_2_Open"
+			(at 134.366 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm"
+			(at 133.35 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 133.35 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Jumper, 2-pole, open"
+			(at 133.35 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "ab977f94-786d-4ef6-b2f0-e2d92a0b3987")
+		)
+		(pin "1"
+			(uuid "f4d5dc9d-1521-4657-b35d-0609a679dd83")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "JP5")
 					(unit 1)
 				)
 			)
@@ -6031,7 +6089,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8afd1b77-1b4d-4976-a95c-05320ed212ab")
-		(property "Reference" "JP2"
+		(property "Reference" "JP8"
 			(at 203.2 35.5599 90)
 			(effects
 				(font
@@ -6086,7 +6144,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP2")
+					(reference "JP8")
 					(unit 1)
 				)
 			)
@@ -6167,7 +6225,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "8e19931d-3d96-4c61-a808-eeaf93b4d644")
-		(property "Reference" "JP7"
+		(property "Reference" "JP6"
 			(at 156.21 112.522 90)
 			(effects
 				(font
@@ -6220,7 +6278,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP7")
+					(reference "JP6")
 					(unit 1)
 				)
 			)
@@ -6235,7 +6293,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "94ce13cf-4eaf-4112-8947-997155fefadc")
-		(property "Reference" "TP4"
+		(property "Reference" "TP5"
 			(at 249.174 43.688 0)
 			(effects
 				(font
@@ -6286,7 +6344,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP4")
+					(reference "TP5")
 					(unit 1)
 				)
 			)
@@ -6301,7 +6359,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "95bf87d7-3358-4f33-8927-d4724bcb71b5")
-		(property "Reference" "TP3"
+		(property "Reference" "TP4"
 			(at 249.174 36.068 0)
 			(effects
 				(font
@@ -6352,7 +6410,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP3")
+					(reference "TP4")
 					(unit 1)
 				)
 			)
@@ -6360,15 +6418,15 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 125.73 34.29 0)
+		(at 116.84 34.29 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "9a01642b-2dd7-4157-a789-ca234bfbccaf")
-		(property "Reference" "TP2"
-			(at 124.46 24.13 0)
+		(property "Reference" "TP1"
+			(at 116.332 36.576 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6377,7 +6435,7 @@
 			)
 		)
 		(property "Value" "TestPoint"
-			(at 124.46 26.67 0)
+			(at 116.332 39.116 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6386,7 +6444,7 @@
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_THTPad_2.0x2.0mm_Drill1.0mm"
-			(at 130.81 34.29 0)
+			(at 121.92 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6395,7 +6453,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 130.81 34.29 0)
+			(at 121.92 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6404,7 +6462,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 125.73 34.29 0)
+			(at 116.84 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6418,7 +6476,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP2")
+					(reference "TP1")
 					(unit 1)
 				)
 			)
@@ -6434,7 +6492,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "9b0cb1bc-1553-4114-b7be-a669b100f70a")
-		(property "Reference" "Q2"
+		(property "Reference" "Q1"
 			(at 75.184 155.702 0)
 			(effects
 				(font
@@ -6494,7 +6552,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "Q2")
+					(reference "Q1")
 					(unit 1)
 				)
 			)
@@ -6509,7 +6567,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a1ccdd5b-57db-4f2b-901d-60c81e37653c")
-		(property "Reference" "TP5"
+		(property "Reference" "TP2"
 			(at 131.064 88.9 0)
 			(effects
 				(font
@@ -6560,7 +6618,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP5")
+					(reference "TP2")
 					(unit 1)
 				)
 			)
@@ -6575,7 +6633,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "aadd46f6-2154-44e0-8fe9-fd6ed74016ba")
-		(property "Reference" "JP3"
+		(property "Reference" "JP2"
 			(at 77.47 60.198 0)
 			(effects
 				(font
@@ -6628,7 +6686,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP3")
+					(reference "JP2")
 					(unit 1)
 				)
 			)
@@ -6643,7 +6701,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b5d29a37-2a7d-4e0e-8bea-2bd180dd640d")
-		(property "Reference" "R4"
+		(property "Reference" "R12"
 			(at 241.3 35.306 90)
 			(effects
 				(font
@@ -6697,7 +6755,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R4")
+					(reference "R12")
 					(unit 1)
 				)
 			)
@@ -6713,7 +6771,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b79c85e7-f56f-493a-97dd-beb379bf0c0c")
-		(property "Reference" "JP5"
+		(property "Reference" "JP3"
 			(at 99.06 90.17 0)
 			(effects
 				(font
@@ -6768,7 +6826,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP5")
+					(reference "JP3")
 					(unit 1)
 				)
 			)
@@ -6783,7 +6841,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b8a043dc-9d8e-4d1c-807e-4e766ab0e447")
-		(property "Reference" "R6"
+		(property "Reference" "R13"
 			(at 241.554 43.688 90)
 			(effects
 				(font
@@ -6837,7 +6895,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R6")
+					(reference "R13")
 					(unit 1)
 				)
 			)
@@ -6853,7 +6911,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ba1267ee-a247-4af1-865d-f0681c79d741")
-		(property "Reference" "#PWR08"
+		(property "Reference" "#PWR010"
 			(at 208.28 151.13 0)
 			(effects
 				(font
@@ -6903,7 +6961,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR08")
+					(reference "#PWR010")
 					(unit 1)
 				)
 			)
@@ -6919,7 +6977,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "baf310b7-085b-4a50-bb98-0d020384320b")
-		(property "Reference" "#PWR05"
+		(property "Reference" "#PWR01"
 			(at 64.77 151.13 0)
 			(effects
 				(font
@@ -6969,7 +7027,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR05")
+					(reference "#PWR01")
 					(unit 1)
 				)
 			)
@@ -6984,7 +7042,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ca05055c-a166-442a-a445-c01465ea0abe")
-		(property "Reference" "R13"
+		(property "Reference" "R1"
 			(at 91.44 161.2899 0)
 			(effects
 				(font
@@ -7038,7 +7096,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R13")
+					(reference "R1")
 					(unit 1)
 				)
 			)
@@ -7054,7 +7112,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "cba90b1c-042d-4f28-8458-4aac40d67ba3")
-		(property "Reference" "#PWR01"
+		(property "Reference" "#PWR011"
 			(at 228.6 36.83 0)
 			(effects
 				(font
@@ -7104,7 +7162,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR01")
+					(reference "#PWR011")
 					(unit 1)
 				)
 			)
@@ -7112,7 +7170,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 123.19 57.15 0)
+		(at 115.57 50.8 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7121,7 +7179,7 @@
 		(fields_autoplaced yes)
 		(uuid "d7da8f03-a1d7-46da-a82a-82cab92461b2")
 		(property "Reference" "R7"
-			(at 125.73 55.8799 0)
+			(at 118.11 49.5299 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7130,7 +7188,7 @@
 			)
 		)
 		(property "Value" "4k7"
-			(at 125.73 58.4199 0)
+			(at 118.11 52.0699 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7139,7 +7197,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 121.412 57.15 90)
+			(at 113.792 50.8 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7148,7 +7206,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 123.19 57.15 0)
+			(at 115.57 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7157,7 +7215,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 123.19 57.15 0)
+			(at 115.57 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7189,7 +7247,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ef568332-6193-49aa-a436-44cdc5f062f4")
-		(property "Reference" "JP6"
+		(property "Reference" "JP7"
 			(at 158.496 93.218 0)
 			(effects
 				(font
@@ -7242,7 +7300,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "JP6")
+					(reference "JP7")
 					(unit 1)
 				)
 			)
@@ -7250,7 +7308,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 116.84 69.85 0)
+		(at 104.14 69.85 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7258,8 +7316,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f2fbd81a-98ef-4501-870e-f4e10c6dc675")
-		(property "Reference" "#PWR03"
-			(at 116.84 76.2 0)
+		(property "Reference" "#PWR05"
+			(at 104.14 76.2 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7268,7 +7326,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 116.84 74.93 0)
+			(at 104.14 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7276,7 +7334,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 116.84 69.85 0)
+			(at 104.14 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7285,7 +7343,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 116.84 69.85 0)
+			(at 104.14 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7294,7 +7352,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 116.84 69.85 0)
+			(at 104.14 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7308,7 +7366,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR03")
+					(reference "#PWR05")
 					(unit 1)
 				)
 			)
@@ -7316,7 +7374,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 109.22 34.29 90)
+		(at 95.25 34.29 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7325,7 +7383,7 @@
 		(fields_autoplaced yes)
 		(uuid "f4cd9452-9a1b-4a57-a731-ae0dd1c382df")
 		(property "Reference" "R2"
-			(at 109.22 27.94 90)
+			(at 95.25 27.94 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7333,7 +7391,7 @@
 			)
 		)
 		(property "Value" "39k"
-			(at 109.22 30.48 90)
+			(at 95.25 30.48 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7341,7 +7399,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 109.22 36.068 90)
+			(at 95.25 36.068 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7350,7 +7408,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 109.22 34.29 0)
+			(at 95.25 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7359,7 +7417,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 109.22 34.29 0)
+			(at 95.25 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7392,7 +7450,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f64ebe7d-54be-430f-aee1-87bafc26a722")
-		(property "Reference" "#PWR011"
+		(property "Reference" "#PWR04"
 			(at 93.98 179.07 0)
 			(effects
 				(font
@@ -7442,7 +7500,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR011")
+					(reference "#PWR04")
 					(unit 1)
 				)
 			)
@@ -7457,7 +7515,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "fe4f4c5d-6463-4628-bc77-73bb42fdaa0d")
-		(property "Reference" "R10"
+		(property "Reference" "R11"
 			(at 153.416 99.06 90)
 			(effects
 				(font
@@ -7509,7 +7567,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R10")
+					(reference "R11")
 					(unit 1)
 				)
 			)
