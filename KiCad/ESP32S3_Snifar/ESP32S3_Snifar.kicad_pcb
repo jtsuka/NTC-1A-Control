@@ -3164,6 +3164,162 @@
 		)
 		(embedded_fonts no)
 	)
+	(footprint "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
+		(layer "F.Cu")
+		(uuid "529b5c63-ae14-4a82-94d6-5930930f7876")
+		(at 60.03 52.27)
+		(descr "wire loop as test point, loop diameter 2.5mm, hole diameter 1.0mm")
+		(tags "test point wire loop bead")
+		(property "Reference" "TP6"
+			(at 0.7 2.5 0)
+			(layer "F.SilkS")
+			(uuid "d585cdb3-3a91-40e6-ac59-ebbe20698462")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "TestPoint"
+			(at 0 -2.8 0)
+			(layer "F.Fab")
+			(uuid "ca291dde-081e-4df6-8a5c-f5d985a4be0d")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "3d42758c-6304-43a3-b05f-261d7eb26432")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "14eefa42-a6ba-40b7-9546-e7704b64c0b1")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "Pin* Test*")
+		(path "/bdd673fe-6b13-413d-9b0a-f2b384a27745")
+		(sheetname "/")
+		(sheetfile "ESP32S3_Snifar.kicad_sch")
+		(attr through_hole)
+		(fp_circle
+			(center 0 0)
+			(end 1.5 0)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "b109243c-8c9a-4a9f-9ceb-01f319c69f5c")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.8 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "91dad886-727c-4b9e-ab1c-a8fd94004007")
+		)
+		(fp_line
+			(start -1.3 -0.2)
+			(end -1.3 0.2)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "196e1240-41c0-445c-8bf6-0b3206166f97")
+		)
+		(fp_line
+			(start -1.3 0.2)
+			(end 1.3 0.2)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "40b2d71a-e138-4ab4-98fe-eadcb74b758d")
+		)
+		(fp_line
+			(start 1.3 -0.2)
+			(end -1.3 -0.2)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "25b098f9-8f23-4ee2-b179-f21af35b2d2b")
+		)
+		(fp_line
+			(start 1.3 0.2)
+			(end 1.3 -0.2)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "baa133fc-0ba0-474c-8bee-80a940cada6b")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0.7 2.5 0)
+			(layer "F.Fab")
+			(uuid "83ebb092-e5cd-4b81-a04a-19f9c080e4c7")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" thru_hole circle
+			(at 0 0)
+			(size 2 2)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net 10 "GND")
+			(pinfunction "1")
+			(pintype "passive")
+			(uuid "39cd4584-2277-45c9-b67e-4cf9fbc55db9")
+		)
+		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/TestPoint.3dshapes/TestPoint_Loop_D2.50mm_Drill1.0mm.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 		(layer "F.Cu")
 		(uuid "53c74813-f3d8-4c97-919e-92a97d1480d2")
@@ -4252,6 +4408,162 @@
 		)
 		(embedded_fonts no)
 		(model "${KICAD9_3DMODEL_DIR}/Resistor_THT.3dshapes/R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
+	(footprint "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
+		(layer "F.Cu")
+		(uuid "8a2fe25f-914a-47d9-92f1-7f32b6dd8571")
+		(at 114.31 67.76)
+		(descr "wire loop as test point, loop diameter 2.5mm, hole diameter 1.0mm")
+		(tags "test point wire loop bead")
+		(property "Reference" "TP7"
+			(at 0.7 2.5 0)
+			(layer "F.SilkS")
+			(uuid "dd3ef363-2efd-4478-a2dd-d5b44597c5e2")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "TestPoint"
+			(at 0 -2.8 0)
+			(layer "F.Fab")
+			(uuid "61164663-e59a-45a9-8c41-53bd354ea5f8")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "b18e7c11-17c5-498d-ac6d-1adaf995b2fa")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "120c325e-74f9-4bc3-8b7c-197a5a47b527")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "Pin* Test*")
+		(path "/d88b9bb5-a9db-4053-882b-0b93959ca3d5")
+		(sheetname "/")
+		(sheetfile "ESP32S3_Snifar.kicad_sch")
+		(attr through_hole)
+		(fp_circle
+			(center 0 0)
+			(end 1.5 0)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "bda5549e-50bc-48f3-b3ac-e9de9222b6ba")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.8 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "85c059a9-ea80-4449-9d6e-4c6b3874e15f")
+		)
+		(fp_line
+			(start -1.3 -0.2)
+			(end -1.3 0.2)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "043eb1a9-78b6-44d5-9e78-bf79e20016fa")
+		)
+		(fp_line
+			(start -1.3 0.2)
+			(end 1.3 0.2)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "e74a8f81-4e04-45bd-9099-94c2e5fcadcd")
+		)
+		(fp_line
+			(start 1.3 -0.2)
+			(end -1.3 -0.2)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "2b678750-be7b-4227-9ec7-a785f7a1c1a6")
+		)
+		(fp_line
+			(start 1.3 0.2)
+			(end 1.3 -0.2)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "58a59f2c-f8ae-488d-a3ce-c53b7e48b6ce")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0.7 2.5 0)
+			(layer "F.Fab")
+			(uuid "1615b031-2112-488d-b5bf-e982746d09e5")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" thru_hole circle
+			(at 0 0)
+			(size 2 2)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net 10 "GND")
+			(pinfunction "1")
+			(pintype "passive")
+			(uuid "27507dc2-10cf-4f1f-80df-c9ad685702ca")
+		)
+		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/TestPoint.3dshapes/TestPoint_Loop_D2.50mm_Drill1.0mm.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -11095,28 +11407,28 @@
 		(uuid "e8a57c8f-c863-4f95-a674-7fd6c5c6d783")
 	)
 	(segment
-		(start 52.64 82.67)
-		(end 52.94 82.97)
+		(start 52.92 82.67)
+		(end 52.94 82.69)
 		(width 0.2)
 		(layer "B.Cu")
 		(net 62)
-		(uuid "2e35e739-9724-4bf4-adfc-867b4d01a8dd")
-	)
-	(segment
-		(start 52.94 89.88)
-		(end 52.94 82.97)
-		(width 0.2)
-		(layer "B.Cu")
-		(net 62)
-		(uuid "3b7c2ca0-4732-48b6-9a77-67063979e984")
+		(uuid "6c2c2ca3-133f-404a-aa68-afa6b2fb9211")
 	)
 	(segment
 		(start 50.68 82.67)
-		(end 52.64 82.67)
+		(end 52.92 82.67)
 		(width 0.2)
 		(layer "B.Cu")
 		(net 62)
-		(uuid "faccb91c-138f-4e25-8c2c-78843c847fbc")
+		(uuid "7e20a413-1264-44d4-b0fe-5eb2d2e2639c")
+	)
+	(segment
+		(start 52.94 82.69)
+		(end 52.94 89.88)
+		(width 0.2)
+		(layer "B.Cu")
+		(net 62)
+		(uuid "ca05216f-8fa7-4966-9a20-2b2f8085e866")
 	)
 	(segment
 		(start 47.93 75.78)
