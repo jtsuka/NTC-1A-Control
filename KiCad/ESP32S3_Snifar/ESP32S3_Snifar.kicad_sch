@@ -4595,7 +4595,7 @@
 		(uuid "2933303e-a45a-4e67-b6d8-ae9c3b2b588b")
 	)
 	(label "SIG_FOR_24V_or_15V"
-		(at 64.77 34.29 0)
+		(at 66.04 34.29 0)
 		(effects
 			(font
 				(size 1 1)
@@ -4910,7 +4910,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "21142f41-c8fb-4c39-b117-dcacd5d36d0f")
-		(property "Reference" "R8"
+		(property "Reference" "R9"
 			(at 123.444 28.702 90)
 			(effects
 				(font
@@ -4962,7 +4962,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R8")
+					(reference "R9")
 					(unit 1)
 				)
 			)
@@ -5194,7 +5194,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2b45eb9c-f26e-4524-9d88-496bf4012908")
-		(property "Reference" "R4"
+		(property "Reference" "R5"
 			(at 106.68 40.6399 0)
 			(effects
 				(font
@@ -5248,7 +5248,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R4")
+					(reference "R5")
 					(unit 1)
 				)
 			)
@@ -5263,7 +5263,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "2cba1dce-c6ed-4605-93d6-140eea9f9d14")
-		(property "Reference" "R3"
+		(property "Reference" "R4"
 			(at 97.282 150.876 90)
 			(effects
 				(font
@@ -5317,7 +5317,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R3")
+					(reference "R4")
 					(unit 1)
 				)
 			)
@@ -5398,7 +5398,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "390dfdd8-326c-4d4f-9164-9871a32e6503")
-		(property "Reference" "R9"
+		(property "Reference" "R10"
 			(at 145.796 91.44 90)
 			(effects
 				(font
@@ -5450,7 +5450,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R9")
+					(reference "R10")
 					(unit 1)
 				)
 			)
@@ -5465,7 +5465,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "42b5e05d-5090-4c96-9dc7-68572dbe7e21")
-		(property "Reference" "R10"
+		(property "Reference" "R11"
 			(at 151.13 132.0799 0)
 			(effects
 				(font
@@ -5519,7 +5519,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R10")
+					(reference "R11")
 					(unit 1)
 				)
 			)
@@ -6127,7 +6127,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "5f1afd65-2b3c-4d1a-be79-ec8f97ad48a9")
-		(property "Reference" "R6"
+		(property "Reference" "R7"
 			(at 111.76 91.44 90)
 			(effects
 				(font
@@ -6181,7 +6181,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R6")
+					(reference "R7")
 					(unit 1)
 				)
 			)
@@ -6197,7 +6197,7 @@
 		(dnp no)
 		(uuid "638b751a-451f-4a85-90b7-76cb85379b62")
 		(property "Reference" "JP1"
-			(at 72.898 37.338 0)
+			(at 72.39 38.354 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6344,7 +6344,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "6ca3d3e7-c7ae-45af-bf04-645d920b186e")
-		(property "Reference" "TP3"
+		(property "Reference" "TP5"
 			(at 141.224 20.828 0)
 			(effects
 				(font
@@ -6395,7 +6395,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP3")
+					(reference "TP5")
 					(unit 1)
 				)
 			)
@@ -6411,7 +6411,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6da981a0-b9f1-4503-9c64-03765d4e85ea")
-		(property "Reference" "R5"
+		(property "Reference" "R6"
 			(at 109.22 17.78 90)
 			(effects
 				(font
@@ -6463,7 +6463,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R5")
+					(reference "R6")
 					(unit 1)
 				)
 			)
@@ -6607,7 +6607,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "83e76979-709e-4618-a900-5f6f2e90fa02")
-		(property "Reference" "C2"
+		(property "Reference" "C1"
 			(at 190.246 130.81 0)
 			(effects
 				(font
@@ -6661,7 +6661,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "C2")
+					(reference "C1")
 					(unit 1)
 				)
 			)
@@ -6947,7 +6947,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "94ce13cf-4eaf-4112-8947-997155fefadc")
-		(property "Reference" "TP5"
+		(property "Reference" "TP7"
 			(at 249.174 43.688 0)
 			(effects
 				(font
@@ -6998,7 +6998,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP5")
+					(reference "TP7")
 					(unit 1)
 				)
 			)
@@ -7013,7 +7013,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "95bf87d7-3358-4f33-8927-d4724bcb71b5")
-		(property "Reference" "TP4"
+		(property "Reference" "TP6"
 			(at 249.174 36.068 0)
 			(effects
 				(font
@@ -7064,7 +7064,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP4")
+					(reference "TP6")
 					(unit 1)
 				)
 			)
@@ -7079,7 +7079,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "9a01642b-2dd7-4157-a789-ca234bfbccaf")
-		(property "Reference" "TP1"
+		(property "Reference" "TP2"
 			(at 116.332 36.576 0)
 			(effects
 				(font
@@ -7130,7 +7130,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP1")
+					(reference "TP2")
 					(unit 1)
 				)
 			)
@@ -7221,7 +7221,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a1ccdd5b-57db-4f2b-901d-60c81e37653c")
-		(property "Reference" "TP2"
+		(property "Reference" "TP3"
 			(at 131.064 88.9 0)
 			(effects
 				(font
@@ -7272,7 +7272,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP2")
+					(reference "TP3")
 					(unit 1)
 				)
 			)
@@ -7287,7 +7287,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a4da64f8-0be7-4bca-83b5-f349661c0c5a")
-		(property "Reference" "C1"
+		(property "Reference" "C2"
 			(at 197.104 130.81 0)
 			(effects
 				(font
@@ -7341,7 +7341,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "C1")
+					(reference "C2")
 					(unit 1)
 				)
 			)
@@ -7424,7 +7424,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b4fae3cf-bc5e-467c-9a3c-7bf3daad4fce")
-		(property "Reference" "R12"
+		(property "Reference" "R13"
 			(at 184.15 131.064 0)
 			(effects
 				(font
@@ -7478,7 +7478,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R12")
+					(reference "R13")
 					(unit 1)
 				)
 			)
@@ -7493,7 +7493,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b5d29a37-2a7d-4e0e-8bea-2bd180dd640d")
-		(property "Reference" "R12"
+		(property "Reference" "R14"
 			(at 241.3 35.306 90)
 			(effects
 				(font
@@ -7547,7 +7547,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R12")
+					(reference "R14")
 					(unit 1)
 				)
 			)
@@ -7633,7 +7633,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b8a043dc-9d8e-4d1c-807e-4e766ab0e447")
-		(property "Reference" "R13"
+		(property "Reference" "R15"
 			(at 241.554 43.688 90)
 			(effects
 				(font
@@ -7687,7 +7687,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R13")
+					(reference "R15")
 					(unit 1)
 				)
 			)
@@ -7834,7 +7834,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "bdd673fe-6b13-413d-9b0a-f2b384a27745")
-		(property "Reference" "TP6"
+		(property "Reference" "TP4"
 			(at 132.08 130.556 0)
 			(effects
 				(font
@@ -7885,7 +7885,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP6")
+					(reference "TP4")
 					(unit 1)
 				)
 			)
@@ -7900,7 +7900,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ca05055c-a166-442a-a445-c01465ea0abe")
-		(property "Reference" "R1"
+		(property "Reference" "R2"
 			(at 91.44 161.2899 0)
 			(effects
 				(font
@@ -7954,7 +7954,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R1")
+					(reference "R2")
 					(unit 1)
 				)
 			)
@@ -8036,7 +8036,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d7da8f03-a1d7-46da-a82a-82cab92461b2")
-		(property "Reference" "R7"
+		(property "Reference" "R8"
 			(at 118.11 49.5299 0)
 			(effects
 				(font
@@ -8090,7 +8090,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R7")
+					(reference "R8")
 					(unit 1)
 				)
 			)
@@ -8105,7 +8105,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "d88b9bb5-a9db-4053-882b-0b93959ca3d5")
-		(property "Reference" "TP7"
+		(property "Reference" "TP1"
 			(at 96.52 64.516 0)
 			(effects
 				(font
@@ -8156,7 +8156,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "TP7")
+					(reference "TP1")
 					(unit 1)
 				)
 			)
@@ -8171,7 +8171,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "eddbcfda-fbc7-46e2-8496-7b926b4dc399")
-		(property "Reference" "R14"
+		(property "Reference" "R1"
 			(at 86.36 29.464 90)
 			(effects
 				(font
@@ -8225,7 +8225,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R14")
+					(reference "R1")
 					(unit 1)
 				)
 			)
@@ -8374,7 +8374,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f4cd9452-9a1b-4a57-a731-ae0dd1c382df")
-		(property "Reference" "R2"
+		(property "Reference" "R3"
 			(at 94.234 29.21 90)
 			(effects
 				(font
@@ -8426,7 +8426,7 @@
 		(instances
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R2")
+					(reference "R3")
 					(unit 1)
 				)
 			)
@@ -8507,7 +8507,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "fe4f4c5d-6463-4628-bc77-73bb42fdaa0d")
-		(property "Reference" "R11"
+		(property "Reference" "R12"
 			(at 153.416 99.06 90)
 			(effects
 				(font
@@ -8559,7 +8559,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R11")
+					(reference "R12")
 					(unit 1)
 				)
 			)
