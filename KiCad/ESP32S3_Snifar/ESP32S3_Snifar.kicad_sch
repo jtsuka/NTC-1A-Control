@@ -3736,16 +3736,6 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 34.29) (xy 91.44 34.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "18b657fd-1f7f-41c1-9865-38de444127bd")
-	)
-	(wire
-		(pts
 			(xy 212.09 76.2) (xy 212.09 63.5)
 		)
 		(stroke
@@ -4133,6 +4123,26 @@
 			(type default)
 		)
 		(uuid "7a8a1140-d646-400f-ad62-cbe5cf7de6c8")
+	)
+	(wire
+		(pts
+			(xy 64.77 34.29) (xy 81.28 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "87d1edd8-6be3-4bcb-8a84-c9a87e2be02c")
+	)
+	(wire
+		(pts
+			(xy 88.9 34.29) (xy 91.44 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "88bc9210-ba33-4a44-93ce-1b607850a9f5")
 	)
 	(wire
 		(pts
@@ -4585,7 +4595,7 @@
 		(uuid "2933303e-a45a-4e67-b6d8-ae9c3b2b588b")
 	)
 	(label "SIG_FOR_24V_or_15V"
-		(at 74.93 34.29 0)
+		(at 64.77 34.29 0)
 		(effects
 			(font
 				(size 1 1)
@@ -6187,7 +6197,7 @@
 		(dnp no)
 		(uuid "638b751a-451f-4a85-90b7-76cb85379b62")
 		(property "Reference" "JP1"
-			(at 73.66 36.068 0)
+			(at 72.898 37.338 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6467,10 +6477,9 @@
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "78a5184c-20b4-434d-800f-6e6e40a7c12d")
 		(property "Reference" "H1-M3"
-			(at 52.07 22.8599 0)
+			(at 45.974 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6479,7 +6488,7 @@
 			)
 		)
 		(property "Value" "MountingHole"
-			(at 52.07 25.3999 0)
+			(at 45.974 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7324,10 +7333,10 @@
 			)
 		)
 		(pin "1"
-			(uuid "9346e5b8-37b1-465f-a711-3cd8804a6f8f")
+			(uuid "9346e5b8-37b1-465f-a711-3cd8804a6f90")
 		)
 		(pin "2"
-			(uuid "7867d1be-f1e4-472e-b555-27e0b9656585")
+			(uuid "7867d1be-f1e4-472e-b555-27e0b9656586")
 		)
 		(instances
 			(project ""
@@ -8154,6 +8163,75 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 85.09 34.29 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "eddbcfda-fbc7-46e2-8496-7b926b4dc399")
+		(property "Reference" "R14"
+			(at 86.36 29.464 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "1k"
+			(at 85.09 31.496 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 85.09 32.512 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 85.09 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 85.09 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c8552d5a-5e42-4db1-a245-8ec92dcda413")
+		)
+		(pin "2"
+			(uuid "3fbfcfc1-7b0c-4bc3-8132-a3e9b17e181e")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "R14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Jumper:Jumper_2_Open")
 		(at 161.29 96.52 0)
 		(unit 1)
@@ -8295,10 +8373,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "f4cd9452-9a1b-4a57-a731-ae0dd1c382df")
 		(property "Reference" "R2"
-			(at 95.25 27.94 90)
+			(at 94.234 29.21 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8306,7 +8383,7 @@
 			)
 		)
 		(property "Value" "39k"
-			(at 95.25 30.48 90)
+			(at 94.742 31.496 90)
 			(effects
 				(font
 					(size 1.27 1.27)
