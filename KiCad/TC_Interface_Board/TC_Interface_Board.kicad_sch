@@ -6716,7 +6716,7 @@
 		(dnp no)
 		(uuid "443b002c-edbe-40ac-a989-da98ccc7fc97")
 		(property "Reference" "D1"
-			(at 75.946 31.242 0)
+			(at 76.2 30.734 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6724,7 +6724,7 @@
 			)
 		)
 		(property "Value" "1N4007"
-			(at 75.946 28.702 0)
+			(at 76.2 28.194 0)
 			(effects
 				(font
 					(size 1.27 1.27)
