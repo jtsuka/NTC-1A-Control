@@ -6723,7 +6723,7 @@
 				)
 			)
 		)
-		(property "Value" "1N4148"
+		(property "Value" "1N4007"
 			(at 75.946 28.702 0)
 			(effects
 				(font
