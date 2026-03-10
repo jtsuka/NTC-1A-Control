@@ -3337,6 +3337,12 @@
 		(uuid "b6a2a288-35d7-49b1-9d51-adf89a79ad41")
 	)
 	(junction
+		(at 111.76 34.29)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "05508305-3532-4c8f-a9e3-e4a62ed8d60e")
+	)
+	(junction
 		(at 64.77 52.07)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4126,6 +4132,16 @@
 	)
 	(wire
 		(pts
+			(xy 111.76 34.29) (xy 116.84 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "82ac0cc5-e4bd-4113-8f50-48aff74acda5")
+	)
+	(wire
+		(pts
 			(xy 64.77 34.29) (xy 81.28 34.29)
 		)
 		(stroke
@@ -4506,6 +4522,16 @@
 	)
 	(wire
 		(pts
+			(xy 111.76 41.91) (xy 111.76 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f6b41e64-e196-41e3-9a43-6983766ff5e1")
+	)
+	(wire
+		(pts
 			(xy 64.77 34.29) (xy 64.77 44.45)
 		)
 		(stroke
@@ -4526,7 +4552,7 @@
 	)
 	(wire
 		(pts
-			(xy 104.14 34.29) (xy 116.84 34.29)
+			(xy 104.14 34.29) (xy 111.76 34.29)
 		)
 		(stroke
 			(width 0)
@@ -4663,6 +4689,16 @@
 			(justify left bottom)
 		)
 		(uuid "98c91c8e-681c-429d-a8b9-878e3fba4b94")
+	)
+	(label "Do Not Populate"
+		(at 111.76 60.96 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a604d90f-da9e-4e9f-9af4-660bba53bb45")
 	)
 	(label "MOS_GATE"
 		(at 148.59 110.49 0)
@@ -5192,10 +5228,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "2b45eb9c-f26e-4524-9d88-496bf4012908")
 		(property "Reference" "R5"
-			(at 106.68 40.6399 0)
+			(at 106.172 41.402 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5204,7 +5239,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 106.68 43.1799 0)
+			(at 106.172 43.942 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7213,6 +7248,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 111.76 69.85 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9bc47f5a-94ed-497d-920d-7a7c1b7816ba")
+		(property "Reference" "#PWR012"
+			(at 111.76 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 111.76 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 111.76 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 111.76 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 111.76 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6319489c-aa38-4849-8a12-222840b35d6a")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "#PWR012")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:TestPoint")
 		(at 139.7 96.52 0)
 		(unit 1)
@@ -7820,6 +7921,75 @@
 			(project ""
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "#PWR01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 111.76 38.1 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "bd1a03da-e695-46cf-95ed-86953bc4a8de")
+		(property "Reference" "C3"
+			(at 105.918 35.306 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "101"
+			(at 105.918 37.846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm"
+			(at 112.7252 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 111.76 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 111.76 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f138f890-acb1-44f0-8fc2-0eedbfed515c")
+		)
+		(pin "2"
+			(uuid "b27a44a2-0d22-4523-bd5b-55d64fe45f8f")
+		)
+		(instances
+			(project ""
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "C3")
 					(unit 1)
 				)
 			)
