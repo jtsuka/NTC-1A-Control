@@ -3326,9 +3326,9 @@
 		)
 		(uuid "8a0ca78b-3ae3-4960-bcf0-cd62115a6d17")
 	)
-	(text "SIG"
+	(text "RX_SIG"
 		(exclude_from_sim no)
-		(at 67.056 43.18 0)
+		(at 68.834 42.926 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3559,10 +3559,6 @@
 		(uuid "d1f3f77d-0085-4bca-9fea-c48f6ddc20b1")
 	)
 	(no_connect
-		(at 64.77 49.53)
-		(uuid "d8a413d4-1017-4ff8-ab7d-d92d1b981560")
-	)
-	(no_connect
 		(at 196.85 76.2)
 		(uuid "d9292604-993f-43f7-b1d7-e898187ba9e8")
 	)
@@ -3649,6 +3645,16 @@
 			(type default)
 		)
 		(uuid "061401ba-47a3-4348-b673-9c5029d42120")
+	)
+	(wire
+		(pts
+			(xy 67.31 52.07) (xy 64.77 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "07628aaf-6af6-48bb-8ce2-42a5eeb64867")
 	)
 	(wire
 		(pts
@@ -3942,6 +3948,16 @@
 	)
 	(wire
 		(pts
+			(xy 64.77 46.99) (xy 67.31 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "469042e1-eb29-40ef-bd7e-045e72410204")
+	)
+	(wire
+		(pts
 			(xy 200.66 41.91) (xy 200.66 76.2)
 		)
 		(stroke
@@ -3979,6 +3995,16 @@
 			(type default)
 		)
 		(uuid "4a44b988-0139-43da-9c94-230034c4c63d")
+	)
+	(wire
+		(pts
+			(xy 64.77 49.53) (xy 73.66 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4a802359-1fc5-49a4-9790-7a00122ce875")
 	)
 	(wire
 		(pts
@@ -4029,6 +4055,16 @@
 			(type default)
 		)
 		(uuid "5cc3ea3a-0393-438f-bfa2-0fc16771f733")
+	)
+	(wire
+		(pts
+			(xy 73.66 49.53) (xy 73.66 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5ce47936-ae6c-4e70-8eb5-9d0f62d3ca68")
 	)
 	(wire
 		(pts
@@ -4212,16 +4248,6 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 46.99) (xy 73.66 46.99)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a4162572-7611-428b-8816-a4be9b3de2cb")
-	)
-	(wire
-		(pts
 			(xy 262.89 63.5) (xy 262.89 40.64)
 		)
 		(stroke
@@ -4402,16 +4428,6 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 46.99) (xy 73.66 53.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d1bd2e64-2091-44a8-87d4-b5a314da6b12")
-	)
-	(wire
-		(pts
 			(xy 154.94 43.18) (xy 165.1 43.18)
 		)
 		(stroke
@@ -4459,6 +4475,16 @@
 			(type default)
 		)
 		(uuid "daca6dea-065d-46c3-a164-d4daa30c6446")
+	)
+	(wire
+		(pts
+			(xy 67.31 46.99) (xy 67.31 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ddf3dcc1-b867-4f58-b5e1-e3c445c3d943")
 	)
 	(wire
 		(pts
@@ -4609,6 +4635,16 @@
 			(justify left bottom)
 		)
 		(uuid "1328b6e1-c47a-46b2-9039-5525ff6fd127")
+	)
+	(label "TX"
+		(at 71.12 49.53 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "28bf6d6d-a1b4-4d7b-8623-8185bd38e035")
 	)
 	(label "MCU_RX"
 		(at 200.66 58.42 0)
