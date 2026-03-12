@@ -19,17 +19,40 @@
 取引先名称 = torihikisaki_name
 
 ランク情報（275）
-得意先 = torihikisaki_code
-得意先名 = torihikisaki_name
-A = rank_A
-AA = rank_AA
-油圧 = rank_yuatu
-A01 = rank_A01
-A02 = rank_A02
-A03 = rank_A03
-C01 = rank_C01
-ｷﾝｸ = rank_kinku
-亜棒 = rank_aenbou
+    // 基本ランク
+    'CC':      RANK_APP_FC.rank_cc,
+    'A':       RANK_APP_FC.rank_a,
+    'AA':      RANK_APP_FC.rank_aa,
+    'AX':      RANK_APP_FC.rank_ax,
+    'B':       RANK_APP_FC.rank_b,
+    'BB':      RANK_APP_FC.rank_bb,
+    'C':       RANK_APP_FC.rank_c,
+    '仕入':     RANK_APP_FC.rank_shiire,
+
+    // 特殊名称
+    'ミツワ':   RANK_APP_FC.rank_mika,
+    'ミカド':   RANK_APP_FC.rank_mika0,
+    'F':       RANK_APP_FC.rank_f,
+    '特H':     RANK_APP_FC.rank_tokuh,
+    'H':       RANK_APP_FC.rank_h,
+    'G':       RANK_APP_FC.rank_g,
+    'GX':      RANK_APP_FC.rank_gx,
+    '油圧':     RANK_APP_FC.rank_yuatsu,
+    'YUATSU':  RANK_APP_FC.rank_yuatsu,
+
+    // A系
+    'A01':     RANK_APP_FC.rank_a01,
+    'A02':     RANK_APP_FC.rank_a02,
+    'A03':     RANK_APP_FC.rank_a03,
+    'A11':     RANK_APP_FC.rank_kinku,
+    'A12':     RANK_APP_FC.rank_peaen,
+    'A13':     RANK_APP_FC.rank_aenbou,
+
+    // 名称変換
+    'レイコ':   RANK_APP_FC.rank_c01,
+    'サイレ':   RANK_APP_FC.rank_saire,
+    '金具A':    RANK_APP_FC.rank_a,
+    '仕組A':    RANK_APP_FC.rank_a
 
 商品コード検索（204）
 品目番号 = hinmokubango
