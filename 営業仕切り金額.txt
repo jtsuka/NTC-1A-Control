@@ -1,0 +1,39 @@
+仕切り金額照会=https://bcurbkixz609.cybozu.com/k/277
+取引先情報-20260310=https://bcurbkixz609.cybozu.com/k/278
+ランク情報=https://bcurbkixz609.cybozu.com/k/275
+商品コード検索=https://bcurbkixz609.cybozu.com/k/204
+
+仕切り金額照会（277）
+取引先コード = torihikisaki_code
+取引先名 = torihikisaki_name
+商品コード = shohin_code
+商品名 = shohin_name
+定価 = teika
+営業原価 = eigyo_genka
+商品ランク名 = rank_name
+商品ランク係数 = rank_rate
+仕切金額 = shikiri_kingaku
+
+取引先情報-20260310（278）
+取引先番号 = torihikisaki_code
+取引先名称 = torihikisaki_name
+
+ランク情報（275）
+得意先 = torihikisaki_code
+得意先名 = torihikisaki_name
+A = rank_A
+AA = rank_AA
+油圧 = rank_yuatu
+A01 = rank_A01
+A02 = rank_A02
+A03 = rank_A03
+C01 = rank_C01
+ｷﾝｸ = rank_kinku
+亜棒 = rank_aenbou
+
+商品コード検索（204）
+品目番号 = hinmokubango
+商品情報 = hinmokumei
+定価 = teika
+営業原価 = eigyogenka
+ランク名 = rankumei
