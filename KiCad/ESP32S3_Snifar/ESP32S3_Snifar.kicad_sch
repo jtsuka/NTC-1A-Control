@@ -4726,16 +4726,6 @@
 		)
 		(uuid "98c91c8e-681c-429d-a8b9-878e3fba4b94")
 	)
-	(label "Do Not Populate"
-		(at 111.76 60.96 90)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "a604d90f-da9e-4e9f-9af4-660bba53bb45")
-	)
 	(label "MOS_GATE"
 		(at 148.59 110.49 0)
 		(effects
