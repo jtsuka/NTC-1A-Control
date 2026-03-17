@@ -3433,6 +3433,12 @@
 		(uuid "b2bddfb2-db2e-4ef7-b44e-c888cb1ba141")
 	)
 	(junction
+		(at 99.06 102.87)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b4b494ac-0213-4dd5-847b-6ddc0822655a")
+	)
+	(junction
 		(at 191.77 135.89)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3668,7 +3674,7 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 100.33) (xy 99.06 119.38)
+			(xy 99.06 100.33) (xy 99.06 102.87)
 		)
 		(stroke
 			(width 0)
@@ -3688,6 +3694,16 @@
 	)
 	(wire
 		(pts
+			(xy 99.06 102.87) (xy 99.06 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0ef882aa-1f50-47de-8845-9f9247d6b012")
+	)
+	(wire
+		(pts
 			(xy 115.57 54.61) (xy 115.57 63.5)
 		)
 		(stroke
@@ -3695,16 +3711,6 @@
 			(type default)
 		)
 		(uuid "0f9ae6ef-552b-4d28-8326-c7b589b4cd49")
-	)
-	(wire
-		(pts
-			(xy 105.41 96.52) (xy 110.49 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "109417bf-4bbd-4101-8f1c-5efd3c367dc9")
 	)
 	(wire
 		(pts
@@ -4078,6 +4084,16 @@
 	)
 	(wire
 		(pts
+			(xy 73.66 90.17) (xy 99.06 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5ec1edf3-873a-41fc-9726-1f111a1ddceb")
+	)
+	(wire
+		(pts
 			(xy 120.65 21.59) (xy 128.27 21.59)
 		)
 		(stroke
@@ -4105,16 +4121,6 @@
 			(type default)
 		)
 		(uuid "654c0b4e-9709-456f-a857-805386d2c554")
-	)
-	(wire
-		(pts
-			(xy 73.66 96.52) (xy 92.71 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "65e6187f-2c6b-4271-bf89-be999ae024df")
 	)
 	(wire
 		(pts
@@ -4228,7 +4234,7 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 63.5) (xy 73.66 96.52)
+			(xy 73.66 63.5) (xy 73.66 90.17)
 		)
 		(stroke
 			(width 0)
@@ -4525,6 +4531,16 @@
 			(type default)
 		)
 		(uuid "e66575be-d3aa-48de-af2c-49ff0c75aa01")
+	)
+	(wire
+		(pts
+			(xy 102.87 96.52) (xy 110.49 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e7c59776-196c-4f2b-9a24-7d494895d5ed")
 	)
 	(wire
 		(pts
@@ -7682,28 +7698,30 @@
 	)
 	(symbol
 		(lib_id "Jumper:Jumper_3_Open")
-		(at 99.06 96.52 0)
+		(at 99.06 96.52 90)
+		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "b79c85e7-f56f-493a-97dd-beb379bf0c0c")
 		(property "Reference" "JP3"
-			(at 99.06 90.17 0)
+			(at 96.52 98.552 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Value" "Jumper_3_Open"
-			(at 99.06 92.71 0)
+			(at 96.52 101.092 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
