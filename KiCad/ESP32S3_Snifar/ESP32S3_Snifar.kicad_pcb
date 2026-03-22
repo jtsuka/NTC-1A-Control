@@ -9741,6 +9741,18 @@
 		(layer "Edge.Cuts")
 		(uuid "577403a8-2e04-47f2-8b7d-0d93de81d99c")
 	)
+	(gr_text "MODE Nano"
+		(at 52.93 93.71 0)
+		(layer "F.SilkS")
+		(uuid "22cdb8dd-9c4f-4f75-a4b0-b790d3df644a")
+		(effects
+			(font
+				(size 0.8 0.5)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
 	(gr_text "MODE 5V"
 		(at 96.46 38 0)
 		(layer "F.SilkS")
@@ -9784,6 +9796,18 @@
 		(effects
 			(font
 				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "MODE TC106"
+		(at 52.85 87.09 0)
+		(layer "F.SilkS")
+		(uuid "b73e60f5-89e1-4cbc-a20f-11e05c00ca6e")
+		(effects
+			(font
+				(size 0.8 0.5)
 				(thickness 0.1)
 			)
 			(justify left bottom)
