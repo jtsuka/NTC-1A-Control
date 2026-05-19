@@ -26,7 +26,7 @@
 
 #include <Arduino.h>
 
-static const int RX_PIN = 4;             // 必要に応じて変更
+static const int RX_PIN = D3;                           // = GPIO4 on XIAO ESP32S3
 static const uint32_t BAUD_RATE = 300;
 static const uint32_t BIT_US = 1000000UL / BAUD_RATE;  // 約3333us
 
