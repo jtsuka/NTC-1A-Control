@@ -24,12 +24,12 @@
 // ピン設定
 // ======================================================
 // Pi側 UART。基板・配線に合わせて最終確認すること。
-static constexpr int PIN_PI_RX = 44;  // ESP32 RX <- Raspberry Pi TX
-static constexpr int PIN_PI_TX = 43;  // ESP32 TX -> Raspberry Pi RX
+static constexpr int PIN_PI_RX = D0;  // Pi_Tx_MCU -> ESP32 RX  (= GPIO1)
+static constexpr int PIN_PI_TX = D1;  // ESP32 TX -> Pi_Rx_MCU  (= GPIO2)
 
 // TC106側。現行Snifar回路図の読み直しでは RX=D3(GPIO4), TX_TRIG=D10(GPIO9) が有力。
-static constexpr int PIN_TC_RX      = 4;  // ESP32 D3 / GPIO4
-static constexpr int PIN_TC_TX_TRIG = 9;  // ESP32 D10 / GPIO9 -> Q2 gate
+static constexpr int PIN_TC_RX      = D3;   // TC_MCU_RX <- JP7 <- クランプ <- 分圧  (= GPIO4)
+static constexpr int PIN_TC_TX_TRIG = D10;  // MCU_TX_TRIG -> JP5 -> R12 -> Q2 gate  (= GPIO9)
 
 // 開発用LED。XIAO ESP32S3のオンボードLEDは環境で異なるため必要に応じて変更。
 static constexpr int PIN_STATUS_LED = LED_BUILTIN;
