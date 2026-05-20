@@ -248,7 +248,6 @@ static void taskTcBus(void* pv) {
 void setup() {
   Serial.begin(115200);
   delay(500);
-
   Serial.println();
   Serial.println("=== ESP32-S3 TC Bridge RTOS Phase3 Skeleton v0.1 ===");
   Serial.println("OLED disabled. Debug via USB Serial / Pi log / LED.");
@@ -259,10 +258,16 @@ void setup() {
 
   pinMode(PIN_TC_TX_TRIG, OUTPUT);
   digitalWrite(PIN_TC_TX_TRIG, LOW);  // OC release
-
   pinMode(PIN_TC_RX, INPUT_PULLUP);
 
   SerialPi.begin(PI_BAUD, SERIAL_8N1, PIN_PI_RX, PIN_PI_TX);
+
+  // Pi 未接続時のフローティング防止 (基板/Pi 未接続時のゴーストパケット対策)
+  pinMode(PIN_PI_RX, INPUT_PULLUP);
+
+  // 起動時に入り込んだノイズを捨てる
+  delay(100);
+  while (SerialPi.available()) SerialPi.read();
 
   qPiToTc = xQueueCreate(QUEUE_DEPTH_PI_TO_TC, sizeof(tc::TcMessage));
   qTcToPi = xQueueCreate(QUEUE_DEPTH_TC_TO_PI, sizeof(tc::TcMessage));
@@ -285,7 +290,6 @@ void setup() {
 
   Serial.println("[setup] tasks created");
 }
-
 void loop() {
   // 何もしない。タスク側で処理する。
   vTaskDelay(portMAX_DELAY);
