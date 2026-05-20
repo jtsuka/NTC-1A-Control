@@ -24,6 +24,10 @@
 // ピン設定
 // ======================================================
 // Pi側 UART。基板・配線に合わせて最終確認すること。
+// 注: XIAO ESP32S3 のパッド名 (D0〜D10) を使用。
+//     これは Seeed の variant ファイルが提供するマクロで、
+//     XIAO_ESP32S3 ボード選択時のみ有効。
+//     ボードパッケージ v2.0.8 以降が必要。
 static constexpr int PIN_PI_RX = D0;  // Pi_Tx_MCU -> ESP32 RX  (= GPIO1)
 static constexpr int PIN_PI_TX = D1;  // ESP32 TX -> Pi_Rx_MCU  (= GPIO2)
 
