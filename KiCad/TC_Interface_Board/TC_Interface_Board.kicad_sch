@@ -5719,7 +5719,7 @@
 				)
 				(uuid "89d8d1a5-07d2-4ef7-8ad2-faa0eb2d38f8")
 			)
-			(table_cell "6k2"
+			(table_cell "12k"
 				(exclude_from_sim no)
 				(at 251.46 116.84 0)
 				(size 20.32 5.08)
