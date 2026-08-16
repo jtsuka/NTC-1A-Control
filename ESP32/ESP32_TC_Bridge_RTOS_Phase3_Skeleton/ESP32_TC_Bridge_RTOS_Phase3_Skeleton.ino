@@ -299,17 +299,75 @@ static bool p11TryReceiveFrame(uint8_t out[P11_FRAME_BYTES], uint32_t timeoutMs)
   return true;
 }
 
+// ======================================================
+// Phase1.2: 17スロット送信の実装
+// ======================================================
+//
+// 受信側(p11TryReceiveFrame)と対になる送信ロジック。
+// Q2はオープンドレイン駆動(TC_OC_ACTIVE_LOW=true)なので、
+// bit=0(HIGH) -> Q2 gate LOW  -> Q2 OFF -> バス解放(プルアップでHIGHへ)
+// bit=1(LOW)  -> Q2 gate HIGH -> Q2 ON  -> バスをLOWへ引き込む
+// という極性になる(tcWriteLogicalBit()と同じ考え方)。
+//
+// delayMicroseconds()の累積ではなく、micros()の絶対時刻を基準に
+// 各スロットの終わりまで待つ方式にして、ドリフト(誤差の蓄積)を防ぐ。
+
+static void p11SetBusLogical(bool logicalHigh) {
+  if (TC_OC_ACTIVE_LOW) {
+    digitalWrite(PIN_TC_TX_TRIG, logicalHigh ? LOW : HIGH);
+  } else {
+    digitalWrite(PIN_TC_TX_TRIG, logicalHigh ? HIGH : LOW);
+  }
+}
+
+// targetMicros に達するまでビジーウェイトする。
+// スロット長(3300us)が十分長いので、busy-waitが最も正確。
+static void p11WaitUntilMicros(uint32_t targetMicros) {
+  while ((int32_t)(micros() - targetMicros) < 0) {
+    // busy wait
+  }
+}
+
+// 1バイト(17スロット)を送信する。
+// slot0=HIGHプリアンブル、slot1-7=7bitデータ(LSB first, bit0->HIGH, bit1->LOW)、
+// slot8-16=LOW footer(9スロット、まとめて1回のウェイトでOK)。
+static void p11SendByte17Slot(uint8_t value) {
+  const uint32_t t0 = micros();
+
+  // slot0: プリアンブル(HIGH)
+  p11SetBusLogical(true);
+  p11WaitUntilMicros(t0 + P11_SLOT_US);
+
+  // slot1-7: データ7bit、LSB first
+  for (uint8_t k = 1; k <= P11_DATA_SLOTS; k++) {
+    const bool bitIsOne = (value >> (k - 1)) & 0x01;
+    p11SetBusLogical(!bitIsOne); // bit=0->HIGH(true), bit=1->LOW(false)
+    p11WaitUntilMicros(t0 + (uint32_t)(k + 1) * P11_SLOT_US);
+  }
+
+  // slot8-16: footer(LOW、9スロットまとめて待つ)
+  p11SetBusLogical(false);
+  p11WaitUntilMicros(t0 + (uint32_t)P11_SLOTS_PER_BYTE * P11_SLOT_US);
+}
+
+// 6バイト(1フレーム)を送信する。送信後はバスをidle(HIGH/解放)に戻す。
+static void p11SendFrame17Slot(const uint8_t data[P11_FRAME_BYTES]) {
+  for (uint8_t i = 0; i < P11_FRAME_BYTES; i++) {
+    p11SendByte17Slot(data[i]);
+  }
+  p11SetBusLogical(true); // idle解放
+}
+
+
 // Phase3差し替えポイント(コマンド/応答モデル用)。
-// Phase1.1では p11TryReceiveFrame() を直接使うため、taskTcBus からは
-// 呼ばれない(下の PHASE1_1_STANDALONE_LISTEN 参照)。Phase3再開時に
-// ここへ17スロット応答受信ロジックを合わせ込む。
+// Phase1.1/1.2ではそれぞれ p11TryReceiveFrame()/p11SendFrame17Slot() を
+// taskTcBus から直接使うため、この関数は呼ばれない(下の TC_TEST_MODE 参照)。
+// Phase3再開時に、ここへ17スロット応答受信ロジックを合わせ込む。
 //
 // 注意: tc::TcMessage/tc::MsgType 経由のラップは tc_message.hpp の
 // 正確なAPI(MsgTypeの列挙子名など)をこちらで確認できていないため、
 // ここでは未実装のままにしてある(Phase3再開時、tc_message.hppの
 // 中身と突き合わせて実装すること)。
-// Phase1.1の実データ受信・確認には、下の p11TryReceiveFrame() を
-// taskTcBus から直接呼ぶ形にしているので、そちらで完結する。
 static bool tcReceiveFrame(tc::TcMessage& out, uint32_t timeoutMs) {
   (void)out;
   (void)timeoutMs;
@@ -367,12 +425,27 @@ static void taskPiUart(void* pv) {
 // Core0: TC106側タスク
 // ======================================================
 //
-// PHASE1_1_STANDALONE_LISTEN = 1 の間は、Piからのコマンドを待たず、
-// GPIO4に来る信号をひたすら受信してログに出すだけの単純なテストモード。
-// Nano Everyが周期送信するデータをそのまま可視化する用途(Phase1.1)。
+// TC_TEST_MODE で動作モードを切り替える:
+//   1 = Phase1.1: 受信専用テスト(Nano Every -> ESP32、GPIO4を受信し続けてログ出力)
+//   2 = Phase1.2: 送信専用テスト(ESP32 -> Nano Every、テストパターンを周期送信)
+//   0 = Phase3  : Piからのコマンド/応答モデル(元のロジック)
 //
-// Phase3(Pi統合)に進む際は 0 に切り替えて、元のコマンド/応答モデルに戻す。
-#define PHASE1_1_STANDALONE_LISTEN 1
+// Phase1.2実施時は、JP3=2-3・JP5=閉に設定し、Nano側は
+// NanoEvery_TCEmulator_V2_2.ino の MODE_PERIODIC=0 に変更しておくこと。
+// 受信確認はNano側のシリアルモニタで行う(D13で受信したバイト列を見る)。
+#define TC_TEST_MODE 2
+
+#if TC_TEST_MODE == 2
+// Nano側の4パターンと同じものを使う(相互比較しやすいように)。
+static const uint8_t kP12TestFrames[][P11_FRAME_BYTES] = {
+  {0x00, 0x64, 0x00, 0x64, 0x00, 0x7F},
+  {0x11, 0x22, 0x33, 0x44, 0x55, 0x7F},
+  {0x01, 0x00, 0x00, 0x1E, 0x00, 0x7F},
+  {0x64, 0x00, 0x00, 0x32, 0x00, 0x7F},
+};
+static constexpr uint8_t kP12TestFrameCount =
+  sizeof(kP12TestFrames) / sizeof(kP12TestFrames[0]);
+#endif
 
 static void taskTcBus(void* pv) {
   Serial.println("[TcTask] start on Core0");
@@ -380,7 +453,7 @@ static void taskTcBus(void* pv) {
   // OCバスをidle/release状態へ
   digitalWrite(PIN_TC_TX_TRIG, LOW);
 
-#if PHASE1_1_STANDALONE_LISTEN
+#if TC_TEST_MODE == 1
   Serial.println("[TcTask] Phase1.1 standalone listen mode (Pi queue is ignored)");
 
   uint8_t frame[P11_FRAME_BYTES];
@@ -399,6 +472,31 @@ static void taskTcBus(void* pv) {
     }
     // 受信できなくてもループを回し続け、次のフレームを待つ。
   }
+
+#elif TC_TEST_MODE == 2
+  Serial.println("[TcTask] Phase1.2 standalone send mode (Pi queue is ignored)");
+  Serial.println("[TcTask] Check Nano Every's serial monitor for received bytes.");
+
+  uint8_t idx = 0;
+  while (true) {
+    const uint8_t* f = kP12TestFrames[idx];
+
+    setStatusLed(true);
+    p11SendFrame17Slot(f);
+    setStatusLed(false);
+
+    Serial.print("[TcTask TX] ");
+    for (uint8_t i = 0; i < P11_FRAME_BYTES; i++) {
+      if (f[i] < 0x10) Serial.print('0');
+      Serial.print(f[i], HEX);
+      Serial.print(' ');
+    }
+    Serial.println();
+
+    idx = (idx + 1) % kP12TestFrameCount;
+    vTaskDelay(pdMS_TO_TICKS(1000)); // Nano側と同じく1000ms周期
+  }
+
 #else
   while (true) {
     tc::TcMessage cmd;
