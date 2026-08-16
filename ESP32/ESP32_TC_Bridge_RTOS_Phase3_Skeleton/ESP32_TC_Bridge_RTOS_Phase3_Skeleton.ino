@@ -49,6 +49,41 @@ static constexpr uint32_t BIT_US  = 1000000UL / TC_BAUD;
 // Q2 gate HIGH -> Q2 ON -> bus LOW、Q2 gate LOW -> bus released。
 static constexpr bool TC_OC_ACTIVE_LOW = true;
 
+// ======================================================
+// Phase1.1: 17スロットBitBangプロトコル定数
+// ======================================================
+// Nano Every側(NanoEvery_TCEmulator_V2_2.ino)と同じ値。
+// slot0=HIGHプリアンブル、slot1-7=7bitデータ(LSB first, bit0->HIGH, bit1->LOW)、
+// slot8-16=LOW footer(9スロット)。
+static constexpr uint32_t P11_SLOT_US       = 3300;
+static constexpr uint8_t  P11_DATA_SLOTS    = 7;
+static constexpr uint8_t  P11_SLOTS_PER_BYTE = 17;
+static constexpr uint8_t  P11_FRAME_BYTES   = 6;   // 6バイト/フレーム
+static constexpr uint32_t P11_BYTE_US       = P11_SLOT_US * P11_SLOTS_PER_BYTE; // 56100us
+
+// footer(9スロット=29700us)と判定するための下限しきい値。
+// データ部だけで作れる最長連続LOWは7スロット(=全data bit=1, 23100us)なので、
+// その間(26000us=26ms)に設定すれば両者を確実に区別できる。
+static constexpr uint32_t P11_FOOTER_MIN_US = 26000;
+
+// 1フレーム分のエッジ(信号変化)を記録するバッファ。
+// 1バイトあたり最大17エッジ×6バイト分の余裕を持たせる。
+static constexpr uint16_t P11_EDGE_BUF_SIZE = 300;
+
+static volatile uint32_t p11EdgeTimes[P11_EDGE_BUF_SIZE];
+static volatile uint8_t  p11EdgeLevels[P11_EDGE_BUF_SIZE]; // そのエッジの後に確定するレベル
+static volatile uint16_t p11EdgeCount = 0;
+
+// GPIO4(PIN_TC_RX)のレベルが変化するたびに呼ばれる。
+// 記録するだけで、Serial等の重い処理は一切行わない(ISR内厳禁のため)。
+static void IRAM_ATTR p11TcRxIsr() {
+  if (p11EdgeCount < P11_EDGE_BUF_SIZE) {
+    p11EdgeTimes[p11EdgeCount]  = micros();
+    p11EdgeLevels[p11EdgeCount] = (uint8_t)digitalRead(PIN_TC_RX);
+    p11EdgeCount++;
+  }
+}
+
 // Queue設定
 static constexpr uint8_t QUEUE_DEPTH_PI_TO_TC = 8;
 static constexpr uint8_t QUEUE_DEPTH_TC_TO_PI = 8;
@@ -137,24 +172,148 @@ static bool tcSendFrame(const tc::TcMessage& msg) {
   return true;
 }
 
-// Phase3差し替えポイント。
-// 実機ではここに17タイムスロット/RMT/エッジ時刻受信を入れる。
-// 現時点ではタイムアウトを返す。
-static bool tcReceiveFrame(tc::TcMessage& out, uint32_t timeoutMs) {
-  const uint32_t start = millis();
+// ======================================================
+// Phase1.1: 17スロット受信の実装
+// ======================================================
+//
+// 課題: アイドル時(HIGH)とslot0プリアンブル(HIGH)が同一レベルなので、
+// 「バイト1がいつ始まったか」はレベルの変化だけでは判定できない。
+//
+// 解決策:
+//  1. GPIO4の変化(エッジ)を割り込みで全部記録しておく
+//  2. 記録の中から「9スロット分(29700us)続く連続LOW」= footerを探す
+//     (データ部だけで作れる最長連続LOWは7スロット=23100usなので、
+//      しきい値26000usで確実に区別できる)
+//  3. footerの終わり(LOWからHIGHに戻る瞬間)は「次のバイトのslot0開始」
+//     と確定的に分かる
+//  4. byte1だけはfooterが手前に無い(idleから直接続く)ので、
+//     byte2の開始時刻から1バイト分(56100us)引いて逆算する
+//  5. 各バイトの開始時刻が分かれば、あとは各データスロットの中央を
+//     サンプリングするだけでビットを復元できる
+//
+// 1回の呼び出しで6バイト(1フレーム)を復元する。
+static bool p11TryReceiveFrame(uint8_t out[P11_FRAME_BYTES], uint32_t timeoutMs) {
+  const uint32_t giveUpAtMs = millis() + timeoutMs;
 
-  while (millis() - start < timeoutMs) {
-    // TODO:
-    //  1. GPIO4のエッジ検出
-    //  2. start bit検出
-    //  3. bit中央サンプリング
-    //  4. 17タイムスロット対応
-    //  5. 6byte応答へ復元
+  // 記録バッファをリセットしてから待つ
+  noInterrupts();
+  p11EdgeCount = 0;
+  interrupts();
+
+  // 最初のエッジ(何か信号が動き出した)を待つ
+  while (true) {
+    if ((int32_t)(millis() - giveUpAtMs) > 0) return false;
+    noInterrupts();
+    uint16_t n = p11EdgeCount;
+    interrupts();
+    if (n > 0) break;
     vTaskDelay(1);
   }
 
-  out = tc::TcMessage::timeout(tc::MsgSource::Tc);
-  return false;
+  // エッジが増えなくなる(=送信が一段落した)まで待つ
+  const uint32_t QUIET_MS = 50;
+  uint16_t lastCount = 0;
+  uint32_t lastChangeAtMs = millis();
+  while (true) {
+    if ((int32_t)(millis() - giveUpAtMs) > 0) return false;
+
+    noInterrupts();
+    uint16_t n = p11EdgeCount;
+    interrupts();
+
+    if (n != lastCount) {
+      lastCount = n;
+      lastChangeAtMs = millis();
+    } else if (millis() - lastChangeAtMs > QUIET_MS) {
+      break; // 一連のバースト(1フレーム分)が終わったとみなす
+    }
+    vTaskDelay(1);
+  }
+
+  // スナップショットをローカルにコピー(volatileのままだと扱いにくいため)
+  static uint32_t times[P11_EDGE_BUF_SIZE];
+  static uint8_t  levels[P11_EDGE_BUF_SIZE];
+  uint16_t n;
+  noInterrupts();
+  n = p11EdgeCount;
+  for (uint16_t i = 0; i < n; i++) {
+    times[i]  = p11EdgeTimes[i];
+    levels[i] = p11EdgeLevels[i];
+  }
+  p11EdgeCount = 0; // 次回に備えてクリア
+  interrupts();
+
+  if (n < 2) return false;
+
+  // footer(連続LOWが26000us以上)の「終わりの時刻」を集める。
+  // これがbyte2〜byte6それぞれのslot0開始時刻になる。
+  uint32_t footerEnd[P11_FRAME_BYTES];
+  uint8_t footerCount = 0;
+  for (uint16_t i = 0; i + 1 < n && footerCount < P11_FRAME_BYTES; i++) {
+    if (levels[i] == LOW) {
+      uint32_t dur = times[i + 1] - times[i];
+      if (dur >= P11_FOOTER_MIN_US) {
+        footerEnd[footerCount++] = times[i + 1];
+      }
+    }
+  }
+
+  // byte1<->2, 2<->3, 3<->4, 4<->5, 5<->6 の5個の境界が最低限必要。
+  if (footerCount < P11_FRAME_BYTES - 1) {
+    return false; // フッターを十分見つけられなかった(ノイズ/未接続など)
+  }
+
+  uint32_t byteT0[P11_FRAME_BYTES];
+  byteT0[0] = footerEnd[0] - P11_BYTE_US; // byte1は逆算
+  for (uint8_t b = 1; b < P11_FRAME_BYTES; b++) {
+    byteT0[b] = footerEnd[b - 1];
+  }
+
+  // 指定時刻における信号レベルを、記録したエッジ列から求める
+  auto levelAt = [&](uint32_t t) -> int {
+    if (n == 0 || t < times[0]) return HIGH; // 最初のエッジより前はidle(HIGH)とみなす
+    int lvl = HIGH;
+    for (uint16_t i = 0; i < n; i++) {
+      if (times[i] <= t) {
+        lvl = levels[i];
+      } else {
+        break;
+      }
+    }
+    return lvl;
+  };
+
+  // 各バイトのデータスロット(1〜7)の中央をサンプリングしてビット復元
+  // bit=0->HIGH, bit=1->LOW, LSB first
+  for (uint8_t b = 0; b < P11_FRAME_BYTES; b++) {
+    uint8_t value = 0;
+    for (uint8_t k = 1; k <= P11_DATA_SLOTS; k++) {
+      uint32_t target = byteT0[b] + (uint32_t)k * P11_SLOT_US + (P11_SLOT_US / 2);
+      if (levelAt(target) == LOW) {
+        value |= (uint8_t)(1u << (k - 1));
+      }
+    }
+    out[b] = value;
+  }
+
+  return true;
+}
+
+// Phase3差し替えポイント(コマンド/応答モデル用)。
+// Phase1.1では p11TryReceiveFrame() を直接使うため、taskTcBus からは
+// 呼ばれない(下の PHASE1_1_STANDALONE_LISTEN 参照)。Phase3再開時に
+// ここへ17スロット応答受信ロジックを合わせ込む。
+//
+// 注意: tc::TcMessage/tc::MsgType 経由のラップは tc_message.hpp の
+// 正確なAPI(MsgTypeの列挙子名など)をこちらで確認できていないため、
+// ここでは未実装のままにしてある(Phase3再開時、tc_message.hppの
+// 中身と突き合わせて実装すること)。
+// Phase1.1の実データ受信・確認には、下の p11TryReceiveFrame() を
+// taskTcBus から直接呼ぶ形にしているので、そちらで完結する。
+static bool tcReceiveFrame(tc::TcMessage& out, uint32_t timeoutMs) {
+  (void)out;
+  (void)timeoutMs;
+  return false; // Phase3再開時に実装
 }
 
 // ======================================================
@@ -207,12 +366,40 @@ static void taskPiUart(void* pv) {
 // ======================================================
 // Core0: TC106側タスク
 // ======================================================
+//
+// PHASE1_1_STANDALONE_LISTEN = 1 の間は、Piからのコマンドを待たず、
+// GPIO4に来る信号をひたすら受信してログに出すだけの単純なテストモード。
+// Nano Everyが周期送信するデータをそのまま可視化する用途(Phase1.1)。
+//
+// Phase3(Pi統合)に進む際は 0 に切り替えて、元のコマンド/応答モデルに戻す。
+#define PHASE1_1_STANDALONE_LISTEN 1
+
 static void taskTcBus(void* pv) {
   Serial.println("[TcTask] start on Core0");
 
   // OCバスをidle/release状態へ
   digitalWrite(PIN_TC_TX_TRIG, LOW);
 
+#if PHASE1_1_STANDALONE_LISTEN
+  Serial.println("[TcTask] Phase1.1 standalone listen mode (Pi queue is ignored)");
+
+  uint8_t frame[P11_FRAME_BYTES];
+  while (true) {
+    // タイムアウトは長めに。Nano側の送信間隔(1000ms)より余裕を持たせる。
+    if (p11TryReceiveFrame(frame, 3000)) {
+      setStatusLed(true);
+      Serial.print("[TcTask RX] ");
+      for (uint8_t i = 0; i < P11_FRAME_BYTES; i++) {
+        if (frame[i] < 0x10) Serial.print('0');
+        Serial.print(frame[i], HEX);
+        Serial.print(' ');
+      }
+      Serial.println();
+      setStatusLed(false);
+    }
+    // 受信できなくてもループを回し続け、次のフレームを待つ。
+  }
+#else
   while (true) {
     tc::TcMessage cmd;
 
@@ -240,6 +427,7 @@ static void taskTcBus(void* pv) {
       }
     }
   }
+#endif
 }
 
 // ======================================================
@@ -259,6 +447,9 @@ void setup() {
   pinMode(PIN_TC_TX_TRIG, OUTPUT);
   digitalWrite(PIN_TC_TX_TRIG, LOW);  // OC release
   pinMode(PIN_TC_RX, INPUT_PULLUP);
+
+  // Phase1.1: 17スロット受信用のエッジキャプチャ割り込みを常時有効化
+  attachInterrupt(digitalPinToInterrupt(PIN_TC_RX), p11TcRxIsr, CHANGE);
 
   SerialPi.begin(PI_BAUD, SERIAL_8N1, PIN_PI_RX, PIN_PI_TX);
 
