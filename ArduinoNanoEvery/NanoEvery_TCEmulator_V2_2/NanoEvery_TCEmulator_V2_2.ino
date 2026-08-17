@@ -123,7 +123,9 @@
  *     → Q2 ドレイン → R7 (100Ω)
  *     → JP3 = 2-3 (Nano側ループバック経路)
  *     → /Nano_MOS_DRAIN
- *     → Nano D13
+ *     → Nano D11 (MOSI/COPI)
+ *       ※ 当初 D13 と想定していたが、回路図精査の結果 D11(MOSI)が正しいと判明。
+ *          Nano Every は D13=SCK, D12=MISO(CIPO), D11=MOSI(COPI) という特殊な配置。
  *
  *   ※ Q2 経由で信号が論理反転する可能性あり。
  *     実測で確認し、必要なら RX_INVERTED = true に変更する。
@@ -156,9 +158,11 @@
 //   基板上の経路: D10 → R4 → Q1代替 → JP1 → 分圧 → ESP32 GPIO4
 static const uint8_t TX_PIN = 10;
 
-// Nano D13: ESP32 からのコマンド受信ピン (Phase 1.2 で使用)
-//   基板上の経路: ESP32 GPIO9 → Q2 → JP3=2-3 → D13
-static const uint8_t RX_PIN = 13;
+// Nano D11 (MOSI/COPI): ESP32 からのコマンド受信ピン (Phase 1.2 で使用)
+//   基板上の経路: ESP32 GPIO9 → Q2 → JP3=2-3 → /Nano_MOS_DRAIN → D11
+//   ※ Nano EveryはSPIピン配置が特殊で D13=SCK, D12=MISO(CIPO), D11=MOSI(COPI)。
+//     回路図上の「MOSI」ラベルは物理ピンD11を指す(D13ではない)。
+static const uint8_t RX_PIN = 11;
 
 // ============================================================
 // タイミング設定
@@ -171,15 +175,15 @@ static const uint32_t SLOT_US = 3300;
 // ============================================================
 // Phase 1.2 受信設定
 // ============================================================
-// ESP32 D10 → Q2 (NMOS) → Nano D13 の経路では、
-// Q2 が ON のとき Nano D13 が LOW に引かれる (論理反転)。
-// Q2 がOFF のとき D13 はプルアップで HIGH に戻る。
+// ESP32 D10 → Q2 (NMOS) → Nano D11(MOSI) の経路では、
+// Q2 が ON のとき Nano D11 が LOW に引かれる (論理反転)。
+// Q2 がOFF のとき D11 はプルアップで HIGH に戻る。
 //
 // まず false で動かし、受信値がおかしければ true に変更する。
 static const bool RX_INVERTED = false;
 
-// Phase 1.2 では D13 が Q2 経由でしか駆動されないため、
-// Q2 OFF 時に D13 がフローティングにならないよう内部プルアップを使う。
+// Phase 1.2 では D11 が Q2 経由でしか駆動されないため、
+// Q2 OFF 時に D11 がフローティングにならないよう内部プルアップを使う。
 static const bool RX_USE_INTERNAL_PULLUP = true;
 
 // ============================================================
@@ -633,9 +637,9 @@ void loop() {
  * ─────────────────────────────────────────────────────────────
  * [Phase 1.2 RX 論理反転について]
  *
- * ESP32 D10(GPIO9) → Q2(2N7000) → Nano D13 の経路では:
- *   ESP32 D10 = HIGH → Q2 ON  → Nano D13 = LOW (R10プルアップを引き下げ)
- *   ESP32 D10 = LOW  → Q2 OFF → Nano D13 = HIGH (プルアップで HIGH 復帰)
+ * ESP32 D10(GPIO9) → Q2(2N7000) → Nano D11(MOSI/COPI) の経路では:
+ *   ESP32 D10 = HIGH → Q2 ON  → Nano D11 = LOW (R10プルアップを引き下げ)
+ *   ESP32 D10 = LOW  → Q2 OFF → Nano D11 = HIGH (プルアップで HIGH 復帰)
  *
  * つまり ESP32 が送る 17スロット波形が Nano 側で論理反転して届く。
  * readRxLogical() の RX_INVERTED フラグで吸収できる。
