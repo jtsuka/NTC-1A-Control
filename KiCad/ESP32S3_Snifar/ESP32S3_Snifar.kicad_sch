@@ -3698,12 +3698,6 @@
 		(color 0 0 0 0)
 		(uuid "fad93554-7a1e-4f7e-b05a-a8bd99a917a3")
 	)
-	(junction
-		(at 88.9 153.67)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "fc786d2c-626d-48ba-8c61-7c215d1581e1")
-	)
 	(no_connect
 		(at 135.89 181.61)
 		(uuid "00614ce3-8b9e-4719-b8a0-f930a334a49d")
@@ -4050,16 +4044,6 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 153.67) (xy 78.74 153.67)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2751031d-cd06-479a-8f7b-1a996fcecbef")
-	)
-	(wire
-		(pts
 			(xy 247.65 40.64) (xy 259.08 40.64)
 		)
 		(stroke
@@ -4280,7 +4264,7 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 153.67) (xy 93.98 153.67)
+			(xy 78.74 153.67) (xy 93.98 153.67)
 		)
 		(stroke
 			(width 0)
@@ -4377,16 +4361,6 @@
 			(type default)
 		)
 		(uuid "7264e48e-39ed-4322-ba7d-f807fc8600f5")
-	)
-	(wire
-		(pts
-			(xy 88.9 153.67) (xy 88.9 158.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "73a201a6-1bac-4a79-a218-b885d0618963")
 	)
 	(wire
 		(pts
@@ -4677,16 +4651,6 @@
 			(type default)
 		)
 		(uuid "d437b53f-b13d-4e07-b8a5-415988360975")
-	)
-	(wire
-		(pts
-			(xy 88.9 166.37) (xy 88.9 168.91)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d9850395-6d61-49aa-84b7-971361b62ec5")
 	)
 	(wire
 		(pts
@@ -6120,84 +6084,6 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "H2-M3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 88.9 168.91 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "52bb2bc8-742c-4b89-b8fe-7761a48c3f70")
-		(property "Reference" "#PWR03"
-			(at 88.9 175.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 88.9 173.99 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 88.9 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 88.9 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 88.9 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5a56ce19-68d8-4926-b0b0-69177db32ac8")
-		)
-		(instances
-			(project "ESP32S3_Snifar"
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR03")
 					(unit 1)
 				)
 			)
@@ -8894,87 +8780,6 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "TP4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 88.9 162.56 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "ca05055c-a166-442a-a445-c01465ea0abe")
-		(property "Reference" "R2"
-			(at 91.44 161.2899 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100k"
-			(at 91.44 163.8299 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 87.122 162.56 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 88.9 162.56 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 88.9 162.56 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "127e5b3d-7e58-4bc2-880d-d439b88b3b00")
-		)
-		(pin "2"
-			(uuid "787ab383-41e8-42a4-b7c4-e91ba19a7ed3")
-		)
-		(instances
-			(project "ESP32S3_Snifar"
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "R2")
 					(unit 1)
 				)
 			)
