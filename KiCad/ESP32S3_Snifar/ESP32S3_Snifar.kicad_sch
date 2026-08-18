@@ -3526,7 +3526,17 @@
 		)
 		(uuid "4c0a7f1d-b3e8-4467-9f2d-06cfbfb50f92")
 	)
-	(text "2026.03.17"
+	(text "Ver 2.0"
+		(exclude_from_sim no)
+		(at 274.828 193.294 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "67920510-6bef-4e2f-a918-4e86b85ba7c9")
+	)
+	(text "2026.08.18"
 		(exclude_from_sim no)
 		(at 213.106 193.548 0)
 		(effects
@@ -3617,12 +3627,6 @@
 		(uuid "7b803bf0-809b-423d-8d2d-6c8d28edebee")
 	)
 	(junction
-		(at 88.9 153.67)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "7d36a71b-d04a-4d9a-b128-5a40d962c259")
-	)
-	(junction
 		(at 139.7 96.52)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3683,10 +3687,22 @@
 		(uuid "f0783370-39ad-4a8c-b262-b95bf846faae")
 	)
 	(junction
+		(at 110.49 121.92)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "faa34c2e-1e55-483c-940c-2761088a6d72")
+	)
+	(junction
 		(at 138.43 27.94)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "fad93554-7a1e-4f7e-b05a-a8bd99a917a3")
+	)
+	(junction
+		(at 88.9 153.67)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fc786d2c-626d-48ba-8c61-7c215d1581e1")
 	)
 	(no_connect
 		(at 135.89 181.61)
@@ -3924,6 +3940,16 @@
 	)
 	(wire
 		(pts
+			(xy 110.49 121.92) (xy 110.49 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0f68c8d9-776b-4398-90ed-cf5ff4943fd4")
+	)
+	(wire
+		(pts
 			(xy 115.57 54.61) (xy 115.57 63.5)
 		)
 		(stroke
@@ -4014,7 +4040,7 @@
 	)
 	(wire
 		(pts
-			(xy 110.49 119.38) (xy 110.49 156.21)
+			(xy 110.49 119.38) (xy 110.49 121.92)
 		)
 		(stroke
 			(width 0)
@@ -4024,7 +4050,7 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 153.67) (xy 86.36 153.67)
+			(xy 88.9 153.67) (xy 78.74 153.67)
 		)
 		(stroke
 			(width 0)
@@ -4131,16 +4157,6 @@
 			(type default)
 		)
 		(uuid "3ca2a06b-6d28-47ac-99c6-70535952147e")
-	)
-	(wire
-		(pts
-			(xy 69.85 148.59) (xy 78.74 148.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "40b057ed-e00a-4ec6-ab4c-8379987f6e77")
 	)
 	(wire
 		(pts
@@ -4321,16 +4337,6 @@
 			(type default)
 		)
 		(uuid "5faa50e2-82db-4194-8eed-d60a44e6a102")
-	)
-	(wire
-		(pts
-			(xy 69.85 39.37) (xy 69.85 148.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "61e843e1-96b2-4e27-9bf4-731760addea9")
 	)
 	(wire
 		(pts
@@ -4724,6 +4730,26 @@
 	)
 	(wire
 		(pts
+			(xy 69.85 146.05) (xy 78.74 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e14b75d5-abb5-454c-8fd8-82dadac6c384")
+	)
+	(wire
+		(pts
+			(xy 69.85 146.05) (xy 69.85 39.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e1991967-fad9-4d8a-86a8-cffe4bdf945d")
+	)
+	(wire
+		(pts
 			(xy 166.37 96.52) (xy 167.64 96.52)
 		)
 		(stroke
@@ -4821,16 +4847,6 @@
 			(type default)
 		)
 		(uuid "fce5cd72-85d4-4c7b-a7b3-5f4db8e6bd40")
-	)
-	(wire
-		(pts
-			(xy 78.74 158.75) (xy 78.74 162.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ff55c082-e996-48eb-aa66-7bb873336ab0")
 	)
 	(label "Pi_Tx_MCU"
 		(at 218.44 60.96 0)
@@ -7289,8 +7305,8 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 78.74 162.56 0)
+		(lib_id "Connector:TestPoint")
+		(at 110.49 121.92 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7298,31 +7314,31 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "853dfc0e-3eeb-416d-bf6d-a37c21bac15b")
-		(property "Reference" "#PWR02"
-			(at 78.74 168.91 0)
-			(hide yes)
+		(uuid "841d5a5a-2a0c-4f92-94ec-ffd7825014d5")
+		(property "Reference" "TP8"
+			(at 102.87 130.556 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "GND"
-			(at 78.74 167.64 0)
+		(property "Value" "TestPoint"
+			(at 105.41 130.556 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Footprint" ""
-			(at 78.74 162.56 0)
+		(property "Footprint" "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
+			(at 110.49 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7333,7 +7349,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 78.74 162.56 0)
+			(at 110.49 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7343,8 +7359,8 @@
 				)
 			)
 		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 78.74 162.56 0)
+		(property "Description" "test point"
+			(at 110.49 121.92 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7355,12 +7371,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "43c8e368-ee15-4ff9-b0f6-a6d84c954c13")
+			(uuid "243e3238-bd41-4359-8209-d9a576bce8c4")
 		)
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR02")
+					(reference "TP8")
 					(unit 1)
 				)
 			)
@@ -7764,6 +7780,88 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 78.74 149.86 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "98b7335d-3a2c-4ce1-9cf0-42e6b319563d")
+		(property "Reference" "R16"
+			(at 81.28 148.5899 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1k"
+			(at 81.28 151.1299 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 76.962 149.86 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 78.74 149.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 78.74 149.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "31dcc5e6-8cc0-4ddb-b098-805539069726")
+		)
+		(pin "1"
+			(uuid "cb301f07-e83f-4454-9d14-6c531ee379ae")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "R16")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:TestPoint")
 		(at 116.84 34.29 0)
 		(unit 1)
@@ -7836,94 +7934,6 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "TP2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Transistor_FET:2N7000")
-		(at 81.28 153.67 0)
-		(mirror y)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "9b0cb1bc-1553-4114-b7be-a669b100f70a")
-		(property "Reference" "Q1"
-			(at 75.184 155.702 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "2N7000"
-			(at 75.184 153.162 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
-			(at 76.2 155.575 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(justify left)
-			)
-		)
-		(property "Datasheet" "https://www.vishay.com/docs/70226/70226.pdf"
-			(at 76.2 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Description" "0.2A Id, 200V Vds, N-Channel MOSFET, 2.6V Logic Level, TO-92"
-			(at 81.28 153.67 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "efa71314-9dcb-40ac-986e-e6a42ed1533f")
-		)
-		(pin "3"
-			(uuid "b3edddbf-aaca-4722-b133-618bec8a15c5")
-		)
-		(pin "1"
-			(uuid "0ef12e8c-e35a-4322-b677-e5c8f23aa5c4")
-		)
-		(instances
-			(project "ESP32S3_Snifar"
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "Q1")
 					(unit 1)
 				)
 			)
