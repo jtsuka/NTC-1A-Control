@@ -227,6 +227,24 @@ static void dumpFrame(const char* tag, const uint8_t* frame, uint8_t len) {
     Serial.println();
 }
 
+// 連番+タイムスタンプ付き版。長時間試験でのログ突き合わせ(欠落・重複の特定)と、
+// 周期乱れ・停止・異常遅延の検出のため、各フレームに通し番号とmillis()を付けて出力する。
+static void dumpFrameSeq(const char* tag, uint32_t seq, const uint8_t* frame, uint8_t len) {
+    Serial.print('[');
+    Serial.print(millis());
+    Serial.print(" ms] ");
+    Serial.print(tag);
+    Serial.print('#');
+    Serial.print(seq);
+    Serial.print(' ');
+    for (uint8_t i = 0; i < len; i++) {
+        if (frame[i] < 0x10) Serial.print('0');
+        Serial.print(frame[i], HEX);
+        if (i + 1 < len) Serial.print(' ');
+    }
+    Serial.println();
+}
+
 // RX_INVERTED フラグを反映した論理レベルを返す
 // HIGH = バス HIGH (TC106 が LOW を送っていない状態)
 // LOW  = バス LOW  (TC106 がバスを GND へ引き下げている状態)
@@ -568,6 +586,7 @@ static void buildResponseFrame(const uint8_t* cmdFrame, uint8_t* respFrame) {
 
 static uint8_t  frameIndex = 0;
 static uint32_t lastSendMs = 0;
+static uint32_t txSeq = 0;  // 連番(Phase1.3-B長時間試験でのログ突き合わせ用)
 
 void setup() {
     Serial.begin(115200);
@@ -630,7 +649,8 @@ void loop() {
         lastSendMs = millis();
 
         const uint8_t* frame = TEST_FRAMES[frameIndex];
-        dumpFrame("[TX] ", frame, FRAME_LEN);
+        txSeq++;
+        dumpFrameSeq("[TX] ", txSeq, frame, FRAME_LEN);
         sendFrame17Slot(frame, FRAME_LEN);
 
         // 次のフレームに進む (循環)

@@ -457,11 +457,17 @@ static void taskTcBus(void* pv) {
   Serial.println("[TcTask] Phase1.1 standalone listen mode (Pi queue is ignored)");
 
   uint8_t frame[P11_FRAME_BYTES];
+  uint32_t rxSeq = 0;
   while (true) {
     // タイムアウトは長めに。Nano側の送信間隔(1000ms)より余裕を持たせる。
     if (p11TryReceiveFrame(frame, 3000)) {
       setStatusLed(true);
-      Serial.print("[TcTask RX] ");
+      rxSeq++;
+      Serial.print('[');
+      Serial.print(millis());
+      Serial.print(" ms] [TcTask RX] #");
+      Serial.print(rxSeq);
+      Serial.print(" ");
       for (uint8_t i = 0; i < P11_FRAME_BYTES; i++) {
         if (frame[i] < 0x10) Serial.print('0');
         Serial.print(frame[i], HEX);
@@ -478,6 +484,7 @@ static void taskTcBus(void* pv) {
   Serial.println("[TcTask] Check Nano Every's serial monitor for received bytes.");
 
   uint8_t idx = 0;
+  uint32_t txSeq = 0;
   while (true) {
     const uint8_t* f = kP12TestFrames[idx];
 
@@ -485,7 +492,12 @@ static void taskTcBus(void* pv) {
     p11SendFrame17Slot(f);
     setStatusLed(false);
 
-    Serial.print("[TcTask TX] ");
+    txSeq++;
+    Serial.print('[');
+    Serial.print(millis());
+    Serial.print(" ms] [TcTask TX] #");
+    Serial.print(txSeq);
+    Serial.print(" ");
     for (uint8_t i = 0; i < P11_FRAME_BYTES; i++) {
       if (f[i] < 0x10) Serial.print('0');
       Serial.print(f[i], HEX);
