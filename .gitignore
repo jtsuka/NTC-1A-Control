@@ -2,3 +2,5 @@ ArduinoNanoEvery/.DS_Store
 ArduinoNanoEvery/.DS_Store
 Python/serial_log.txt
 .DS_Store
+# KiCad automatic backups
+*-backups/
