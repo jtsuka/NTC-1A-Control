@@ -322,6 +322,9 @@ static void p11SetBusLogical(bool logicalHigh) {
 
 // targetMicros に達するまでビジーウェイトする。
 // スロット長(3300us)が十分長いので、busy-waitが最も正確。
+// (Phase1.2/1.3-Bで実績のある元の実装。Watchdog発火の根本原因は
+//  こちらではなく、呼び出し側の周期管理(catch-upループ)だったため、
+//  ここは変更しない。詳細は taskTcBus 内 TC_TEST_MODE==4 のコメント参照。)
 static void p11WaitUntilMicros(uint32_t targetMicros) {
   while ((int32_t)(micros() - targetMicros) < 0) {
     // busy wait
@@ -592,10 +595,18 @@ static void taskTcBus(void* pv) {
     txIdx = (txIdx + 1) % kP12TestFrameCount;
 
     // --- 次周期の開始(1000ms)まで待機 ---
+    // 重要: cycleStart += P135_CYCLE_MS のように過去の周期を律儀に
+    // 追いかけると、一度でも処理が1周期分以上遅れた場合、次周期以降も
+    // millis()-cycleStart が常にP135_CYCLE_MS超過のままとなり、
+    // 全ての待機がスキップされて送信だけが連続実行される
+    // 「catch-upループ」に陥る(実機試験で確認済み: 336〜337ms間隔の
+    // 連続送信としてログに現れ、これがTask Watchdog発火の根本原因だった)。
+    // ここでは、遅れた周期は追いかけず、現在時刻を新たな周期の起点として
+    // 使う(取りこぼした過去の周期は捨てて、次の未来の周期へ進む)。
     while (millis() - cycleStart < P135_CYCLE_MS) {
       vTaskDelay(pdMS_TO_TICKS(1));
     }
-    cycleStart += P135_CYCLE_MS;
+    cycleStart = millis();
   }
 
 #else
