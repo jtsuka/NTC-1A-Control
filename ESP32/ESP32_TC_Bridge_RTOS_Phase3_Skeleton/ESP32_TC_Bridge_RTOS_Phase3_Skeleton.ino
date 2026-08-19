@@ -433,7 +433,7 @@ static void taskPiUart(void* pv) {
 // Phase1.2実施時は、JP3=2-3・JP5=閉に設定し、Nano側は
 // NanoEvery_TCEmulator_V2_2.ino の MODE_PERIODIC=0 に変更しておくこと。
 // 受信確認はNano側のシリアルモニタで行う(D13で受信したバイト列を見る)。
-#define TC_TEST_MODE 1
+#define TC_TEST_MODE 4
 
 #if TC_TEST_MODE == 2
 // Nano側の4パターンと同じものを使う(相互比較しやすいように)。
