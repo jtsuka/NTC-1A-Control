@@ -428,6 +428,7 @@ static void taskPiUart(void* pv) {
 // TC_TEST_MODE で動作モードを切り替える:
 //   1 = Phase1.1: 受信専用テスト(Nano Every -> ESP32、GPIO4を受信し続けてログ出力)
 //   2 = Phase1.2: 送信専用テスト(ESP32 -> Nano Every、テストパターンを周期送信)
+//   4 = Phase1.3.5-A: 時間窓方式の同時双方向テスト(下記参照)
 //   0 = Phase3  : Piからのコマンド/応答モデル(元のロジック)
 //
 // Phase1.2実施時は、JP3=2-3・JP5=閉に設定し、Nano側は
@@ -435,7 +436,7 @@ static void taskPiUart(void* pv) {
 // 受信確認はNano側のシリアルモニタで行う(D13で受信したバイト列を見る)。
 #define TC_TEST_MODE 4
 
-#if TC_TEST_MODE == 2
+#if TC_TEST_MODE == 2 || TC_TEST_MODE == 4
 // Nano側の4パターンと同じものを使う(相互比較しやすいように)。
 static const uint8_t kP12TestFrames[][P11_FRAME_BYTES] = {
   {0x00, 0x64, 0x00, 0x64, 0x00, 0x7F},
@@ -445,6 +446,27 @@ static const uint8_t kP12TestFrames[][P11_FRAME_BYTES] = {
 };
 static constexpr uint8_t kP12TestFrameCount =
   sizeof(kP12TestFrames) / sizeof(kP12TestFrames[0]);
+#endif
+
+#if TC_TEST_MODE == 4
+// ============================================================
+// Phase1.3.5-A: 時間窓方式の状態機械
+// ============================================================
+// 仕様書(Phase1.3.5_試験仕様書.md)のタイミング図に対応。
+//
+//   周期 n
+//   0ms          336ms       450  500ms       836ms   950  1000ms
+//   │ Nano TX ────►│          │    ESP32 TX ────►│      │
+//   │ ESP32 RX窓   │          │    Nano RX窓     │      │
+//   └──────────────┘          └──────────────────┘
+//
+// ESP32は「0〜450msをNano受信用の窓」「500msで自分のTX」という周期を繰り返す。
+// 17スロット送受信ロジック(p11SendFrame17Slot/p11TryReceiveFrame)自体は
+// Phase1.3/1.3-Bで実証済みのため変更しない。ここで新規に作るのは、
+// その外側で「今は受信の番か、送信の番か」を判断する時間管理のみ。
+static constexpr uint32_t P135_RX_WINDOW_MS = 450;   // 0〜450ms: 受信を試みる窓
+static constexpr uint32_t P135_TX_START_MS  = 500;   // 500ms: 自分の送信を開始
+static constexpr uint32_t P135_CYCLE_MS     = 1000;  // 周期
 #endif
 
 static void taskTcBus(void* pv) {
@@ -507,6 +529,73 @@ static void taskTcBus(void* pv) {
 
     idx = (idx + 1) % kP12TestFrameCount;
     vTaskDelay(pdMS_TO_TICKS(1000)); // Nano側と同じく1000ms周期
+  }
+
+#elif TC_TEST_MODE == 4
+  Serial.println("[TcTask] Phase1.3.5-A time-windowed simultaneous mode");
+  Serial.println("[TcTask] RX window: 0-450ms, TX at 500ms, cycle=1000ms");
+
+  uint8_t txIdx = 0;
+  uint32_t txSeq = 0;
+  uint32_t rxSeq = 0;
+  uint32_t cycleStart = millis();
+
+  while (true) {
+    uint32_t elapsed = millis() - cycleStart;
+
+    // --- 受信窓 (0〜450ms) ---
+    if (elapsed < P135_RX_WINDOW_MS) {
+      uint32_t remaining = P135_RX_WINDOW_MS - elapsed;
+      uint8_t frame[P11_FRAME_BYTES];
+      if (p11TryReceiveFrame(frame, remaining)) {
+        rxSeq++;
+        Serial.print('[');
+        Serial.print(millis());
+        Serial.print(" ms] [RX] #");
+        Serial.print(rxSeq);
+        Serial.print(" ");
+        for (uint8_t i = 0; i < P11_FRAME_BYTES; i++) {
+          if (frame[i] < 0x10) Serial.print('0');
+          Serial.print(frame[i], HEX);
+          Serial.print(' ');
+        }
+        Serial.println();
+      }
+      // 受信を試みても試みなくても、窓の終わりまでは待つ
+      while (millis() - cycleStart < P135_RX_WINDOW_MS) {
+        vTaskDelay(pdMS_TO_TICKS(1));
+      }
+    }
+
+    // --- 送信時刻(500ms)まで待機 ---
+    while (millis() - cycleStart < P135_TX_START_MS) {
+      vTaskDelay(pdMS_TO_TICKS(1));
+    }
+
+    // --- 送信 ---
+    const uint8_t* f = kP12TestFrames[txIdx];
+    setStatusLed(true);
+    txSeq++;
+    Serial.print('[');
+    Serial.print(millis());
+    Serial.print(" ms] [TX] #");
+    Serial.print(txSeq);
+    Serial.print(" ");
+    for (uint8_t i = 0; i < P11_FRAME_BYTES; i++) {
+      if (f[i] < 0x10) Serial.print('0');
+      Serial.print(f[i], HEX);
+      Serial.print(' ');
+    }
+    Serial.println();
+    p11SendFrame17Slot(f);
+    setStatusLed(false);
+    txIdx = (txIdx + 1) % kP12TestFrameCount;
+
+    // --- 次周期の開始(1000ms)まで待機 ---
+    while (millis() - cycleStart < P135_CYCLE_MS) {
+      vTaskDelay(pdMS_TO_TICKS(1));
+    }
+    cycleStart += P135_CYCLE_MS;
   }
 
 #else

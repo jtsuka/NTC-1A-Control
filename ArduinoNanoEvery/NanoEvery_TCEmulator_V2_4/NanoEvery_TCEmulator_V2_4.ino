@@ -150,9 +150,14 @@
 // ============================================================
 // 動作モード
 // ============================================================
-// 1: Phase 1.1 周期送信モード (まずこちらで疎通確認)
-// 0: Phase 1.2 受信→応答モード (Phase 1.1 完了後に使用)
-#define MODE_PERIODIC 1
+// MODE_PERIODIC:
+//   1: Phase 1.1 周期送信モード (まずこちらで疎通確認)
+//   0: Phase 1.2 受信→応答モード (Phase 1.1 完了後に使用)
+// MODE_SIMULTANEOUS:
+//   1にすると、MODE_PERIODICの値に関わらずPhase1.3.5-A
+//   (時間窓方式の同時双方向モード)で動作する。
+#define MODE_PERIODIC 0
+#define MODE_SIMULTANEOUS 1
 
 // ============================================================
 // ピン設定
@@ -210,6 +215,26 @@ static const uint8_t TEST_FRAMES[][FRAME_LEN] = {
     { 0x00, 0x64, 0x00, 0x64, 0x00, 0x7F },
 };
 static const uint8_t NUM_FRAMES = sizeof(TEST_FRAMES) / sizeof(TEST_FRAMES[0]);
+
+#if MODE_SIMULTANEOUS
+// Phase1.3.5-A専用: Nano→ESP32方向のテストパターン。
+// 既存のTEST_FRAMES(ESP32→Nano方向と同一内容)とは別の値にして、
+// 方向の取り違えを検出できるようにする。
+// 本プロトコルは7bitデータのため、全バイト 0x00〜0x7E に収めること。
+static const uint8_t P135_TEST_FRAMES[][FRAME_LEN] = {
+    { 0x55, 0x2A, 0x55, 0x2A, 0x55, 0x7F },
+    { 0x12, 0x24, 0x36, 0x48, 0x5A, 0x7F },
+    { 0x0F, 0x1E, 0x2D, 0x3C, 0x4B, 0x7F },
+    { 0x6E, 0x5D, 0x4C, 0x3B, 0x2A, 0x7F },
+};
+static const uint8_t P135_NUM_FRAMES =
+    sizeof(P135_TEST_FRAMES) / sizeof(P135_TEST_FRAMES[0]);
+
+// タイミング(仕様書 Phase1.3.5_試験仕様書.md の時間窓と対応)
+static const uint32_t P135_RX_WINDOW_MS = 450;   // 450〜950ms: ESP32受信用の窓
+static const uint32_t P135_TX_START_MS  = 0;     // 0ms: 自分のTX開始(周期の先頭)
+static const uint32_t P135_CYCLE_MS     = 1000;  // 周期
+#endif
 
 // ============================================================
 // ユーティリティ
@@ -587,6 +612,7 @@ static void buildResponseFrame(const uint8_t* cmdFrame, uint8_t* respFrame) {
 static uint8_t  frameIndex = 0;
 static uint32_t lastSendMs = 0;
 static uint32_t txSeq = 0;  // 連番(Phase1.3-B長時間試験でのログ突き合わせ用)
+static uint32_t rxSeq = 0;  // 連番(Phase1.3.5-A用、受信側)
 
 void setup() {
     Serial.begin(115200);
@@ -597,8 +623,8 @@ void setup() {
     pinMode(TX_PIN, OUTPUT);
     writeBusHigh();
 
-    // RX ピン初期化 (Phase 1.2 のみ)
-#if !MODE_PERIODIC
+    // RX ピン初期化 (Phase 1.2 または Phase1.3.5-A、受信を行うモード)
+#if MODE_SIMULTANEOUS || !MODE_PERIODIC
     pinMode(RX_PIN, RX_USE_INTERNAL_PULLUP ? INPUT_PULLUP : INPUT);
 #endif
 
@@ -615,7 +641,13 @@ void setup() {
     Serial.print  ("6 bytes : ");  Serial.print(SLOT_US * 17 * 6 / 1000);
     Serial.println(" ms");
 
-#if MODE_PERIODIC
+#if MODE_SIMULTANEOUS
+    Serial.println("Mode: SIMULTANEOUS (Phase 1.3.5-A, time-windowed)");
+    Serial.print  ("RX window: "); Serial.print(P135_RX_WINDOW_MS);
+    Serial.println("-950 ms");
+    Serial.print  ("Cycle: "); Serial.print(P135_CYCLE_MS); Serial.println(" ms");
+    Serial.print  ("TX frames (Nano->ESP32): "); Serial.println(P135_NUM_FRAMES);
+#elif MODE_PERIODIC
     Serial.println("Mode: PERIODIC (Phase 1.1)");
     Serial.print  ("Interval: "); Serial.print(PERIODIC_INTERVAL_MS);
     Serial.println(" ms");
@@ -633,7 +665,64 @@ void setup() {
 }
 
 void loop() {
-#if MODE_PERIODIC
+#if MODE_SIMULTANEOUS
+    // ──────────────────────────────────────────────────────
+    // Phase 1.3.5-A: 時間窓方式の同時双方向モード
+    //
+    // 17スロット送受信ロジック(sendFrame17Slot/receiveFrame17Slot)自体は
+    // Phase1.3/1.3-Bで実証済みのため変更しない。ここでは、周期の中で
+    // 「今は送信の番か、受信の番か」を判断する時間管理のみを行う。
+    //
+    //   周期 n
+    //   0ms          336ms       450  500ms       836ms   950  1000ms
+    //   │ Nano TX ────►│          │    ESP32 TX ────►│      │
+    //   │              │          │                  │      │
+    //   │ (送信中)      │          │ Nano RX窓         │      │
+    //   └──────────────┘          └──────────────────┘
+    //
+    // Nanoは周期開始(0ms)で自分のTXを行い、続けて450〜950msを
+    // ESP32からの受信用の窓とする。窓終了後は次周期の0msまで待機する。
+    // ──────────────────────────────────────────────────────
+    static uint32_t p135CycleStart = 0;
+    static bool p135Initialized = false;
+    if (!p135Initialized) {
+        p135CycleStart = millis();
+        p135Initialized = true;
+    }
+
+    // --- 0ms: 自分のTX ---
+    {
+        const uint8_t* frame = P135_TEST_FRAMES[frameIndex];
+        txSeq++;
+        dumpFrameSeq("[TX] ", txSeq, frame, FRAME_LEN);
+        sendFrame17Slot(frame, FRAME_LEN);
+        frameIndex = (frameIndex + 1) % P135_NUM_FRAMES;
+    }
+
+    // --- 450〜950ms: ESP32からの受信窓 ---
+    while (millis() - p135CycleStart < P135_RX_WINDOW_MS) {
+        // 窓開始(450ms)まで待機
+    }
+    {
+        uint32_t elapsed = millis() - p135CycleStart;
+        const uint32_t RX_WINDOW_END_MS = 950; // 受信窓の終わり
+        uint32_t remaining = (elapsed < RX_WINDOW_END_MS) ? (RX_WINDOW_END_MS - elapsed) : 0;
+        if (remaining > 0) {
+            uint8_t rxBuf[FRAME_LEN];
+            if (receiveFrame17Slot(rxBuf, FRAME_LEN, remaining)) {
+                rxSeq++;
+                dumpFrameSeq("[RX] ", rxSeq, rxBuf, FRAME_LEN);
+            }
+        }
+    }
+
+    // --- 次周期(1000ms)まで待機 ---
+    while (millis() - p135CycleStart < P135_CYCLE_MS) {
+        // 次周期まで待機
+    }
+    p135CycleStart += P135_CYCLE_MS;
+
+#elif MODE_PERIODIC
     // ──────────────────────────────────────────────────────
     // Phase 1.1: 周期的送信モード
     //
