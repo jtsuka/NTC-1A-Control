@@ -1,5 +1,5 @@
 /**
- * NanoEvery_TCEmulator_V2_4.ino
+ * NanoEvery_TCEmulator_V2_5.ino
  *
  * TC106 テンションコントローラ エミュレータ
  * Arduino Nano Every (ATmega4809, 5V 16MHz) 用
