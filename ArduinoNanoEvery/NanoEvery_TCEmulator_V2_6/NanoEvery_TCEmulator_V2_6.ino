@@ -195,8 +195,8 @@
 //   MODE_PERIODIC            = 0
 //   MODE_SIMULTANEOUS        = 0
 //   MODE_TX_NONBLOCKING_TEST = 0
-//   MODE_RX_NONBLOCKING_TEST = 0
-//   MODE_RX_LOOPBACK_TEST    = 1
+//   MODE_RX_NONBLOCKING_TEST = 1
+//   MODE_RX_LOOPBACK_TEST    = 0
 //
 // Non-blocking RX regression (外部波形入力用):
 //   MODE_PERIODIC            = 0
@@ -232,8 +232,8 @@
 #define MODE_PERIODIC             0
 #define MODE_SIMULTANEOUS         0
 #define MODE_TX_NONBLOCKING_TEST  0
-#define MODE_RX_NONBLOCKING_TEST  0
-#define MODE_RX_LOOPBACK_TEST     1
+#define MODE_RX_NONBLOCKING_TEST  1
+#define MODE_RX_LOOPBACK_TEST     0
 
 #if (MODE_PERIODIC + MODE_SIMULTANEOUS + MODE_TX_NONBLOCKING_TEST + MODE_RX_NONBLOCKING_TEST + MODE_RX_LOOPBACK_TEST) != 1
 #error "Select exactly ONE test mode"
