@@ -678,6 +678,7 @@ static uint8_t   rxNbByteCounter  = 0;      // TC106 rx_bytecntr相当
 static uint8_t   rxNbRxBuffer[RX_MAX_BYTES];
 static uint32_t  rxNbOverrunCount = 0;
 static uint32_t  rxNbTimeoutCount = 0;
+static uint32_t  rxSeq = 0;  // 連番(Phase1.3.5-A用、受信側)。rxNbDrainLog()より前に宣言する必要がある
 
 // 直近にRX activity(IDLE以外の処理)があった時刻。rxNbDrainLog()が
 // 「十分quietか」を判定するのに使う(独立レビュー指摘1対応)。
@@ -721,6 +722,20 @@ enum RxLogType : uint8_t {
     RXLOG_CMD_SEND,
     RXLOG_CMD_UNKNOWN,
 };
+
+// ------------------------------------------------------------
+// Arduino .ino の自動プロトタイプ生成対策。
+// Arduino IDEはスケッチ全体をプリプロセスする際、関数プロトタイプを
+// 自動生成してファイル先頭付近(enum定義より前)に挿入することがあり、
+// RxNbEvent/RxLogTypeを引数・戻り値に使う関数でコンパイルエラーに
+// なる。ここで明示的にプロトタイプを宣言し、自動生成に頼らないように
+// する(ロジック・タイミングには影響しない)。
+// ------------------------------------------------------------
+static void rxLogPush(RxLogType type, uint8_t a, uint8_t b, int32_t extra);
+static void rxProtoHandleCommand(uint8_t cmdCode, uint8_t* byteCounterInOut,
+                                  const uint8_t* buf);
+static RxNbEvent rxNbPoll();
+static void rxNbDrainLog();
 
 struct RxLogEntry {
     uint32_t   ms;
@@ -1317,7 +1332,7 @@ static void buildResponseFrame(const uint8_t* cmdFrame, uint8_t* respFrame) {
 static uint8_t  frameIndex = 0;
 static uint32_t lastSendMs = 0;
 static uint32_t txSeq = 0;  // 連番(Phase1.3-B長時間試験でのログ突き合わせ用)
-static uint32_t rxSeq = 0;  // 連番(Phase1.3.5-A用、受信側)
+// rxSeqはRX engineセクション(rxNbDrainLog()より前)へ移動済み
 
 // ============================================================
 // TcMainTx: Main Controller ASM(zhukongban.asm)忠実再現・
