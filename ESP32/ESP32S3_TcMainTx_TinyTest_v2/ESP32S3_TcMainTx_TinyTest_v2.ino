@@ -500,10 +500,14 @@ void setup() {
 
     tcMainTx.begin(TX_PIN);
 
+    // 実機確認済み(2026-08-22): SerialPi.begin()直後にPIN_PI_RXへ
+    // pinMode(..., INPUT_PULLUP)を行うと、UART RXとして設定された
+    // D1のピン機能がGPIO入力へ再設定され、UART受信が機能しなくなる
+    // ことを実機試験で確認した。起動時ノイズ破棄のdelay(100)/
+    // SerialPi.read()もこのTiny Testでは不要と判断し、あわせて削除。
+    // SerialPi.begin()のみとした状態で、Piからの12byte RESET packet
+    // 受信・parser・TcMainTx.sendReset()呼び出しまで実機PASS済み。
     SerialPi.begin(PI_BAUD, SERIAL_8N1, PIN_PI_RX, PIN_PI_TX);
-    pinMode(PIN_PI_RX, INPUT_PULLUP);
-    delay(100);
-    while (SerialPi.available()) SerialPi.read(); // 起動時ノイズ破棄
 
     Serial.println("[setup] Pi UART parser ready. WAIT_CMD.");
 }
