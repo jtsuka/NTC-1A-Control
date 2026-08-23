@@ -28,8 +28,8 @@
 //     これは Seeed の variant ファイルが提供するマクロで、
 //     XIAO_ESP32S3 ボード選択時のみ有効。
 //     ボードパッケージ v2.0.8 以降が必要。
-static constexpr int PIN_PI_RX = D0;  // Pi_Tx_MCU -> ESP32 RX  (= GPIO1)
-static constexpr int PIN_PI_TX = D1;  // ESP32 TX -> Pi_Rx_MCU  (= GPIO2)
+static constexpr int PIN_PI_RX = D1;  // Pi_Tx_MCU -> ESP32 RX  (= GPIO2)
+static constexpr int PIN_PI_TX = D0;  // ESP32 TX -> Pi_Rx_MCU  (= GPIO1)
 
 // TC106側。現行Snifar回路図の読み直しでは RX=D3(GPIO4), TX_TRIG=D10(GPIO9) が有力。
 static constexpr int PIN_TC_RX      = D3;   // TC_MCU_RX <- JP7 <- クランプ <- 分圧  (= GPIO4)
@@ -662,13 +662,6 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(PIN_TC_RX), p11TcRxIsr, CHANGE);
 
   SerialPi.begin(PI_BAUD, SERIAL_8N1, PIN_PI_RX, PIN_PI_TX);
-
-  // Pi 未接続時のフローティング防止 (基板/Pi 未接続時のゴーストパケット対策)
-  pinMode(PIN_PI_RX, INPUT_PULLUP);
-
-  // 起動時に入り込んだノイズを捨てる
-  delay(100);
-  while (SerialPi.available()) SerialPi.read();
 
   qPiToTc = xQueueCreate(QUEUE_DEPTH_PI_TO_TC, sizeof(tc::TcMessage));
   qTcToPi = xQueueCreate(QUEUE_DEPTH_TC_TO_PI, sizeof(tc::TcMessage));
