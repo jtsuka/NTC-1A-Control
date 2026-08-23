@@ -7,7 +7,7 @@ from collections import deque
 import NTC_1A_utils
 from NTC_1A_serial_comm import (
     start_serial_thread, stop_serial,
-    send_phase3_reset, send_phase3_tension, send_phase3_safe, send_phase3_stop,
+    send_phase3_reset, send_phase3_tension, send_phase3_safe, send_phase3_sensadj,
 )
 
 # ==========================================
@@ -52,7 +52,7 @@ def on_pad(val):
     elif val == 'CLR': fields[key] = ''
     elif val == 'ENT': current_field = (current_field + 1) % len(field_keys)
     elif val == 'ADJ':
-        send_phase3_stop()
+        send_phase3_sensadj()
     elif val == 'RESET':
         send_phase3_reset(
             int(fields['CH1_LENGTH'] or 0),

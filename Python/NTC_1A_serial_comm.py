@@ -105,9 +105,8 @@ def send_phase3_safe(enabled):
     cmd = 0x10 if enabled else 0x11
     return send_packet([cmd, 0x00, 0x00, 0x00, 0x00])
 
-def send_phase3_stop():
-    NTC_1A_utils.out("[UI] STOP is not defined in Phase3; no packet sent.")
-    return False
+def send_phase3_sensadj():
+    return send_packet([0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
 
 def _rx_loop():
     global _running
