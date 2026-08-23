@@ -1,4 +1,53 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+# phase3_uart_menu.py
+#
+# TCコントローラー代替機 Phase3 通信/parser試験用 CUIツール
+#
+# 制作日時:
+#   2026-08-23 20:55 JST
+#
+# 使用用途:
+#   Raspberry Pi → FTDI TTL-232R-3V3 → ESP32-S3 間の
+#   UART 9600bps / 8N1 による Phase3 意味層packet通信を、
+#   本体Pygame GUIとは独立して手動試験するための保守・回帰試験ツール。
+#
+#   正常系:
+#     - RESET (0x01 / 12byte)
+#     - SEND (0x02 / 6byte)
+#     - SENS.ADJ (0x03 / 8byte)
+#     - SAFE ON (0x10 / 6byte)
+#     - SAFE OFF (0x11 / 6byte)
+#
+#   異常系 / parser回帰試験:
+#     - checksum NG packetの破棄確認
+#     - 無効command 0x99の破棄確認
+#     - RESET early-detect prevention
+#       （前半6byteだけでchecksumが成立し得ても、12byte到達前に
+#        RESET packetとして早期確定しないことを確認）
+#     - Stage1 false-packet reproduction
+#       （Stage1で観測した 00 00 00 00 10 10 が、
+#        command起点parser導入後に6byte packetとして成立しないことを確認）
+#     - 任意RAW HEX送信
+#
+# 位置付け:
+#   本番GUIとは分離した開発・保守用ツール。
+#   Step3C Stage2 command起点parserの実機確認に使用し、
+#   Stage2 RUNTIME PASS / CLOSED の根拠となった。
+#   将来Pi→ESP UART parserを変更した際の回帰試験にも使用する。
+#
+# 接続:
+#   Default port : /dev/ttyUSB0
+#   Baud         : 9600
+#
+# 注意:
+#   本体GUIなど、同じシリアルポートを使用する別プロセスとは
+#   同時に起動しないこと。
+#   Menu 9 実行後はparserがCOLLECTING状態に残る可能性があるため、
+#   次のparser試験前にESP32-S3を再起動すること。
+#
+
 import sys
 import time
 import serial
