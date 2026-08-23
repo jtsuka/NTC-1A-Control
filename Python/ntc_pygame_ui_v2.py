@@ -51,7 +51,7 @@ def on_pad(val):
     if val.isdigit(): fields[key] += val
     elif val == 'CLR': fields[key] = ''
     elif val == 'ENT': current_field = (current_field + 1) % len(field_keys)
-    elif val == 'STOP':
+    elif val == 'ADJ':
         send_phase3_stop()
     elif val == 'RESET':
         send_phase3_reset(
@@ -123,7 +123,7 @@ buttons.append(Button((0.22, 0.05, 0.15, 0.08), 'SAFE OFF', lambda: send_phase3_
 # --- [追加] 終了ボタン (右上に赤色で配置) ---
 buttons.append(Button((0.85, 0.02, 0.12, 0.06), 'EXIT', lambda: pygame.event.post(pygame.event.Event(pygame.QUIT)), color=(180, 50, 50)))
 
-pad_layout = [['7','8','9','CLR'],['4','5','6','ENT'],['1','2','3','SEND'],['0','STOP','RESET','']]
+pad_layout = [['7','8','9','CLR'],['4','5','6','ENT'],['1','2','3','SEND'],['0','ADJ','RESET','']]
 for r, row in enumerate(pad_layout):
     for c, lbl in enumerate(row):
         if not lbl: continue
