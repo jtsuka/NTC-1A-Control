@@ -5,10 +5,7 @@ import pygame, sys
 import serial.tools.list_ports
 from collections import deque
 import NTC_1A_utils
-from NTC_1A_serial_comm import (
-    start_serial_thread, stop_serial,
-    send_phase3_reset, send_phase3_tension, send_phase3_safe, send_phase3_stop,
-)
+from NTC_1A_serial_comm import start_serial_thread, send_packet, stop_serial
 
 # ==========================================
 # 1. ログ・通信の初期設定
@@ -51,20 +48,11 @@ def on_pad(val):
     if val.isdigit(): fields[key] += val
     elif val == 'CLR': fields[key] = ''
     elif val == 'ENT': current_field = (current_field + 1) % len(field_keys)
-    elif val == 'STOP':
-        send_phase3_stop()
-    elif val == 'RESET':
-        send_phase3_reset(
-            int(fields['CH1_LENGTH'] or 0),
-            int(fields['CH1_TENSION'] or 0),
-            int(fields['CH2_LENGTH'] or 0),
-            int(fields['CH2_TENSION'] or 0),
-        )
+    elif val == 'STOP':  send_packet([0x05, 0, 0, 0, 0])
+    elif val == 'RESET': send_packet([0x04, 0, 0, 0, 0])
     elif val == 'SEND':
-        send_phase3_tension(
-            int(fields['CH1_TENSION'] or 0),
-            int(fields['CH2_TENSION'] or 0),
-        )
+        t = int(fields['CH1_TENSION'] or 0)
+        send_packet([0x01, t & 0xFF, 0, 0, 0])
 
 # ==========================================
 # 3. 汎用UIクラス定義
@@ -117,8 +105,8 @@ class Dropdown:
 # 4. 配置
 # ==========================================
 buttons = []
-buttons.append(Button((0.05, 0.05, 0.15, 0.08), 'SAFE ON',  lambda: send_phase3_safe(True)))
-buttons.append(Button((0.22, 0.05, 0.15, 0.08), 'SAFE OFF', lambda: send_phase3_safe(False)))
+buttons.append(Button((0.05, 0.05, 0.15, 0.08), 'SAFE ON',  lambda: send_packet([0xF0, 1, 0, 0, 0])))
+buttons.append(Button((0.22, 0.05, 0.15, 0.08), 'SAFE OFF', lambda: send_packet([0xF0, 0, 0, 0, 0])))
 
 # --- [追加] 終了ボタン (右上に赤色で配置) ---
 buttons.append(Button((0.85, 0.02, 0.12, 0.06), 'EXIT', lambda: pygame.event.post(pygame.event.Event(pygame.QUIT)), color=(180, 50, 50)))

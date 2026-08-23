@@ -1,0 +1,126 @@
+--- ntc_pygame_ui_v2.py
++++ ntc_pygame_ui_v2_Phase3_TestPanel.py
+@@ -5,7 +5,10 @@
+ import serial.tools.list_ports
+ from collections import deque
+ import NTC_1A_utils
+-from NTC_1A_serial_comm import start_serial_thread, send_packet, stop_serial
++from NTC_1A_serial_comm import (
++    start_serial_thread, stop_serial,
++    send_phase3_reset, send_phase3_tension, send_phase3_safe, send_phase3_stop,
++)
+ 
+ # ==========================================
+ # 1. ログ・通信の初期設定
+@@ -48,11 +51,20 @@
+     if val.isdigit(): fields[key] += val
+     elif val == 'CLR': fields[key] = ''
+     elif val == 'ENT': current_field = (current_field + 1) % len(field_keys)
+-    elif val == 'STOP':  send_packet([0x05, 0, 0, 0, 0])
+-    elif val == 'RESET': send_packet([0x04, 0, 0, 0, 0])
++    elif val == 'STOP':
++        send_phase3_stop()
++    elif val == 'RESET':
++        send_phase3_reset(
++            int(fields['CH1_LENGTH'] or 0),
++            int(fields['CH1_TENSION'] or 0),
++            int(fields['CH2_LENGTH'] or 0),
++            int(fields['CH2_TENSION'] or 0),
++        )
+     elif val == 'SEND':
+-        t = int(fields['CH1_TENSION'] or 0)
+-        send_packet([0x01, t & 0xFF, 0, 0, 0])
++        send_phase3_tension(
++            int(fields['CH1_TENSION'] or 0),
++            int(fields['CH2_TENSION'] or 0),
++        )
+ 
+ # ==========================================
+ # 3. 汎用UIクラス定義
+@@ -105,8 +117,8 @@
+ # 4. 配置
+ # ==========================================
+ buttons = []
+-buttons.append(Button((0.05, 0.05, 0.15, 0.08), 'SAFE ON',  lambda: send_packet([0xF0, 1, 0, 0, 0])))
+-buttons.append(Button((0.22, 0.05, 0.15, 0.08), 'SAFE OFF', lambda: send_packet([0xF0, 0, 0, 0, 0])))
++buttons.append(Button((0.05, 0.05, 0.15, 0.08), 'SAFE ON',  lambda: send_phase3_safe(True)))
++buttons.append(Button((0.22, 0.05, 0.15, 0.08), 'SAFE OFF', lambda: send_phase3_safe(False)))
+ 
+ # --- [追加] 終了ボタン (右上に赤色で配置) ---
+ buttons.append(Button((0.85, 0.02, 0.12, 0.06), 'EXIT', lambda: pygame.event.post(pygame.event.Event(pygame.QUIT)), color=(180, 50, 50)))
+
+--- NTC_1A_serial_comm.py
++++ NTC_1A_serial_comm_Phase3.py
+@@ -42,6 +42,72 @@
+     except Exception as e:
+         NTC_1A_utils.out(f"[TX ERROR] {e}")
+         return False
++
++
++# ==========================================
++# Phase3 Pi -> ESP meaning-level commands
++# GUI layout/port-selection code is intentionally independent of these helpers.
++# send_packet() appends the 7-bit checksum.
++# ==========================================
++def _check_u8(name, value):
++    try:
++        value = int(value)
++    except (TypeError, ValueError):
++        NTC_1A_utils.out(f"[TX ERROR] {name}: invalid value")
++        return None
++    if not 0 <= value <= 0xFF:
++        NTC_1A_utils.out(f"[TX ERROR] {name}: out of range 0..255 ({value})")
++        return None
++    return value
++
++def _check_u24(name, value):
++    try:
++        value = int(value)
++    except (TypeError, ValueError):
++        NTC_1A_utils.out(f"[TX ERROR] {name}: invalid value")
++        return None
++    if not 0 <= value <= 0xFFFFFF:
++        NTC_1A_utils.out(f"[TX ERROR] {name}: out of range 0..16777215 ({value})")
++        return None
++    return value
++
++def send_phase3_reset(ch1_length, ch1_tension, ch2_length, ch2_tension):
++    ch1_length = _check_u24("CH1 LENGTH", ch1_length)
++    ch1_tension = _check_u8("CH1 TENSION", ch1_tension)
++    ch2_length = _check_u24("CH2 LENGTH", ch2_length)
++    ch2_tension = _check_u8("CH2 TENSION", ch2_tension)
++    if None in (ch1_length, ch1_tension, ch2_length, ch2_tension):
++        return False
++
++    payload = [
++        0x01,
++        (ch1_length >> 16) & 0xFF,
++        (ch1_length >> 8) & 0xFF,
++        ch1_length & 0xFF,
++        ch1_tension,
++        (ch2_length >> 16) & 0xFF,
++        (ch2_length >> 8) & 0xFF,
++        ch2_length & 0xFF,
++        ch2_tension,
++        0x00,
++        0x00,
++    ]
++    return send_packet(payload)
++
++def send_phase3_tension(ch1_tension, ch2_tension):
++    ch1_tension = _check_u8("CH1 TENSION", ch1_tension)
++    ch2_tension = _check_u8("CH2 TENSION", ch2_tension)
++    if None in (ch1_tension, ch2_tension):
++        return False
++    return send_packet([0x02, ch1_tension, ch2_tension, 0x00, 0x00])
++
++def send_phase3_safe(enabled):
++    cmd = 0x10 if enabled else 0x11
++    return send_packet([cmd, 0x00, 0x00, 0x00, 0x00])
++
++def send_phase3_stop():
++    NTC_1A_utils.out("[UI] STOP is not defined in Phase3; no packet sent.")
++    return False
+ 
+ def _rx_loop():
+     global _running
