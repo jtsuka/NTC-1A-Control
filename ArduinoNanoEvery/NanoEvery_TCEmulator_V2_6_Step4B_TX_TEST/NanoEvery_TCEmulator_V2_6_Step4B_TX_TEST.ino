@@ -350,6 +350,25 @@ static const uint8_t TEST_FRAMES[][FRAME_LEN] = {
 };
 static const uint8_t NUM_FRAMES = sizeof(TEST_FRAMES) / sizeof(TEST_FRAMES[0]);
 
+// Step4 B方向専用テストフレーム(オシロ/ロジックアナライザでの目視確認用)。
+// 既存の TEST_FRAMES (MODE_PERIODIC / MODE_TX_NONBLOCKING_TEST 等、
+// 既存PASSモードが使用中)には一切手を加えず、専用の別配列とする。
+static const uint8_t STEP4B_TEST_FRAMES[][FRAME_LEN] = {
+    // フレームA: 昇順の識別しやすい値(バイト境界の判別用)
+    { 0x01, 0x02, 0x03, 0x04, 0x05, 0x7F },
+
+    // フレームB: 0/1パターンが目視で判別しやすい値を1フレームに凝縮。
+    //   byte0=0x00: 全7bit LOW  (slot1〜7すべてLOW、slot8〜16のHIGHとの対比用)
+    //   byte1=0x01: LSBのみ1    (slot1のみHIGH、他LOW。ビット位置の確認用)
+    //   byte2=0x15: 0b0010101   (LSB firstで H,L,H,L,H,L,L)
+    //   byte3=0x2A: 0b0101010   (LSB firstで L,H,L,H,L,H,L。byte2と相補パターン)
+    //   byte4=0x55: 0b1010101   (LSB firstで H,L,H,L,H,L,H)
+    //   byte5=0x7F: 全7bit HIGH (footer固定値、全HIGHの基準としても機能)
+    { 0x00, 0x01, 0x15, 0x2A, 0x55, 0x7F },
+};
+static const uint8_t STEP4B_NUM_FRAMES =
+    sizeof(STEP4B_TEST_FRAMES) / sizeof(STEP4B_TEST_FRAMES[0]);
+
 #if MODE_SIMULTANEOUS
 // Phase1.3.5-A専用: Nano→ESP32方向のテストパターン。
 // 既存のTEST_FRAMES(ESP32→Nano方向と同一内容)とは別の値にして、
@@ -1729,10 +1748,22 @@ void setup() {
     Serial.begin(115200);
     delay(500);
 
-    // TX ピン初期化: アイドル状態は HIGH
-    // (TC106 firmware: 送信完了後 PORT_TX = 1)
+    // TX ピン初期化: アイドル状態
+    // 既存モード: HIGH (TC106 firmware: 送信完了後 PORT_TX = 1 を
+    //   そのままバス値として再現する解釈。原本のまま、変更なし)
+    // MODE_STEP4B_TX_TEST: LOW (Step4で確定した物理極性
+    //   (TC106 PORT_TX→Q1→中継基板(直結)→Main入力R/Cフィルタ→
+    //   Main MCU rx_ch1、合計1段反転)に基づく、Main/ESP32が実際に
+    //   見るべきidle値。起動直後からHIGHのまま最初の送信を迎えると、
+    //   本来存在しないHIGH→LOWの立下りを人工的に生成してしまい、
+    //   「idle LOW→byte0 slot0 LOW」という未確定のフレーム先頭同期
+    //   条件の試験を汚染するため、Step4Bモードに限りLOWで初期化する。
     pinMode(TX_PIN, OUTPUT);
-    writeBusHigh();
+#if MODE_STEP4B_TX_TEST
+    writeBusStep4B_IdleOrZero();  // LOW
+#else
+    writeBusHigh();               // 既存モードは従来どおり
+#endif
 
     // RX ピン初期化 (Phase 1.2 または Phase1.3.5-A、受信を行うモード)
 #if MODE_SIMULTANEOUS || !MODE_PERIODIC
@@ -1923,8 +1954,9 @@ void loop() {
     // ──────────────────────────────────────────────────────
     // Step4 B方向: 非ブロッキングTX(極性反転版)の単方向試験モード
     //
-    // 原本のMODE_TX_NONBLOCKING_TESTと同じPERIODIC_INTERVAL_MS周期・
-    // 同じTEST_FRAMESを使い、新規追加のtcTxStartNonBlockingStep4B/
+    // 原本のMODE_TX_NONBLOCKING_TESTと同じPERIODIC_INTERVAL_MS周期を
+    // 用いるが、フレームデータは目視確認用のSTEP4B_TEST_FRAMES(専用配列、
+    // 既存TEST_FRAMESとは別)を使い、新規追加のtcTxStartNonBlockingStep4B/
     // tcTxPollNonBlockingStep4Bで送信する。Nano RX・ESP32側は使用しない。
     // ──────────────────────────────────────────────────────
     static uint32_t idleLoopCount = 0; // busy-waitしていないことの確認用
@@ -1933,12 +1965,12 @@ void loop() {
     if (!tcTxBusyStep4B() && (millis() - lastSendMs >= PERIODIC_INTERVAL_MS)) {
         lastSendMs = millis();
 
-        const uint8_t* frame = TEST_FRAMES[frameIndex];
+        const uint8_t* frame = STEP4B_TEST_FRAMES[frameIndex];
         txSeq++;
         dumpFrameSeq("[TX-NB-4B] ", txSeq, frame, FRAME_LEN);
         tcTxStartNonBlockingStep4B(frame, FRAME_LEN);
 
-        frameIndex = (frameIndex + 1) % NUM_FRAMES;
+        frameIndex = (frameIndex + 1) % STEP4B_NUM_FRAMES;
     }
 
     if (tcTxBusyStep4B()) {
