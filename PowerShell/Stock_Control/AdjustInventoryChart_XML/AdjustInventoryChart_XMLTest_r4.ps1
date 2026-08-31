@@ -39,7 +39,7 @@ param(
     [string]$LogPath = ""
 )
 
-Set-StrictMode -Version 4.0
+Set-StrictMode -Version 2.0
 $ErrorActionPreference = "Stop"
 
 $ScriptVersion = "2026-08-31-chart-xml-test-r4"
