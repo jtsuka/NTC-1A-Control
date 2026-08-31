@@ -1,11 +1,11 @@
 <#
 ===============================================================================
-AdjustInventoryChart_XML.ps1
+AdjustInventoryChart_XMLTest_r5.ps1
 
 目的
   本社商品在庫日報.xlsx の「欠品」「在庫額」グラフについて、
   処理基準日当日の列をグラフ履歴範囲から除外し、
-  基準日より前の最新日付列までを参照する正式運用スクリプト。
+  基準日より前の最新日付列までを参照する単体テスト用スクリプト。
 
 r4 確定内容（2026-08-31）
   - Excel COM / Series.Formula によるグラフ書換えを完全に廃止。
@@ -62,7 +62,7 @@ param(
 Set-StrictMode -Version 2.0
 $ErrorActionPreference = "Stop"
 
-$ScriptVersion = "2026-08-31-chart-xml-r5"
+$ScriptVersion = "2026-08-31-chart-xml-test-r5"
 
 # 本番対象のファイル名。単体テストでもファイル名はこのまま使う。
 $ExpectedFileName = "本社商品在庫日報.xlsx"
@@ -439,9 +439,10 @@ try {
         exit 0
     }
 
-    $folder = Split-Path -Parent $WorkbookPath
+    # LogPath 未指定時は、スクリプト自身が置かれているフォルダーへ出力する。
+    # 例: C:\HPDB\AdjustInventoryChart_XML.ps1 → C:\HPDB\AdjustInventoryChart_XML.log
     if ([string]::IsNullOrWhiteSpace($LogPath)) {
-        $LogPath = Join-Path $folder "AdjustInventoryChart_XMLTest.log"
+        $LogPath = Join-Path $PSScriptRoot "AdjustInventoryChart_XML.log"
     }
     $script:LogPath = $LogPath
 
