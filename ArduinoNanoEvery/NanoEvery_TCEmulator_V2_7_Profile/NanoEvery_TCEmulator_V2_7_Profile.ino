@@ -697,7 +697,7 @@ static void writeBusStep4B_OneOrGuard() { phyWriteOneOrGuard(); }
 
 // 既定はTEST(既存Step4B波形・データの完全回帰を最優先で確認するため)。
 #ifndef TC106_ACTIVE_PROFILE
-#define TC106_ACTIVE_PROFILE TC106_PROFILE_TEST
+#define TC106_ACTIVE_PROFILE TC106_PROFILE_2024
 #endif
 
 #if (TC106_ACTIVE_PROFILE != TC106_PROFILE_2024) && \
