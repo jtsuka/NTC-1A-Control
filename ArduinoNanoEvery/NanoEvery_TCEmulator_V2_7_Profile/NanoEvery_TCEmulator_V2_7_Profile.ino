@@ -197,6 +197,28 @@
 #include <Arduino.h>
 
 // ============================================================
+// frame完了時、TX PolicyからCommon Engineへ返す指示
+// ============================================================
+// 【重要】この列挙型はファイル最上部(#include直後)で定義する。
+// Arduinoスケッチプリプロセッサは、全関数の前方宣言をファイル先頭
+// (最後のincludeの直後)へ自動挿入するため、この型を戻り値に持つ
+// 関数(txPolicyOnFrameEnd()等)がファイル後方で定義されていても、
+// 自動生成されたプロトタイプの時点でこの型が可視でなければ
+// 「'FrameEndAction' does not name a type」でコンパイルエラーになる。
+// (実機ビルドで検出、2026-09-01)
+enum FrameEndAction : uint8_t {
+    FRAME_STOP = 0,      // idleへ遷移し停止する(2025 / TEST)
+    FRAME_CONTINUE = 1,  // 停止せず、即座に次frameのbyte0へ進む(2024)
+};
+
+// Arduino IDEの自動プロトタイプ生成は、enum定義より前に関数プロト
+// タイプを挿入することがあるため(本ファイル内の既存rxNbPoll()前方
+// 宣言と同じ理由、後方のコメント参照)、FrameEndActionを戻り値に
+// 持つtxPolicyOnFrameEnd()についても、自動生成に頼らずここで
+// 明示的に前方宣言する(ロジック・タイミングには影響しない)。
+static FrameEndAction txPolicyOnFrameEnd();
+
+// ============================================================
 // 動作モード
 // ============================================================
 // MODE_PERIODIC:
@@ -706,13 +728,8 @@ static void writeBusStep4B_OneOrGuard() { phyWriteOneOrGuard(); }
 #error "TC106_ACTIVE_PROFILE must be exactly one of TC106_PROFILE_2024/2025/TEST"
 #endif
 
-// ============================================================
-// frame完了時、TX PolicyからCommon Engineへ返す指示
-// ============================================================
-enum FrameEndAction : uint8_t {
-    FRAME_STOP = 0,      // idleへ遷移し停止する(2025 / TEST)
-    FRAME_CONTINUE = 1,  // 停止せず、即座に次frameのbyte0へ進む(2024)
-};
+// (FrameEndAction はファイル最上部・#include直後で定義済み。
+//  Arduinoスケッチプリプロセッサの自動プロトタイプ生成対策のため。)
 
 // ============================================================
 // Payload共有状態(両Profileで計算式は共通。v0.2 FIX §4)
