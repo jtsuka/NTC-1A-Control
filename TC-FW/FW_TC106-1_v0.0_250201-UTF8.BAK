@@ -1241,9 +1241,11 @@ void tx_cntrset(void)
 		tx_bitcntr = 0;
 		tx_bytecntr ++;
 
-		if(tx_bytecntr == 6)//进行长度减法运藖E
-		{
+		if(tx_bytecntr == 6) { // 6byte
 			tx_bytecntr = 0;
+			// ⇒ 全 6 バイト送信完了
+			tx_enable = 0;      // ここで送信ガードを解除
+			PORT_TX = 1;        // TX ピンをアイドル High に固定
 			tmp_1 = setlen[1];
 			tmp_2 = setlen[2];
 			lastlen[0] = setlen[0] - len_1[0];

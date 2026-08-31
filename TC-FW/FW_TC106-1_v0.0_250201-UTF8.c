@@ -1,15 +1,8 @@
 /********************************************/
-// TC Original Version
-// Modify : Change processing, processing to 
-//		stop switching pulses of timer interrupts 
-//		of 300bps communication signals
-// Modify: 2025.07.28
 /********************************************/
 
 //#include <p24FJ32GA002.h>
 #include <p24FJ16GA002.h>
-#include <xc.h>        // PIC24F ??????
-#include <libpic30.h>  // Nop() ???
 //#include "i2c.h"
 
 //_CONFIG2( POSCMOD_NONE & ALTI2C_OFF & LPOL_ON & IOL1WAY_ON & OSCIOFNC_ON & FCKSM_CSECMD & FNOSC_FRC & WDTWIN_WDTWIN50 & PWMPIN_OFF & PWMLOCK_ON & IESO_OFF )
@@ -34,82 +27,79 @@ _CONFIG1( WDTPS_PS32768 & FWPSA_PR128 & WINDIS_ON & FWDTEN_OFF & ICS_PGx1 & GWRP
 #define pwm_zero OC1RS
 #define pwm_vol OC2RS
 #define data_total 200
-#define pid_scale 1000 //1600æ—¶,110T-96-262,æ—¥æœ¬è¯•è¤‹E600
+#define pid_scale 1000 //1600Ê±,110T-96-262,ÈÕ±¾ÊÔÑE600
 /*************************************************************
 Low side driver table is as below.  In this StateLoTable,
 the Low side driver is PWM while the high side driver is
 either on or off.  This table is used in this exercise
 *************************************************************/
-//const unsigned int StateLoTable[8] = {0x0000, 0x0210, 0x2004, 0x0204, 0x0801, 0x0810, 0x2001, 0x2A00};//Version2.0,ç¡¬ä»¶å˜ç«µEç”·?
-//const unsigned int StateLoTable[8] = {0x0000, 0x0021, 0x0018, 0x0009, 0x0006, 0x0024, 0x0012, 0x0000};//ç”µæœºåè½¬ï¼Œçœ®E-6æ”¹ä¸º6-1ï¼Œæ­¤æ®µå–æ¶ˆäº†åº•ç«¯PWMã€‚
-//const unsigned int StateLoTable[8] = {0x0000, 0x2001, 0x0810, 0x0801, 0x0204, 0x2004, 0x0210, 0x2A00};//ç”µæœºåè½¬ï¼Œçœ®E-6æ”¹ä¸º6-1ï¼Œåº•ç«¯PWM
-//const unsigned int StateLoTable[8] = {0x0000, 0x0120, 0x1008, 0x0108, 0x0402, 0x0420, 0x1002, 0x0000};//é«˜æ®µPWM
+//const unsigned int StateLoTable[8] = {0x0000, 0x0210, 0x2004, 0x0204, 0x0801, 0x0810, 0x2001, 0x2A00};//Version2.0,Ó²¼ş±ä¸EÄĞ?
+//const unsigned int StateLoTable[8] = {0x0000, 0x0021, 0x0018, 0x0009, 0x0006, 0x0024, 0x0012, 0x0000};//µç»ú·´×ª£¬±E-6¸ÄÎª6-1£¬´Ë¶ÎÈ¡ÏûÁËµ×¶ËPWM¡£
+//const unsigned int StateLoTable[8] = {0x0000, 0x2001, 0x0810, 0x0801, 0x0204, 0x2004, 0x0210, 0x2A00};//µç»ú·´×ª£¬±E-6¸ÄÎª6-1£¬µ×¶ËPWM
+//const unsigned int StateLoTable[8] = {0x0000, 0x0120, 0x1008, 0x0108, 0x0402, 0x0420, 0x1002, 0x0000};//¸ß¶ÎPWM
 
-const unsigned int StateLoTable[8] = {0x0000, 0x8400, 0x1800, 0x9000, 0x6000, 0x2400, 0x4800, 0x0000};//ç”µæœºæ¢å‘çœ®E
+const unsigned int StateLoTable[8] = {0x0000, 0x8400, 0x1800, 0x9000, 0x6000, 0x2400, 0x4800, 0x0000};//µç»ú»»Ïò±E
 
 volatile float Kp;
 volatile float Ki;
 volatile float Kd;
 volatile signed int Ka;
 
-// ãƒ•ã‚¡ã‚¤ãƒ«å…ˆé ­ä»˜è¿‘ï¼ˆæ—¢å­˜ã® volatile å®šç¾©ã®ã™ãä¸‹ãªã©ï¼‰ã«è¿½åŠ 
-volatile uint8_t tx_enable = 0;    // 0: å‡ºåŠ›æŠ‘åˆ¶, 1: é€ä¿¡ä¸­
-
-volatile unsigned char setlen[3];		//è®¾å®šçš„é•¿åº¦ï¼ˆå¯¹è—–Eî‰£å±‘é†´ã„Šè¿ªæ®–ã–ç“¤åˆ‚ç–²?
-volatile signed char len_1[3];		//å‰©ä½™çš„é•¿åº¦,è®¡ç®—å‘ç”Ÿè´Ÿæ•°
-volatile signed char lastlen[3];		//é•¿åº¦ï¼ˆå·²ç»èŒæ´¹çš„é•¿åº¦
+volatile unsigned char setlen[3];		//Éè¶¨µÄ³¤¶È£¨¶ÔËEøĞĞ¼õ·¨ÊµÏÖ³¤¶È¿ØÖÆ£?
+volatile signed char len_1[3];		//Ê£ÓàµÄ³¤¶È,¼ÆËã·¢Éú¸ºÊı
+volatile signed char lastlen[3];		//³¤¶È£¨ÒÑ¾­¾úä¡µÄ³¤¶È
 volatile unsigned char settens;
-volatile unsigned int tens_set;			//è®¾å®šå¼ åŠ›å€¼
-volatile unsigned char txtens[2];			//å‘é€çš„å¼ åŠ›å€¼
+volatile unsigned int tens_set;			//Éè¶¨ÕÅÁ¦Öµ
+volatile unsigned char txtens[2];			//·¢ËÍµÄÕÅÁ¦Öµ
 volatile signed char tmp_1;
 volatile signed char tmp_2;
 
-volatile unsigned int tens_desired;		//è¿ç®—ç”¨è®¾å®šå¼ åŠ›å€¼
-volatile unsigned int tens_actual;		//å­˜æ”¾å¼ åŠ›å¹³å‡å€¼
-//volatile unsigned int tens_sample[16];	//A/Dç»“æœå­˜æ”¾çš„å˜é‡
-volatile unsigned int tens_sum;			//å­˜æ”¾16æ¬¡é‡‡é›†çš„ADå€¼çš„æ€»å’Œ
-volatile unsigned int tens_zero;		    //å­˜æ”¾é›¶ç‚¹å¼ åŠ›å€¼
+volatile unsigned int tens_desired;		//ÔËËãÓÃÉè¶¨ÕÅÁ¦Öµ
+volatile unsigned int tens_actual;		//´æ·ÅÕÅÁ¦Æ½¾ùÖµ
+//volatile unsigned int tens_sample[16];	//A/D½á¹û´æ·ÅµÄ±äÁ¿
+volatile unsigned int tens_sum;			//´æ·Å16´Î²É¼¯µÄADÖµµÄ×ÜºÍ
+volatile unsigned int tens_zero;		    //´æ·ÅÁãµãÕÅÁ¦Öµ
 volatile unsigned int tens_temp;
-volatile signed int tens_deviation;			//è¯¯é˜è™»
-volatile signed int last_deviation;		//å‰æ¬¡è¯¯ç¾E
-volatile signed int prev_deviation;		//ä¸Šæ¬¡è¯¯ç¾E
+volatile signed int tens_deviation;			//Îó²ûòµ
+volatile signed int last_deviation;		//Ç°´ÎÎó²E
+volatile signed int prev_deviation;		//ÉÏ´ÎÎó²E
 volatile float pwm_add;
 volatile float pwm_out_temp;
 volatile signed int pwm_out;
 volatile signed long pwm_check;    //just for checking
 
-volatile unsigned int rx_timer;		//æ¥æ”¶æ—¶é—´çš„è®¡æ•°è‹¼E
+volatile unsigned int rx_timer;		//½ÓÊÕÊ±¼äµÄ¼ÆÊıÆE
 volatile unsigned int rx_bitcntr;
 volatile unsigned int rx_bytecntr;
 
 volatile unsigned int rx_waitcntr;
 volatile unsigned char rx_buffer_1;
-volatile unsigned char rx_buffer[6];			//æ¥æ”¶æ•°æ®èµE
-volatile unsigned int tx_timer;			//å‘é€æ—¶é—´çš„è®¡æ•°è‹¼E
+volatile unsigned char rx_buffer[6];			//½ÓÊÕÊı¾İÇE
+volatile unsigned int tx_timer;			//·¢ËÍÊ±¼äµÄ¼ÆÊıÆE
 volatile unsigned int tx_cntr;
 volatile unsigned int tx_bitcntr;
 volatile unsigned int tx_bytecntr;
 volatile signed char txreg_1;
-volatile unsigned int stop_delay;			//ç”µæœºåœæ­¢æ—¶ç´’E
-volatile unsigned int cutter_timer;		//å‰ªåˆ€å¤ä½è®¡æ•°è‹¼E
+volatile unsigned int stop_delay;			//µç»úÍ£Ö¹Ê±¼E
+volatile unsigned int cutter_timer;		//¼ôµ¶¸´Î»¼ÆÊıÆE
 
-volatile unsigned int check_timer;			//ç«¯å£æŸ¥è¯¢æ—¶é—´è®¡æ•°è‹¼E
-volatile signed int pulse_cntr;				//ä¸é•¿è®¡æ•°,åœ¨å‡æ³•è¿ç®—æ—¶éœ€è¦è´Ÿæ•°
+volatile unsigned int check_timer;			//¶Ë¿Ú²éÑ¯Ê±¼ä¼ÆÊıÆE
+volatile signed int pulse_cntr;				//Ë¿³¤¼ÆÊı,ÔÚ¼õ·¨ÔËËãÊ±ĞèÒª¸ºÊı
 
-volatile unsigned int display_timer;				//LEDé—ªçƒå»¶è¿Ÿè®¡æ•°
-volatile unsigned int ledcntr;				//LEDé—ªçƒå»¶è¿Ÿè®¡æ•°
+volatile unsigned int display_timer;				//LEDÉÁË¸ÑÓ³Ù¼ÆÊı
+volatile unsigned int ledcntr;				//LEDÉÁË¸ÑÓ³Ù¼ÆÊı
 volatile unsigned int HallValue;
-volatile unsigned int eeprom_address;	//ä¿å­˜åœ¨eepromä¸­çš„ä¸ªæ•°
+volatile unsigned int eeprom_address;	//±£´æÔÚeepromÖĞµÄ¸öÊı
 volatile unsigned char zero_delay;
-//è°ƒè¯•
-volatile signed int tens_addt[data_total];//è®°å½•ä¸åŒæ—¶é—´æ®µçš„è¡¥å¿å€¼
-//2014.8.24æ”¹ä¸º190ä¸ªæ•°æ®,200ä¸ªæ•°æ®ä¸ºæé™,å†å¢åŠ å˜é‡æ—¶ï¼Œresetçš„ä¼šäº§ç”Ÿä»£é™™E
-volatile signed int tens_complast[data_total];//è®°å½•ä¸åŒæ—¶é—´æ®µçš„å¼ åŠ›åç¾E
+//µ÷ÊÔ
+volatile signed int tens_addt[data_total];//¼ÇÂ¼²»Í¬Ê±¼ä¶ÎµÄ²¹³¥Öµ
+//2014.8.24¸ÄÎª190¸öÊı¾İ,200¸öÊı¾İÎª¼«ÏŞ,ÔÙÔö¼Ó±äÁ¿Ê±£¬resetµÄ»á²úÉú´úêE
+volatile signed int tens_complast[data_total];//¼ÇÂ¼²»Í¬Ê±¼ä¶ÎµÄÕÅÁ¦Æ«²E
 volatile signed int tens_comp;
 volatile signed int tens_addt_temp;
 volatile signed int tens_add;
 volatile signed char special_error_set;
-volatile unsigned char running_timer;//ç‰¹æ®ŠèŒé”©å®šæ—¶è‹¼E
+volatile unsigned char running_timer;//ÌØÊâ¾úïÃ¶¨Ê±ÆE
 volatile unsigned char special_cycletimer;
 volatile unsigned int speed_cntr;
 volatile unsigned int speed_cntr1;
@@ -120,13 +110,13 @@ volatile unsigned char speed_min;
 volatile unsigned char speed_max;
 volatile unsigned char cnt_FIR;
 volatile unsigned int speed_min_sum;
-volatile unsigned char speed_min_avg;//è®°å½•å¹³å‡î ‘è‡ç£ææ•°
-volatile unsigned char speed_min_array[16];//è®°å½•å…ˆå‰æ•°æ®
+volatile unsigned char speed_min_avg;//¼ÇÂ¼Æ½¾ù×ûì¡´Å¼«Êı
+volatile unsigned char speed_min_array[16];//¼ÇÂ¼ÏÈÇ°Êı¾İ
 volatile unsigned char start_delay;
 volatile unsigned int velocity;
-volatile unsigned char life[3];//å¤‡ç”¨ï¼Œè®°å½•å¯¿è„•E
+volatile unsigned char life[3];//±¸ÓÃ£¬¼ÇÂ¼ÊÙÃE
 
-unsigned int rampup_timer;//å¯åŠ¨å»¶è¿Ÿæ—¶é—´ï¼Œå¯åŠ¨+10g
+unsigned int rampup_timer;//Æô¶¯ÑÓ³ÙÊ±¼ä£¬Æô¶¯+10g
 
 
 typedef union
@@ -151,21 +141,21 @@ volatile union
 	int twobyte;
 	struct
 	{
-		unsigned motor_running :1;	    //ç”µæœºçŠ¶æ€ä½
-		unsigned tx_300 :1;			//æ¥æ”¶ä¿¡å·å¤„å†è› Eç–š?
-		unsigned rx_300 :1;			//ADè½¬æ¢å¤„å†è› Eç–š?
-		unsigned port_check :1;		//ç«¯å£æŸ¥è¯¢å¤„å†è› Eç–š?
+		unsigned motor_running :1;	    //µç»ú×´Ì¬Î»
+		unsigned tx_300 :1;			//½ÓÊÕĞÅºÅ´¦ÀúÍE¾Î?
+		unsigned rx_300 :1;			//AD×ª»»´¦ÀúÍE¾Î?
+		unsigned port_check :1;		//¶Ë¿Ú²éÑ¯´¦ÀúÍE¾Î?
 		unsigned ad_conv :1;			//
-		unsigned rx_start :1;			//æ¥æ”¶ä¿¡å·çœ®Eç–š?
-		unsigned display :1;			//LEDæ˜¾ç¤ºçœ®Eç–š?
-		unsigned lowvolt :1;			//ä½ç”µå‹å¾ªç¯çœ®Eç–š?
+		unsigned rx_start :1;			//½ÓÊÕĞÅºÅ±E¾Î?
+		unsigned display :1;			//LEDÏÔÊ¾±E¾Î?
+		unsigned lowvolt :1;			//µÍµçÑ¹Ñ­»·±E¾Î?
 		unsigned speed_drop :1;		//used in future for brake
-		unsigned speed_count :1;		//é€Ÿåº¦è®¡ç®—çœ®Eç–š?
-		unsigned pulse_count :1;		//ä¸é•¿è®¡ç®—çœ®Eç–š?
-		unsigned cutter_down :1;		//å‰ªåˆ€åŠ¨ä½œçœ®Eç–š?
-		unsigned adj_start :1;			//å¼ åŠ›æ ¡å‡†çœ®Eç–š?
+		unsigned speed_count :1;		//ËÙ¶È¼ÆËã±E¾Î?
+		unsigned pulse_count :1;		//Ë¿³¤¼ÆËã±E¾Î?
+		unsigned cutter_down :1;		//¼ôµ¶¶¯×÷±E¾Î?
+		unsigned adj_start :1;			//ÕÅÁ¦Ğ£×¼±E¾Î?
 		unsigned zero_error :1;
-		unsigned special_start :1;		//è°ƒé›¶è› E?
+		unsigned special_start :1;		//µ÷ÁãÍE?
 		unsigned speedlow :1;
 	}BIT;	
 }flag1;
@@ -178,7 +168,7 @@ volatile union
 		unsigned l_0 :1;
 		unsigned l_1 :1;
 		unsigned l_2 :1;
-		unsigned command :1;			//ä¼ é€å­—èŠ‚ä¸­çš„çŠ¶æ€ä½ï¼ˆæŸ„å–µå½“å‰å­—èŠ‚æ˜¯å¦æ˜¯è„•Eî„æ•…é˜î§è©?
+		unsigned command :1;			//´«ËÍ×Ö½ÚÖĞµÄ×´Ì¬Î»£¨±úß÷µ±Ç°×Ö½ÚÊÇ·ñÊÇÃEû×¹ÊÇÊı¾İ£?
 		unsigned zero_end :1;
 		unsigned no_tension :1;
 		unsigned  :1;
@@ -204,7 +194,7 @@ volatile union
 
 
 /****************************************************************************************/
-/*                                     å„å­å‡½æ•°                                         */
+/*                                     ¸÷×Óº¯Êı                                         */
 /****************************************************************************************/
 void tension_compensate(void);
 void check_port(void);
@@ -248,34 +238,21 @@ unsigned int getI2C(void);
 //unsigned int EEAckPolling(unsigned char control);
 
 
-void __attribute__((__interrupt__, auto_psv)) _T1Interrupt(void)//TMR1æ¯50uSè¿›è‘‹Eé…¥å¸?
+void __attribute__((__interrupt__, auto_psv)) _T1Interrupt(void)//TMR1Ã¿50uS½øÈEËÖĞ¶?
 {
 	IFS0bits.T1IF = 0; //Clear Timer1 interrupt flag
-#if 0	// bit Pluse output stop!!
 	if(tx_timer!=0)
 	{
-		tx_timer--;//125*13.2uS=1.65mSå¤„å†ç½¨æ¬¡
+		tx_timer--;//125*13.2uS=1.65mS´¦Àúî»´Î
 	}
 	else
 	{
 		tx_timer=32;
 		flag1.BIT.tx_300=1;		
 	}
-#endif
-	// é€ä¿¡ä¸­ã®ã¿ã€300bps ç”¨ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
-	if (tx_enable) {
-		if (tx_timer != 0) {
-			tx_timer--;
-		} else {
-			tx_timer = 32;            // â‰’1.65ms
-			flag1.BIT.tx_300 = 1;     // æ¬¡ã® data_tx() å‘¼ã³å‡ºã—ã‚’è¨±å¯
-		}
-	}
-	// ä»¥ä¸‹ rx_timer/display_timer ç­‰ã¯ãã®ã¾ã¾â€¦
-
 	if(rx_timer!=0)
 	{
-		 rx_timer--;//250*13.2uS=3.3mSå¤„å†ç½¨æ¬¡
+		 rx_timer--;//250*13.2uS=3.3mS´¦Àúî»´Î
 	}
 	else
 	{
@@ -284,7 +261,7 @@ void __attribute__((__interrupt__, auto_psv)) _T1Interrupt(void)//TMR1æ¯50uSè¿›
 	}
 	if(check_timer != 0) 
 	{
-		check_timer --;;//19*13.2uS=250uSå¤„å†ç½¨æ¬¡
+		check_timer --;;//19*13.2uS=250uS´¦Àúî»´Î
 	}
 	else
 	{
@@ -293,7 +270,7 @@ void __attribute__((__interrupt__, auto_psv)) _T1Interrupt(void)//TMR1æ¯50uSè¿›
 	}
 	if(display_timer!=0) 
 	{
-		display_timer--;//(999+1)*50us=50mSå¤„å†ç½¨æ¬¡
+		display_timer--;//(999+1)*50us=50mS´¦Àúî»´Î
 	}
 	else
 	{
@@ -304,7 +281,7 @@ void __attribute__((__interrupt__, auto_psv)) _T1Interrupt(void)//TMR1æ¯50uSè¿›
 		speed_cntr = 0;
 		flag1.BIT.speed_count = 1;
 	}
-//PORT_CUTTER^=1;//è°ƒè¯•ç”¨
+//PORT_CUTTER^=1;//µ÷ÊÔÓÃ
 }
 
 
@@ -312,10 +289,10 @@ void __attribute__((__interrupt__, auto_psv)) _T3Interrupt( void )//period =31.5
 {
 	IFS0bits.T3IF = 0;// Clear Timer 3 interrupt flag
 	AD1CON1bits.SAMP = 1; // start sampling then after 31Tad go to conversion
-//PORT_CUTTER^=1;//è°ƒè¯•ç”¨
+//PORT_CUTTER^=1;//µ÷ÊÔÓÃ
 }
 
-void __attribute__((__interrupt__, auto_psv)) _CNInterrupt(void)//åŸºäº6000è½¬ç”µæœºï¼Œé˜ä½ç§®E00usè¿›è‘‹Eæ·®æ²ƒå¸?
+void __attribute__((__interrupt__, auto_psv)) _CNInterrupt(void)//»ùÓÚ6000×ªµç»ú£¬²ûÎ»¶E00us½øÈE»´ÎÖĞ¶?
 {
 	//int k;
 	IFS1bits.CNIF = 0;// clear flag
@@ -337,8 +314,8 @@ void para_initial(void)
 		tens_addt[i] = 0;
 	}
 
-	Delay(60000);	//EEPROMå¯åŠ¨å»¶è¿Ÿ
-	data_load1();	//è¯»å–
+	Delay(60000);	//EEPROMÆô¶¯ÑÓ³Ù
+	data_load1();	//¶ÁÈ¡
 	special_error_set = setlen[0];
 
 	tension_compensate();
@@ -359,7 +336,7 @@ void para_initial(void)
 	pwm_out = 0;// Write the duty cycle for the second PWM pulse
 	cnt_FIR = 0;
 	speed_min_sum = 0;
-	speed_min_avg = 0;//è®°å½•å¹³å‡î ‘è‡ç£ææ•°
+	speed_min_avg = 0;//¼ÇÂ¼Æ½¾ù×ûì¡´Å¼«Êı
 	cnt_FIR = 0;
 	stop_delay = 1000;
 	start_delay = 0;
@@ -377,9 +354,9 @@ while(OSCCONbits.LOCK != 1)
 
 loop:
 CLKDIV 	= 0x0000;	// FRC-Postscaler = 1:1 => 8MHz
-LATA = 0x0000;//å†™ LATx å¯„å­˜å™¨è§¼E?PORTx å¯„å­˜å™¨çš„æ•ˆæœç›¸åŒ
-LATB = 0x0000;//å†™ LATx å¯„å­˜å™¨è§¼E?PORTx å¯„å­˜å™¨çš„æ•ˆæœç›¸åŒ
-//PORT_CUTTER = 0;//é˜²æ­¢åˆå§‹åŒ–ä»¥åå‰ªåˆ€è¯¯åŠ¨è®ˆE
+LATA = 0x0000;//Ğ´ LATx ¼Ä´æÆ÷ÓE?PORTx ¼Ä´æÆ÷µÄĞ§¹ûÏàÍ¬
+LATB = 0x0000;//Ğ´ LATx ¼Ä´æÆ÷ÓE?PORTx ¼Ä´æÆ÷µÄĞ§¹ûÏàÍ¬
+//PORT_CUTTER = 0;//·ÀÖ¹³õÊ¼»¯ÒÔºó¼ôµ¶Îó¶¯×E
 TRISA = 0x0001;// Port A : RA0=Inputs, RA1,RA2,RA3,RA4=output
 TRISB = 0x03F3;// Port B : RB0,RB1,RB4,RB5,RB6,RB7=Inputs, all other Output
 //CNPU1 = 0x0030;//CN4,CN5 PULL-UP
@@ -433,9 +410,9 @@ AD1CSSL = 0x0001;// scan AN0
 AD1CHS = 0x0000;// RA0/AN0 => CH0
 AD1CON1 = 0x00E0;// SSRC bit = 111, auto converting
 AD1CON2 = 0x003C;// Channel A, 16th convert sequence, Converts CH0
-AD1CON3 = 0x1F03; // auto Sample time = 31Tad, Tad = 4 Tcy, inverting = 12 Tadï¼Œtotal = 43Tad =11.5us
+AD1CON3 = 0x1F03; // auto Sample time = 31Tad, Tad = 4 Tcy, inverting = 12 Tad£¬total = 43Tad =11.5us
 /******************** intializes I2C ******************************/
-I2C1BRG = 0x0012; 	//First set the I2C(1) BRG Baud Rate.è®¡ç®—å€¼ä¸º10ï¼Œæ”¹æˆ12ç•™ä½™é‡
+I2C1BRG = 0x0012; 	//First set the I2C(1) BRG Baud Rate.¼ÆËãÖµÎª10£¬¸Ä³É12ÁôÓàÁ¿
 I2C1CON = 0x1200;	//I2C peripheral for Master Mode, No Slew Rate Control, peripheral switched off.
 I2C1RCV = 0x0000;
 I2C1TRN = 0x0000;
@@ -451,7 +428,7 @@ IPC2bits.T3IP = 2;// Set Timer 3 Interrupt Priority Level
 /*********************** Enable interrupt *************************/
 IFS0bits.T1IF = 0; // Clear Timer1 Interrupt Flag
 IEC0bits.T1IE = 1; // Enable Timer1 interrupt
-T1CONbits.TON = 1; // Start Timer,50usè®¡æ—¶æ‰“å¼€
+T1CONbits.TON = 1; // Start Timer,50us¼ÆÊ±´ò¿ª
 //IFS0bits.T2IF = 0;// Clear Timer 2 Interrupt Flag
 //IEC0bits.T2IE = 1;// Enable Timer 2 interrupt
 T2CONbits.TON = 1;// Start Timer2
@@ -469,21 +446,21 @@ IEC1bits.CNIE = 1;// enable CN interrupt
 //IFS3bits.PWM1IF = 0;
 //IEC3bits.PWM1IE = 1;
 //PWM1CON1 = 0x0777;// complementary mode, enable PWM output
-/***************************** å‚æ•°åˆå§‹åŒ– **************************/
+/***************************** ²ÎÊı³õÊ¼»¯ **************************/
 para_initial();
 while(1)
 {
-	if(flag1.BIT.port_check==1)					//250uSä¸€æ¬¡çš„ç«¯å£ç´’Eä¸’
+	if(flag1.BIT.port_check==1)					//250uSÒ»´ÎµÄ¶Ë¿Ú¼EE
 	{
 		flag1.BIT.port_check=0;
 		check_port();	
 	}
-	if(flag1.BIT.lowvolt==1)						//å¦‚æœç”µå‹ä½å°±è¿›è‘‹Eç¼ªå…±æª îˆ†î„´?
+	if(flag1.BIT.lowvolt==1)						//Èç¹ûµçÑ¹µÍ¾Í½øÈEçÑ¹²éÑ¯Ñ­»?
 	{
-		while(!PORT_BOR)						//ç­‰å¾…ç”µå‹æ¢å¤
+		while(!PORT_BOR)						//µÈ´ıµçÑ¹»Ö¸´
 		goto loop;				
 	}
-	if(flag1.BIT.ad_conv==1)						//ADè®¡è—–Eè¾“å‡ºå€¼æ”¹å†™
+	if(flag1.BIT.ad_conv==1)						//AD¼ÆËEÊä³öÖµ¸ÄĞ´
 	{
 		//PORT_CUTTER=1;
 		flag1.BIT.ad_conv=0;
@@ -522,27 +499,27 @@ while(1)
 			tens_temp = 0;
 		}
 		flag1.BIT.ad_conv = 1;
-		//PORT_CUTTER^=1;//è°ƒè¯•ç”¨
+		//PORT_CUTTER^=1;//µ÷ÊÔÓÃ
 	}
 
-	if(flag1.BIT.rx_300==1)						//3.3mSä¸€æ¬¡çš„æ•°æ®æ¥æ”¶
+	if(flag1.BIT.rx_300==1)						//3.3mSÒ»´ÎµÄÊı¾İ½ÓÊÕ
 	{
 		flag1.BIT.rx_300=0;
 		data_rx();
 	}
-	if(flag1.BIT.tx_300==1)						//1.65mSä¸€æ¬¡çš„æ•°æ®å‘é€
+	if(flag1.BIT.tx_300==1)						//1.65mSÒ»´ÎµÄÊı¾İ·¢ËÍ
 	{
 		flag1.BIT.tx_300=0;
 		data_tx();
 	}
-	if(flag1.BIT.display==1)					//50msä¸€æ¬¡çš„LEDæŒ‡ç¤º
+	if(flag1.BIT.display==1)					//50msÒ»´ÎµÄLEDÖ¸Ê¾
 	{
 		flag1.BIT.display=0;
 		led_display();
-		//å‰ªåˆ€å»¶æ—¶ç¨‹è¡¼E
+		//¼ôµ¶ÑÓÊ±³ÌĞE
 		if(flag1.BIT.cutter_down==1)
 		{
-			PORT_CUTTER=1;								//å‰ªåˆ€åŠ¨è®ˆE		
+			PORT_CUTTER=1;								//¼ôµ¶¶¯×E		
 			cutter_timer--;
 			if(cutter_timer==0)
 			{
@@ -551,7 +528,7 @@ while(1)
 			}
 		}
 	}
-	if(flag1.BIT.pulse_count==1)					//çº¿é•¿è®¡è—–E
+	if(flag1.BIT.pulse_count==1)					//Ïß³¤¼ÆËE
 	{
         flag1.BIT.pulse_count=0;
 		pulse_count();
@@ -565,29 +542,29 @@ while(1)
 // end of while (1)
 }// end of main
 
-/**************************************ç«¯å£æŸ¥è¯¢å‡½æ•°****************************************/
+/**************************************¶Ë¿Ú²éÑ¯º¯Êı****************************************/
 /******************************************************************************************/
 void check_port(void)
 {
-	/*if(PORT_BOR == 0)						//ç”µå‹åä½
+	/*if(PORT_BOR == 0)						//µçÑ¹Æ«µÍ
 	{
-		INTCON1bits.NSTDIS = 0;				//å…³ä¸­æ–­
-		flag1.BIT.lowvolt = 1;				//ç½®ä½ç”µå‹çœ®Eç–š?
+		INTCON1bits.NSTDIS = 0;				//¹ØÖĞ¶Ï
+		flag1.BIT.lowvolt = 1;				//ÖÃµÍµçÑ¹±E¾Î?
 		P1DC1 = 0;// set PWM 1, 2 and 3 to 0
 		P1DC2 = 0;
 		P1DC3 = 0;
-		LED_RED = 1;								//ç­ç¯,æµ‹è¯•ï¼Œç¯äº®
+		LED_RED = 1;								//ÃğµÆ,²âÊÔ£¬µÆÁÁ
 		LED_GRN = 1;
-		//AD1CON1bits.ADON = 0;			//å…³é—­AD
+		//AD1CON1bits.ADON = 0;			//¹Ø±ÕAD
 		data_backup1();
-		INTCON1bits.NSTDIS = 1;			//å¼€ä¸­æ–­	
+		INTCON1bits.NSTDIS = 1;			//¿ªÖĞ¶Ï	
 		
 	}
-	else */if(flag1.BIT.rx_start == 0)	//ç”µå‹æ­£å¸¸,ç´’Eæ©¥ã„‘?
+	else */if(flag1.BIT.rx_start == 0)	//µçÑ¹Õı³£,¼EéÍ¨Ñ?
 	{
-		if(PORT_RX == 0)				//å¦‚æœRA4æœ‰ä½ç”µå¹³
+		if(PORT_RX == 0)				//Èç¹ûRA4ÓĞµÍµçÆ½
 		{
-			rx_timer = 33;				//è¿‡1.65mSå†ç´’Eä¸’
+			rx_timer = 33;				//¹ı1.65mSÔÙ¼EE
 			rx_bitcntr = 0;
 			rx_waitcntr = 17;
 			flag1.BIT.rx_300 = 0;
@@ -599,22 +576,22 @@ void check_port(void)
 /************************************************************************
 GetSpeed, determins the exact speed of the motor by using the value in
 TMR3 for every mechanical cycle. 
-æµ‹è¯•å‘ç°ï¼šä»¥ä¸‹ç¨‹åºä½¿ç”¨æ—¶é—´ä¸º8us(ç”µæœºæœªåŠ¨)ï¼Œ10us(ç”µæœºè¿è½¬æ™®é€šç·›E
+²âÊÔ·¢ÏÖ£ºÒÔÏÂ³ÌĞòÊ¹ÓÃÊ±¼äÎª8us(µç»úÎ´¶¯)£¬10us(µç»úÔË×ªÆÕÍ¨¾E
 *************************************************************************/
 void GetSpeed(void)
 {
-	if ((speed_cntr1 > 3) && (flag1.BIT.cutter_down == 0))// 600RPM:12pu/50ms;24pu/100ms//åŸ5ä¸ªç£æ 0902//
+	if ((speed_cntr1 > 3) && (flag1.BIT.cutter_down == 0))// 600RPM:12pu/50ms;24pu/100ms//Ô­5¸ö´Å¼« 0902//
 	{
 		flag1.BIT.motor_running = 1;
 		flag3.BIT.wind_start = 1;
 
 /**********************************20200322 updated************************************/
 		//speed check for state
-		if((speed_cntr1 + 10) < speed_min_avg) //æ•¾æŠæ‡æ™å£“å´€ä¸†æ†å©˜æ•¾æ•.
+		if((speed_cntr1 + 10) < speed_min_avg) //”»’f‘¬“x‰º~C’âŠ÷”»’è.
 		{
 			flag1.BIT.speed_drop = 1;
 		}
-		else if(speed_cntr1 < (speed_min_avg + 4))//æ•¾æŠæ‡æ™æƒ€æ–²æ„™å¬¤?æ„œæ°.
+		else if(speed_cntr1 < (speed_min_avg + 4))//”»’f‘¬“x¥”ÛÚ‹ß?Ü“_.
 		{
 			flag1.BIT.speedlow = 1;
 		}
@@ -625,26 +602,26 @@ void GetSpeed(void)
 		}
 /**************************************************************************************/
 
-		//æ¯50mså¾ªç¯ä¸€æ¬¡,200ä¸ªå¾ªç¯ä¸º10Sï¼Œåˆ¤æ–­1æ¬¡î ‘ç•œå€¼å’Œî ‘è‡å€¼ï¼Œç«µEæ»¤ä¿£ç‚”îŸ?
+		//Ã¿50msÑ­»·Ò»´Î,200¸öÑ­»·Îª10S£¬ÅĞ¶Ï1´Î×ûĞóÖµºÍ×ûì¡Öµ£¬¸EÂËÙ¶È²ûò?
 		if(++special_cycletimer == 200)
 		{
 			special_cycletimer = 0;
 			//speed_deltaprev = speed_deltalast;
-			speed_deltalast = speed_delta;//èµ‹å€¼ï¼Œç«µEå¾‹å¼¦æ·®å—¡ä¿£ç‚”îŸ?
-			speed_minlast = speed_min;//ä¿å­˜å½“å‰î ‘æ·¹é€Ÿåº¦ï¼Œä¸‹ä¸€æ¬¡10è„•EèŠ·è°‘è¤‚?
-			speed_delta = speed_max - speed_min;//ç«µEéº“èˆœå—¡ä¿£ç‚”îŸ?
+			speed_deltalast = speed_delta;//¸³Öµ£¬¸EÂÉÏÒ»´ÎËÙ¶È²ûò?
+			speed_minlast = speed_min;//±£´æµ±Ç°×ûÑÍËÙ¶È£¬ÏÂÒ»´Î10ÃEÜÆÚÊ¹Ó?
+			speed_delta = speed_max - speed_min;//¸EÂ´Ë´ÎËÙ¶È²ûò?
 
 			cnt_FIR++;
 			cnt_FIR = cnt_FIR & 0x07;
 			speed_min_sum = speed_min_sum + speed_min - speed_min_array[cnt_FIR];
 			speed_min_array[cnt_FIR] = speed_min;
 
-			if(start_delay > 10)//å»¶è¿Ÿ10ä¸ªå‘¨æœŸ
+			if(start_delay > 10)//ÑÓ³Ù10¸öÖÜÆÚ
 			{
-				//start_delay = 10;//ä½¿å˜é‡ä¿æŒä¸çœ®E
-				speed_min_avg = (unsigned char)(speed_min_sum >> 3);//å–å¹³å‡î ‘è‡ç£æç¾E
+				//start_delay = 10;//Ê¹±äÁ¿±£³Ö²»±E
+				speed_min_avg = (unsigned char)(speed_min_sum >> 3);//È¡Æ½¾ù×ûì¡´Å¼«²E
 			}
-			else //è¿è½¬åˆæœŸï¼Œî ‘æ·¹é€Ÿåº¦å–10è„•Eè°§î¾æ¤­æ‹…îƒ±î†‘ç¬•âˆ‘éª„îŠ»?
+			else //ÔË×ª³õÆÚ£¬×ûÑÍËÙ¶ÈÈ¡10ÃEÚ×ûÑÍÖµ£¬Ö®ºóÈ¡Æ½¾ùÊ?
 			{
 				start_delay++;
 				speed_min_avg = speed_minlast;
@@ -661,12 +638,12 @@ void GetSpeed(void)
 				{speed_min = speed_cntr1;}
 		}
 
-	//ç‰¹æ®Šè¿è¡Œåˆ¤æ–­
-	//æ¡ä»¶1ï¼šé€Ÿåº¦î ‘ç•œå€¼-î ‘è‡å€¼<=5è„‰ç¡œE
-	//æ¡ä»¶2ï¼šé€Ÿåº¦ä½äº600è½¬ç»“æŸç‰¹æ®Šç·›E
-	//æ¡ä»¶3ï¼šè¶…æ—¶ç»“æŸç‰¹æ®Šç·›E
-	//æ¡ä»¶4ï¼šç‰¹æ®ŠèŒæ€åŠ¨å»¶è¿Ÿ
-		if((speed_delta > special_error_set) && (speed_deltalast > special_error_set) && (flag3.BIT.special_wind == 1))//3æ¬¡åˆ¤æ–­ï¼Œèµ·å»¶è¿Ÿä½œç”¨
+	//ÌØÊâÔËĞĞÅĞ¶Ï
+	//Ìõ¼ş1£ºËÙ¶È×ûĞóÖµ-×ûì¡Öµ<=5Âö³E
+	//Ìõ¼ş2£ºËÙ¶ÈµÍÓÚ600×ª½áÊøÌØÊâ¾E
+	//Ìõ¼ş3£º³¬Ê±½áÊøÌØÊâ¾E
+	//Ìõ¼ş4£ºÌØÊâ¾úâô¶¯ÑÓ³Ù
+		if((speed_delta > special_error_set) && (speed_deltalast > special_error_set) && (flag3.BIT.special_wind == 1))//3´ÎÅĞ¶Ï£¬ÆğÑÓ³Ù×÷ÓÃ
 		{
 			flag1.BIT.special_start = 1;
 		}
@@ -676,14 +653,14 @@ void GetSpeed(void)
 		}
 	//stop_delay = 1000;
     }
-	else //if (speed_timer > 0)//é€Ÿåº¦è®¡æ•°å™¨åœ¨3000ä»¥å†…ï¼Œè¯´æ˜ç”µæœºåœ¨è¿è½¬ï¼Œåˆ‡æ¢è¿›è‘‹Eç¼îŒ£ä¿—î€¶åˆº?
+	else //if (speed_timer > 0)//ËÙ¶È¼ÆÊıÆ÷ÔÚ3000ÒÔÄÚ£¬ËµÃ÷µç»úÔÚÔË×ª£¬ÇĞ»»½øÈEç»úÔË×ª×´Ì?
 	{
-        flag1.BIT.motor_running = 0;				//å¼€å§‹é©±åŠ¨ç”µæœºæ—¶çœ®Eç–šæ™ƒ?
+        flag1.BIT.motor_running = 0;				//¿ªÊ¼Çı¶¯µç»úÊ±±E¾Î»Î?
 		//pwm_out_temp = 0;
 		pwm_out = 0;
 		pwm_add = 0;
 		flag1.BIT.special_start = 0;
-		special_cycletimer = 0;//ä¿æŒ
+		special_cycletimer = 0;//±£³Ö
 		speed_max=0;
 		speed_min=255;
 		speed_delta = 0;
@@ -693,11 +670,11 @@ void GetSpeed(void)
 
 		cnt_FIR++;
 		cnt_FIR = cnt_FIR & 0x07;
-		speed_min_array[cnt_FIR] = 0;//æ¸…æ¥šä¹‹å‰ä¿å­˜çš„î ‘è‡ç£æé˜æ¥·é˜²æ­¢ç”±äºè¿ç®—è€Œå¯¼è‡´çš„æ¸…ç¾´E
+		speed_min_array[cnt_FIR] = 0;//Çå³şÖ®Ç°±£´æµÄ×ûì¡´Å¼«²û¿¬·ÀÖ¹ÓÉÓÚÔËËã¶øµ¼ÖÂµÄÇåÁE
 
 		speed_min_sum = 0;
-		speed_min_avg = 0;//è®°å½•å¹³å‡î ‘è‡ç£ææ•°
-		start_delay = 0;//å¯åŠ¨å»¶è¿Ÿ
+		speed_min_avg = 0;//¼ÇÂ¼Æ½¾ù×ûì¡´Å¼«Êı
+		start_delay = 0;//Æô¶¯ÑÓ³Ù
 
 		tens_deviation = 0;
 		prev_deviation = 0; 
@@ -707,12 +684,12 @@ void GetSpeed(void)
 		rampup_timer = 8000;
 	}
 
-//ç‰¹æ®ŠèŒå–‚å¿æ ¹æ®æ—¶é—´æ¥å®šï¼Œ
-//æ¯50msç´’Eåº–æ·®å—¡ä¿£é¾‹îƒ£âˆ·ä¿£èŒ¸î¾å·é˜•é­‘î€¥é¹—å«‰æ‚–îƒ?0mså–å¼ åŠ›åé˜è™»ï¼Œè®¡è‘‹Eå¨²â‘µé³Œ?
-//å…±200ä¸ªå­˜å‚¨å™¨ï¼Œ10è„•Eå¥”æ´¹?
-//æ ¹æ®ä¸‹ä¸€å‘¨æœŸçš„æ—¶é—´ç‚¹ï¼Œå–å‡ºå¯¹åº”çš„å¼ åŠ›åé˜è™»ï¼ŒåšPIè¿ç®—ï¼Œä½œä¸ºè¡¥å¿å€¼ï¼ŒåŠ è‘‹Eæ€‚æª?
-//tens_error_s[special_timer]è®°å½•ä¸Šä¸€æ¬¡è¯¥æ—¶é—´ç‚¹çš„åç¾E
-//tens_addt[special_timer]è®°å½•è¡¥å¿å€¼ï¼Œå¢é‡å¼è¡¥å¿æ³•
+//ÌØÊâ¾úÎ¹³¥¸ù¾İÊ±¼äÀ´¶¨£¬
+//Ã¿50ms¼EâÒ»´ÎËÙ¶È£¬È¡ËÙ¶È×ûÑÍµã×÷ÎªÆğÊ¼µã£¬Ã?0msÈ¡ÕÅÁ¦Æ«²ûòµ£¬¼ÆÈEæ´¢Æ÷¡?
+//¹²200¸ö´æ´¢Æ÷£¬10ÃE±¼ä¡?
+//¸ù¾İÏÂÒ»ÖÜÆÚµÄÊ±¼äµã£¬È¡³ö¶ÔÓ¦µÄÕÅÁ¦Æ«²ûòµ£¬×öPIÔËËã£¬×÷Îª²¹³¥Öµ£¬¼ÓÈEËËã¡?
+//tens_error_s[special_timer]¼ÇÂ¼ÉÏÒ»´Î¸ÃÊ±¼äµãµÄÆ«²E
+//tens_addt[special_timer]¼ÇÂ¼²¹³¥Öµ£¬ÔöÁ¿Ê½²¹³¥·¨
 	if(flag1.BIT.special_start == 1)
 	{
 		running_timer ++;
@@ -721,29 +698,29 @@ void GetSpeed(void)
 			running_timer=data_total;
 		}
 
-		if(flag1.BIT.speedlow == 1)//î ‘æ·¹ç¥¦E
+		if(flag1.BIT.speedlow == 1)//×ûÑÍµE
 		{
-			//PORT_CUTTER^=1;//è°ƒè¯•ç”¨
+			//PORT_CUTTER^=1;//µ÷ÊÔÓÃ
 			running_timer = 0;
 		}
-		tens_addt_temp = tens_comp + tens_complast[running_timer+1] - tens_complast[running_timer];//PID,å¼ åŠ›è¡¥å¿å€¼å¢é‡å¼PIç®—æ³•
+		tens_addt_temp = tens_comp + tens_complast[running_timer+1] - tens_complast[running_timer];//PID,ÕÅÁ¦²¹³¥ÖµÔöÁ¿Ê½PIËã·¨
 		tens_addt[running_timer] += (tens_addt_temp / 8);
 		tens_complast[running_timer] = tens_comp;
 		//tens_add = tens_addt[running_timer];
-		tens_add = tens_addt[running_timer];//ç‰¹æ®ŠèŒåœ¬åˆ¶æœ‰å»¶è¿Ÿï¼Œå½“è¡¥å¿äº†ä»¥åï¼Œéœ€è¦0.5è„•Eæ‹èŠ·é¹±é¥”?äºæ˜¯æå‰è¡¥å¿200msä»¥åçš„å¼ åŠ›åç¾E
+		tens_add = tens_addt[running_timer];//ÌØÊâ¾úÛØÖÆÓĞÑÓ³Ù£¬µ±²¹³¥ÁËÒÔºó£¬ĞèÒª0.5ÃEÅÄÜÆğ×÷Ó?ÓÚÊÇÌáÇ°²¹³¥200msÒÔºóµÄÕÅÁ¦Æ«²E
 	}
 
-	//velocity = speed_cntr1 * 25; //48ç›¸ä½/åœˆ, é€Ÿåº¦=50msè„‰å†²æ•°*20*60/48ï¼Œ20æ¬¡ä¸º1è„•E?0è„•Eåˆ†é’Ÿ
+	//velocity = speed_cntr1 * 25; //48ÏàÎ»/È¦, ËÙ¶È=50msÂö³åÊı*20*60/48£¬20´ÎÎª1ÃE?0ÃE·ÖÖÓ
 
 }
-/***************************************Pulse Countä¸’**********************************/
+/***************************************Pulse CountE**********************************/
 /****************************************************************************************/
 void pulse_count(void)
 {
 	if(flag3.BIT.wind_end == 0)
 	{
 		pulse_cntr --;
-		//length_compen --;				//å¦‚æœä¸º6åœˆ1ç±³åˆ™æ¯25ç±³è¡¥1ç±³ï¼ˆ6.5åœˆï¼‰
+		//length_compen --;				//Èç¹ûÎª6È¦1Ã×ÔòÃ¿25Ã×²¹1Ã×£¨6.5È¦£©
 		//if(length_compen <= 0)
 		//{
 		//	length_compen = 625;
@@ -782,8 +759,8 @@ void pulse_count(void)
 		}
 	}
 }
-/*************************************ledç°›Eæ£ ï¼ªé˜¶æ˜ ç»¦ä¸’**********************************************/
-/*è¾“è‘‹Eé—®îŒ?ï¼šç»¿ç¯é—ªã€‚2ï¼šç»¿ç¯äº®ã€‚3ï¼šç°›Eç—°ä»†îƒ¥ç»·ç—¢?ï¼šç°›Eå±ç—¢?ï¼šç°›Eç²•ç—¢?ï¼šç°›Eç—°å¹³æƒ¶å«”ç—¢?ï¼šç°›Eè˜å’šå•ç—¢?ï¼šç°›Eè˜å’šå•?*/
+/*************************************ledºEÌÄ£Ê½×Ó³ÌĞE**********************************************/
+/*ÊäÈEÎÊı£?£ºÂÌµÆÉÁ¡£2£ºÂÌµÆÁÁ¡£3£ººEÌµÆÍ¬Ê±ÁÁ¡?£ººEÆÁÁ¡?£ººEÆÉÁ¡?£ººEÌµÆ½»ÌæÉÁ¡?£ººEÆ¸ßËÙÉÁ¡?£ººEÆ¸ßËÙÉ?*/
 /*******************************************************************************************************/
 void led_mode(unsigned char led_chose)
 {
@@ -817,7 +794,7 @@ void led_mode(unsigned char led_chose)
 	{ LED_RED=0; LED_GRN=LED_GRN^1; }
 }
 
-/**************************************ledæ˜¾ç¤ºå­ç¨‹è¡¼E************************************/
+/**************************************ledÏÔÊ¾×Ó³ÌĞE************************************/
 /****************************************************************************************/
 void led_display(void)
 {	unsigned char i;
@@ -826,7 +803,7 @@ void led_display(void)
 	{
 		led_mode(5);	
 	}
-	else if(flag1.BIT.adj_start == 1)//å¼ åŠ›èŒƒå›´è°ƒèŠ‚çŠ¶æ€
+	else if(flag1.BIT.adj_start == 1)//ÕÅÁ¦·¶Î§µ÷½Ú×´Ì¬
 	{
 		if(tens_temp < 780)
 		{ led_mode(5); }
@@ -844,16 +821,16 @@ void led_display(void)
 		switch(i)
 		{
 			case 0 :
-				if(flag3.BIT.wind_end == 1)//èŒæ·¦ç»“è•˜E
+				if(flag3.BIT.wind_end == 1)//¾úäÆ½áÊE
 				{ led_mode(3); }
-				else if(flag3.BIT.wind_start == 1)//èŒæ·¦è¿‡ç¨‹ä¸­
+				else if(flag3.BIT.wind_start == 1)//¾úäÆ¹ı³ÌÖĞ
 				{
 					if(flag1.BIT.motor_running == 0)
 					{ led_mode(5); }
 					else
 					{ led_mode(2); }
 				}
-				else//resetåèŒæ·¦å¼€å§‹å‰çš„çŠ¶æ€
+				else//resetºó¾úäÆ¿ªÊ¼Ç°µÄ×´Ì¬
 				{ led_mode(4); }
 				break;
 			case 1 :
@@ -883,7 +860,7 @@ void led_display(void)
 
 
 
-/***************************************æ‰§è¡Œè„•Eî é›î‡¿?***********************************/
+/***************************************Ö´ĞĞÃEûóÓº¯Ê?***********************************/
 /*****************************************************************************************/
 void do_command(unsigned char a)
 {
@@ -915,7 +892,7 @@ void do_reset(void)
 			return;
 		}
 	}
-/*	if(WR==1)//æŸ¥EEPROMå¯„å­˜å™¨æ˜¯å¦å¿™
+/*	if(WR==1)//²éEEPROM¼Ä´æÆ÷ÊÇ·ñÃ¦
 	{
 		return;
 	}*/
@@ -924,7 +901,7 @@ void do_reset(void)
 
 			switch (eeprom_address)
 			{
-				case 0 : 	if(setlen[0] > 5)//é•¿åº¦æœ«ä½æ•°é0æ—¶ä¸ºç‰¹æ®Šç·›E
+				case 0 : 	if(setlen[0] > 5)//³¤¶ÈÄ©Î»Êı·Ç0Ê±ÎªÌØÊâ¾E
 							{
 								flag3.BIT.special_wind = 1;
 								special_error_set = setlen[0];
@@ -940,11 +917,11 @@ void do_reset(void)
 				case 1 : 	data_backup1();
 							eeprom_address ++;
 							break;
-				case 2 : 	eeprom_address ++;//Nop();			//å»¶è¿Ÿä¸€ä¸ªå‘¨æœŸ
+				case 2 : 	eeprom_address ++;//Nop();			//ÑÓ³ÙÒ»¸öÖÜÆÚ
 							break;
-				case 3 : 	eeprom_address ++;//Nop();			//å»¶è¿Ÿä¸€ä¸ªå‘¨æœŸ
+				case 3 : 	eeprom_address ++;//Nop();			//ÑÓ³ÙÒ»¸öÖÜÆÚ
 							break;
-				case 4 : 	data_backup2();			//è®¾å®šé•¿åº¦ä¸­ä¸¤ä½
+				case 4 : 	data_backup2();			//Éè¶¨³¤¶ÈÖĞÁ½Î»
 							eeprom_address ++;
 							break;
 				case 5:		eeprom_address = 0;
@@ -967,14 +944,14 @@ void do_sensadj(void)
 	}
 	flag2.byte = 0;
 	//flag2.BIT.zero_end=0;
-	flag1.BIT.adj_start = 1;//æ‰§è¡Œ
+	flag1.BIT.adj_start = 1;//Ö´ĞĞ
 }
 
 /***************************************zero11******************************************/
 /***************************************************************************************/
 void auto_zero(void)
 {
-	if(zero_delay == 0)//å»¶è¿Ÿç”¨
+	if(zero_delay == 0)//ÑÓ³ÙÓÃ
 	{
 	    if(tens_actual <= tens_ref)
 	    {
@@ -982,7 +959,7 @@ void auto_zero(void)
 	        flag2.BIT.zero_end = 1;
 	        //flag1.BIT.zero_reset=1;
 	    }
-	    else if(pwm_zero == 500)//è°ƒé›¶å‡ºç£¥E
+	    else if(pwm_zero == 500)//µ÷Áã³ö´E
 	    {
 	        flag1.BIT.zero_error = 1;
 	        //flag1.BIT.zero_reset = 1;
@@ -1004,7 +981,7 @@ void auto_zero(void)
 /***************************************************************************************/
 void rxerror(void)
 {
-	flag2.byte = 7;			//é€šè®¯ä»£é™™E
+	flag2.byte = 7;			//Í¨Ñ¶´úêE
 	LED_GRN = 1;
 	LED_RED = 0;
 	rx_bytecntr = 0;
@@ -1017,7 +994,7 @@ void rxreset(void)
 	unsigned int i;
 	if(flag1.BIT.motor_running == 0)
 	{
-		//å¯åœ¨æ­¤è¿›è¡Œidçš„åˆ¤æ–­
+		//¿ÉÔÚ´Ë½øĞĞidµÄÅĞ¶Ï
 		if(rx_bytecntr == 5)
 		{
 			c = 0;
@@ -1028,7 +1005,7 @@ void rxreset(void)
 			c = (c&0x7f);
 			if(c == rx_buffer[4])
 			{
-				//ç«µEå¾‹ç“’ã„–?
+				//¸EÂÉè¶¨Ö?
 				setlen[0] = rx_buffer[0];
 				len_1[0] = setlen[0];
 				setlen[1] = rx_buffer[1];
@@ -1037,20 +1014,20 @@ void rxreset(void)
 				len_1[2] = setlen[2];
 				pulse_cntr = 143;
 				settens=rx_buffer[3];
-				tension_compensate();           //å¼ åŠ›è¡¥å¿/è®¡è—–E
+				tension_compensate();           //ÕÅÁ¦²¹³¥/¼ÆËE
 				tens_desired = tens_set;
 				eeprom_address = 0;
 				rx_bytecntr = 0;
-				flag2.byte = 1;					//resetçš„å¤„å†å–§å·
-				flag3.byte = 0;					//resetçš„å¤„å†å–§å·
-				//è°ƒé›¶å‡†å¤‡
+				flag2.byte = 1;					//resetµÄ´¦ÀúĞúºÅ
+				flag3.byte = 0;					//resetµÄ´¦ÀúĞúºÅ
+				//µ÷Áã×¼±¸
 				OC1R = 0;// Write the duty cycle for the first PWM pulse
                 pwm_zero = 0;// Write the duty cycle for the second PWM pulse
 				pwm_out_temp = 0;
 				zero_delay = 5;
-				flag1.BIT.adj_start = 0;			//îŒ«è›Eé«æƒšä¸’ç–š?
-				flag1.BIT.zero_error = 0;			//æ¸…é™¤è°ƒé›¶ä»£ç‰¦çš„ä¿¡æ¯
-				//flag1.BIT.reset_end = 1;			//é˜²æ­¢æœªè°ƒé›¶å°±å¯åŠ¨
+				flag1.BIT.adj_start = 0;			//úÜÂE÷Áã±E¾Î?
+				flag1.BIT.zero_error = 0;			//Çå³ıµ÷Áã´úêóµÄĞÅÏ¢
+				//flag1.BIT.reset_end = 1;			//·ÀÖ¹Î´µ÷Áã¾ÍÆô¶¯
 				stop_delay = 1000;	//stop delay timing set
 				speed_min_avg = 0;
 				for(i = 0; i < data_total; i++)
@@ -1081,18 +1058,18 @@ void rxreset(void)
 /*************************************************************************************/
 void rxadj(void)
 {
-	if(flag1.BIT.motor_running == 0)//ç”µæœºé™æ­¢çŠ¶æ€
+	if(flag1.BIT.motor_running == 0)//µç»ú¾²Ö¹×´Ì¬
 	{
 		if(rx_bytecntr == 0)
 		{
 			//rx_bytecntr = 0;
-			flag2.byte = 2;			//senadjçš„å¤„å†å–§å·
-			//è°ƒé›¶å‡†å¤‡
+			flag2.byte = 2;			//senadjµÄ´¦ÀúĞúºÅ
+			//µ÷Áã×¼±¸
 			OC1R = 0;// Write the duty cycle for the first PWM pulse
             pwm_zero = 0;// Write the duty cycle for the second PWM pulse
 			zero_delay = 5;
 			flag1.BIT.adj_start = 0;
-			flag1.BIT.zero_error = 0;//æ¸…é™¤è°ƒé›¶ä»£ç‰¦çš„ä¿¡æ¯
+			flag1.BIT.zero_error = 0;//Çå³ıµ÷Áã´úêóµÄĞÅÏ¢
 		}
 		else
 		{
@@ -1112,20 +1089,18 @@ void rxsend(void)
 	if(rx_bytecntr == 1)
 	{
 		settens = rx_buffer[0];
-		tension_compensate();//å¼ åŠ›è¡¥å¿
+		tension_compensate();//ÕÅÁ¦²¹³¥
 		tens_desired = tens_set;
-		tx_enable = 1;       // ã“ã“ã‹ã‚‰ãƒ“ãƒƒãƒˆãƒ‘ãƒ«ã‚¹å‡ºåŠ›ã‚’é–‹å§‹
 	}
 	else if(rx_bytecntr==2)
-	{
-	        rx_bytecntr = 0;
-		tx_enable = 1;       // ã“ã“ã‹ã‚‰ãƒ“ãƒƒãƒˆãƒ‘ãƒ«ã‚¹å‡ºåŠ›ã‚’é–‹å§‹
-	}
-	else
-	{
-        	rxerror();
-	}
-
+    {
+        rx_bytecntr = 0;
+    }
+    else
+    {
+        rxerror();
+    }
+		
 }
 /************************************************************************************/
 void table_rx(unsigned char b)
@@ -1150,7 +1125,7 @@ void table_rx(unsigned char b)
 }
 
 
-/**************************************æ¥æ”¶ä¿¡æ¯å­å‡½æ•°*************************************/
+/**************************************½ÓÊÕĞÅÏ¢×Óº¯Êı*************************************/
 /*****************************************************************************************/
 void data_rx(void)
 {
@@ -1160,7 +1135,7 @@ void data_rx(void)
 	{
 		do_command(a);
 	}
-	if(flag1.BIT.rx_start == 1)		//å¼€å§‹æ¥æ”¶æ•°æ®
+	if(flag1.BIT.rx_start == 1)		//¿ªÊ¼½ÓÊÕÊı¾İ
 	{
 		rx_bitcntr ++;
 		if(rx_bitcntr == 10)
@@ -1177,7 +1152,7 @@ void data_rx(void)
 		else if(rx_bitcntr == 11)
 		{
 			rx_bitcntr = 0;
-			//è¿›è¡Œæ˜¯å¦æ˜¯æ•°æ®è¿˜æ˜¯è„•Eîå¸?
+			//½øĞĞÊÇ·ñÊÇÊı¾İ»¹ÊÇÃEûáĞ¶?
 			if(flag2.BIT.command == 0)
 			{
 				flag1.BIT.rx_start = 0;
@@ -1207,7 +1182,7 @@ void data_rx(void)
 			}
 		}
 		else
-		{	//ç§»ä½æ¥æ”¶æ•°æ®
+		{	//ÒÆÎ»½ÓÊÕÊı¾İ
 			if(PORT_RX == 1)
 			{
 				rx_buffer_1 = (rx_buffer_1 >> 1);
@@ -1241,11 +1216,9 @@ void tx_cntrset(void)
 		tx_bitcntr = 0;
 		tx_bytecntr ++;
 
-		if(tx_bytecntr == 6) { // 6byte
+		if(tx_bytecntr == 6)//½øĞĞ³¤¶È¼õ·¨ÔËËE
+		{
 			tx_bytecntr = 0;
-			// â‡’ å…¨ 6 ãƒã‚¤ãƒˆé€ä¿¡å®Œäº†
-			tx_enable = 0;      // ã“ã“ã§é€ä¿¡ã‚¬ãƒ¼ãƒ‰ã‚’è§£é™¤
-			PORT_TX = 1;        // TX ãƒ”ãƒ³ã‚’ã‚¢ã‚¤ãƒ‰ãƒ« High ã«å›ºå®š
 			tmp_1 = setlen[1];
 			tmp_2 = setlen[2];
 			lastlen[0] = setlen[0] - len_1[0];
@@ -1271,7 +1244,7 @@ void tx_cntrset(void)
 		}
 		else if(tx_bytecntr == 3)
 			{
-				//å¼ åŠ›å¤„çº´E
+				//ÕÅÁ¦´¦ÀE
 				txtens[1] = tens_actual / 10;
 				txtens[0] = tens_actual % 10;
 			}
@@ -1318,7 +1291,7 @@ void tx_300_1(void)
 	
 }
 
-/**********************************å‘é€æ—¶çš„ç§»ä½æ“è®ˆE***********************************/
+/**********************************·¢ËÍÊ±µÄÒÆÎ»²Ù×E***********************************/
 /**************************************************************************************/
 void tx_300_2(void)
 {
@@ -1334,14 +1307,14 @@ void tx_300_2(void)
 	
 }
 
-/**********************************å‘é€åŸºå‡†æ•°æ®****************************************/
+/**********************************·¢ËÍ»ù×¼Êı¾İ****************************************/
 /**************************************************************************************/
 void tx_300_3(void)
 {
 	PORT_TX = 0;
 }
 
-/**************************************å‘é€ä¿¡æ¯å­å‡½æ•°*************************************/
+/**************************************·¢ËÍĞÅÏ¢×Óº¯Êı*************************************/
 /*****************************************************************************************/
 void data_tx(void)
 {
@@ -1394,13 +1367,13 @@ void data_tx(void)
 		tx_cntr = 1;
 	}
 }
-/***********************************å¼ åŠ›è°ƒè«„E*******************************************/
+/***********************************ÕÅÁ¦µ÷ÕE*******************************************/
 /***************************************************************************************/
 void tension_compensate(void)
 {
 	unsigned int t_backup;
-	tens_set = settens;               //ä¸»æ§æ¿åœ¨å‘é€æ—¶ä¹˜ä»¥2ï¼Œæ‰€ä»¥å½“è®¾å®š100å…‹æ—¶ï¼Œsettensçš„å€¼æ˜¯200
-	if(tens_set > 200)//100gä¸ºî ‘ç•œå€¼
+	tens_set = settens;               //Ö÷¿Ø°åÔÚ·¢ËÍÊ±³ËÒÔ2£¬ËùÒÔµ±Éè¶¨100¿ËÊ±£¬settensµÄÖµÊÇ200
+	if(tens_set > 200)//100gÎª×ûĞóÖµ
 	{
 		tens_set = 200;
 	}
@@ -1408,13 +1381,13 @@ void tension_compensate(void)
 	{
 		tens_set = 10;
 	}
-	t_backup = tens_set*4; //(tens_set*8)/2;	//1g = 8ä¸ªADå€¼,100gçš„ADæ€»å€¼ä¸º800
-	t_backup = t_backup - 16;	//å»2å…‹é˜»åŠ›
+	t_backup = tens_set*4; //(tens_set*8)/2;	//1g = 8¸öADÖµ,100gµÄAD×ÜÖµÎª800
+	t_backup = t_backup - 16;	//È¥2¿Ë×èÁ¦
 	tens_set = t_backup;
 
 	if(tens_set < 200)//20120105, tension set <25g;  200/8=25;
 	{
-		Kp = 0.13; //Ref 0.03
+		Kp = 0.13 //Ref 0.03
 		Ki = 0.02; //Ref 0.008
 		Kd = 0.005; //Ref 0.011
 	}
@@ -1428,9 +1401,9 @@ void tension_compensate(void)
 	//Ki = 0.00025; //Ref 0.008
 	//Kd = 0.011; //Ref 0.011
 }
-/**************************************ADè½¬æ¢å­ç¨‹è¡¼E**************************************/
-/*************************************ç”µæœºæ§åˆ¶å­ç¨‹è¡¼E*************************************/
-/***********************24usåœæ­¢ï¼Œî ‘ç•œè¿è¡ŒçŠ¶æ€,long=65us,int=35us*************************/
+/**************************************AD×ª»»×Ó³ÌĞE**************************************/
+/*************************************µç»ú¿ØÖÆ×Ó³ÌĞE*************************************/
+/***********************24usÍ£Ö¹£¬×ûĞóÔËĞĞ×´Ì¬,long=65us,int=35us*************************/
 /*****************************************************************************************/
 void motor_control(void)
 {
@@ -1439,12 +1412,12 @@ void motor_control(void)
 	{
 		prev_deviation = last_deviation;
 		last_deviation = tens_deviation;
-		tens_deviation = tens_temp - tens_desired;//å½“å‰è¯¯ç¾E
+		tens_deviation = tens_temp - tens_desired;//µ±Ç°Îó²E
 
 		/*if(rampup_timer != 0)	//for start, 10 sec, add tension
 		{
 			rampup_timer --;
-			tens_deviation = tens_deviation -80;//å¢åŠ 10gå¼ åŠ›
+			tens_deviation = tens_deviation -80;//Ôö¼Ó10gÕÅÁ¦
 
 			pwm_add = Kp * (tens_deviation - last_deviation); 
 		}
@@ -1516,7 +1489,7 @@ void motor_control(void)
         }
 
 	}
-	//else if(stop_delay != 0) //å°äº5å…‹ï¼Œå¼€å§‹åˆ¶åŠ¨è®¡æ•°
+	//else if(stop_delay != 0) //Ğ¡ÓÚ5¿Ë£¬¿ªÊ¼ÖÆ¶¯¼ÆÊı
 	//{
 		//stop_delay--;
 		//flag1.BIT.brake = 1;		
@@ -1553,13 +1526,13 @@ void motor_control(void)
 /**********************************************************************/
 /**********************************************************************/
 /**************************************************/
-/* å»¶æ—¶å­ç¨‹è¡¼E*/
+/* ÑÓÊ±×Ó³ÌĞE*/
 /**************************************************/
 void Delay(unsigned int DelayTime)
 {
 	while(DelayTime--);
 }
-/**************************************æ•°æ®å¤‡ä»½å‡½æ•°****************************************/
+/**************************************Êı¾İ±¸·İº¯Êı****************************************/
 /******************************************************************************************/
 void data_backup1(void)
 {
@@ -1592,8 +1565,8 @@ void data_backup1(void)
 									//Generate Stop
 	//CLRWDT();
 }
-/**************************************æ•°æ®å¤‡ä»½å‡½æ•°****************************************/
-/******************************å¤‡ä»½pwm_zero,tens_zero**************************************/
+/**************************************Êı¾İ±¸·İº¯Êı****************************************/
+/******************************±¸·İpwm_zero,tens_zero**************************************/
 /******************************************************************************************/
 void data_backup2(void)
 {
@@ -1626,7 +1599,7 @@ void data_backup2(void)
 									//Generate Stop
 	//CLRWDT();
 }
-/**************************************æ•°æ®è¯»å–å‡½æ•°****************************************/
+/**************************************Êı¾İ¶ÁÈ¡º¯Êı****************************************/
 /******************************************************************************************/
 void data_load1(void)
 {
