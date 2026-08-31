@@ -1,6 +1,6 @@
 <#
 ===============================================================================
-AdjustInventoryChart_XMLTest_r1.ps1
+AdjustInventoryChart_XMLTest_r4.ps1
 
 目的
   本社商品在庫日報.xlsx の「欠品」「在庫額」グラフについて、当日列を
@@ -39,7 +39,7 @@ param(
     [string]$LogPath = ""
 )
 
-Set-StrictMode -Version 2.0
+Set-StrictMode -Version 4.0
 $ErrorActionPreference = "Stop"
 
 $ScriptVersion = "2026-08-31-chart-xml-test-r4"
