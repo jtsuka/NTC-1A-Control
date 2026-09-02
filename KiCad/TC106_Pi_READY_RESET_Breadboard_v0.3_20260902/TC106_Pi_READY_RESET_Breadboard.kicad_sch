@@ -978,10 +978,22 @@
 		(uuid "23467a1c-3bef-4f4a-b9dd-a206f2388ad6")
 	)
 	(junction
+		(at 167.64 121.92)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2fcf834d-330f-40d1-a01c-c45501e97e77")
+	)
+	(junction
 		(at 102.87 121.92)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "394e712f-24ed-4965-b1d5-2ed7542ed9e4")
+	)
+	(junction
+		(at 186.69 54.61)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4347339f-2bcf-4d29-9690-5fd45c145803")
 	)
 	(junction
 		(at 127 74.93)
@@ -1000,16 +1012,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d23d4c5c-2ad4-4514-b2c8-f1ae41383201")
-	)
-	(wire
-		(pts
-			(xy 127 59.69) (xy 127 54.61)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "00c11ed9-1287-499a-8574-daf8be2c8fde")
 	)
 	(wire
 		(pts
@@ -1043,6 +1045,16 @@
 	)
 	(wire
 		(pts
+			(xy 198.12 43.18) (xy 198.12 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1ea34a3b-85cc-4692-9eba-a5625e204096")
+	)
+	(wire
+		(pts
 			(xy 144.78 74.93) (xy 160.02 74.93)
 		)
 		(stroke
@@ -1053,23 +1065,13 @@
 	)
 	(wire
 		(pts
-			(xy 209.55 76.2) (xy 220.98 76.2)
+			(xy 186.69 40.64) (xy 186.69 54.61)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "6ebb30ba-1581-41fe-9330-8350569ac57a")
-	)
-	(wire
-		(pts
-			(xy 209.55 73.66) (xy 220.98 73.66)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "77d633d1-970c-4ee3-870b-215b0d9e4782")
+		(uuid "3b7eac42-71e0-45df-adc5-caa198854698")
 	)
 	(wire
 		(pts
@@ -1100,6 +1102,16 @@
 			(type default)
 		)
 		(uuid "8c16b91d-30b8-4ea6-bbdd-af2a1af4d257")
+	)
+	(wire
+		(pts
+			(xy 127 38.1) (xy 209.55 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8f478694-dd77-48f6-925c-6da1d0001f44")
 	)
 	(wire
 		(pts
@@ -1143,6 +1155,16 @@
 	)
 	(wire
 		(pts
+			(xy 198.12 121.92) (xy 167.64 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ad8fb01a-06a4-4bd9-b4f5-b3b9f60c71b0")
+	)
+	(wire
+		(pts
 			(xy 102.87 102.87) (xy 102.87 91.44)
 		)
 		(stroke
@@ -1150,6 +1172,16 @@
 			(type default)
 		)
 		(uuid "b00504e3-1c74-494b-a218-d6b930f17773")
+	)
+	(wire
+		(pts
+			(xy 127 38.1) (xy 127 59.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b1f0041c-0d0e-49f7-b0fe-7e6c3bccf1cc")
 	)
 	(wire
 		(pts
@@ -1163,7 +1195,7 @@
 	)
 	(wire
 		(pts
-			(xy 209.55 78.74) (xy 220.98 78.74)
+			(xy 198.12 43.18) (xy 209.55 43.18)
 		)
 		(stroke
 			(width 0)
@@ -1211,6 +1243,16 @@
 		)
 		(uuid "f7d91ab4-c6e6-471d-a45c-26ef5100f4dc")
 	)
+	(wire
+		(pts
+			(xy 209.55 40.64) (xy 186.69 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ff52678a-20e5-4cbe-aa0c-28ae69e07c6f")
+	)
 	(label "ESP_RUN_BCM17"
 		(at 60.96 92.71 0)
 		(effects
@@ -1242,7 +1284,7 @@
 		(uuid "115ccbb9-bbc6-4089-802c-0fc02bf1f2b2")
 	)
 	(label "CHIP_PU_RESET"
-		(at 209.55 76.2 180)
+		(at 198.12 40.64 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1262,7 +1304,7 @@
 		(uuid "29a3f523-0949-44b4-aaf4-16a05713487d")
 	)
 	(label "GND"
-		(at 209.55 78.74 180)
+		(at 198.12 45.72 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1312,7 +1354,7 @@
 		(uuid "a6226f75-a8e3-402a-82d6-c8e021d2333a")
 	)
 	(label "XIAO_3V3"
-		(at 209.55 73.66 180)
+		(at 198.12 38.1 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1803,7 +1845,7 @@
 	)
 	(symbol
 		(lib_id "TC106_Pi_READY_RESET_Breadboard-cache:CONN3")
-		(at 226.06 76.2 0)
+		(at 214.63 40.64 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1813,7 +1855,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000000000007")
 		(property "Reference" "J2"
-			(at 228.6 68.58 0)
+			(at 217.17 33.02 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1823,7 +1865,7 @@
 			)
 		)
 		(property "Value" "XIAO_ESP32S3"
-			(at 231.14 83.82 0)
+			(at 219.71 48.26 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1833,7 +1875,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 226.06 76.2 0)
+			(at 214.63 40.64 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1843,7 +1885,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 226.06 76.2 0)
+			(at 214.63 40.64 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1853,7 +1895,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 226.06 76.2 0)
+			(at 214.63 40.64 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1965,7 +2007,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000000000009")
 		(property "Reference" "TP2"
-			(at 186.69 48.895 0)
+			(at 186.69 58.547 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1975,7 +2017,7 @@
 			)
 		)
 		(property "Value" "CHIP_PU"
-			(at 186.69 51.308 0)
+			(at 186.69 60.96 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
