@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "E:\\Users\\塚田淳一\\Documents\\GitHub\\NTC-1A-Control\\NTC-1A-Control\\KiCad\\TC106_Pi_READY_RESET_Breadboard_v0.3_20260902\\TC106_Pi_READY_RESET_Breadboard.kicad_sch")
-		(date "2026-09-03T09:33:02")
+		(date "2026-09-03T09:36:44")
 		(tool "Eeschema 10.0.5")
 		(sheet
 			(number "1")
