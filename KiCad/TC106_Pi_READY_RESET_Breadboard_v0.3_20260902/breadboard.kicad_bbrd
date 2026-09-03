@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "netlist": "E:\\Users\\\u585a\u7530\u6df3\u4e00\\Documents\\GitHub\\NTC-1A-Control\\NTC-1A-Control\\KiCad\\TC106_Pi_READY_RESET_Breadboard_v0.3_20260902\\TC106_Pi_READY_RESET_Breadboard.net",
+  "board": {
+    "layout": "full"
+  },
+  "terminals": {},
+  "placements": [
+    {
+      "ref": "Q1",
+      "type_id": "NMOS",
+      "flipped": 0,
+      "pins": [
+        [
+          1,
+          [
+            "tie",
+            4,
+            "d"
+          ]
+        ],
+        [
+          2,
+          [
+            "tie",
+            5,
+            "d"
+          ]
+        ],
+        [
+          3,
+          [
+            "tie",
+            6,
+            "d"
+          ]
+        ]
+      ]
+    },
+    {
+      "ref": "Q2",
+      "type_id": "NMOS",
+      "flipped": 0,
+      "pins": [
+        [
+          1,
+          [
+            "tie",
+            10,
+            "d"
+          ]
+        ],
+        [
+          2,
+          [
+            "tie",
+            11,
+            "d"
+          ]
+        ],
+        [
+          3,
+          [
+            "tie",
+            12,
+            "d"
+          ]
+        ]
+      ]
+    },
+    {
+      "ref": "R1",
+      "type_id": "R",
+      "flipped": false,
+      "pins": [
+        [
+          1,
+          [
+            "tie",
+            14,
+            "d"
+          ]
+        ],
+        [
+          2,
+          [
+            "tie",
+            18,
+            "d"
+          ]
+        ]
+      ]
+    },
+    {
+      "ref": "R2",
+      "type_id": "R",
+      "flipped": false,
+      "pins": [
+        [
+          1,
+          [
+            "tie",
+            14,
+            "g"
+          ]
+        ],
+        [
+          2,
+          [
+            "tie",
+            18,
+            "g"
+          ]
+        ]
+      ]
+    },
+    {
+      "ref": "R3",
+      "type_id": "R",
+      "flipped": false,
+      "pins": [
+        [
+          1,
+          [
+            "tie",
+            8,
+            "h"
+          ]
+        ],
+        [
+          2,
+          [
+            "tie",
+            12,
+            "h"
+          ]
+        ]
+      ]
+    }
+  ],
+  "wires": []
+}
