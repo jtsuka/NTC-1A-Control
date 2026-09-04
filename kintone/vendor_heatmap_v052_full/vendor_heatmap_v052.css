@@ -1,0 +1,1328 @@
+﻿/* 外注課 外注先負荷ヒートマップ Ver0.1 */
+#vendor-heatmap-root {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic", "Meiryo", sans-serif;
+  color: #222;
+}
+.eh-wrap { padding: 16px; background: #f7f8fa; }
+.eh-header { display:flex; justify-content:space-between; gap:20px; align-items:flex-start; margin-bottom:12px; }
+.eh-header h2 { margin:0 0 6px; font-size:22px; }
+.eh-subtitle { color:#666; font-size:13px; }
+.eh-controls { display:flex; align-items:center; gap:14px; white-space:nowrap; }
+.eh-controls select { margin-left:6px; padding:6px 8px; }
+.eh-count { color:#666; font-size:13px; }
+
+.eh-loading, .eh-error { padding:24px; background:#fff; border:1px solid #ddd; }
+.eh-error { color:#a00; }
+
+.eh-cards { display:grid; grid-template-columns:repeat(4,minmax(160px,1fr)); gap:10px; margin:12px 0; }
+.eh-card { background:#fff; border:1px solid #ddd; border-radius:6px; padding:12px; min-height:72px; }
+.eh-card-label { color:#666; font-size:12px; }
+.eh-card-value { font-size:28px; font-weight:700; margin-top:4px; }
+.eh-card-note { font-size:12px; color:#555; margin-top:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.eh-danger-text { color:#b42318; }
+.eh-warning-text { color:#b54708; }
+
+.eh-section { margin-top:14px; background:#fff; border:1px solid #ddd; border-radius:6px; overflow:hidden; }
+.eh-section-title { display:flex; align-items:baseline; gap:14px; padding:10px 12px; border-bottom:1px solid #ddd; background:#fafafa; }
+.eh-section-title span { color:#666; font-size:12px; }
+
+.eh-table-scroll { overflow:auto; max-width:100%; }
+.eh-heatmap { border-collapse:separate; border-spacing:0; min-width:max-content; font-size:11px; }
+.eh-heatmap th, .eh-heatmap td { border-right:1px solid #e5e5e5; border-bottom:1px solid #e5e5e5; text-align:center; height:28px; }
+.eh-vendor { position:sticky; left:0; z-index:2; width:220px; min-width:220px; max-width:220px; text-align:left !important; background:#fff; padding:0 8px; }
+thead .eh-vendor { z-index:4; background:#f3f4f6; }
+.eh-vendor-row { cursor:pointer; }
+.eh-vendor-row:hover .eh-vendor { background:#eef6ff; }
+.eh-vendor-row.eh-selected .eh-vendor { background:#dbeafe; }
+.eh-vendor-name { display:block; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.eh-vendor-meta { display:block; color:#777; font-size:10px; }
+.eh-date { min-width:34px; width:34px; background:#f3f4f6; font-weight:500; }
+.eh-date.eh-sat { background:#eaf3ff; }
+.eh-date.eh-sun { background:#fff0f0; }
+
+.eh-heat { min-width:34px; width:34px; font-weight:600; }
+.eh-zero { background:#fff; color:#aaa; }
+.eh-low { background:#e8f5e9; color:#2e5d34; }
+.eh-medium { background:#fff3cd; color:#7a5b00; }
+.eh-high { background:#f8d7da; color:#8a1c24; }
+
+.eh-risk-table { border-collapse:collapse; width:100%; min-width:1100px; font-size:12px; }
+.eh-risk-table th, .eh-risk-table td { border-bottom:1px solid #eee; padding:7px 8px; text-align:left; white-space:nowrap; }
+.eh-risk-table th { background:#f7f7f7; position:sticky; top:0; }
+.eh-badge { display:inline-block; padding:2px 7px; border-radius:10px; font-size:11px; font-weight:700; }
+.eh-badge-danger { background:#fde2e1; color:#b42318; }
+.eh-badge-warning { background:#fff0cf; color:#9a6700; }
+.eh-ok-message { text-align:center !important; color:#557a58; padding:18px !important; }
+.eh-record-link { color:#0066cc; text-decoration:none; font-weight:600; }
+.eh-record-link:hover { text-decoration:underline; }
+
+.eh-gantt-scale { display:flex; justify-content:space-between; padding:6px 12px 0 330px; color:#777; font-size:11px; }
+.eh-gantt-list { padding:6px 12px 14px; }
+.eh-gantt-row { display:grid; grid-template-columns:310px minmax(600px,1fr); gap:10px; align-items:center; min-height:58px; border-bottom:1px solid #eee; }
+.eh-gantt-info { min-width:0; padding:6px 0; }
+.eh-product { font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.eh-dates { font-size:11px; color:#777; margin-top:2px; }
+.eh-inline-risk { font-size:11px; margin-top:2px; }
+.eh-track { position:relative; height:34px; background:repeating-linear-gradient(to right,#fafafa 0,#fafafa 9.8%,#eee 10%); border:1px solid #eee; overflow:hidden; }
+.eh-baseline { position:absolute; top:16px; height:2px; background:#777; min-width:2px; }
+.eh-workbar { position:absolute; top:10px; height:14px; border-radius:3px; background:#4c8bf5; min-width:4px; opacity:.9; z-index:2; }
+.eh-work-warning { background:#e5a50a; }
+.eh-work-danger { background:#d92d20; }
+.eh-marker { position:absolute; top:5px; width:2px; height:24px; z-index:3; }
+.eh-order-marker { background:#555; }
+.eh-due-marker { background:#111; }
+.eh-empty { padding:18px; color:#777; }
+
+@media (max-width: 1100px) {
+  .eh-cards { grid-template-columns:repeat(2,1fr); }
+  .eh-header { flex-direction:column; }
+  .eh-gantt-row { grid-template-columns:260px minmax(500px,1fr); }
+  .eh-gantt-scale { padding-left:280px; }
+}
+
+/* Ver0.2: 手配日/納期のヒゲ */
+.eh-whisker {
+  position:absolute;
+  top:16px;
+  height:2px;
+  background:#666;
+  min-width:2px;
+  z-index:1;
+}
+.eh-whisker-left::before,
+.eh-whisker-right::after {
+  content:"";
+  position:absolute;
+  top:-4px;
+  width:1px;
+  height:10px;
+  background:#666;
+}
+.eh-whisker-left::before { left:0; }
+.eh-whisker-right::after { right:0; }
+
+.eh-start-marker { background:#2f6fbd; }
+.eh-inspection-marker { background:#2f6fbd; }
+
+/* Ver0.2: 土日の縦列を薄く着色（ヒート色は残す） */
+.eh-heat.eh-col-sat { box-shadow: inset 0 0 0 9999px rgba(80,140,220,0.08); }
+.eh-heat.eh-col-sun { box-shadow: inset 0 0 0 9999px rgba(220,90,90,0.08); }
+
+/* Ver0.3: 凡例と赤色注意表示 */
+.eh-legend {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+  margin-top:8px;
+  font-size:12px;
+  color:#555;
+}
+.eh-legend-item { display:inline-flex; align-items:center; gap:4px; }
+.eh-legend-item span {
+  display:inline-block;
+  width:2px;
+  height:16px;
+}
+.eh-legend-order { background:#555; }
+.eh-legend-start { background:#2f6fbd; }
+.eh-legend-inspection { background:#2f6fbd; }
+.eh-legend-due { background:#111; width:3px !important; }
+.eh-legend-bar {
+  display:inline-block;
+  width:54px;
+  height:10px;
+  border-radius:3px;
+  background:#4c8bf5;
+}
+.eh-legend-alert {
+  display:inline-block;
+  padding:2px 7px;
+  border-radius:10px;
+  background:#fde2e1;
+  color:#b42318;
+  font-weight:700;
+}
+.eh-alert-segment {
+  background:#d92d20 !important;
+}
+.eh-alert-marker {
+  background:#d92d20 !important;
+  width:3px !important;
+}
+
+/* Ver0.3.1: 現在の暫定日程ルール表示 */
+.eh-rule-box {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px 14px;
+  margin-top:8px;
+  padding:8px 10px;
+  border:1px solid #d8dee8;
+  border-radius:6px;
+  background:#f8fbff;
+  font-size:12px;
+  color:#445;
+}
+.eh-rule-title {
+  font-weight:700;
+  color:#2d4f73;
+}
+.eh-rule-item strong {
+  color:#1f5f99;
+}
+.eh-rule-note {
+  color:#777;
+}
+
+/* Ver0.4: 横ひげガントをチャートらしく整理 */
+.eh-top-alert { margin-top:8px; }
+
+.eh-gantt-guide {
+  display:grid;
+  grid-template-columns:310px minmax(600px,1fr) auto;
+  gap:10px;
+  align-items:center;
+  padding:8px 12px 4px;
+  border-top:1px solid #eef1f5;
+  border-bottom:1px solid #eef1f5;
+  background:#fbfcfe;
+}
+.eh-gantt-guide-visual {
+  grid-column:2;
+  position:relative;
+  height:28px;
+  min-width:420px;
+}
+.eh-gantt-guide-labels {
+  grid-column:2;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  text-align:center;
+  font-size:11px;
+  color:#555;
+  margin-top:-7px;
+}
+.eh-gantt-guide .eh-legend-alert {
+  grid-column:3;
+  grid-row:1 / span 2;
+  white-space:nowrap;
+}
+
+.eh-guide-marker {
+  position:absolute;
+  top:3px;
+  width:2px;
+  height:22px;
+  z-index:3;
+}
+.eh-guide-order { left:2%; background:#555; }
+.eh-guide-start { left:31%; background:#2f6fbd; }
+.eh-guide-inspection { left:68%; background:#2f6fbd; }
+.eh-guide-due { left:98%; background:#111; width:3px; }
+.eh-guide-line {
+  position:absolute;
+  top:14px;
+  height:2px;
+  background:#666;
+}
+.eh-guide-left { left:2%; width:29%; }
+.eh-guide-right { left:68%; width:30%; }
+.eh-guide-bar {
+  position:absolute;
+  top:8px;
+  left:31%;
+  width:37%;
+  height:13px;
+  border-radius:3px;
+  background:#4c8bf5;
+  z-index:2;
+}
+
+.eh-gantt-scale {
+  display:grid;
+  grid-template-columns:310px 1fr;
+  padding:6px 12px 0;
+  color:#777;
+  font-size:11px;
+}
+.eh-gantt-scale > span:first-child { grid-column:2; justify-self:start; }
+.eh-gantt-scale > .eh-scale-center { grid-column:2; justify-self:center; margin-top:-14px; }
+.eh-gantt-scale > span:last-child { grid-column:2; justify-self:end; margin-top:-14px; }
+
+.eh-gantt-row {
+  grid-template-columns:310px minmax(600px,1fr);
+  min-height:64px;
+}
+.eh-track {
+  height:40px;
+  background:#fff;
+  border:1px solid #e4e7ec;
+}
+.eh-workbar { top:13px; height:14px; }
+.eh-whisker { top:20px; }
+.eh-marker { top:7px; height:26px; }
+
+.eh-track-weekend {
+  position:absolute;
+  top:0;
+  bottom:0;
+  z-index:0;
+  pointer-events:none;
+}
+.eh-track-sat { background:rgba(80,140,220,0.08); }
+.eh-track-sun { background:rgba(220,90,90,0.08); }
+.eh-track-today {
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:2px;
+  background:rgba(45,79,115,0.55);
+  z-index:1;
+  pointer-events:none;
+}
+
+@media (max-width: 1100px) {
+  .eh-gantt-guide { grid-template-columns:260px minmax(500px,1fr); }
+  .eh-gantt-guide .eh-legend-alert {
+    grid-column:2;
+    grid-row:auto;
+    justify-self:start;
+    margin-top:4px;
+  }
+  .eh-gantt-scale { grid-template-columns:260px 1fr; }
+}
+
+/* Ver0.4.2: 工程節目を記号表示 */
+.eh-symbol-marker {
+  position:absolute;
+  top:6px;
+  transform:translateX(-50%);
+  z-index:4;
+  font-size:17px;
+  line-height:1;
+  font-weight:700;
+  color:#2f3b48;
+  text-shadow:0 1px 0 #fff;
+}
+.eh-order-symbol { color:#555; }
+.eh-start-symbol { color:#2f6fbd; font-size:16px; }
+.eh-inspection-symbol { color:#2f6fbd; }
+.eh-due-symbol { color:#111; }
+.eh-alert-symbol { color:#d92d20 !important; }
+
+.eh-guide-symbol {
+  position:absolute;
+  top:1px;
+  transform:translateX(-50%);
+  z-index:4;
+  font-size:18px;
+  line-height:1;
+  font-weight:700;
+  color:#2f3b48;
+}
+.eh-guide-order-symbol { left:2%; color:#555; }
+.eh-guide-start-symbol { left:31%; color:#2f6fbd; font-size:17px; }
+.eh-guide-inspection-symbol { left:68%; color:#2f6fbd; }
+.eh-guide-due-symbol { left:98%; color:#111; }
+.eh-gantt-guide-labels span { white-space:nowrap; }
+
+/* Ver0.4.3: 各案件の節目を明確な図形で表示。旧ヒゲ端の縦棒は非表示。 */
+.eh-whisker-left::before,
+.eh-whisker-right::after {
+  display:none !important;
+}
+
+.eh-symbol-marker {
+  position:absolute;
+  top:50%;
+  transform:translate(-50%, -50%);
+  z-index:6;
+  display:block;
+  box-sizing:border-box;
+  text-shadow:none;
+}
+
+/* ○ 手配日：白抜き円 */
+.eh-symbol-marker.eh-shape-order {
+  width:12px;
+  height:12px;
+  border:2px solid #555;
+  border-radius:50%;
+  background:#fff;
+}
+
+/* ▶ 仕掛開始：右向き三角 */
+.eh-symbol-marker.eh-shape-start {
+  width:0;
+  height:0;
+  border-top:7px solid transparent;
+  border-bottom:7px solid transparent;
+  border-left:12px solid #2f6fbd;
+  background:transparent;
+}
+
+/* ● 検収日：塗り円 */
+.eh-symbol-marker.eh-shape-inspection {
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#2f6fbd;
+  border:2px solid #2f6fbd;
+}
+
+/* ◆ 納期：菱形 */
+.eh-symbol-marker.eh-shape-due {
+  width:11px;
+  height:11px;
+  background:#111;
+  transform:translate(-50%, -50%) rotate(45deg);
+}
+
+/* 異常時は該当節目も赤 */
+.eh-symbol-marker.eh-alert-symbol.eh-shape-order {
+  border-color:#d92d20 !important;
+  background:#fff !important;
+}
+.eh-symbol-marker.eh-alert-symbol.eh-shape-start {
+  border-left-color:#d92d20 !important;
+}
+.eh-symbol-marker.eh-alert-symbol.eh-shape-inspection {
+  border-color:#d92d20 !important;
+  background:#d92d20 !important;
+}
+.eh-symbol-marker.eh-alert-symbol.eh-shape-due {
+  background:#d92d20 !important;
+}
+
+/* Ver0.4.4: Dateオブジェクト対応後の節目表示微調整 */
+.eh-symbol-marker { filter:none; }
+.eh-symbol-marker.eh-shape-order { z-index:7; }
+.eh-symbol-marker.eh-shape-start,
+.eh-symbol-marker.eh-shape-inspection,
+.eh-symbol-marker.eh-shape-due { z-index:7; }
+
+
+/* Ver0.4.5: 下段案件詳細のみ「予定表」風へ。上段ヒートマップは変更しない */
+.eh-schedule-note {
+  padding:6px 12px 4px;
+  color:#667085;
+  font-size:11px;
+}
+
+.eh-schedule-scroll {
+  --eh-day-width:28px;
+  --eh-left-width:310px;
+  overflow-x:auto;
+  overflow-y:visible;
+  margin:0 12px 14px;
+  border:1px solid #dfe3e8;
+  border-radius:5px;
+  background:#fff;
+}
+
+.eh-schedule-head-row,
+.eh-schedule-scroll .eh-gantt-row {
+  display:grid;
+  grid-template-columns:var(--eh-left-width) calc(var(--eh-total-days) * var(--eh-day-width));
+  gap:0;
+  width:max-content;
+  min-width:100%;
+}
+
+.eh-schedule-head-row {
+  position:sticky;
+  top:0;
+  z-index:20;
+  min-height:42px;
+  border-bottom:1px solid #cfd5dd;
+  background:#f7f8fa;
+}
+
+.eh-schedule-left-head {
+  position:sticky;
+  left:0;
+  z-index:23;
+  display:flex;
+  align-items:center;
+  padding:0 10px;
+  border-right:1px solid #cfd5dd;
+  background:#f2f4f7;
+  color:#344054;
+  font-size:11px;
+  font-weight:700;
+}
+
+.eh-schedule-timeline {
+  width:calc(var(--eh-total-days) * var(--eh-day-width));
+  min-width:calc(var(--eh-total-days) * var(--eh-day-width));
+}
+
+.eh-schedule-date-header {
+  display:grid;
+  grid-template-columns:repeat(var(--eh-total-days), var(--eh-day-width));
+  height:42px;
+}
+
+.eh-schedule-date-cell {
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  border-right:1px solid #d9dee5;
+  background:#f8f9fb;
+  color:#475467;
+  line-height:1.05;
+  user-select:none;
+}
+
+.eh-schedule-date-cell:last-child { border-right:0; }
+.eh-schedule-date-day { font-size:12px; font-weight:700; }
+.eh-schedule-date-dow { margin-top:3px; font-size:9px; color:#98a2b3; }
+.eh-schedule-date-sat { background:#eef5ff; color:#2f6fbd; }
+.eh-schedule-date-sun { background:#fff0f0; color:#b42318; }
+
+.eh-schedule-scroll .eh-gantt-list {
+  padding:0;
+  width:max-content;
+  min-width:100%;
+}
+
+.eh-schedule-scroll .eh-gantt-row {
+  min-height:52px;
+  border-bottom:1px solid #e4e7ec;
+  align-items:stretch;
+}
+
+.eh-schedule-scroll .eh-gantt-row:last-child { border-bottom:0; }
+
+.eh-schedule-scroll .eh-gantt-info {
+  position:sticky;
+  left:0;
+  z-index:12;
+  box-sizing:border-box;
+  min-width:0;
+  padding:5px 10px;
+  border-right:1px solid #cfd5dd;
+  background:#fff;
+}
+
+.eh-schedule-scroll .eh-record-link {
+  font-size:12px;
+}
+
+.eh-schedule-scroll .eh-product {
+  margin-top:1px;
+  font-size:11px;
+}
+
+.eh-schedule-scroll .eh-dates {
+  font-size:10px;
+  margin-top:1px;
+}
+
+.eh-schedule-scroll .eh-inline-risk {
+  margin-top:1px;
+  font-size:10px;
+}
+
+.eh-schedule-scroll .eh-track {
+  box-sizing:border-box;
+  width:calc(var(--eh-total-days) * var(--eh-day-width));
+  min-width:calc(var(--eh-total-days) * var(--eh-day-width));
+  height:100%;
+  min-height:52px;
+  border:0;
+  background-color:#fff;
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(var(--eh-day-width) - 1px),
+      #e2e6eb calc(var(--eh-day-width) - 1px),
+      #e2e6eb var(--eh-day-width)
+    );
+  overflow:hidden;
+}
+
+.eh-schedule-scroll .eh-track-weekend {
+  z-index:0;
+}
+.eh-schedule-scroll .eh-track-sat { background:rgba(80,140,220,0.08); }
+.eh-schedule-scroll .eh-track-sun { background:rgba(220,90,90,0.08); }
+
+.eh-schedule-scroll .eh-track-today {
+  width:2px;
+  background:rgba(25,95,150,0.65);
+  z-index:2;
+}
+
+.eh-schedule-scroll .eh-whisker {
+  top:25px;
+  height:2px;
+  z-index:3;
+}
+
+.eh-schedule-scroll .eh-workbar {
+  top:17px;
+  height:17px;
+  border-radius:2px;
+  z-index:4;
+  overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,0,0,0.06) inset;
+}
+
+.eh-workbar-label {
+  display:block;
+  box-sizing:border-box;
+  width:100%;
+  padding:1px 5px 0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#fff;
+  font-size:10px;
+  line-height:15px;
+  font-weight:600;
+  text-shadow:0 1px 1px rgba(0,0,0,0.25);
+  pointer-events:none;
+}
+
+.eh-schedule-scroll .eh-symbol-marker {
+  top:50%;
+  z-index:7;
+}
+
+/* 左固定列に影を付け、予定表本体との境界を明確化 */
+.eh-schedule-left-head,
+.eh-schedule-scroll .eh-gantt-info {
+  box-shadow:2px 0 3px rgba(16,24,40,0.06);
+}
+
+/* 旧スケールはv0.4.5では下段表示に使わない */
+.eh-schedule-scroll + .eh-gantt-scale { display:none; }
+
+@media (max-width:1100px) {
+  .eh-schedule-scroll {
+    --eh-left-width:260px;
+    --eh-day-width:27px;
+  }
+}
+
+
+/* Ver0.4.6: 視認性向上版（下段予定表のみ、約30%アップ） */
+.eh-schedule-scroll {
+  --eh-day-width:33px;
+  --eh-left-width:360px;
+}
+
+.eh-schedule-head-row {
+  min-height:52px;
+}
+
+.eh-schedule-left-head {
+  padding:0 12px;
+  font-size:14px;
+}
+
+.eh-schedule-date-header {
+  height:52px;
+}
+
+.eh-schedule-date-day {
+  font-size:15px;
+}
+
+.eh-schedule-date-dow {
+  margin-top:4px;
+  font-size:11px;
+}
+
+.eh-schedule-scroll .eh-gantt-row {
+  min-height:66px;
+}
+
+.eh-schedule-scroll .eh-gantt-info {
+  padding:7px 12px;
+}
+
+.eh-schedule-scroll .eh-record-link {
+  font-size:15px;
+  line-height:1.25;
+}
+
+.eh-schedule-scroll .eh-product {
+  margin-top:2px;
+  font-size:14px;
+  line-height:1.25;
+}
+
+.eh-schedule-scroll .eh-dates {
+  margin-top:2px;
+  font-size:12px;
+  line-height:1.2;
+}
+
+.eh-schedule-scroll .eh-inline-risk {
+  margin-top:2px;
+  font-size:12px;
+  line-height:1.2;
+}
+
+.eh-schedule-scroll .eh-track {
+  min-height:66px;
+}
+
+.eh-schedule-scroll .eh-whisker {
+  top:32px;
+  height:2px;
+}
+
+.eh-schedule-scroll .eh-workbar {
+  top:21px;
+  height:24px;
+  border-radius:3px;
+}
+
+.eh-workbar-label {
+  padding:2px 7px 0;
+  font-size:12px;
+  line-height:20px;
+}
+
+.eh-schedule-scroll .eh-symbol-marker {
+  transform:translate(-50%, -50%) scale(1.25);
+  transform-origin:center center;
+}
+
+.eh-schedule-note {
+  font-size:13px;
+}
+
+@media (max-width:1100px) {
+  .eh-schedule-scroll {
+    --eh-left-width:320px;
+    --eh-day-width:31px;
+  }
+}
+
+
+/* Ver0.4.7: 下段予定表の表示サイズ切替 */
+.eh-detail-title {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.eh-detail-title-text {
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.eh-detail-size-control {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-left:auto;
+  color:#344054;
+  font-size:13px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.eh-detail-size-control select {
+  min-width:82px;
+  padding:5px 26px 5px 9px;
+  border:1px solid #b8c0cc;
+  border-radius:4px;
+  background:#fff;
+  color:#1d2939;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* 標準 = Ver0.4.6 相当 */
+.eh-schedule-scroll.eh-size-standard {
+  --eh-day-width:33px;
+  --eh-left-width:360px;
+}
+
+/* 大 = 標準より約15%拡大 */
+.eh-schedule-scroll.eh-size-large {
+  --eh-day-width:37px;
+  --eh-left-width:400px;
+}
+
+.eh-schedule-scroll.eh-size-large .eh-schedule-head-row { min-height:59px; }
+.eh-schedule-scroll.eh-size-large .eh-schedule-left-head { font-size:16px; }
+.eh-schedule-scroll.eh-size-large .eh-schedule-date-header { height:59px; }
+.eh-schedule-scroll.eh-size-large .eh-schedule-date-day { font-size:17px; }
+.eh-schedule-scroll.eh-size-large .eh-schedule-date-dow { font-size:12px; }
+.eh-schedule-scroll.eh-size-large .eh-gantt-row { min-height:76px; }
+.eh-schedule-scroll.eh-size-large .eh-gantt-info { padding:8px 14px; }
+.eh-schedule-scroll.eh-size-large .eh-record-link { font-size:17px; }
+.eh-schedule-scroll.eh-size-large .eh-product { font-size:16px; }
+.eh-schedule-scroll.eh-size-large .eh-dates,
+.eh-schedule-scroll.eh-size-large .eh-inline-risk { font-size:14px; }
+.eh-schedule-scroll.eh-size-large .eh-track { min-height:76px; }
+.eh-schedule-scroll.eh-size-large .eh-whisker { top:37px; }
+.eh-schedule-scroll.eh-size-large .eh-workbar {
+  top:24px;
+  height:28px;
+  border-radius:4px;
+}
+.eh-schedule-scroll.eh-size-large .eh-workbar-label {
+  padding:3px 8px 0;
+  font-size:14px;
+  line-height:23px;
+}
+.eh-schedule-scroll.eh-size-large .eh-symbol-marker {
+  transform:translate(-50%, -50%) scale(1.42);
+}
+
+/* 特大 = 標準より約30%拡大 */
+.eh-schedule-scroll.eh-size-xlarge {
+  --eh-day-width:41px;
+  --eh-left-width:450px;
+}
+
+.eh-schedule-scroll.eh-size-xlarge .eh-schedule-head-row { min-height:68px; }
+.eh-schedule-scroll.eh-size-xlarge .eh-schedule-left-head { font-size:18px; }
+.eh-schedule-scroll.eh-size-xlarge .eh-schedule-date-header { height:68px; }
+.eh-schedule-scroll.eh-size-xlarge .eh-schedule-date-day { font-size:20px; }
+.eh-schedule-scroll.eh-size-xlarge .eh-schedule-date-dow { font-size:14px; }
+.eh-schedule-scroll.eh-size-xlarge .eh-gantt-row { min-height:86px; }
+.eh-schedule-scroll.eh-size-xlarge .eh-gantt-info { padding:10px 15px; }
+.eh-schedule-scroll.eh-size-xlarge .eh-record-link { font-size:19px; }
+.eh-schedule-scroll.eh-size-xlarge .eh-product { font-size:18px; }
+.eh-schedule-scroll.eh-size-xlarge .eh-dates,
+.eh-schedule-scroll.eh-size-xlarge .eh-inline-risk { font-size:16px; }
+.eh-schedule-scroll.eh-size-xlarge .eh-track { min-height:86px; }
+.eh-schedule-scroll.eh-size-xlarge .eh-whisker {
+  top:42px;
+  height:3px;
+}
+.eh-schedule-scroll.eh-size-xlarge .eh-workbar {
+  top:27px;
+  height:32px;
+  border-radius:4px;
+}
+.eh-schedule-scroll.eh-size-xlarge .eh-workbar-label {
+  padding:4px 10px 0;
+  font-size:16px;
+  line-height:26px;
+}
+.eh-schedule-scroll.eh-size-xlarge .eh-symbol-marker {
+  transform:translate(-50%, -50%) scale(1.60);
+}
+
+/* 狭い画面でもユーザー選択を優先する */
+@media (max-width:1100px) {
+  .eh-schedule-scroll.eh-size-standard {
+    --eh-left-width:330px;
+    --eh-day-width:32px;
+  }
+  .eh-schedule-scroll.eh-size-large {
+    --eh-left-width:380px;
+    --eh-day-width:36px;
+  }
+  .eh-schedule-scroll.eh-size-xlarge {
+    --eh-left-width:430px;
+    --eh-day-width:40px;
+  }
+}
+
+
+/* Ver0.4.8: 表示サイズを画面全体（上段ヒートマップ＋下段予定表）へ適用 */
+/* 下段はVer0.4.7の倍率をそのまま使用。上段は一覧性を保つため横幅の拡大率を控えめにする。 */
+
+.eh-controls label {
+  font-size:13px;
+  font-weight:600;
+  color:#344054;
+}
+
+.eh-controls #eh-display-size {
+  min-width:82px;
+  font-weight:700;
+}
+
+/* 標準：従来のヒートマップ */
+.eh-display-standard .eh-heatmap {
+  font-size:11px;
+}
+
+/* 大：文字・行高を約15%、セル幅を約10%拡大 */
+.eh-display-large .eh-heatmap {
+  font-size:13px;
+}
+.eh-display-large .eh-heatmap th,
+.eh-display-large .eh-heatmap td {
+  height:32px;
+}
+.eh-display-large .eh-vendor {
+  width:250px;
+  min-width:250px;
+  max-width:250px;
+  padding-left:10px;
+  padding-right:10px;
+}
+.eh-display-large .eh-vendor-name {
+  font-size:13px;
+}
+.eh-display-large .eh-vendor-meta {
+  font-size:11px;
+}
+.eh-display-large .eh-date,
+.eh-display-large .eh-heat {
+  min-width:37px;
+  width:37px;
+}
+
+/* 特大：文字を約30%、行高を約25%、セル幅は約15%拡大 */
+.eh-display-xlarge .eh-heatmap {
+  font-size:14px;
+}
+.eh-display-xlarge .eh-heatmap th,
+.eh-display-xlarge .eh-heatmap td {
+  height:36px;
+}
+.eh-display-xlarge .eh-vendor {
+  width:275px;
+  min-width:275px;
+  max-width:275px;
+  padding-left:12px;
+  padding-right:12px;
+}
+.eh-display-xlarge .eh-vendor-name {
+  font-size:15px;
+}
+.eh-display-xlarge .eh-vendor-meta {
+  font-size:13px;
+  margin-top:2px;
+}
+.eh-display-xlarge .eh-date,
+.eh-display-xlarge .eh-heat {
+  min-width:39px;
+  width:39px;
+}
+
+/* 上段の説明文字もサイズ選択に少し追従 */
+.eh-display-large .eh-section-title strong { font-size:15px; }
+.eh-display-large .eh-section-title span { font-size:13px; }
+
+.eh-display-xlarge .eh-section-title strong { font-size:17px; }
+.eh-display-xlarge .eh-section-title span { font-size:14px; }
+
+/* カードも読みやすくするが、面積は増やしすぎない */
+.eh-display-large .eh-card-label,
+.eh-display-large .eh-card-note { font-size:13px; }
+.eh-display-large .eh-card-value { font-size:31px; }
+
+.eh-display-xlarge .eh-card-label,
+.eh-display-xlarge .eh-card-note { font-size:14px; }
+.eh-display-xlarge .eh-card-value { font-size:34px; }
+
+
+/* Ver0.4.9: 「日程リスク」一覧も表示サイズ（標準 / 大 / 特大）に連動 */
+
+/* 大：標準より約15%アップ */
+.eh-display-large .eh-risk-table {
+  font-size:13px;
+}
+.eh-display-large .eh-risk-table th,
+.eh-display-large .eh-risk-table td {
+  padding:8px 10px;
+  line-height:1.35;
+}
+.eh-display-large .eh-risk-table .eh-record-link {
+  font-size:13px;
+}
+.eh-display-large .eh-risk-table .eh-badge {
+  font-size:12px;
+  padding:3px 7px;
+  line-height:1.2;
+  white-space:nowrap;
+}
+
+/* 特大：標準より約30%アップ */
+.eh-display-xlarge .eh-risk-table {
+  font-size:15px;
+}
+.eh-display-xlarge .eh-risk-table th,
+.eh-display-xlarge .eh-risk-table td {
+  padding:10px 12px;
+  line-height:1.4;
+}
+.eh-display-xlarge .eh-risk-table .eh-record-link {
+  font-size:15px;
+}
+.eh-display-xlarge .eh-risk-table .eh-badge {
+  font-size:14px;
+  padding:4px 8px;
+  line-height:1.2;
+  white-space:nowrap;
+}
+
+/* 横幅が増えても内容を潰しすぎず、必要なら横スクロール */
+.eh-display-large .eh-risk-table,
+.eh-display-xlarge .eh-risk-table {
+  min-width:max-content;
+}
+
+
+/* =====================================================================
+   Ver0.5.0 試作：下段ガントを標準プラグイン風のDOM/CSS描画へ
+   - tableそのものには変えず、既存の固定列＋日付グリッドを維持
+   - バーは position:absolute / left / width の clip 風表示
+   - 上段ヒートマップ、日程リスク、データ判定ロジックは変更しない
+   ===================================================================== */
+
+.eh-schedule-scroll .eh-track {
+  position:relative;
+  overflow:hidden;
+}
+
+/* 標準プラグインの .ganttchart-clip に近い見た目 */
+.eh-schedule-scroll .eh-workbar.eh-plugin-clip {
+  box-sizing:border-box;
+  min-width:12px;
+  border:1px solid rgba(31, 91, 166, .45);
+  border-radius:2px;
+  opacity:1;
+  overflow:hidden;
+  padding:2px 18px 2px 10px;
+  box-shadow:none;
+  z-index:6;
+}
+
+.eh-schedule-scroll .eh-workbar.eh-plugin-clip.eh-work-ok {
+  background:#4f8edc;
+}
+.eh-schedule-scroll .eh-workbar.eh-plugin-clip.eh-work-warning {
+  background:#e2bd3f;
+  border-color:#c7a128;
+}
+.eh-schedule-scroll .eh-workbar.eh-plugin-clip.eh-work-danger,
+.eh-schedule-scroll .eh-workbar.eh-plugin-clip.eh-alert-segment {
+  background:#df6256;
+  border-color:#bd433a;
+}
+
+.eh-schedule-scroll .eh-plugin-clip .eh-workbar-label {
+  display:block;
+  width:100%;
+  padding:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#fff;
+  font-weight:700;
+  text-shadow:none;
+  pointer-events:none;
+}
+
+/* バー両端の小さな境界。編集ハンドルではなく視認用 */
+.eh-plugin-start-cap,
+.eh-plugin-end-cap {
+  position:absolute;
+  top:3px;
+  bottom:3px;
+  width:2px;
+  background:rgba(255,255,255,.72);
+  pointer-events:none;
+}
+.eh-plugin-start-cap { left:3px; }
+.eh-plugin-end-cap { right:3px; }
+
+/* ヒゲは標準プラグインのグリッド上に馴染む細線へ */
+.eh-schedule-scroll .eh-whisker {
+  height:1px;
+  background:#59636f;
+  opacity:.95;
+  z-index:4;
+}
+.eh-schedule-scroll .eh-whisker.eh-alert-segment {
+  height:2px;
+  background:#d92d20;
+}
+
+/* マイルストーンをバーと独立した絶対配置オブジェクトにする */
+.eh-plugin-marker {
+  position:absolute;
+  top:50%;
+  z-index:9;
+  box-sizing:border-box;
+  pointer-events:auto;
+}
+
+.eh-plugin-marker-order {
+  width:10px;
+  height:10px;
+  border:2px solid #59636f;
+  border-radius:50%;
+  background:#fff;
+  transform:translate(-50%,-50%);
+}
+
+.eh-plugin-marker-start {
+  width:0;
+  height:0;
+  border-top:6px solid transparent;
+  border-bottom:6px solid transparent;
+  border-left:9px solid #296fbd;
+  transform:translate(-45%,-50%);
+}
+
+.eh-plugin-marker-inspection {
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  background:#296fbd;
+  border:2px solid #fff;
+  box-shadow:0 0 0 1px #296fbd;
+  transform:translate(-50%,-50%);
+}
+
+.eh-plugin-marker-due {
+  width:10px;
+  height:10px;
+  background:#222;
+  transform:translate(-50%,-50%) rotate(45deg);
+}
+
+.eh-plugin-marker.eh-alert-symbol {
+  border-color:#d92d20;
+}
+.eh-plugin-marker-order.eh-alert-symbol {
+  border-color:#d92d20;
+}
+.eh-plugin-marker-start.eh-alert-symbol {
+  border-left-color:#d92d20;
+}
+.eh-plugin-marker-inspection.eh-alert-symbol {
+  background:#d92d20;
+  box-shadow:0 0 0 1px #d92d20;
+}
+.eh-plugin-marker-due.eh-alert-symbol {
+  background:#d92d20;
+}
+
+/* 表示サイズ別：バーの高さ・位置も標準/大/特大へ追従 */
+.eh-schedule-scroll.eh-size-standard .eh-workbar.eh-plugin-clip {
+  top:18px;
+  height:30px;
+  padding-top:4px;
+  padding-bottom:3px;
+}
+.eh-schedule-scroll.eh-size-standard .eh-plugin-clip .eh-workbar-label {
+  font-size:12px;
+  line-height:20px;
+}
+.eh-schedule-scroll.eh-size-standard .eh-whisker { top:33px; }
+
+.eh-schedule-scroll.eh-size-large .eh-workbar.eh-plugin-clip {
+  top:22px;
+  height:34px;
+  padding-top:4px;
+  padding-bottom:3px;
+}
+.eh-schedule-scroll.eh-size-large .eh-plugin-clip .eh-workbar-label {
+  font-size:14px;
+  line-height:24px;
+}
+.eh-schedule-scroll.eh-size-large .eh-whisker { top:39px; }
+
+.eh-schedule-scroll.eh-size-xlarge .eh-workbar.eh-plugin-clip {
+  top:25px;
+  height:38px;
+  padding-top:5px;
+  padding-bottom:4px;
+}
+.eh-schedule-scroll.eh-size-xlarge .eh-plugin-clip .eh-workbar-label {
+  font-size:16px;
+  line-height:27px;
+}
+.eh-schedule-scroll.eh-size-xlarge .eh-whisker { top:44px; }
+
+/* 旧○▶●◆ markerはv0.5.0の下段では生成しないが、他用途のためCSSは残す */
+
+
+/* =====================================================================
+   Ver0.5.1 本命調整
+   1) バーを少し高く
+   2) バー内文字を読みやすく
+   3) 納期◆を少し大きく・位置調整
+   4) 仕掛開始/検収マーカーの視認性向上
+   5) 行ホバーで薄いハイライト
+   ===================================================================== */
+
+/* 1,2: バーの高さ・文字を少し強化 */
+.eh-schedule-scroll .eh-workbar.eh-plugin-clip {
+  padding-left:11px;
+  padding-right:20px;
+}
+
+.eh-schedule-scroll .eh-plugin-clip .eh-workbar-label {
+  font-weight:800;
+  letter-spacing:.01em;
+}
+
+/* 標準 */
+.eh-schedule-scroll.eh-size-standard .eh-workbar.eh-plugin-clip {
+  top:16px;
+  height:34px;
+  padding-top:5px;
+  padding-bottom:4px;
+}
+.eh-schedule-scroll.eh-size-standard .eh-plugin-clip .eh-workbar-label {
+  font-size:13px;
+  line-height:22px;
+}
+.eh-schedule-scroll.eh-size-standard .eh-whisker {
+  top:33px;
+}
+
+/* 大 */
+.eh-schedule-scroll.eh-size-large .eh-workbar.eh-plugin-clip {
+  top:20px;
+  height:38px;
+  padding-top:5px;
+  padding-bottom:4px;
+}
+.eh-schedule-scroll.eh-size-large .eh-plugin-clip .eh-workbar-label {
+  font-size:15px;
+  line-height:26px;
+}
+.eh-schedule-scroll.eh-size-large .eh-whisker {
+  top:39px;
+}
+
+/* 特大 */
+.eh-schedule-scroll.eh-size-xlarge .eh-workbar.eh-plugin-clip {
+  top:23px;
+  height:42px;
+  padding-top:6px;
+  padding-bottom:5px;
+}
+.eh-schedule-scroll.eh-size-xlarge .eh-plugin-clip .eh-workbar-label {
+  font-size:17px;
+  line-height:29px;
+}
+.eh-schedule-scroll.eh-size-xlarge .eh-whisker {
+  top:44px;
+}
+
+/* バー両端の境界も少し見やすく */
+.eh-plugin-start-cap,
+.eh-plugin-end-cap {
+  top:4px;
+  bottom:4px;
+  width:2px;
+  background:rgba(255,255,255,.82);
+}
+
+/* 3: 納期◆を少し大きくし、ヒゲ線上で安定して見えるよう調整 */
+.eh-plugin-marker-due {
+  width:12px;
+  height:12px;
+  background:#1f1f1f;
+  transform:translate(-50%,-50%) rotate(45deg);
+  box-shadow:0 0 0 1px rgba(255,255,255,.55);
+}
+
+/* 4: 仕掛開始▶を一回り大きく */
+.eh-plugin-marker-start {
+  border-top-width:7px;
+  border-bottom-width:7px;
+  border-left-width:11px;
+  border-left-color:#2167ad;
+  filter:drop-shadow(0 0 1px rgba(255,255,255,.8));
+  transform:translate(-42%,-50%);
+}
+
+/* 検収●も一回り大きくして白縁を強調 */
+.eh-plugin-marker-inspection {
+  width:13px;
+  height:13px;
+  background:#2167ad;
+  border:2px solid #fff;
+  box-shadow:0 0 0 1px #2167ad;
+}
+
+/* 手配○も他マーカーとのバランスを微調整 */
+.eh-plugin-marker-order {
+  width:11px;
+  height:11px;
+  border-width:2px;
+}
+
+/* 表示サイズに合わせてマーカーも少し拡大 */
+.eh-schedule-scroll.eh-size-large .eh-plugin-marker {
+  margin-top:0;
+}
+.eh-schedule-scroll.eh-size-large .eh-plugin-marker-order,
+.eh-schedule-scroll.eh-size-large .eh-plugin-marker-inspection {
+  transform:translate(-50%,-50%) scale(1.10);
+}
+.eh-schedule-scroll.eh-size-large .eh-plugin-marker-start {
+  transform:translate(-42%,-50%) scale(1.10);
+  transform-origin:center;
+}
+.eh-schedule-scroll.eh-size-large .eh-plugin-marker-due {
+  transform:translate(-50%,-50%) rotate(45deg) scale(1.10);
+}
+
+.eh-schedule-scroll.eh-size-xlarge .eh-plugin-marker-order,
+.eh-schedule-scroll.eh-size-xlarge .eh-plugin-marker-inspection {
+  transform:translate(-50%,-50%) scale(1.20);
+}
+.eh-schedule-scroll.eh-size-xlarge .eh-plugin-marker-start {
+  transform:translate(-42%,-50%) scale(1.20);
+  transform-origin:center;
+}
+.eh-schedule-scroll.eh-size-xlarge .eh-plugin-marker-due {
+  transform:translate(-50%,-50%) rotate(45deg) scale(1.20);
+}
+
+/* 5: 行ホバー。左情報欄と右日付トラックを同時に薄く強調 */
+.eh-schedule-scroll .eh-gantt-row {
+  transition:background-color .12s ease;
+}
+
+.eh-schedule-scroll .eh-gantt-row:hover .eh-gantt-info {
+  background:#f3f8ff;
+}
+
+.eh-schedule-scroll .eh-gantt-row:hover .eh-track {
+  box-shadow:inset 0 0 0 9999px rgba(64, 128, 210, .035);
+}
+
+.eh-schedule-scroll .eh-gantt-row:hover .eh-workbar.eh-plugin-clip {
+  filter:brightness(1.03);
+}
+
+/* キーボード操作時も同様に判別しやすく */
+.eh-schedule-scroll .eh-gantt-row:focus-within .eh-gantt-info {
+  background:#eef6ff;
+}
+.eh-schedule-scroll .eh-gantt-row:focus-within .eh-track {
+  box-shadow:inset 0 0 0 9999px rgba(64, 128, 210, .045);
+}
+
+
+/* Ver0.5.2: 標準表示の納期◆だけ光学補正
+   大・特大はv0.5.1のまま変更しない。 */
+.eh-schedule-scroll.eh-size-standard .eh-plugin-marker-due {
+  width:13px;
+  height:13px;
+  top:calc(50% - 1px);
+  transform:translate(-50%,-50%) rotate(45deg);
+}
