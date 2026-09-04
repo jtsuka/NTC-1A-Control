@@ -1,0 +1,404 @@
+﻿/* 外注課 外注先負荷ヒートマップ Ver0.1 */
+#vendor-heatmap-root {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic", "Meiryo", sans-serif;
+  color: #222;
+}
+.eh-wrap { padding: 16px; background: #f7f8fa; }
+.eh-header { display:flex; justify-content:space-between; gap:20px; align-items:flex-start; margin-bottom:12px; }
+.eh-header h2 { margin:0 0 6px; font-size:22px; }
+.eh-subtitle { color:#666; font-size:13px; }
+.eh-controls { display:flex; align-items:center; gap:14px; white-space:nowrap; }
+.eh-controls select { margin-left:6px; padding:6px 8px; }
+.eh-count { color:#666; font-size:13px; }
+
+.eh-loading, .eh-error { padding:24px; background:#fff; border:1px solid #ddd; }
+.eh-error { color:#a00; }
+
+.eh-cards { display:grid; grid-template-columns:repeat(4,minmax(160px,1fr)); gap:10px; margin:12px 0; }
+.eh-card { background:#fff; border:1px solid #ddd; border-radius:6px; padding:12px; min-height:72px; }
+.eh-card-label { color:#666; font-size:12px; }
+.eh-card-value { font-size:28px; font-weight:700; margin-top:4px; }
+.eh-card-note { font-size:12px; color:#555; margin-top:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.eh-danger-text { color:#b42318; }
+.eh-warning-text { color:#b54708; }
+
+.eh-section { margin-top:14px; background:#fff; border:1px solid #ddd; border-radius:6px; overflow:hidden; }
+.eh-section-title { display:flex; align-items:baseline; gap:14px; padding:10px 12px; border-bottom:1px solid #ddd; background:#fafafa; }
+.eh-section-title span { color:#666; font-size:12px; }
+
+.eh-table-scroll { overflow:auto; max-width:100%; }
+.eh-heatmap { border-collapse:separate; border-spacing:0; min-width:max-content; font-size:11px; }
+.eh-heatmap th, .eh-heatmap td { border-right:1px solid #e5e5e5; border-bottom:1px solid #e5e5e5; text-align:center; height:28px; }
+.eh-vendor { position:sticky; left:0; z-index:2; width:220px; min-width:220px; max-width:220px; text-align:left !important; background:#fff; padding:0 8px; }
+thead .eh-vendor { z-index:4; background:#f3f4f6; }
+.eh-vendor-row { cursor:pointer; }
+.eh-vendor-row:hover .eh-vendor { background:#eef6ff; }
+.eh-vendor-row.eh-selected .eh-vendor { background:#dbeafe; }
+.eh-vendor-name { display:block; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.eh-vendor-meta { display:block; color:#777; font-size:10px; }
+.eh-date { min-width:34px; width:34px; background:#f3f4f6; font-weight:500; }
+.eh-date.eh-sat { background:#eaf3ff; }
+.eh-date.eh-sun { background:#fff0f0; }
+
+.eh-heat { min-width:34px; width:34px; font-weight:600; }
+.eh-zero { background:#fff; color:#aaa; }
+.eh-low { background:#e8f5e9; color:#2e5d34; }
+.eh-medium { background:#fff3cd; color:#7a5b00; }
+.eh-high { background:#f8d7da; color:#8a1c24; }
+
+.eh-risk-table { border-collapse:collapse; width:100%; min-width:1100px; font-size:12px; }
+.eh-risk-table th, .eh-risk-table td { border-bottom:1px solid #eee; padding:7px 8px; text-align:left; white-space:nowrap; }
+.eh-risk-table th { background:#f7f7f7; position:sticky; top:0; }
+.eh-badge { display:inline-block; padding:2px 7px; border-radius:10px; font-size:11px; font-weight:700; }
+.eh-badge-danger { background:#fde2e1; color:#b42318; }
+.eh-badge-warning { background:#fff0cf; color:#9a6700; }
+.eh-ok-message { text-align:center !important; color:#557a58; padding:18px !important; }
+.eh-record-link { color:#0066cc; text-decoration:none; font-weight:600; }
+.eh-record-link:hover { text-decoration:underline; }
+
+.eh-gantt-scale { display:flex; justify-content:space-between; padding:6px 12px 0 330px; color:#777; font-size:11px; }
+.eh-gantt-list { padding:6px 12px 14px; }
+.eh-gantt-row { display:grid; grid-template-columns:310px minmax(600px,1fr); gap:10px; align-items:center; min-height:58px; border-bottom:1px solid #eee; }
+.eh-gantt-info { min-width:0; padding:6px 0; }
+.eh-product { font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.eh-dates { font-size:11px; color:#777; margin-top:2px; }
+.eh-inline-risk { font-size:11px; margin-top:2px; }
+.eh-track { position:relative; height:34px; background:repeating-linear-gradient(to right,#fafafa 0,#fafafa 9.8%,#eee 10%); border:1px solid #eee; overflow:hidden; }
+.eh-baseline { position:absolute; top:16px; height:2px; background:#777; min-width:2px; }
+.eh-workbar { position:absolute; top:10px; height:14px; border-radius:3px; background:#4c8bf5; min-width:4px; opacity:.9; z-index:2; }
+.eh-work-warning { background:#e5a50a; }
+.eh-work-danger { background:#d92d20; }
+.eh-marker { position:absolute; top:5px; width:2px; height:24px; z-index:3; }
+.eh-order-marker { background:#555; }
+.eh-due-marker { background:#111; }
+.eh-empty { padding:18px; color:#777; }
+
+@media (max-width: 1100px) {
+  .eh-cards { grid-template-columns:repeat(2,1fr); }
+  .eh-header { flex-direction:column; }
+  .eh-gantt-row { grid-template-columns:260px minmax(500px,1fr); }
+  .eh-gantt-scale { padding-left:280px; }
+}
+
+/* Ver0.2: 手配日/納期のヒゲ */
+.eh-whisker {
+  position:absolute;
+  top:16px;
+  height:2px;
+  background:#666;
+  min-width:2px;
+  z-index:1;
+}
+.eh-whisker-left::before,
+.eh-whisker-right::after {
+  content:"";
+  position:absolute;
+  top:-4px;
+  width:1px;
+  height:10px;
+  background:#666;
+}
+.eh-whisker-left::before { left:0; }
+.eh-whisker-right::after { right:0; }
+
+.eh-start-marker { background:#2f6fbd; }
+.eh-inspection-marker { background:#2f6fbd; }
+
+/* Ver0.2: 土日の縦列を薄く着色（ヒート色は残す） */
+.eh-heat.eh-col-sat { box-shadow: inset 0 0 0 9999px rgba(80,140,220,0.08); }
+.eh-heat.eh-col-sun { box-shadow: inset 0 0 0 9999px rgba(220,90,90,0.08); }
+
+/* Ver0.3: 凡例と赤色注意表示 */
+.eh-legend {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+  margin-top:8px;
+  font-size:12px;
+  color:#555;
+}
+.eh-legend-item { display:inline-flex; align-items:center; gap:4px; }
+.eh-legend-item span {
+  display:inline-block;
+  width:2px;
+  height:16px;
+}
+.eh-legend-order { background:#555; }
+.eh-legend-start { background:#2f6fbd; }
+.eh-legend-inspection { background:#2f6fbd; }
+.eh-legend-due { background:#111; width:3px !important; }
+.eh-legend-bar {
+  display:inline-block;
+  width:54px;
+  height:10px;
+  border-radius:3px;
+  background:#4c8bf5;
+}
+.eh-legend-alert {
+  display:inline-block;
+  padding:2px 7px;
+  border-radius:10px;
+  background:#fde2e1;
+  color:#b42318;
+  font-weight:700;
+}
+.eh-alert-segment {
+  background:#d92d20 !important;
+}
+.eh-alert-marker {
+  background:#d92d20 !important;
+  width:3px !important;
+}
+
+/* Ver0.3.1: 現在の暫定日程ルール表示 */
+.eh-rule-box {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px 14px;
+  margin-top:8px;
+  padding:8px 10px;
+  border:1px solid #d8dee8;
+  border-radius:6px;
+  background:#f8fbff;
+  font-size:12px;
+  color:#445;
+}
+.eh-rule-title {
+  font-weight:700;
+  color:#2d4f73;
+}
+.eh-rule-item strong {
+  color:#1f5f99;
+}
+.eh-rule-note {
+  color:#777;
+}
+
+/* Ver0.4: 横ひげガントをチャートらしく整理 */
+.eh-top-alert { margin-top:8px; }
+
+.eh-gantt-guide {
+  display:grid;
+  grid-template-columns:310px minmax(600px,1fr) auto;
+  gap:10px;
+  align-items:center;
+  padding:8px 12px 4px;
+  border-top:1px solid #eef1f5;
+  border-bottom:1px solid #eef1f5;
+  background:#fbfcfe;
+}
+.eh-gantt-guide-visual {
+  grid-column:2;
+  position:relative;
+  height:28px;
+  min-width:420px;
+}
+.eh-gantt-guide-labels {
+  grid-column:2;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  text-align:center;
+  font-size:11px;
+  color:#555;
+  margin-top:-7px;
+}
+.eh-gantt-guide .eh-legend-alert {
+  grid-column:3;
+  grid-row:1 / span 2;
+  white-space:nowrap;
+}
+
+.eh-guide-marker {
+  position:absolute;
+  top:3px;
+  width:2px;
+  height:22px;
+  z-index:3;
+}
+.eh-guide-order { left:2%; background:#555; }
+.eh-guide-start { left:31%; background:#2f6fbd; }
+.eh-guide-inspection { left:68%; background:#2f6fbd; }
+.eh-guide-due { left:98%; background:#111; width:3px; }
+.eh-guide-line {
+  position:absolute;
+  top:14px;
+  height:2px;
+  background:#666;
+}
+.eh-guide-left { left:2%; width:29%; }
+.eh-guide-right { left:68%; width:30%; }
+.eh-guide-bar {
+  position:absolute;
+  top:8px;
+  left:31%;
+  width:37%;
+  height:13px;
+  border-radius:3px;
+  background:#4c8bf5;
+  z-index:2;
+}
+
+.eh-gantt-scale {
+  display:grid;
+  grid-template-columns:310px 1fr;
+  padding:6px 12px 0;
+  color:#777;
+  font-size:11px;
+}
+.eh-gantt-scale > span:first-child { grid-column:2; justify-self:start; }
+.eh-gantt-scale > .eh-scale-center { grid-column:2; justify-self:center; margin-top:-14px; }
+.eh-gantt-scale > span:last-child { grid-column:2; justify-self:end; margin-top:-14px; }
+
+.eh-gantt-row {
+  grid-template-columns:310px minmax(600px,1fr);
+  min-height:64px;
+}
+.eh-track {
+  height:40px;
+  background:#fff;
+  border:1px solid #e4e7ec;
+}
+.eh-workbar { top:13px; height:14px; }
+.eh-whisker { top:20px; }
+.eh-marker { top:7px; height:26px; }
+
+.eh-track-weekend {
+  position:absolute;
+  top:0;
+  bottom:0;
+  z-index:0;
+  pointer-events:none;
+}
+.eh-track-sat { background:rgba(80,140,220,0.08); }
+.eh-track-sun { background:rgba(220,90,90,0.08); }
+.eh-track-today {
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:2px;
+  background:rgba(45,79,115,0.55);
+  z-index:1;
+  pointer-events:none;
+}
+
+@media (max-width: 1100px) {
+  .eh-gantt-guide { grid-template-columns:260px minmax(500px,1fr); }
+  .eh-gantt-guide .eh-legend-alert {
+    grid-column:2;
+    grid-row:auto;
+    justify-self:start;
+    margin-top:4px;
+  }
+  .eh-gantt-scale { grid-template-columns:260px 1fr; }
+}
+
+/* Ver0.4.2: 工程節目を記号表示 */
+.eh-symbol-marker {
+  position:absolute;
+  top:6px;
+  transform:translateX(-50%);
+  z-index:4;
+  font-size:17px;
+  line-height:1;
+  font-weight:700;
+  color:#2f3b48;
+  text-shadow:0 1px 0 #fff;
+}
+.eh-order-symbol { color:#555; }
+.eh-start-symbol { color:#2f6fbd; font-size:16px; }
+.eh-inspection-symbol { color:#2f6fbd; }
+.eh-due-symbol { color:#111; }
+.eh-alert-symbol { color:#d92d20 !important; }
+
+.eh-guide-symbol {
+  position:absolute;
+  top:1px;
+  transform:translateX(-50%);
+  z-index:4;
+  font-size:18px;
+  line-height:1;
+  font-weight:700;
+  color:#2f3b48;
+}
+.eh-guide-order-symbol { left:2%; color:#555; }
+.eh-guide-start-symbol { left:31%; color:#2f6fbd; font-size:17px; }
+.eh-guide-inspection-symbol { left:68%; color:#2f6fbd; }
+.eh-guide-due-symbol { left:98%; color:#111; }
+.eh-gantt-guide-labels span { white-space:nowrap; }
+
+/* Ver0.4.3: 各案件の節目を明確な図形で表示。旧ヒゲ端の縦棒は非表示。 */
+.eh-whisker-left::before,
+.eh-whisker-right::after {
+  display:none !important;
+}
+
+.eh-symbol-marker {
+  position:absolute;
+  top:50%;
+  transform:translate(-50%, -50%);
+  z-index:6;
+  display:block;
+  box-sizing:border-box;
+  text-shadow:none;
+}
+
+/* ○ 手配日：白抜き円 */
+.eh-symbol-marker.eh-shape-order {
+  width:12px;
+  height:12px;
+  border:2px solid #555;
+  border-radius:50%;
+  background:#fff;
+}
+
+/* ▶ 仕掛開始：右向き三角 */
+.eh-symbol-marker.eh-shape-start {
+  width:0;
+  height:0;
+  border-top:7px solid transparent;
+  border-bottom:7px solid transparent;
+  border-left:12px solid #2f6fbd;
+  background:transparent;
+}
+
+/* ● 検収日：塗り円 */
+.eh-symbol-marker.eh-shape-inspection {
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#2f6fbd;
+  border:2px solid #2f6fbd;
+}
+
+/* ◆ 納期：菱形 */
+.eh-symbol-marker.eh-shape-due {
+  width:11px;
+  height:11px;
+  background:#111;
+  transform:translate(-50%, -50%) rotate(45deg);
+}
+
+/* 異常時は該当節目も赤 */
+.eh-symbol-marker.eh-alert-symbol.eh-shape-order {
+  border-color:#d92d20 !important;
+  background:#fff !important;
+}
+.eh-symbol-marker.eh-alert-symbol.eh-shape-start {
+  border-left-color:#d92d20 !important;
+}
+.eh-symbol-marker.eh-alert-symbol.eh-shape-inspection {
+  border-color:#d92d20 !important;
+  background:#d92d20 !important;
+}
+.eh-symbol-marker.eh-alert-symbol.eh-shape-due {
+  background:#d92d20 !important;
+}
+
+/* Ver0.4.4: Dateオブジェクト対応後の節目表示微調整 */
+.eh-symbol-marker { filter:none; }
+.eh-symbol-marker.eh-shape-order { z-index:7; }
+.eh-symbol-marker.eh-shape-start,
+.eh-symbol-marker.eh-shape-inspection,
+.eh-symbol-marker.eh-shape-due { z-index:7; }
