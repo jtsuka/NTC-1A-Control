@@ -8,7 +8,7 @@ import argparse
 import serial.tools.list_ports
 from collections import deque
 import NTC_1A_utils
-from NTC_1A_serial_comm import (
+from NTC_1A_serial_comm_v1_3_3 import (
     start_serial_thread, stop_serial,
     send_phase3_reset, send_phase3_tension, send_phase3_safe, send_phase3_sensadj,
     send_test_checksum_ng, send_test_invalid_command,
