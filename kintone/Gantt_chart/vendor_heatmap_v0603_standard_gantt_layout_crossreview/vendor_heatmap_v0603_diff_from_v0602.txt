@@ -1,0 +1,147 @@
+--- vendor_heatmap_v0602_standard_gantt_layout.js
++++ vendor_heatmap_v0603_standard_gantt_layout.js
+@@ -1,5 +1,5 @@
+ /*
+- * 外注課 外注先負荷ヒートマップ / 日程リスク可視化 Ver0.6.0.2
++ * 外注課 外注先負荷ヒートマップ / 日程リスク可視化 Ver0.6.0.3
+  * 対象: kintone App 272 (外注課発注データ-TEST)
+  *
+  * 前提:
+@@ -206,6 +206,10 @@
+       id: fieldValue(r, f.recordId),
+       key: fieldValue(r, f.key),
+       keyFallback: fieldValue(r, f.keyFallback),
++      displayKey:
++        fieldValue(r, f.key) ||
++        fieldValue(r, f.keyFallback) ||
++        ('#' + fieldValue(r, f.recordId)),
+       vendor: fieldValue(r, f.vendor) || fieldValue(r, f.vendorFallback) || '(外注先未設定)',
+       staff: fieldValue(r, f.staff) || fieldValue(r, f.staffFallback) || '',
+       product: fieldValue(r, f.product) || '',
+@@ -446,7 +450,7 @@
+       return `
+         <tr>
+           <td><span class="eh-badge eh-badge-${risk.severity}">${risk.severity === 'danger' ? '異常' : '注意'}</span></td>
+-          <td><a class="eh-record-link" href="${recordUrl(r.id)}">${escapeHtml(r.key || ('#' + r.id))}</a></td>
++          <td><a class="eh-record-link" href="${recordUrl(r.id)}">${escapeHtml(r.displayKey)}</a></td>
+           <td>${escapeHtml(r.vendor)}</td>
+           <td>${escapeHtml(r.staff)}</td>
+           <td>${escapeHtml(risk.messages.join(' / '))}</td>
+@@ -513,7 +517,7 @@
+       const workBad = !!(r.startDate && r.inspectionDate && r.inspectionDate < r.startDate);
+       const rightBad = !!(r.inspectionDate && r.dueDate && r.inspectionDate > r.dueDate);
+ 
+-      const displayKey = r.key || r.keyFallback || ('#' + r.id);
++      const displayKey = r.displayKey;
+ 
+       return `
+         <div class="eh-gantt-row${r.isManual ? ' eh-manual-row' : ''}">
+
+--- vendor_heatmap_v0602_standard_gantt_layout.css
++++ vendor_heatmap_v0603_standard_gantt_layout.css
+@@ -413,7 +413,6 @@
+ 
+ .eh-schedule-scroll {
+   --eh-day-width:28px;
+-  --eh-left-width:310px;
+   overflow-x:auto;
+   overflow-y:visible;
+   margin:0 12px 14px;
+@@ -422,14 +421,7 @@
+   background:#fff;
+ }
+ 
+-.eh-schedule-head-row,
+-.eh-schedule-scroll .eh-gantt-row {
+-  display:grid;
+-  grid-template-columns:var(--eh-left-width) calc(var(--eh-total-days) * var(--eh-day-width));
+-  gap:0;
+-  width:max-content;
+-  min-width:100%;
+-}
++/* Ver0.6.0.3: 旧2列grid定義を削除。正式4列grid定義は後段に集約。 */
+ 
+ .eh-schedule-head-row {
+   position:sticky;
+@@ -606,7 +598,6 @@
+ 
+ @media (max-width:1100px) {
+   .eh-schedule-scroll {
+-    --eh-left-width:260px;
+     --eh-day-width:27px;
+   }
+ }
+@@ -615,7 +606,6 @@
+ /* Ver0.4.6: 視認性向上版（下段予定表のみ、約30%アップ） */
+ .eh-schedule-scroll {
+   --eh-day-width:33px;
+-  --eh-left-width:360px;
+ }
+ 
+ .eh-schedule-head-row {
+@@ -703,7 +693,6 @@
+ 
+ @media (max-width:1100px) {
+   .eh-schedule-scroll {
+-    --eh-left-width:320px;
+     --eh-day-width:31px;
+   }
+ }
+@@ -751,13 +740,11 @@
+ /* 標準 = Ver0.4.6 相当 */
+ .eh-schedule-scroll.eh-size-standard {
+   --eh-day-width:33px;
+-  --eh-left-width:360px;
+ }
+ 
+ /* 大 = 標準より約15%拡大 */
+ .eh-schedule-scroll.eh-size-large {
+   --eh-day-width:37px;
+-  --eh-left-width:400px;
+ }
+ 
+ .eh-schedule-scroll.eh-size-large .eh-schedule-head-row { min-height:59px; }
+@@ -790,7 +777,6 @@
+ /* 特大 = 標準より約30%拡大 */
+ .eh-schedule-scroll.eh-size-xlarge {
+   --eh-day-width:41px;
+-  --eh-left-width:450px;
+ }
+ 
+ .eh-schedule-scroll.eh-size-xlarge .eh-schedule-head-row { min-height:68px; }
+@@ -826,15 +812,12 @@
+ /* 狭い画面でもユーザー選択を優先する */
+ @media (max-width:1100px) {
+   .eh-schedule-scroll.eh-size-standard {
+-    --eh-left-width:330px;
+     --eh-day-width:32px;
+   }
+   .eh-schedule-scroll.eh-size-large {
+-    --eh-left-width:380px;
+     --eh-day-width:36px;
+   }
+   .eh-schedule-scroll.eh-size-xlarge {
+-    --eh-left-width:430px;
+     --eh-day-width:40px;
+   }
+ }
+@@ -1656,14 +1639,18 @@
+   --eh-col-staff-w:140px;
+ }
+ 
+-/* 3固定列 + タイムライン。旧 --eh-left-width は本レイアウトでは使用しない。 */
++/* 3固定列 + タイムライン。Ver0.6.0.3で正式な単一定義に整理。 */
+ .eh-schedule-head-row,
+ .eh-schedule-scroll .eh-gantt-row {
++  display:grid;
+   grid-template-columns:
+     var(--eh-col-order-w)
+     var(--eh-col-vendor-w)
+     var(--eh-col-staff-w)
+     calc(var(--eh-total-days) * var(--eh-day-width));
++  gap:0;
++  width:max-content;
++  min-width:100%;
+ }
+ 
+ /* 共通固定セル */
