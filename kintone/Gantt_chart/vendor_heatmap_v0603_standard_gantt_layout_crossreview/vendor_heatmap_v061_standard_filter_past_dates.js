@@ -5,10 +5,11 @@
  * Ver0.6.0.3 からの変更:
  *  - kintone標準一覧の絞り込み条件を業務母集団の唯一の条件として使用
  *  - JS内部の「納期 >= 今日」固定条件を廃止
- *  - 横軸開始日を対象レコードの最古K加工着手日（なければ注文日/今日）まで自動拡張
- *  - 表示期間30/60/90日は、基準終了日を今日から指定日数後とする
+ *  - 通常表示は今日を左端、30/60/90日を基本表示範囲とする
+ *  - 標準絞り込みに明示的な日付がある場合だけ、その範囲まで横軸を拡張する
+ *  - 遠い将来納期や過去着手日が1件あるだけでは横軸を自動拡張しない
  *
- * 注意: 本ファイルはVer0.6.1の先行実装。既存Ver0.6.0.3を置換せず、来週の回帰テスト用に別名保存する。
+ * 注意: 本ファイルはVer0.6.1の先行実装。既存Ver0.6.0.3は置換しない。
  */
 (function () {
   'use strict';
@@ -60,7 +61,7 @@
     while (true) {
       const parts = [];
       if (listCondition) parts.push('(' + listCondition + ')');
-      parts.push('$id > ' + lastId); // 技術的ページング条件だけ追加
+      parts.push('$id > ' + lastId);
       const query = parts.join(' and ') + ' order by $id asc limit 500';
       const resp = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', { app: app, query: query });
       const rows = resp.records || [];
@@ -83,20 +84,30 @@
     };
   }
 
-  function viewRange(records) {
+  function extractExplicitFilterDates(query) {
+    const text = String(query || '');
+    const matches = text.match(/\d{4}-\d{2}-\d{2}/g) || [];
+    return matches.map(ymd).filter(Boolean);
+  }
+
+  function viewRange() {
     const today = day(new Date());
-    const candidates = [];
-    records.forEach(function(r){ if(r.startDate) candidates.push(r.startDate); else if(r.orderDate) candidates.push(r.orderDate); });
-    const oldest = candidates.length ? new Date(Math.min.apply(null,candidates.map(d=>d.getTime()))) : today;
-    const start = oldest < today ? oldest : today;
-    const normalEnd = add(today, state.rangeDays - 1);
-    const due = records.filter(r=>r.dueDate).map(r=>r.dueDate.getTime());
-    const latestDue = due.length ? new Date(Math.max.apply(null,due)) : normalEnd;
-    return { start:start, end: latestDue > normalEnd ? latestDue : normalEnd };
+    let start = today;
+    let end = add(today, state.rangeDays - 1);
+
+    // TODAY() / FROM_TODAY() 等の相対条件では従来どおり今日起点。
+    // 標準絞り込みにYYYY-MM-DDが明示された場合だけ、その日付まで表示範囲を広げる。
+    const explicitDates = extractExplicitFilterDates(state.listQueryCondition);
+    explicitDates.forEach(function (d) {
+      if (d < start) start = d;
+      if (d > end) end = d;
+    });
+
+    return { start: start, end: end };
   }
 
   function render(root) {
-    const vr = viewRange(state.records), dates = range(vr.start, vr.end);
+    const vr = viewRange(), dates = range(vr.start, vr.end);
     const stats = vendorStats(state.records, dates);
     if (!state.selectedVendor && stats.length) state.selectedVendor = stats[0].vendor;
     root.innerHTML = '<div class="eh-wrap">' +
