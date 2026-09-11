@@ -10,6 +10,10 @@
  *  - 「今日へ戻る」ボタンで今日位置へ復帰
  *  - 遠い将来納期や過去着手日1件だけでは表示軸を無制限に拡張しない
  *
+ * 2026-09-11 修正:
+ *  - kintone描画直後にscrollLeftが0へ戻るケースに対し、二重requestAnimationFrame＋遅延再適用
+ *  - 今日列のoffsetLeftを優先して初期スクロール位置を決定
+ *
  * 注意: 本ファイルはVer0.6.1の先行実装。既存Ver0.6.0.3は置換しない。
  */
 (function () {
@@ -114,11 +118,11 @@
 
     const sel=root.querySelector('#eh-range');
     if(sel) sel.addEventListener('change',function(){state.rangeDays=Number(this.value);render(root,true);});
-    root.querySelectorAll('[data-vendor]').forEach(el=>el.addEventListener('click',function(){state.selectedVendor=this.dataset.vendor;render(root,false);syncToToday(root,todayIndex);}));
+    root.querySelectorAll('[data-vendor]').forEach(el=>el.addEventListener('click',function(){state.selectedVendor=this.dataset.vendor;render(root,false);jumpToTodayAfterLayout(root,todayIndex);}));
     const todayBtn=root.querySelector('#eh-today');
     if(todayBtn) todayBtn.addEventListener('click',function(){syncToToday(root,todayIndex);});
     bindScrollSync(root);
-    if (jumpToday !== false) requestAnimationFrame(function(){syncToToday(root,todayIndex);});
+    if (jumpToday !== false) jumpToTodayAfterLayout(root,todayIndex);
   }
 
   function heatmap(stats,dates,today,canvasWidth){
@@ -150,8 +154,21 @@
   }
 
   function syncToToday(root,todayIndex){
-    const x=Math.max(0,todayIndex*CONFIG.dayWidth);
-    root.querySelectorAll('[data-sync-scroll="1"]').forEach(function(box){box.scrollLeft=x;});
+    const fallbackX=Math.max(0,todayIndex*CONFIG.dayWidth);
+    root.querySelectorAll('[data-sync-scroll="1"]').forEach(function(box){
+      const todayCell=box.querySelector('.eh-today-col');
+      const x=todayCell ? Math.max(0,todayCell.offsetLeft-8) : fallbackX;
+      box.scrollLeft=x;
+    });
+  }
+
+  function jumpToTodayAfterLayout(root,todayIndex){
+    const run=function(){syncToToday(root,todayIndex);};
+    requestAnimationFrame(function(){
+      requestAnimationFrame(run);
+      setTimeout(run,120);
+      setTimeout(run,400);
+    });
   }
 
   function span(a,b,s,e,total){if(!a||!b||b<s||a>e)return null;const x=a<s?s:a,y=b>e?e:b;const l=Math.max(0,diffDays(s,x));const w=Math.max(1,diffDays(x,y)+1);return{left:l/total*100,width:w/total*100};}
