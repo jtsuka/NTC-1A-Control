@@ -1398,7 +1398,7 @@
 	)
 	(text "DERIVED -> pin15(RC4/SDA)"
 		(exclude_from_sim no)
-		(at 280.42 295.97 0)
+		(at 294.64 294.894 0)
 		(effects
 			(font
 				(size 1 1)
@@ -1438,7 +1438,7 @@
 	)
 	(text "UNRESOLVED: wired, source unknown"
 		(exclude_from_sim no)
-		(at 414.04 198.43 0)
+		(at 434.086 198.628 0)
 		(effects
 			(font
 				(size 1 1)
@@ -1478,7 +1478,7 @@
 	)
 	(text "DERIVED -> pin14(RC3/SCL)"
 		(exclude_from_sim no)
-		(at 280.42 298.51 0)
+		(at 294.894 297.942 0)
 		(effects
 			(font
 				(size 1 1)
@@ -1488,7 +1488,7 @@
 	)
 	(text "pin2 = NC (3-pin original)"
 		(exclude_from_sim no)
-		(at 203.72 244.78 0)
+		(at 208.788 248.92 0)
 		(effects
 			(font
 				(size 1 1)
@@ -1508,7 +1508,7 @@
 	)
 	(text "SOFTENED: no source found on this sheet"
 		(exclude_from_sim no)
-		(at 414.04 206.05 0)
+		(at 436.626 205.994 0)
 		(effects
 			(font
 				(size 1 1)
@@ -1788,7 +1788,7 @@
 	)
 	(wire
 		(pts
-			(xy 309.88 294.64) (xy 307.34 294.64)
+			(xy 320.04 294.64) (xy 317.5 294.64)
 		)
 		(stroke
 			(width 0.1524)
@@ -1798,7 +1798,7 @@
 	)
 	(wire
 		(pts
-			(xy 299.72 294.64) (xy 302.26 294.64)
+			(xy 309.88 294.64) (xy 312.42 294.64)
 		)
 		(stroke
 			(width 0.1524)
@@ -2108,7 +2108,7 @@
 	)
 	(global_label "NET_CH2_LEN_J"
 		(shape passive)
-		(at 270.26 239.64 0)
+		(at 264.16 247.65 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2116,7 +2116,7 @@
 		)
 		(uuid "005264f0-5e63-4923-9ee4-1df7a7c10093")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 270.26 239.64 0)
+			(at 264.16 247.65 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2129,7 +2129,7 @@
 	)
 	(global_label "NET_CH2_LEN_RAW"
 		(shape passive)
-		(at 203.72 242.18 0)
+		(at 172.72 242.57 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2137,7 +2137,7 @@
 		)
 		(uuid "00b27bac-737f-4ffb-b24a-8a4483360d1a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 203.72 242.18 0)
+			(at 172.72 242.57 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2150,7 +2150,7 @@
 	)
 	(global_label "NET_CH2_FILT"
 		(shape passive)
-		(at 302.26 239.64 0)
+		(at 292.1 247.65 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2158,7 +2158,7 @@
 		)
 		(uuid "015fba8a-7f62-4590-8ef0-01714845588b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 302.26 239.64 0)
+			(at 292.1 247.65 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2192,7 +2192,7 @@
 	)
 	(global_label "NET_CH1_FILT"
 		(shape passive)
-		(at 270.26 206.64 0)
+		(at 256.54 201.93 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2200,7 +2200,7 @@
 		)
 		(uuid "09e17d79-f6b0-4c91-9c1e-da3347f40fb1")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 270.26 206.64 0)
+			(at 256.54 201.93 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2213,7 +2213,7 @@
 	)
 	(global_label "VCC"
 		(shape passive)
-		(at 265.18 295.91 0)
+		(at 252.73 295.91 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2221,7 +2221,7 @@
 		)
 		(uuid "0a1e2fdb-1cee-4edf-95d8-d50532d31e01")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 265.18 295.91 0)
+			(at 252.73 295.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2234,7 +2234,7 @@
 	)
 	(global_label "NET_OSC1"
 		(shape passive)
-		(at 238.26 339.64 0)
+		(at 219.71 340.36 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2242,7 +2242,7 @@
 		)
 		(uuid "116c82f2-3311-4234-af19-c6dd78b5021d")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 238.26 339.64 0)
+			(at 219.71 340.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2423,7 +2423,7 @@
 	)
 	(global_label "NET_OSC2"
 		(shape passive)
-		(at 243.34 339.64 0)
+		(at 254 340.36 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2431,7 +2431,7 @@
 		)
 		(uuid "28ddc09c-8cd2-46a6-85af-2e351b0d6bd6")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 243.34 339.64 0)
+			(at 254 340.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2486,7 +2486,7 @@
 	)
 	(global_label "GND"
 		(shape passive)
-		(at 206.26 134.64 0)
+		(at 196.85 133.35 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2494,7 +2494,7 @@
 		)
 		(uuid "46803608-7ee4-42be-803f-8e7255649e29")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 206.26 134.64 0)
+			(at 196.85 133.35 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2507,7 +2507,7 @@
 	)
 	(global_label "NET_CH2_FILT"
 		(shape passive)
-		(at 275.34 239.64 0)
+		(at 280.67 233.68 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2515,7 +2515,7 @@
 		)
 		(uuid "4e243d74-d441-481f-8303-895a2b9e5008")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 275.34 239.64 0)
+			(at 280.67 233.68 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2549,7 +2549,7 @@
 	)
 	(global_label "NET_PIC_RC3_pin14_SCL_DERIVED"
 		(shape passive)
-		(at 280.42 295.91 0)
+		(at 298.45 302.26 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2557,7 +2557,7 @@
 		)
 		(uuid "52349ee6-7666-4748-a267-03dc9c1dd7c5")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 280.42 295.91 0)
+			(at 298.45 302.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2633,7 +2633,7 @@
 	)
 	(global_label "NET_PIC_RC4_pin15_SDA_DERIVED"
 		(shape passive)
-		(at 307.34 294.64 0)
+		(at 339.09 294.64 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2641,7 +2641,7 @@
 		)
 		(uuid "5f7e0975-91da-4224-b627-4aa708b2fd3b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 307.34 294.64 0)
+			(at 339.09 294.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2675,7 +2675,7 @@
 	)
 	(global_label "GND"
 		(shape passive)
-		(at 203.72 237.1 0)
+		(at 186.69 236.22 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2683,7 +2683,7 @@
 		)
 		(uuid "6788740c-225d-45a8-8f92-8118a7c95e63")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 203.72 237.1 0)
+			(at 186.69 236.22 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2717,7 +2717,7 @@
 	)
 	(global_label "GND"
 		(shape passive)
-		(at 265.18 293.37 0)
+		(at 252.73 290.83 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2725,7 +2725,7 @@
 		)
 		(uuid "6c78bb7f-6e28-485d-ac9a-897314ce2287")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 265.18 293.37 0)
+			(at 252.73 290.83 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2801,7 +2801,7 @@
 	)
 	(global_label "NET_CH2_FILT"
 		(shape passive)
-		(at 270.26 261.64 0)
+		(at 256.54 255.27 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2809,7 +2809,7 @@
 		)
 		(uuid "798261e4-21d1-4d9d-9384-db9949c6e36d")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 270.26 261.64 0)
+			(at 256.54 255.27 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2885,7 +2885,7 @@
 	)
 	(global_label "NET_CH2_LEN_J"
 		(shape passive)
-		(at 243.34 239.64 0)
+		(at 247.65 233.68 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2893,7 +2893,7 @@
 		)
 		(uuid "896f244f-c0cd-4949-bbe4-8ea9021993a7")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 243.34 239.64 0)
+			(at 247.65 233.68 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2906,7 +2906,7 @@
 	)
 	(global_label "VCC"
 		(shape passive)
-		(at 302.26 294.64 0)
+		(at 312.42 294.64 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2914,7 +2914,7 @@
 		)
 		(uuid "927bc38a-eb07-4090-b9b4-431966128661")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 302.26 294.64 0)
+			(at 312.42 294.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3032,7 +3032,7 @@
 	)
 	(global_label "GND"
 		(shape passive)
-		(at 275.34 206.64 0)
+		(at 281.94 210.82 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3040,7 +3040,7 @@
 		)
 		(uuid "a52b52a6-4209-4e76-b532-dceae715a5a4")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 275.34 206.64 0)
+			(at 281.94 210.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3053,7 +3053,7 @@
 	)
 	(global_label "NET_PIC_RC4_pin15_SDA_DERIVED"
 		(shape passive)
-		(at 280.42 293.37 0)
+		(at 298.45 289.56 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3061,7 +3061,7 @@
 		)
 		(uuid "ab1b895a-7423-4dc5-bb87-c8d203c13795")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 280.42 293.37 0)
+			(at 298.45 289.56 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3074,7 +3074,7 @@
 	)
 	(global_label "NET_CH2_LEN_RAW"
 		(shape passive)
-		(at 238.26 239.64 0)
+		(at 232.41 247.65 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3082,7 +3082,7 @@
 		)
 		(uuid "b04070ea-deb8-41b0-8d0b-b7103bc02f12")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 238.26 239.64 0)
+			(at 232.41 247.65 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3095,7 +3095,7 @@
 	)
 	(global_label "GND"
 		(shape passive)
-		(at 275.34 261.64 0)
+		(at 284.48 265.43 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3103,7 +3103,7 @@
 		)
 		(uuid "b35a6aa3-dd19-484b-aee1-2b0aadda2a27")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 275.34 261.64 0)
+			(at 284.48 265.43 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3158,7 +3158,7 @@
 	)
 	(global_label "NET_PIC_RC6_pin17_rxch2_DERIVED"
 		(shape passive)
-		(at 307.34 239.64 0)
+		(at 325.12 234.95 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3166,7 +3166,7 @@
 		)
 		(uuid "d6ed363e-545b-492f-8043-32e81f6d5f0a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 307.34 239.64 0)
+			(at 325.12 234.95 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3444,7 +3444,7 @@
 			)
 		)
 		(property "Value" "ch2-LENGTH(53259-0310)"
-			(at 208.8 242.84 0)
+			(at 208.788 246.126 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3815,7 +3815,7 @@
 	)
 	(symbol
 		(lib_id "GEN_R")
-		(at 304.8 294.64 0)
+		(at 306.07 283.21 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3825,7 +3825,7 @@
 		(dnp no)
 		(uuid "5e563c1e-66c9-415c-8b51-f468faf993c3")
 		(property "Reference" "R11"
-			(at 304.8 291.44 0)
+			(at 306.07 280.01 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3835,7 +3835,7 @@
 			)
 		)
 		(property "Value" "1k (pullup)"
-			(at 304.8 297.84 0)
+			(at 306.07 286.41 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3845,7 +3845,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 304.8 294.64 0)
+			(at 306.07 283.21 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3856,7 +3856,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 304.8 294.64 0)
+			(at 306.07 283.21 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3866,7 +3866,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 304.8 294.64 0)
+			(at 306.07 283.21 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4056,7 +4056,7 @@
 		(dnp no)
 		(uuid "6f8d9c47-0a57-4a4a-bac5-b70bac2855cb")
 		(property "Reference" "U1"
-			(at 272.8 291.44 0)
+			(at 271.78 294.64 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4066,7 +4066,7 @@
 			)
 		)
 		(property "Value" "X24C00"
-			(at 272.8 297.84 0)
+			(at 273.05 299.974 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4771,7 +4771,7 @@
 			)
 		)
 		(property "Value" "PIC16C62A (Main Controller MCU)"
-			(at 398.8 202.84 0)
+			(at 398.526 214.376 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
