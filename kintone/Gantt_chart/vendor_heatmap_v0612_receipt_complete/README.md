@@ -7,7 +7,7 @@
 - Implementation diff review: GO
 - CSS integration review: GO
 - Static syntax check: PASS (`node --check`)
-- Real-device test: IN PROGRESS (receipt editor display confirmed; fit fix pending retest)
+- Real-device test: NOT YET
 - FORMAL PASS: NOT YET
 
 ## Purpose
@@ -30,7 +30,7 @@ Ver0.6.1.1 を母体に、App272 の `外注入荷実績日` を案件単位で�
 - `vendor_heatmap_v0612_receipt_complete.js`
   - SHA-256: `991e4823fd63ad8e2d20b6aafa8c471940298a7f810cd0a67cae9025a404be13`
 - `vendor_heatmap_v0612_receipt_complete.css`
-  - Updated: `7f9551f`（UI fit fix。再レビュー時にSHA-256を再確定）
+  - SHA-256: `b7890606501e7dc4f028f5d6c01454370a5884705768688db88aa33ef4d9c66c`
 
 CSS は Ver0.6.0.3 の既存CSSを母体に、Ver0.6.1.2追加分を末尾統合した1本構成。新規追加分の `.eh-gantt-info` 誤参照は `.eh-gantt-cell` へ修正済み。
 
@@ -50,10 +50,3 @@ CSS は Ver0.6.0.3 の既存CSSを母体に、Ver0.6.1.2追加分を末尾統合
 従来どおり kintone には **JS 1本 + CSS 1本** を登録する。
 
 実機1件試験および回帰試験完了までは FORMAL PASS としない。
-
-
-### Receipt editor fit fix (2026-09-12)
-
-- 標準表示の手配書番号列（120px）内で日付入力欄と保存・キャンセルが欠ける問題をCSSで修正。
-- ラベルと日付入力を縦積みにし、入力欄を列幅100%、操作ボタンを2等分配置。
-- 固定列幅、ガント領域、JS保存処理は変更していない。
