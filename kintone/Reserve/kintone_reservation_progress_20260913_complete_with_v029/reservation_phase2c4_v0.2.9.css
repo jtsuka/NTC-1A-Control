@@ -1,0 +1,343 @@
+/* 会議室・設備予約 Phase 2C-4 v0.2.9 */
+
+#reservation-timeline-root {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reservation-phase2a {
+  box-sizing: border-box;
+  padding: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+               "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+}
+
+.reservation-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.reservation-toolbar button,
+.reservation-toolbar input[type="date"] {
+  min-height: 38px;
+  box-sizing: border-box;
+  padding: 7px 12px;
+  font-size: 14px;
+}
+
+.reservation-toolbar button {
+  cursor: pointer;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.reservation-toolbar button:hover {
+  background: #f3f3f3;
+}
+
+.reservation-status {
+  margin-left: 8px;
+  font-size: 13px;
+  color: #555;
+}
+
+.reservation-message {
+  box-sizing: border-box;
+  margin: 8px 0 12px;
+  padding: 10px 12px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  white-space: pre-wrap;
+}
+
+.reservation-message.error {
+  border-color: #c44;
+  background: #fff3f3;
+}
+
+.reservation-message.info {
+  background: #f5f5f5;
+}
+
+.reservation-timeline {
+  width: 100%;
+  min-width: 980px;
+  box-sizing: border-box;
+  border: 1px solid #bbb;
+  background: #fff;
+}
+
+.reservation-legend {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+}
+
+/* 左側資源名 */
+.reservation-timeline .vis-labelset .vis-label .vis-inner {
+  padding: 12px 10px;
+  font-weight: 600;
+}
+
+/* 予約バー */
+.reservation-timeline .vis-item {
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.reservation-timeline .vis-item .vis-item-content {
+  padding: 4px 7px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 15分グリッドを見やすくする */
+.reservation-timeline .vis-time-axis .vis-grid.vis-minor {
+  border-color: #e7e7e7;
+}
+
+.reservation-timeline .vis-time-axis .vis-text {
+  font-size: 12px;
+}
+
+/* kintoneの一覧幅が狭い場合は横スクロール */
+#reservation-timeline-root {
+  overflow-x: auto;
+}
+
+
+/* v0.1.3: 資源行の見た目を均一化
+   vis-group本体のheightは直接上書きせず、ライブラリの位置計算を壊さない */
+.reservation-timeline .vis-labelset .vis-label .vis-inner {
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.reservation-resource-label {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  box-sizing: border-box;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+
+/* 時刻ラベルを読みやすくする */
+.reservation-timeline .vis-time-axis .vis-text.vis-minor {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* 1時間境界をやや強調 */
+.reservation-timeline .vis-time-axis .vis-grid.vis-major {
+  border-color: #b9b9b9;
+}
+
+
+
+
+/* Phase 2C-1: ドラッグ選択結果 */
+.reservation-drag-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 12px;
+  padding: 9px 12px;
+  border: 1px solid #6b9fd6;
+  border-radius: 4px;
+  background: #f3f8ff;
+  font-size: 13px;
+}
+
+.reservation-drag-result[hidden] {
+  display: none;
+}
+
+.reservation-drag-result button {
+  margin-left: auto;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  background: #fff;
+}
+
+/* Timeline上の仮選択帯 */
+.reservation-timeline .vis-item.reservation-drag-preview {
+  border: 2px dashed #3b73b9 !important;
+  background: rgba(107, 159, 214, 0.22) !important;
+  color: #244d7a !important;
+  cursor: default;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.reservation-timeline .vis-item.reservation-drag-preview .vis-item-content {
+  font-weight: 600;
+}
+
+/* ドラッグ中のブラウザ標準テキスト選択を抑止 */
+body.reservation-dragging {
+  user-select: none;
+  cursor: ew-resize;
+}
+
+
+/* Phase 2C-2: フローティング予約ダイアログ */
+.reservation-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.28);
+  box-sizing: border-box;
+}
+
+.reservation-dialog {
+  width: min(520px, calc(100vw - 40px));
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+}
+
+.reservation-dialog h2 {
+  margin: 0 0 18px;
+  font-size: 20px;
+}
+
+.reservation-dialog-form {
+  display: grid;
+  gap: 12px;
+}
+
+.reservation-dialog-row {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+
+.reservation-dialog-row label {
+  font-weight: 600;
+}
+
+.reservation-dialog-readonly {
+  padding: 8px 10px;
+  border: 1px solid #d8d8d8;
+  border-radius: 4px;
+  background: #f7f7f7;
+}
+
+.reservation-dialog-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  font: inherit;
+}
+
+textarea.reservation-dialog-input {
+  resize: vertical;
+}
+
+.reservation-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.reservation-dialog-actions button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reservation-dialog-cancel {
+  border: 1px solid #aaa;
+  background: #fff;
+}
+
+.reservation-dialog-next {
+  border: 1px solid #2f6fae;
+  background: #2f6fae;
+  color: #fff;
+}
+
+.reservation-dialog-summary {
+  margin-top: 14px;
+  padding: 10px;
+  border-radius: 4px;
+  background: #f3f8ff;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .reservation-dialog-row {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+}
+
+
+/* Phase 2C-3: Validator結果 */
+.reservation-dialog-validation {
+  margin-top: 14px;
+  padding: 11px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.reservation-dialog-validation.is-ok {
+  border: 1px solid #75a843;
+  background: #f3f8ea;
+}
+
+.reservation-dialog-validation.is-error {
+  border: 1px solid #d45b5b;
+  background: #fff3f3;
+}
+
+.reservation-dialog-validation ul {
+  margin: 8px 0 0 20px;
+  padding: 0;
+}
+
+.reservation-dialog-validation li + li {
+  margin-top: 4px;
+}
+
+
+/*
+ * 資源ラベル56pxは表示上の目安。
+ * 実際のグループ行高は vis-timeline の groupHeightMode: 'fixed' が決定する。
+ */
+
+
+/* Phase 2C-4: 保存中ステータス */
+.reservation-dialog-validation.is-info {
+  border: 1px solid #6b9fd6;
+  background: #f3f8ff;
+}
+
+.reservation-dialog-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
