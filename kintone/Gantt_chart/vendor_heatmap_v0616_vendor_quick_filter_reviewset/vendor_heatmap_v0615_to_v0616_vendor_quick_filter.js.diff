@@ -1,0 +1,321 @@
+--- /mnt/data/v0615_inspect/vendor_heatmap_v0615_today_marker.js	2026-09-14 02:34:52.000000000 +0000
++++ /mnt/data/vendor_heatmap_v0616_vendor_quick_filter.js	2026-09-14 06:52:09.100535818 +0000
+@@ -1,5 +1,5 @@
+ /*
+- * 外注課 外注先負荷ヒートマップ / 日程リスク可視化 Ver0.6.1.5
++ * 外注課 外注先負荷ヒートマップ / 日程リスク可視化 Ver0.6.1.6
+  * 対象: kintone App 272 (外注課発注データ-TEST)
+  *
+  * 前提:
+@@ -29,6 +29,12 @@
+  *  - deltaX主成分のネイティブ横入力はブラウザ標準動作へ任せる。
+  *  - 上段ヒートマップのスクロール要素特定を .eh-heatmap.closest('.eh-table-scroll') に統一する。
+  *  - capture/restore/jumpToToday の既存スクロール処理も同じ安全な要素特定へ遡及修正する。
++ *
++ * Ver0.6.1.6 追加機能:
++ *  - kintone標準一覧条件を母集団として維持したまま、外注先クイックフィルタを追加する。
++ *  - 外注先はチェックボックスで複数選択し、選択社間はOR条件、0社選択は全社表示とする。
++ *  - state.recordsは原母集団として保持し、描画用visibleRecordsだけを派生させる。
++ *  - 入荷操作系のstate.records.find(...)は変更せず、既存更新処理を保護する。
+  */
+ (function () {
+   'use strict';
+@@ -89,7 +95,10 @@
+     selectedVendor: null,
+     detailSize: loadDetailSize(),
+     listQueryCondition: '',
+-    listFilterApplied: false
++    listFilterApplied: false,
++    selectedQuickVendors: new Set(),
++    quickFilterOpen: false,
++    quickVendorSearch: ''
+   };
+ 
+   function loadDetailSize() {
+@@ -143,6 +152,11 @@
+ 
+     try {
+       state.records = await fetchActiveRecords(currentListCondition);
++      // Ver0.6.1.6: kintone標準絞り込みで母集団が変わったら、
++      // 以前のクイック選択を持ち越さず全社表示へ安全に戻す。
++      state.selectedQuickVendors.clear();
++      state.quickFilterOpen = false;
++      state.quickVendorSearch = '';
+       state.selectedVendor = chooseInitialVendor(state.records);
+       // Ver0.6.1: 初回表示・母集団再取得のときだけ今日位置へ移動する。
+       render(root, true);
+@@ -242,6 +256,26 @@
+     };
+   }
+ 
++  function getAvailableVendors(records) {
++    return Array.from(new Set((records || []).map(r => String(r.vendor || ''))))
++      .filter(Boolean)
++      .sort((a, b) => a.localeCompare(b, 'ja'));
++  }
++
++  function getQuickFilteredRecords(records) {
++    if (!state.selectedQuickVendors || state.selectedQuickVendors.size === 0) {
++      return records;
++    }
++    return records.filter(r => state.selectedQuickVendors.has(String(r.vendor || '')));
++  }
++
++  function reconcileSelectedVendor(vendorStats) {
++    const visibleVendors = new Set(vendorStats.map(x => x.vendor));
++    if (!state.selectedVendor || !visibleVendors.has(state.selectedVendor)) {
++      state.selectedVendor = vendorStats.length ? vendorStats[0].vendor : null;
++    }
++  }
++
+   function render(root, jumpToToday) {
+     /*
+      * Ver0.6.1:
+@@ -259,10 +293,11 @@
+     const end = addDays(today, state.rangeDays - 1);
+     const dates = makeDateRange(viewStart, end);
+ 
+-    const vendorStats = buildVendorStats(state.records, dates);
+-    if (!state.selectedVendor && vendorStats.length) {
+-      state.selectedVendor = vendorStats[0].vendor;
+-    }
++    // Ver0.6.1.6: state.recordsは標準絞り込み後の原母集団として保持し、
++    // クイックフィルタは描画用の派生配列visibleRecordsにだけ適用する。
++    const visibleRecords = getQuickFilteredRecords(state.records);
++    const vendorStats = buildVendorStats(visibleRecords, dates);
++    reconcileSelectedVendor(vendorStats);
+ 
+     /*
+      * Ver0.6.1:
+@@ -276,11 +311,12 @@
+ 
+     root.innerHTML = `
+       <div class="eh-wrap eh-display-${state.detailSize}">
+-        ${renderHeader(vendorStats)}
+-        ${renderSummary(vendorStats)}
++        ${renderHeader(vendorStats, visibleRecords)}
++        ${renderVendorQuickFilter(state.records)}
++        ${renderSummary(vendorStats, visibleRecords)}
+         ${renderHeatmap(vendorStats, dates)}
+-        ${renderRiskSummary(state.records)}
+-        ${renderVendorDetail(state.records, state.selectedVendor, viewStart, end)}
++        ${renderRiskSummary(visibleRecords)}
++        ${renderVendorDetail(visibleRecords, state.selectedVendor, viewStart, end)}
+       </div>
+     `;
+ 
+@@ -293,7 +329,7 @@
+     }
+   }
+ 
+-  function renderHeader(vendorStats) {
++  function renderHeader(vendorStats, visibleRecords) {
+     return `
+       <div class="eh-header">
+         <div>
+@@ -321,7 +357,7 @@
+             </select>
+           </label>
+           <span class="eh-count">
+-            対象 ${state.records.length}件 / 外注先 ${vendorStats.length}社
++            対象 ${visibleRecords.length}件 / 外注先 ${vendorStats.length}社
+             ${state.listFilterApplied
+               ? '<span class="eh-list-filter-status eh-list-filter-status-on">一覧絞込：適用中</span>'
+               : '<span class="eh-list-filter-status">一覧絞込：なし</span>'}
+@@ -331,6 +367,61 @@
+     `;
+   }
+ 
++  function renderVendorQuickFilter(records) {
++    const vendors = getAvailableVendors(records);
++    const selected = state.selectedQuickVendors;
++    const selectedCount = selected.size;
++    const buttonLabel = selectedCount === 0
++      ? 'すべての外注先'
++      : (selectedCount === 1 ? Array.from(selected)[0] : `${selectedCount}社選択中`);
++    const search = String(state.quickVendorSearch || '').trim().toLocaleLowerCase('ja');
++
++    const options = vendors.map(vendor => {
++      const checked = selected.has(vendor);
++      const matches = !search || vendor.toLocaleLowerCase('ja').includes(search);
++      return `
++        <label class="eh-quick-filter-option${matches ? '' : ' eh-quick-filter-option-hidden'}">
++          <input type="checkbox" class="eh-quick-vendor-checkbox" value="${escapeAttr(vendor)}" ${checked ? 'checked' : ''}>
++          <span>${escapeHtml(vendor)}</span>
++        </label>
++      `;
++    }).join('');
++
++    const chips = Array.from(selected).map(vendor => `
++      <span class="eh-quick-filter-chip">
++        <span>${escapeHtml(vendor)}</span>
++        <button type="button" class="eh-quick-filter-chip-remove" data-vendor="${escapeAttr(vendor)}" aria-label="${escapeAttr(vendor)}を解除">×</button>
++      </span>
++    `).join('');
++
++    return `
++      <div class="eh-quick-filter-bar">
++        <div class="eh-quick-filter-main">
++          <span class="eh-quick-filter-title">外注先クイック絞り込み</span>
++          <div class="eh-quick-filter-dropdown">
++            <button type="button" id="eh-quick-filter-toggle" class="eh-quick-filter-toggle" aria-expanded="${state.quickFilterOpen ? 'true' : 'false'}">
++              <span>${escapeHtml(buttonLabel)}</span><span class="eh-quick-filter-caret">▼</span>
++            </button>
++            <div id="eh-quick-filter-panel" class="eh-quick-filter-panel" ${state.quickFilterOpen ? '' : 'hidden'}>
++              <input type="search" id="eh-quick-filter-search" class="eh-quick-filter-search" placeholder="外注先名を入力" value="${escapeAttr(state.quickVendorSearch || '')}" autocomplete="off">
++              <div class="eh-quick-filter-options">
++                ${options || '<div class="eh-quick-filter-empty">外注先がありません</div>'}
++                <div class="eh-quick-filter-no-match" ${vendors.length && search && !vendors.some(v => v.toLocaleLowerCase('ja').includes(search)) ? '' : 'hidden'}>該当する外注先がありません</div>
++              </div>
++              <div class="eh-quick-filter-footer">
++                <span>選択中 ${selectedCount}社</span>
++                <button type="button" class="eh-quick-filter-clear" ${selectedCount ? '' : 'disabled'}>全解除</button>
++              </div>
++            </div>
++          </div>
++          <span class="eh-quick-filter-status">${selectedCount ? `${selectedCount}社で表示中` : '全社表示'}</span>
++          ${selectedCount ? '<button type="button" class="eh-quick-filter-clear eh-quick-filter-clear-inline">全解除</button>' : ''}
++        </div>
++        ${selectedCount ? `<div class="eh-quick-filter-chips">${chips}</div>` : ''}
++      </div>
++    `;
++  }
++
+   function renderScheduleRule() {
+     const rule = getCurrentScheduleRule();
+     return `
+@@ -413,9 +504,9 @@
+     });
+   }
+ 
+-  function renderSummary(vendorStats) {
+-    const issues = state.records.filter(r => analyzeRisk(r).severity === 'danger').length;
+-    const cautions = state.records.filter(r => analyzeRisk(r).severity === 'warning').length;
++  function renderSummary(vendorStats, visibleRecords) {
++    const issues = visibleRecords.filter(r => analyzeRisk(r).severity === 'danger').length;
++    const cautions = visibleRecords.filter(r => analyzeRisk(r).severity === 'warning').length;
+     const max = vendorStats.reduce((best, x) => (!best || x.maxConcurrent > best.maxConcurrent ? x : best), null);
+ 
+     return `
+@@ -874,10 +965,121 @@
+     runAfterRenderSettled(run);
+   }
+ 
++  function bindVendorQuickFilterEvents(root) {
++    const prepareQuickFilterRender = function () {
++      // 入荷PUT中は既存更新処理を優先し、描画DOMを差し替えない。
++      if (activeReceipt && activeReceipt.saving) return false;
++      if (activeReceipt) closeActiveReceiptEditor();
++      return true;
++    };
++
++    const toggle = root.querySelector('#eh-quick-filter-toggle');
++    const panel = root.querySelector('#eh-quick-filter-panel');
++    const searchInput = root.querySelector('#eh-quick-filter-search');
++
++    if (toggle && panel) {
++      toggle.addEventListener('click', function (event) {
++        event.preventDefault();
++        state.quickFilterOpen = !state.quickFilterOpen;
++        panel.hidden = !state.quickFilterOpen;
++        toggle.setAttribute('aria-expanded', state.quickFilterOpen ? 'true' : 'false');
++        if (state.quickFilterOpen && searchInput) {
++          window.setTimeout(() => searchInput.focus(), 0);
++        }
++      });
++
++    }
++
++    if (searchInput) {
++      searchInput.addEventListener('input', function () {
++        state.quickVendorSearch = this.value || '';
++        const q = state.quickVendorSearch.trim().toLocaleLowerCase('ja');
++        let visibleCount = 0;
++        root.querySelectorAll('.eh-quick-filter-option').forEach(option => {
++          const checkbox = option.querySelector('.eh-quick-vendor-checkbox');
++          const vendor = checkbox ? String(checkbox.value || '') : '';
++          const matches = !q || vendor.toLocaleLowerCase('ja').includes(q);
++          option.classList.toggle('eh-quick-filter-option-hidden', !matches);
++          if (matches) visibleCount += 1;
++        });
++        const noMatch = root.querySelector('.eh-quick-filter-no-match');
++        if (noMatch) noMatch.hidden = visibleCount !== 0;
++      });
++    }
++
++    root.querySelectorAll('.eh-quick-vendor-checkbox').forEach(checkbox => {
++      checkbox.addEventListener('change', function () {
++        const vendor = String(this.value || '');
++        if (!vendor) return;
++        if (!prepareQuickFilterRender()) {
++          this.checked = state.selectedQuickVendors.has(vendor);
++          return;
++        }
++        if (this.checked) state.selectedQuickVendors.add(vendor);
++        else state.selectedQuickVendors.delete(vendor);
++        state.quickFilterOpen = true;
++        render(root, false);
++      });
++    });
++
++    root.querySelectorAll('.eh-quick-filter-clear').forEach(button => {
++      button.addEventListener('click', function (event) {
++        event.preventDefault();
++        if (state.selectedQuickVendors.size === 0) return;
++        if (!prepareQuickFilterRender()) return;
++        state.selectedQuickVendors.clear();
++        state.quickVendorSearch = '';
++        state.quickFilterOpen = false;
++        render(root, false);
++      });
++    });
++
++    root.querySelectorAll('.eh-quick-filter-chip-remove').forEach(button => {
++      button.addEventListener('click', function (event) {
++        event.preventDefault();
++        const vendor = String(this.dataset.vendor || '');
++        if (!vendor) return;
++        if (!prepareQuickFilterRender()) return;
++        state.selectedQuickVendors.delete(vendor);
++        render(root, false);
++      });
++    });
++
++    if (!bindVendorQuickFilterEvents.documentBound) {
++      bindVendorQuickFilterEvents.documentBound = true;
++      document.addEventListener('click', function (event) {
++        if (!state.quickFilterOpen) return;
++        const currentRoot = document.getElementById(CONFIG.rootId);
++        if (!currentRoot) return;
++        const dropdown = currentRoot.querySelector('.eh-quick-filter-dropdown');
++        if (dropdown && dropdown.contains(event.target)) return;
++        state.quickFilterOpen = false;
++        const currentPanel = currentRoot.querySelector('#eh-quick-filter-panel');
++        const currentToggle = currentRoot.querySelector('#eh-quick-filter-toggle');
++        if (currentPanel) currentPanel.hidden = true;
++        if (currentToggle) currentToggle.setAttribute('aria-expanded', 'false');
++      });
++      document.addEventListener('keydown', function (event) {
++        if (event.key !== 'Escape' || !state.quickFilterOpen) return;
++        state.quickFilterOpen = false;
++        const currentRoot = document.getElementById(CONFIG.rootId);
++        if (!currentRoot) return;
++        const currentPanel = currentRoot.querySelector('#eh-quick-filter-panel');
++        const currentToggle = currentRoot.querySelector('#eh-quick-filter-toggle');
++        if (currentPanel) currentPanel.hidden = true;
++        if (currentToggle) {
++          currentToggle.setAttribute('aria-expanded', 'false');
++          currentToggle.focus();
++        }
++      });
++    }
++  }
++
+   function bindEvents(root) {
+     bindScheduleRuleInputs(root);
+     bindReceiptEvents(root);
+     bindHorizontalWheelSupport(root);
++    bindVendorQuickFilterEvents(root);
+ 
+     const range = root.querySelector('#eh-range');
+     if (range) {

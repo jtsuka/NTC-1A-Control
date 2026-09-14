@@ -1,0 +1,223 @@
+--- /mnt/data/v0615_inspect/vendor_heatmap_v0615_today_marker.css	2026-09-14 02:34:52.000000000 +0000
++++ /mnt/data/vendor_heatmap_v0616_vendor_quick_filter.css	2026-09-14 06:50:32.483429345 +0000
+@@ -2086,3 +2086,220 @@
+   font-weight:800;
+ }
+ 
++
++/* ------------------------------------------------------------------
++ * Ver0.6.1.6: 外注先クイックフィルタ（複数選択）
++ * - kintone標準絞り込み後の母集団に対する表示専用フィルタ
++ * - チェックボックス複数選択 / OR条件 / 0社=全社表示
++ * ------------------------------------------------------------------ */
++.eh-quick-filter-bar {
++  position:relative;
++  margin:0 0 12px;
++  padding:10px 12px;
++  border:1px solid #d0d5dd;
++  border-radius:6px;
++  background:#fff;
++}
++
++.eh-quick-filter-main {
++  display:flex;
++  align-items:center;
++  gap:10px;
++  flex-wrap:wrap;
++}
++
++.eh-quick-filter-title {
++  color:#344054;
++  font-size:13px;
++  font-weight:700;
++}
++
++.eh-quick-filter-dropdown {
++  position:relative;
++  min-width:240px;
++}
++
++.eh-quick-filter-toggle {
++  width:100%;
++  min-height:34px;
++  display:flex;
++  align-items:center;
++  justify-content:space-between;
++  gap:10px;
++  padding:6px 10px;
++  border:1px solid #98a2b3;
++  border-radius:5px;
++  background:#fff;
++  color:#101828;
++  font:inherit;
++  text-align:left;
++  cursor:pointer;
++}
++
++.eh-quick-filter-toggle:hover,
++.eh-quick-filter-toggle:focus-visible {
++  border-color:#667085;
++  outline:none;
++  box-shadow:0 0 0 2px rgba(47,111,189,.12);
++}
++
++.eh-quick-filter-caret {
++  flex:0 0 auto;
++  color:#667085;
++  font-size:10px;
++}
++
++.eh-quick-filter-panel {
++  position:absolute;
++  z-index:30;
++  top:calc(100% + 4px);
++  left:0;
++  width:min(360px, calc(100vw - 48px));
++  padding:8px;
++  border:1px solid #d0d5dd;
++  border-radius:6px;
++  background:#fff;
++  box-shadow:0 8px 24px rgba(16,24,40,.16);
++}
++
++.eh-quick-filter-panel[hidden] {
++  display:none !important;
++}
++
++.eh-quick-filter-search {
++  box-sizing:border-box;
++  width:100%;
++  min-height:34px;
++  padding:6px 9px;
++  border:1px solid #d0d5dd;
++  border-radius:5px;
++  font:inherit;
++}
++
++.eh-quick-filter-search:focus {
++  border-color:#667085;
++  outline:none;
++  box-shadow:0 0 0 2px rgba(47,111,189,.10);
++}
++
++.eh-quick-filter-options {
++  max-height:260px;
++  overflow:auto;
++  margin-top:7px;
++  border-top:1px solid #eaecf0;
++  border-bottom:1px solid #eaecf0;
++}
++
++.eh-quick-filter-option {
++  display:flex;
++  align-items:center;
++  gap:8px;
++  min-height:34px;
++  padding:5px 6px;
++  color:#344054;
++  font-size:13px;
++  cursor:pointer;
++}
++
++.eh-quick-filter-option:hover {
++  background:#f2f4f7;
++}
++
++.eh-quick-filter-option input {
++  flex:0 0 auto;
++  margin:0;
++}
++
++.eh-quick-filter-option-hidden {
++  display:none !important;
++}
++
++.eh-quick-filter-no-match,
++.eh-quick-filter-empty {
++  padding:14px 8px;
++  color:#667085;
++  font-size:12px;
++  text-align:center;
++}
++
++.eh-quick-filter-footer {
++  display:flex;
++  align-items:center;
++  justify-content:space-between;
++  gap:10px;
++  padding-top:7px;
++  color:#667085;
++  font-size:12px;
++}
++
++.eh-quick-filter-clear,
++.eh-quick-filter-chip-remove {
++  border:0;
++  background:transparent;
++  color:#175cd3;
++  font:inherit;
++  cursor:pointer;
++}
++
++.eh-quick-filter-clear:disabled {
++  color:#98a2b3;
++  cursor:default;
++}
++
++.eh-quick-filter-clear-inline {
++  padding:4px 2px;
++  font-size:12px;
++  font-weight:700;
++}
++
++.eh-quick-filter-status {
++  color:#667085;
++  font-size:12px;
++}
++
++.eh-quick-filter-chips {
++  display:flex;
++  flex-wrap:wrap;
++  gap:6px;
++  max-height:68px;
++  overflow:auto;
++  margin-top:8px;
++}
++
++.eh-quick-filter-chip {
++  display:inline-flex;
++  align-items:center;
++  gap:5px;
++  max-width:280px;
++  padding:3px 7px;
++  border:1px solid #b2ccff;
++  border-radius:999px;
++  background:#eff4ff;
++  color:#1849a9;
++  font-size:12px;
++}
++
++.eh-quick-filter-chip > span {
++  overflow:hidden;
++  text-overflow:ellipsis;
++  white-space:nowrap;
++}
++
++.eh-quick-filter-chip-remove {
++  flex:0 0 auto;
++  padding:0 1px;
++  color:#1849a9;
++  font-size:14px;
++  font-weight:700;
++  line-height:1;
++}
++
++@media (max-width:700px) {
++  .eh-quick-filter-dropdown {
++    width:100%;
++    min-width:0;
++  }
++  .eh-quick-filter-status {
++    margin-left:0;
++  }
++}
