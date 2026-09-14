@@ -1,0 +1,71 @@
+--- /mnt/data/vendor_heatmap_v0614_windows_horizontal_scroll.js	2026-09-14 02:27:17.831959974 +0000
++++ /mnt/data/vendor_heatmap_v0615_today_marker.js	2026-09-14 02:34:53.338533010 +0000
+@@ -1,5 +1,5 @@
+ /*
+- * 外注課 外注先負荷ヒートマップ / 日程リスク可視化 Ver0.6.1.4
++ * 外注課 外注先負荷ヒートマップ / 日程リスク可視化 Ver0.6.1.5
+  * 対象: kintone App 272 (外注課発注データ-TEST)
+  *
+  * 前提:
+@@ -442,10 +442,15 @@
+   }
+ 
+   function renderHeatmap(vendorStats, dates) {
++    // Ver0.6.1.5: 上段ヒートマップでも「今日」を一目で判別できるようにする。
++    // 背景色（負荷色）は変更せず、専用classによる縦基準線とヘッダ強調だけを追加する。
++    const todayKey = formatDate(startOfDay(new Date()));
++
+     const dateHeader = dates.map(d => {
+       const dow = d.getDay();
+       const cls = dow === 0 ? 'eh-sun' : (dow === 6 ? 'eh-sat' : '');
+-      return `<th class="eh-date ${cls}" title="${formatDate(d)}">${d.getMonth()+1}/${d.getDate()}</th>`;
++      const todayClass = formatDate(d) === todayKey ? ' eh-today-column eh-today-header' : '';
++      return `<th class="eh-date ${cls}${todayClass}" title="${formatDate(d)}">${d.getMonth()+1}/${d.getDate()}</th>`;
+     }).join('');
+ 
+     const rows = vendorStats.map(v => {
+@@ -455,7 +460,8 @@
+         const title = `${v.vendor} / ${formatDate(dates[i])} / 同時案件 ${count}件`;
+         const dow = dates[i].getDay();
+         const weekendClass = dow === 0 ? ' eh-col-sun' : (dow === 6 ? ' eh-col-sat' : '');
+-        return `<td class="eh-heat eh-${level}${weekendClass}" title="${escapeHtml(title)}">${count || ''}</td>`;
++        const todayClass = formatDate(dates[i]) === todayKey ? ' eh-today-column' : '';
++        return `<td class="eh-heat eh-${level}${weekendClass}${todayClass}" title="${escapeHtml(title)}">${count || ''}</td>`;
+       }).join('');
+ 
+       return `
+
+--- /mnt/data/vendor_heatmap_v0614_windows_horizontal_scroll.css	2026-09-14 02:27:16.947959993 +0000
++++ /mnt/data/vendor_heatmap_v0615_today_marker.css	2026-09-14 02:34:53.338707457 +0000
+@@ -2058,3 +2058,31 @@
+ .eh-schedule-scroll .eh-completed:focus-within .eh-track {
+   box-shadow:inset 0 0 0 9999px rgba(102,112,133,.035);
+ }
++
++/* ------------------------------------------------------------------
++ * Ver0.6.1.5: 上段ヒートマップ「今日」表示改善
++ * - 負荷セルの赤/黄/緑の背景色は変更しない
++ * - 今日列は2pxの縦基準線だけを重ねる（レイアウト幅を変えない）
++ * - 日付ヘッダは太字＋文字色で強調する
++ * ------------------------------------------------------------------ */
++.eh-heatmap .eh-today-column {
++  position:relative;
++}
++
++.eh-heatmap .eh-today-column::before {
++  content:"";
++  position:absolute;
++  top:0;
++  bottom:-1px;
++  left:-1px;
++  width:2px;
++  background:rgba(25,95,150,.88);
++  pointer-events:none;
++  z-index:5;
++}
++
++.eh-heatmap .eh-today-header {
++  color:#195f96;
++  font-weight:800;
++}
++
