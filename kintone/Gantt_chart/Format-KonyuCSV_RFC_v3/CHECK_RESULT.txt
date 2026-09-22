@@ -1,0 +1,11 @@
+Format-KonyuCSV_RFC v3.2 REVIEW 機械確認
+作成日: 2026-09-22
+
+Encoding REVIEW PS1 : CP932
+CRLF                 : preserved
+Brace balance {}    : PASS
+Paren balance ()     : PASS
+yyyy-MM-dd           : preserved
+Repair-ColumnShift   : present / body untouched by intended patch
+Default behavior     : switch opt-in only
+Source v3.1 modified : NO
