@@ -1,0 +1,11 @@
+Static checks for Compare-App272AcceptanceDryRun_v0.1.ps1
+NOTE: PowerShell runtime is not installed in this generation environment, so Parser AST check could not be executed.
+
+Brace balance {}: PASS
+Paren balance (): PASS
+Bracket balance []: PASS
+No PUT method literal: PASS
+No POST method literal: PASS
+No DELETE method literal: PASS
+No PATCH method literal: PASS
+GET method exists: PASS
