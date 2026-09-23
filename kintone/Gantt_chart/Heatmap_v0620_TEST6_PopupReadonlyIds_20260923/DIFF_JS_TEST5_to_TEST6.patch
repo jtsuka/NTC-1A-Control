@@ -1,0 +1,50 @@
+--- vendor_heatmap_v0620_TEST5_risk_number_click.js
++++ vendor_heatmap_v0620_TEST6_popup_readonly_ids.js
+@@ -1,5 +1,5 @@
+ /*
+- * 外注課 外注先負荷ヒートマップ / 日程リスク可視化 Ver0.6.2.0-TEST5
++ * 外注課 外注先負荷ヒートマップ / 日程リスク可視化 Ver0.6.2.0-TEST6
+  * 対象: kintone App 272 (外注課発注データ-TEST)
+  *
+  * 前提:
+@@ -48,6 +48,8 @@
+  *    独立管理とし、自動連動させない。フォーム設定APIで存在/type=DATEをFail Closed確認。
+  *  - 日程リスク表の手配書番号 / 注文書番号も、下段ガントと同じ
+  *    日程編集ポップアップ起動トリガーへ統一する。
++ *  - 日程編集ポップアップ本文の先頭に、手配書番号 / 注文書番号を
++ *    「案件情報（表示のみ）」として明示する。保存・PUT対象には含めない。
+  *  - 日程編集ポップアップへ外注入荷実績日を追加し、既存の入荷専用ボタンと同じ
+  *    フィールドを同じrevision付きPUTで更新できるようにする。TEST中は既存入荷ボタンを残す。
+  *  - 標準編集へ遷移する直前にsessionStorageへ強制再取得フラグを立て、
+@@ -1371,7 +1373,12 @@
+     const vendor = String(
+       valueOfRawRecord(raw, f.vendor) || valueOfRawRecord(raw, f.vendorFallback) || ''
+     ).trim();
+-    const displayKey = String(valueOfRawRecord(raw, f.key) || valueOfRawRecord(raw, f.keyFallback) || '手配書番号なし');
++    const displayKey = String(
++      valueOfRawRecord(raw, f.key) ||
++      valueOfRawRecord(raw, f.keyFallback) ||
++      '手配書番号なし'
++    ).trim() || '手配書番号なし';
++    const orderSlipNo = String(valueOfRawRecord(raw, f.orderSlipNo) || '').trim();
+ 
+     if (!revision) throw new Error('$revisionを取得できませんでした。');
+ 
+@@ -1408,6 +1415,17 @@
+         <button type="button" class="eh-edit-close" aria-label="閉じる">×</button>
+       </div>
+       <div class="eh-edit-popup-body">
++        <div class="eh-edit-readonly-card" aria-label="案件情報（表示のみ）">
++          <div class="eh-edit-readonly-heading">案件情報（表示のみ）</div>
++          <div class="eh-edit-readonly-row">
++            <span class="eh-edit-readonly-label">手配書番号</span>
++            <span class="eh-edit-readonly-value">${escapeHtml(displayKey)}</span>
++          </div>
++          <div class="eh-edit-readonly-row">
++            <span class="eh-edit-readonly-label">注文書番号</span>
++            <span class="eh-edit-readonly-value">${orderSlipNo ? escapeHtml(orderSlipNo) : '—'}</span>
++          </div>
++        </div>
+         <label class="eh-edit-field">
+           <span>K加工着手日</span>
+           <input type="date" class="eh-edit-start" value="${escapeAttr(start)}">
