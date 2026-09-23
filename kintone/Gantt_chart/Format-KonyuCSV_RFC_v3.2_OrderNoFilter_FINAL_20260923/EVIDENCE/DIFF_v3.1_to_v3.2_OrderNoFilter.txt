@@ -1,0 +1,100 @@
+--- Format-KonyuCSV_RFC_yyyyMMdd_v3.1.ps1
++++ Format-KonyuCSV_RFC_yyyyMMdd_v3.2_OrderNoFilter_REVIEW.ps1
+@@ -1,6 +1,6 @@
+ #requires -Version 5.1
+ # ============================================================
+-# Format-KonyuCSV.ps1
++# Format-KonyuCSV_RFC_yyyyMMdd_v3.2_OrderNoFilter_REVIEW.ps1
+ # 購買部門CSVを外注課納期管理CSVの形式に整形する
+ #
+ # 処理内容:
+@@ -8,9 +8,11 @@
+ #   2. 文字列セル: 前後スペース・全角スペースをトリム
+ #   3. 非RFC入力で未クォートのカンマにより列ずれした行だけ補正
+ #   4. 全フィールドをダブルクォートしてRFC 4180形式で出力
++#   5. -ExcludeMissingOrderNo 指定時のみ「手配書番号」空欄行を出力対象から除外
+ #
+ # 使用方法:
+-#   .\Format-KonyuCSV.ps1 -InputPath "外注課納期管理_購買部門.csv" -OutputPath "外注課納期管理_整形済み.csv"
++#   .\Format-KonyuCSV_RFC_yyyyMMdd_v3.2_OrderNoFilter_REVIEW.ps1 -InputPath "外注課納期管理_購買部門.csv" -OutputPath "外注課納期管理_整形済み.csv"
++#   .\Format-KonyuCSV_RFC_yyyyMMdd_v3.2_OrderNoFilter_REVIEW.ps1 -InputPath "外注課納期管理_購買部門.csv" -OutputPath "外注課納期管理_整形済み.csv" -ExcludeMissingOrderNo
+ # ============================================================
+ 
+ param(
+@@ -18,7 +20,10 @@
+     [string]$InputPath,
+ 
+     [Parameter(Mandatory=$false)]
+-    [string]$OutputPath = ""
++    [string]$OutputPath = "",
++
++    [Parameter(Mandatory=$false)]
++    [switch]$ExcludeMissingOrderNo
+ )
+ 
+ Set-StrictMode -Version 2.0
+@@ -230,6 +235,14 @@
+ $headers = Parse-CsvLine $rawLines[0]
+ $expectedColumnCount = $headers.Count
+ 
++# -ExcludeMissingOrderNo 指定時のみ「手配書番号」列を必須とする。
++# 列ずれ補正後の $fields に対して、このヘッダー由来インデックスで空欄判定する。
++$orderNoIndex = [Array]::IndexOf($headers, "手配書番号")
++if ($ExcludeMissingOrderNo -and $orderNoIndex -lt 0) {
++    Write-Error "-ExcludeMissingOrderNo が指定されていますが、ヘッダーに「手配書番号」列がありません。"
++    exit 1
++}
++
+ # 日付列のインデックスをマッピング（元スクリプトと同じ）
+ $dateIndexes = @{}
+ for ($i = 0; $i -lt $headers.Count; $i++) {
+@@ -240,6 +253,12 @@
+ }
+ 
+ Write-Host "ヘッダー列数 : $expectedColumnCount 列"
++if ($ExcludeMissingOrderNo) {
++    Write-Host "手配書番号なし除外 : 有効（空欄行を除外）"
++}
++else {
++    Write-Host "手配書番号なし除外 : 無効（従来どおり全行出力）"
++}
+ Write-Host "検出した日付列 ($($dateIndexes.Count) 列):"
+ $dateIndexes.Values | Sort-Object | ForEach-Object { Write-Host "  - $_" }
+ Write-Host ""
+@@ -254,6 +273,7 @@
+ $repairedRows = 0
+ $dateConverted = 0
+ $trimmed = 0
++$excludedMissingOrderNo = 0
+ 
+ for ($r = 1; $r -lt $rawLines.Count; $r++) {
+     $line = $rawLines[$r]
+@@ -336,7 +356,17 @@
+             throw "行 $($r + 1) : 出力直前の列数不一致。期待=$expectedColumnCount、実際=$($fields.Count)"
+         }
+ 
+-        # (3) RFC 4180準拠: 全項目クォート + 内部ダブルクォートを二重化
++        # (3) オプション指定時のみ、補正・トリム後の「手配書番号」空欄行を除外する。
++        # 既定動作は変更せず、スイッチ未指定時は全行をそのまま出力する。
++        if ($ExcludeMissingOrderNo) {
++            $orderNo = [string]$fields[$orderNoIndex]
++            if ([string]::IsNullOrWhiteSpace($orderNo.Trim().Trim([char]0x3000))) {
++                $excludedMissingOrderNo++
++                continue
++            }
++        }
++
++        # (4) RFC 4180準拠: 全項目クォート + 内部ダブルクォートを二重化
+         $rebuilt = ($fields | ForEach-Object { ConvertTo-RfcCsvField $_ }) -join ','
+         $outputLines.Add($rebuilt)
+         $processed++
+@@ -357,6 +387,9 @@
+ Write-Host "  列ずれ補正   : $repairedRows 行"
+ Write-Host "  日付変換     : $dateConverted セル"
+ Write-Host "  スペーストリム: $trimmed セル"
++if ($ExcludeMissingOrderNo) {
++    Write-Host "  手配書番号なし除外: $excludedMissingOrderNo 行"
++}
+ Write-Host "  出力先       : $OutputPath"
+ 
+ exit 0
