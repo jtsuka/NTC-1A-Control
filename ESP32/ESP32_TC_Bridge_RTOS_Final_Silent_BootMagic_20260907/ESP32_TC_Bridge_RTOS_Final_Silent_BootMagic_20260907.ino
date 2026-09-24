@@ -94,7 +94,7 @@
 // can be exercised (e.g. for overrun/backlog regression testing) without
 // also enabling USB CDC Serial output (which would itself perturb the
 // timing being measured). Must be 0 for production freeze.
-#define TC_POLL_DIAG_ENABLED 0
+#define TC_POLL_DIAG_ENABLED 1
 
 // ======================================================
 // Pin assignment (unchanged, identical in both source branches)
