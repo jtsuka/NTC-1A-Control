@@ -1,0 +1,355 @@
+--- /mnt/data/_test8_extract/vendor_heatmap_v0622_TEST8_acceptance_sync_controlled_execute.js	2026-09-24 04:07:24.527789223 +0000
++++ /mnt/data/Heatmap_v0623_PROD_Candidate_AcceptanceSync_20260924/vendor_heatmap_v0623_PROD_CANDIDATE1_acceptance_sync.js	2026-09-24 04:10:10.297366534 +0000
+@@ -1,5 +1,5 @@
+ /*
+- * 外注課 外注先負荷ヒートマップ / 日程リスク可視化 Ver0.6.2.2-TEST8
++ * 外注課 外注先負荷ヒートマップ / 日程リスク可視化 Ver0.6.2.3-PROD-CANDIDATE1
+  * 対象: kintone App 272 (外注課発注データ-TEST)
+  *
+  * 前提:
+@@ -57,7 +57,19 @@
+  *    フラグは再GET成功後にのみ削除し、失敗時は残して次回再試行可能とする。
+  *
+  *
+- * Ver0.6.2.2-TEST8 追加機能（App293受入実績同期β）:
++ *
++ * Ver0.6.2.3-PROD-CANDIDATE1:
++ *  - App272 PRODだけControlled Executeを許可。
++ *  - App292はAnalysis Only。
++ *  - CANDIDATE_EMPTY_SINGLEから人が手動選択し、1回最大50件。
++ *  - 候補総数が50件を超えていても一括実行はせず、選択件数だけMaxWrites判定する。
++ *  - Execute直前に全Analysisを再実行し、選択POのClass / CandidateReceiptDate /
++ *    RecordId / Revision / CurrentAcceptanceDateがAnalysis時点と完全一致することを確認。
++ *    1件でも変化があればSafetyStopし、WRITE=0。
++ *  - 確認ダイアログ後、APP272-ACCEPTANCE-EXECUTE:<件数> の手入力を要求。
++ *  - revision付きPUT、受入れ日のみ更新、PostVerify、No Auto Retryを維持。
++ *
++ * Ver0.6.2.3-PROD-CANDIDATE1 追加機能（App293受入実績同期β）:
+  *  - App293（受入情報App / AppID=293）をREAD ONLYで全件取得し、発注番号単位で集約する。
+  *  - App272/App292側も全件を別GETし、7分類でAnalysisする。
+  *  - CANDIDATE_EMPTY_SINGLEだけを自動更新候補とする。
+@@ -128,9 +140,10 @@
+       sourceAppId: 293,
+       allowedTargetAppIds: [292, 272],
+       maxWrites: 50,
+-      testExecute: {
+-        targetAppId: 292,
+-        maxSelected: 3
++      prodExecute: {
++        targetAppId: 272,
++        maxSelected: 50,
++        confirmationPrefix: 'APP272-ACCEPTANCE-EXECUTE'
+       },
+       sourceFields: {
+         recordId: '$id',
+@@ -1181,7 +1194,7 @@
+ 
+ 
+   /* =====================================================================
+-   * Ver0.6.2.2-TEST8: App293受入実績同期（β）
++   * Ver0.6.2.3-PROD-CANDIDATE1: App293受入実績同期（β）
+    * ===================================================================== */
+ 
+   let activeAcceptanceSync = null; // { overlay, dialog, analysis, executing }
+@@ -1517,26 +1530,27 @@
+     );
+ 
+     const targetAppId = Number(kintone.app.getId());
+-    const isControlledTestTarget =
+-      targetAppId === Number(c.testExecute && c.testExecute.targetAppId);
++    const isControlledProdTarget =
++      targetAppId === Number(c.prodExecute && c.prodExecute.targetAppId);
+ 
+     let bulkWriteBlocked = false;
+     let bulkWriteReason = '';
+ 
+     if (candidates.length > c.maxWrites) {
+-      if (isControlledTestTarget) {
++      if (isControlledProdTarget) {
+         bulkWriteBlocked = true;
+         bulkWriteReason =
+-          `TEST MODE: 全${candidates.length}件の一括実行は禁止。` +
+-          `最大${c.testExecute.maxSelected}件を手動選択してください。`;
++          `PROD CONTROLLED MODE: 更新候補は全${candidates.length}件。` +
++          `一括実行は禁止し、1回最大${c.prodExecute.maxSelected}件を手動選択してください。`;
+       } else {
+-        safetyStops.push(
+-          `SafetyStop: 更新候補 ${candidates.length}件 > MaxWrites ${c.maxWrites}件`
+-        );
++        bulkWriteBlocked = true;
++        bulkWriteReason =
++          `Analysis Only: 更新候補 ${candidates.length}件 / MaxWrites ${c.maxWrites}件`;
+       }
+     }
+ 
+-    // SafetyStop発生時は書込み候補を強制0件にする
++    // 構造異常SafetyStop発生時だけ書込み候補を強制0件にする。
++    // 候補総数>MaxWritesはPRODでは「選択式バッチ」に切り替え、全件一括を禁止する。
+     if (safetyStops.length > 0) {
+       candidates = [];
+     }
+@@ -1558,9 +1572,9 @@
+       maxWrites: c.maxWrites,
+       bulkWriteBlocked,
+       bulkWriteReason,
+-      controlledTestMode: isControlledTestTarget,
+-      controlledTestMaxSelected:
+-        isControlledTestTarget ? Number(c.testExecute.maxSelected || 0) : 0
++      controlledProdMode: isControlledProdTarget,
++      controlledProdMaxSelected:
++        isControlledProdTarget ? Number(c.prodExecute.maxSelected || 0) : 0
+     };
+   }
+ 
+@@ -1686,11 +1700,11 @@
+       .map(r => `
+         <tr>
+           <td>
+-            ${analysis.controlledTestMode
++            ${analysis.controlledProdMode
+               ? `<input type="checkbox"
+                    class="eh-acceptance-sync-select"
+                    data-po="${escapeAttr(r.po)}"
+-                   aria-label="発注番号 ${escapeAttr(r.po)} をTEST選択">`
++                   aria-label="発注番号 ${escapeAttr(r.po)} をPROD選択">`
+               : '—'}
+           </td>
+           <td>${escapeHtml(r.po)}</td>
+@@ -1737,7 +1751,7 @@
+         <table class="eh-acceptance-sync-table">
+           <thead>
+             <tr>
+-              <th>TEST選択</th><th>発注番号</th><th>現在</th><th>候補受入日</th><th>件数</th><th>理由</th>
++              <th>PROD選択</th><th>発注番号</th><th>現在</th><th>候補受入日</th><th>件数</th><th>理由</th>
+             </tr>
+           </thead>
+           <tbody>
+@@ -1750,23 +1764,24 @@
+         NO_SOURCE_DATA_UNKNOWN は「未受入」を意味しません。Prones入力遅れ・未入力・履歴範囲外を含み得ます。
+       </div>
+ 
+-      ${analysis.controlledTestMode ? `
++      ${analysis.controlledProdMode ? `
+         <div class="eh-acceptance-sync-testnote">
+-          <strong>App292 Controlled Execute TEST</strong><br>
++          <strong>App272 PROD Controlled Execute</strong><br>
+           CANDIDATE_EMPTY_SINGLEから最大
+-          ${analysis.controlledTestMaxSelected}件だけ手動選択して実行できます。
+-          全件一括実行はできません。
++          ${analysis.controlledProdMaxSelected}件だけ手動選択して実行します。
++          全件一括実行は行いません。
++          Execute直前に再Analysisし、選択POの状態が1件でも変わっていれば停止します。
+           ${analysis.bulkWriteBlocked ? `<br>${escapeHtml(analysis.bulkWriteReason)}` : ''}
+         </div>
+       ` : `
+         <div class="eh-acceptance-sync-testnote eh-acceptance-sync-prodlock">
+-          App272ではTEST8はAnalysis Onlyです。Executeは強制禁止です。
++          App292ではPROD候補版はAnalysis Onlyです。Executeは強制禁止です。
+         </div>
+       `}
+ 
+       <div class="eh-acceptance-sync-actions">
+         <span class="eh-acceptance-sync-selected-count">
+-          TEST選択: <strong>0</strong> / ${analysis.controlledTestMaxSelected || 0}
++          PROD選択: <strong>0</strong> / ${analysis.controlledProdMaxSelected || 0}
+         </span>
+         <button type="button" class="eh-acceptance-sync-csv">Analysis CSV</button>
+         <button type="button" class="eh-acceptance-sync-cancel">閉じる</button>
+@@ -1798,12 +1813,12 @@
+ 
+     function updateControlledSelectionUi() {
+       const checked = selectionBoxes.filter(x => x.checked);
+-      const maxSelected = Number(analysis.controlledTestMaxSelected || 0);
++      const maxSelected = Number(analysis.controlledProdMaxSelected || 0);
+ 
+       if (checked.length > maxSelected) {
+         const last = checked[checked.length - 1];
+         last.checked = false;
+-        window.alert(`TESTでは最大${maxSelected}件までです。`);
++        window.alert(`PRODでは1回最大${maxSelected}件までです。`);
+       }
+ 
+       const current = selectionBoxes.filter(x => x.checked);
+@@ -1811,7 +1826,7 @@
+ 
+       execute.textContent = `${current.length}件を受入れ日に反映`;
+       execute.disabled =
+-        !analysis.controlledTestMode ||
++        !analysis.controlledProdMode ||
+         analysis.safetyStops.length > 0 ||
+         current.length < 1 ||
+         current.length > maxSelected;
+@@ -1837,38 +1852,44 @@
+ 
+   async function executeAcceptanceSync(selectedPOs) {
+     if (!activeAcceptanceSync || activeAcceptanceSync.executing) return;
+-    const analysis = activeAcceptanceSync.analysis;
+-    const allCandidates = analysis.candidates || [];
++
++    const originalAnalysis = activeAcceptanceSync.analysis;
++    const allCandidates = originalAnalysis.candidates || [];
+     const c = CONFIG.acceptanceSync;
+     const tf = c.targetFields;
+     const targetAppId = Number(kintone.app.getId());
+ 
+-    if (targetAppId !== Number(c.testExecute.targetAppId)) {
+-      window.alert('SafetyStop: TEST8 ExecuteはApp292でのみ許可されています。');
++    if (targetAppId !== Number(c.prodExecute.targetAppId)) {
++      window.alert('SafetyStop: PROD ExecuteはApp272でのみ許可されています。');
+       return;
+     }
+ 
+-    if (analysis.safetyStops.length > 0) {
++    if (originalAnalysis.safetyStops.length > 0) {
+       window.alert('SafetyStop中のため書込みできません。');
+       return;
+     }
+ 
+     const selectedSet = new Set((selectedPOs || []).map(String));
+-    const candidates = allCandidates.filter(r => selectedSet.has(String(r.po)));
++    const selectedOriginal = allCandidates.filter(r => selectedSet.has(String(r.po)));
+ 
+-    if (candidates.length === 0) {
+-      window.alert('TEST実行対象が選択されていません。');
++    if (selectedOriginal.length === 0) {
++      window.alert('PROD実行対象が選択されていません。');
+       return;
+     }
+ 
+-    if (candidates.length > Number(c.testExecute.maxSelected)) {
++    const maxSelected = Math.min(
++      Number(c.maxWrites),
++      Number(c.prodExecute.maxSelected)
++    );
++
++    if (selectedOriginal.length > maxSelected) {
+       window.alert(
+-        `SafetyStop: TEST選択 ${candidates.length}件 > 上限 ${c.testExecute.maxSelected}件`
++        `SafetyStop: PROD選択 ${selectedOriginal.length}件 > 1回上限 ${maxSelected}件`
+       );
+       return;
+     }
+ 
+-    if (candidates.some(r =>
++    if (selectedOriginal.some(r =>
+       r.className !== 'CANDIDATE_EMPTY_SINGLE' ||
+       r.futureAutoEligible !== 'YES'
+     )) {
+@@ -1877,20 +1898,77 @@
+     }
+ 
+     const ok = window.confirm(
+-      `App292 TESTの「受入れ日」を ${candidates.length}件だけ更新します。\n\n` +
+-      `Controlled Execute TEST\n` +
++      `App272 PRODの「受入れ日」を ${selectedOriginal.length}件更新します。\n\n` +
+       `対象: 手動選択した CANDIDATE_EMPTY_SINGLE のみ\n` +
+       `既存の受入れ日は上書きしません。\n` +
+-      `複数受入・負数・要確認データは更新しません。\n\n実行しますか？`
++      `複数受入・負数・要確認データは更新しません。\n` +
++      `Execute直前に再Analysisし、状態が変わっていれば停止します。\n\n` +
++      `続行しますか？`
+     );
+     if (!ok) return;
+ 
++    const confirmationText =
++      `${c.prodExecute.confirmationPrefix}:${selectedOriginal.length}`;
++    const typed = window.prompt(
++      `最終確認です。\n次を正確に入力してください。\n\n${confirmationText}`
++    );
++    if (typed !== confirmationText) {
++      window.alert('SafetyStop: 最終確認文字列が一致しません。書込みは行いません。');
++      return;
++    }
++
+     activeAcceptanceSync.executing = true;
+     const buttons = activeAcceptanceSync.dialog.querySelectorAll('button');
+     buttons.forEach(b => { b.disabled = true; });
+ 
+     try {
+-      // revision付き一括更新。Analysis後にレコードが変わっていればAPI側で競合停止する。
++      const freshAnalysis = await runAcceptanceSyncAnalysis();
++
++      if (freshAnalysis.safetyStops.length > 0) {
++        throw new Error(
++          `PreExecute SafetyStop: ${freshAnalysis.safetyStops.join(' / ')}`
++        );
++      }
++
++      const freshByPO = new Map(
++        (freshAnalysis.rows || []).map(r => [String(r.po), r])
++      );
++
++      const stale = [];
++      const candidates = [];
++
++      selectedOriginal.forEach(oldRow => {
++        const fresh = freshByPO.get(String(oldRow.po));
++
++        if (!fresh) {
++          stale.push(`${oldRow.po}: fresh row not found`);
++          return;
++        }
++
++        const same =
++          fresh.className === 'CANDIDATE_EMPTY_SINGLE' &&
++          fresh.futureAutoEligible === 'YES' &&
++          String(fresh.targetId) === String(oldRow.targetId) &&
++          String(fresh.targetRevision) === String(oldRow.targetRevision) &&
++          String(fresh.currentAcceptanceDate || '') === String(oldRow.currentAcceptanceDate || '') &&
++          String(fresh.candidateReceiptDate) === String(oldRow.candidateReceiptDate) &&
++          Number(fresh.sourceRowCount) === Number(oldRow.sourceRowCount) &&
++          Number(fresh.negativeReceiptCount) === Number(oldRow.negativeReceiptCount);
++
++        if (!same) {
++          stale.push(`${oldRow.po}: Analysis後に状態変化`);
++          return;
++        }
++
++        candidates.push(fresh);
++      });
++
++      if (stale.length > 0 || candidates.length !== selectedOriginal.length) {
++        throw new Error(
++          `PreExecute reAnalysis mismatch: ${stale.slice(0, 10).join(' / ')}`
++        );
++      }
++
+       const records = candidates.map(r => ({
+         id: r.targetId,
+         revision: r.targetRevision,
+@@ -1905,7 +1983,6 @@
+         { app: targetAppId, records: records }
+       );
+ 
+-      // PostVerify: 更新対象をreGETして全件候補日と一致することを確認
+       const idList = candidates.map(r => Number(r.targetId)).filter(Number.isFinite);
+       const verifyResponse = await kintone.api(
+         kintone.api.url('/k/v1/records.json', true),
+@@ -1932,12 +2009,11 @@
+       }
+ 
+       window.alert(
+-        `受入実績同期 PASS\n\n` +
++        `受入実績同期 PROD PASS\n\n` +
+         `更新成功: ${candidates.length}件\n` +
+         `PostVerify NG: 0件`
+       );
+ 
+-      // 表示中母集団を再GETして、受入れ日をstate側にも反映する。
+       state.records = await fetchActiveRecords(state.listQueryCondition);
+       const currentRoot = document.getElementById(CONFIG.rootId);
+       if (currentRoot) render(currentRoot, false);
+@@ -1945,11 +2021,11 @@
+       activeAcceptanceSync.executing = false;
+       closeAcceptanceSyncDialog();
+     } catch (error) {
+-      console.error('[Heatmap][AcceptanceSync] Execute failed', error);
++      console.error('[Heatmap][AcceptanceSync][PROD] Execute failed', error);
+       activeAcceptanceSync.executing = false;
+       buttons.forEach(b => { b.disabled = false; });
+       window.alert(
+-        '受入実績同期に失敗しました。\n' +
++        '受入実績同期 PRODに失敗しました。\n' +
+         '自動再試行はしません。\n\n' +
+         (error && error.message ? error.message : String(error))
+       );

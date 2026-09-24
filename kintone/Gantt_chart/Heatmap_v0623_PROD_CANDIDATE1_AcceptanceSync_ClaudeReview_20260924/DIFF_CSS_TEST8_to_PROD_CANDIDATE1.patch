@@ -1,0 +1,8 @@
+--- /mnt/data/_test8_extract/vendor_heatmap_v0622_TEST8_acceptance_sync_controlled_execute.css	2026-09-24 04:07:24.527454309 +0000
++++ /mnt/data/Heatmap_v0623_PROD_Candidate_AcceptanceSync_20260924/vendor_heatmap_v0623_PROD_CANDIDATE1_acceptance_sync.css	2026-09-24 04:10:10.297565984 +0000
+@@ -2876,3 +2876,5 @@
+   height:16px;
+   cursor:pointer;
+ }
++
++/* Ver0.6.2.3-PROD-CANDIDATE1: App272 Controlled Execute candidate */
