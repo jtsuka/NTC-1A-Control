@@ -1,804 +1,324 @@
-﻿2026-09-25 21:49:00 [INFO] Start
-2026-09-25 21:49:00 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:49:00 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=1
-2026-09-25 21:49:00 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:49:00 [INFO] Save=False
-2026-09-25 21:49:00 [INFO] Attached to active Excel.Application.
-2026-09-25 21:49:00 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:49:00 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:49:00 [INFO] Target worksheet acquired. Sheet=1
-2026-09-25 21:49:00 [INFO] Worksheet calculation completed.
-2026-09-25 21:49:00 [INFO] DetectedLastRow=12 by Column=B
-2026-09-25 21:49:00 [INFO] BeforeSort G Summary: 1=0 0=10 Blank=0 Other=0
-2026-09-25 21:49:00 [UPDATE] SortApply Sheet=1 Key=G Order=Descending Range=A2:P12
-2026-09-25 21:49:01 [UPDATE] ManagementNumbering Sheet=1 NumberedRows=10 A=3..12 Numbers=1..10
-2026-09-25 21:49:01 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:49:01 [INFO] AfterSort G Summary: 1=0 0=10 Blank=0 Other=0
-2026-09-25 21:49:01 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:49:01 [INFO] Completed.
-2026-09-25 21:49:05 [INFO] Start
-2026-09-25 21:49:05 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:49:05 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=2
-2026-09-25 21:49:05 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:49:05 [INFO] Save=False
-2026-09-25 21:49:05 [INFO] Attached to active Excel.Application.
-2026-09-25 21:49:05 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:49:05 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:49:05 [INFO] Target worksheet acquired. Sheet=2
-2026-09-25 21:49:05 [INFO] Worksheet calculation completed.
-2026-09-25 21:49:05 [INFO] DetectedLastRow=36 by Column=B
-2026-09-25 21:49:05 [INFO] BeforeSort G Summary: 1=4 0=30 Blank=0 Other=0
-2026-09-25 21:49:05 [UPDATE] SortApply Sheet=2 Key=G Order=Descending Range=A2:P36
-2026-09-25 21:49:06 [UPDATE] ManagementNumbering Sheet=2 NumberedRows=34 A=3..36 Numbers=1..34
-2026-09-25 21:49:06 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:49:06 [INFO] AfterSort G Summary: 1=4 0=30 Blank=0 Other=0
-2026-09-25 21:49:06 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:49:06 [INFO] Completed.
-2026-09-25 21:49:10 [INFO] Start
-2026-09-25 21:49:10 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:49:10 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=3
-2026-09-25 21:49:10 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:49:10 [INFO] Save=False
-2026-09-25 21:49:10 [INFO] Attached to active Excel.Application.
-2026-09-25 21:49:10 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:49:10 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:49:10 [INFO] Target worksheet acquired. Sheet=3
-2026-09-25 21:49:10 [INFO] Worksheet calculation completed.
-2026-09-25 21:49:10 [INFO] DetectedLastRow=28 by Column=B
-2026-09-25 21:49:10 [INFO] BeforeSort G Summary: 1=1 0=25 Blank=0 Other=0
-2026-09-25 21:49:10 [UPDATE] SortApply Sheet=3 Key=G Order=Descending Range=A2:P28
-2026-09-25 21:49:11 [UPDATE] ManagementNumbering Sheet=3 NumberedRows=26 A=3..28 Numbers=1..26
-2026-09-25 21:49:11 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:49:11 [INFO] AfterSort G Summary: 1=1 0=25 Blank=0 Other=0
-2026-09-25 21:49:11 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:49:11 [INFO] Completed.
-2026-09-25 21:49:15 [INFO] Start
-2026-09-25 21:49:15 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:49:15 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=4
-2026-09-25 21:49:15 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:49:15 [INFO] Save=False
-2026-09-25 21:49:15 [INFO] Attached to active Excel.Application.
-2026-09-25 21:49:15 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:49:15 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:49:15 [INFO] Target worksheet acquired. Sheet=4
-2026-09-25 21:49:15 [INFO] Worksheet calculation completed.
-2026-09-25 21:49:15 [INFO] DetectedLastRow=19 by Column=B
-2026-09-25 21:49:15 [INFO] BeforeSort G Summary: 1=0 0=0 Blank=17 Other=0
-2026-09-25 21:49:15 [UPDATE] SortApply Sheet=4 Key=G Order=Descending Range=A2:P19
-2026-09-25 21:49:16 [UPDATE] ManagementNumbering Sheet=4 NumberedRows=0 A=3..2 Numbers=1..0
-2026-09-25 21:49:16 [UPDATE] ManagementNumbering BlankGRows=17 A cleared.
-2026-09-25 21:49:16 [INFO] AfterSort G Summary: 1=0 0=0 Blank=17 Other=0
-2026-09-25 21:49:16 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:49:16 [INFO] Completed.
-2026-09-25 21:49:20 [INFO] Start
-2026-09-25 21:49:20 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:49:20 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=5
-2026-09-25 21:49:20 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:49:20 [INFO] Save=False
-2026-09-25 21:49:20 [INFO] Attached to active Excel.Application.
-2026-09-25 21:49:20 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:49:20 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:49:20 [INFO] Target worksheet acquired. Sheet=5
-2026-09-25 21:49:20 [INFO] Worksheet calculation completed.
-2026-09-25 21:49:20 [INFO] DetectedLastRow=187 by Column=B
-2026-09-25 21:49:20 [INFO] BeforeSort G Summary: 1=12 0=132 Blank=41 Other=0
-2026-09-25 21:49:20 [UPDATE] SortApply Sheet=5 Key=G Order=Descending Range=A2:P187
-2026-09-25 21:49:25 [UPDATE] ManagementNumbering Sheet=5 NumberedRows=144 A=3..146 Numbers=1..144
-2026-09-25 21:49:25 [UPDATE] ManagementNumbering BlankGRows=41 A cleared.
-2026-09-25 21:49:26 [INFO] AfterSort G Summary: 1=12 0=132 Blank=41 Other=0
-2026-09-25 21:49:26 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:49:26 [INFO] Completed.
-2026-09-25 21:49:30 [INFO] Start
-2026-09-25 21:49:30 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:49:30 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=6
-2026-09-25 21:49:30 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:49:30 [INFO] Save=False
-2026-09-25 21:49:30 [INFO] Attached to active Excel.Application.
-2026-09-25 21:49:30 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:49:30 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:49:30 [INFO] Target worksheet acquired. Sheet=6
-2026-09-25 21:49:30 [INFO] Worksheet calculation completed.
-2026-09-25 21:49:30 [INFO] DetectedLastRow=20 by Column=B
-2026-09-25 21:49:30 [INFO] BeforeSort G Summary: 1=0 0=18 Blank=0 Other=0
-2026-09-25 21:49:30 [UPDATE] SortApply Sheet=6 Key=G Order=Descending Range=A2:P20
-2026-09-25 21:49:31 [UPDATE] ManagementNumbering Sheet=6 NumberedRows=18 A=3..20 Numbers=1..18
-2026-09-25 21:49:31 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:49:31 [INFO] AfterSort G Summary: 1=0 0=18 Blank=0 Other=0
-2026-09-25 21:49:31 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:49:31 [INFO] Completed.
-2026-09-25 21:49:35 [INFO] Start
-2026-09-25 21:49:35 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:49:35 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=7
-2026-09-25 21:49:35 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:49:35 [INFO] Save=False
-2026-09-25 21:49:35 [INFO] Attached to active Excel.Application.
-2026-09-25 21:49:35 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:49:35 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:49:35 [INFO] Target worksheet acquired. Sheet=7
-2026-09-25 21:49:35 [INFO] Worksheet calculation completed.
-2026-09-25 21:49:35 [INFO] DetectedLastRow=36 by Column=B
-2026-09-25 21:49:35 [INFO] BeforeSort G Summary: 1=0 0=34 Blank=0 Other=0
-2026-09-25 21:49:35 [UPDATE] SortApply Sheet=7 Key=G Order=Descending Range=A2:P36
-2026-09-25 21:49:36 [UPDATE] ManagementNumbering Sheet=7 NumberedRows=34 A=3..36 Numbers=1..34
-2026-09-25 21:49:36 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:49:36 [INFO] AfterSort G Summary: 1=0 0=34 Blank=0 Other=0
-2026-09-25 21:49:36 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:49:36 [INFO] Completed.
-2026-09-25 21:49:40 [INFO] Start
-2026-09-25 21:49:40 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:49:40 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=8
-2026-09-25 21:49:40 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:49:40 [INFO] Save=False
-2026-09-25 21:49:40 [INFO] Attached to active Excel.Application.
-2026-09-25 21:49:40 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:49:40 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:49:40 [INFO] Target worksheet acquired. Sheet=8
-2026-09-25 21:49:40 [INFO] Worksheet calculation completed.
-2026-09-25 21:49:40 [INFO] DetectedLastRow=5 by Column=B
-2026-09-25 21:49:41 [INFO] BeforeSort G Summary: 1=0 0=2 Blank=1 Other=0
-2026-09-25 21:49:41 [UPDATE] SortApply Sheet=8 Key=G Order=Descending Range=A2:P5
-2026-09-25 21:49:41 [UPDATE] ManagementNumbering Sheet=8 NumberedRows=2 A=3..4 Numbers=1..2
-2026-09-25 21:49:41 [UPDATE] ManagementNumbering BlankGRows=1 A cleared.
-2026-09-25 21:49:41 [INFO] AfterSort G Summary: 1=0 0=2 Blank=1 Other=0
-2026-09-25 21:49:41 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:49:41 [INFO] Completed.
-2026-09-25 21:49:45 [INFO] Start
-2026-09-25 21:49:45 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:49:45 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=9
-2026-09-25 21:49:45 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:49:45 [INFO] Save=False
-2026-09-25 21:49:45 [INFO] Attached to active Excel.Application.
-2026-09-25 21:49:45 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:49:45 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:49:45 [INFO] Target worksheet acquired. Sheet=9
-2026-09-25 21:49:45 [INFO] Worksheet calculation completed.
-2026-09-25 21:49:45 [INFO] DetectedLastRow=6 by Column=B
-2026-09-25 21:49:45 [INFO] BeforeSort G Summary: 1=1 0=3 Blank=0 Other=0
-2026-09-25 21:49:45 [UPDATE] SortApply Sheet=9 Key=G Order=Descending Range=A2:P6
-2026-09-25 21:49:45 [UPDATE] ManagementNumbering Sheet=9 NumberedRows=4 A=3..6 Numbers=1..4
-2026-09-25 21:49:45 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:49:45 [INFO] AfterSort G Summary: 1=1 0=3 Blank=0 Other=0
-2026-09-25 21:49:45 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:49:45 [INFO] Completed.
-2026-09-25 21:49:49 [INFO] Start
-2026-09-25 21:49:49 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:49:49 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=10
-2026-09-25 21:49:49 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:49:49 [INFO] Save=False
-2026-09-25 21:49:49 [INFO] Attached to active Excel.Application.
-2026-09-25 21:49:49 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:49:50 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:49:50 [INFO] Target worksheet acquired. Sheet=10
-2026-09-25 21:49:50 [INFO] Worksheet calculation completed.
-2026-09-25 21:49:50 [INFO] DetectedLastRow=18 by Column=B
-2026-09-25 21:49:50 [INFO] BeforeSort G Summary: 1=0 0=5 Blank=11 Other=0
-2026-09-25 21:49:50 [UPDATE] SortApply Sheet=10 Key=G Order=Descending Range=A2:P18
-2026-09-25 21:49:50 [UPDATE] ManagementNumbering Sheet=10 NumberedRows=5 A=3..7 Numbers=1..5
-2026-09-25 21:49:50 [UPDATE] ManagementNumbering BlankGRows=11 A cleared.
-2026-09-25 21:49:50 [INFO] AfterSort G Summary: 1=0 0=5 Blank=11 Other=0
-2026-09-25 21:49:50 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:49:50 [INFO] Completed.
-2026-09-25 21:49:54 [INFO] Start
-2026-09-25 21:49:54 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:49:54 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=11
-2026-09-25 21:49:54 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:49:54 [INFO] Save=False
-2026-09-25 21:49:54 [INFO] Attached to active Excel.Application.
-2026-09-25 21:49:54 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:49:54 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:49:54 [INFO] Target worksheet acquired. Sheet=11
-2026-09-25 21:49:54 [INFO] Worksheet calculation completed.
-2026-09-25 21:49:55 [INFO] DetectedLastRow=83 by Column=B
-2026-09-25 21:49:55 [INFO] BeforeSort G Summary: 1=10 0=71 Blank=0 Other=0
-2026-09-25 21:49:55 [UPDATE] SortApply Sheet=11 Key=G Order=Descending Range=A2:P83
-2026-09-25 21:49:56 [UPDATE] ManagementNumbering Sheet=11 NumberedRows=81 A=3..83 Numbers=1..81
-2026-09-25 21:49:56 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:49:57 [INFO] AfterSort G Summary: 1=10 0=71 Blank=0 Other=0
-2026-09-25 21:49:57 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:49:57 [INFO] Completed.
-2026-09-25 21:50:01 [INFO] Start
-2026-09-25 21:50:01 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:50:01 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=12
-2026-09-25 21:50:01 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:50:01 [INFO] Save=False
-2026-09-25 21:50:01 [INFO] Attached to active Excel.Application.
-2026-09-25 21:50:01 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:50:01 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:50:01 [INFO] Target worksheet acquired. Sheet=12
-2026-09-25 21:50:01 [INFO] Worksheet calculation completed.
-2026-09-25 21:50:01 [INFO] DetectedLastRow=132 by Column=B
-2026-09-25 21:50:01 [INFO] BeforeSort G Summary: 1=30 0=100 Blank=0 Other=0
-2026-09-25 21:50:01 [UPDATE] SortApply Sheet=12 Key=G Order=Descending Range=A2:P132
-2026-09-25 21:50:04 [UPDATE] ManagementNumbering Sheet=12 NumberedRows=130 A=3..132 Numbers=1..130
-2026-09-25 21:50:04 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:50:04 [INFO] AfterSort G Summary: 1=30 0=100 Blank=0 Other=0
-2026-09-25 21:50:04 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:50:04 [INFO] Completed.
-2026-09-25 21:50:08 [INFO] Start
-2026-09-25 21:50:08 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:50:08 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=13
-2026-09-25 21:50:08 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:50:08 [INFO] Save=False
-2026-09-25 21:50:08 [INFO] Attached to active Excel.Application.
-2026-09-25 21:50:08 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:50:09 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:50:09 [INFO] Target worksheet acquired. Sheet=13
-2026-09-25 21:50:09 [INFO] Worksheet calculation completed.
-2026-09-25 21:50:09 [INFO] DetectedLastRow=107 by Column=B
-2026-09-25 21:50:09 [INFO] BeforeSort G Summary: 1=12 0=93 Blank=0 Other=0
-2026-09-25 21:50:09 [UPDATE] SortApply Sheet=13 Key=G Order=Descending Range=A2:P107
-2026-09-25 21:50:11 [UPDATE] ManagementNumbering Sheet=13 NumberedRows=105 A=3..107 Numbers=1..105
-2026-09-25 21:50:11 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:50:11 [INFO] AfterSort G Summary: 1=12 0=93 Blank=0 Other=0
-2026-09-25 21:50:11 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:50:11 [INFO] Completed.
-2026-09-25 21:50:15 [INFO] Start
-2026-09-25 21:50:15 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:50:15 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=14
-2026-09-25 21:50:15 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:50:15 [INFO] Save=False
-2026-09-25 21:50:15 [INFO] Attached to active Excel.Application.
-2026-09-25 21:50:15 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:50:16 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:50:16 [INFO] Target worksheet acquired. Sheet=14
-2026-09-25 21:50:16 [INFO] Worksheet calculation completed.
-2026-09-25 21:50:16 [INFO] DetectedLastRow=114 by Column=B
-2026-09-25 21:50:16 [INFO] BeforeSort G Summary: 1=41 0=71 Blank=0 Other=0
-2026-09-25 21:50:16 [UPDATE] SortApply Sheet=14 Key=G Order=Descending Range=A2:P114
-2026-09-25 21:50:19 [UPDATE] ManagementNumbering Sheet=14 NumberedRows=112 A=3..114 Numbers=1..112
-2026-09-25 21:50:19 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:50:19 [INFO] AfterSort G Summary: 1=41 0=71 Blank=0 Other=0
-2026-09-25 21:50:19 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:50:19 [INFO] Completed.
-2026-09-25 21:50:23 [INFO] Start
-2026-09-25 21:50:23 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:50:23 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=15
-2026-09-25 21:50:23 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:50:23 [INFO] Save=False
-2026-09-25 21:50:23 [INFO] Attached to active Excel.Application.
-2026-09-25 21:50:23 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:50:23 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:50:23 [INFO] Target worksheet acquired. Sheet=15
-2026-09-25 21:50:23 [INFO] Worksheet calculation completed.
-2026-09-25 21:50:23 [INFO] DetectedLastRow=96 by Column=B
-2026-09-25 21:50:23 [INFO] BeforeSort G Summary: 1=0 0=86 Blank=8 Other=0
-2026-09-25 21:50:23 [UPDATE] SortApply Sheet=15 Key=G Order=Descending Range=A2:P96
-2026-09-25 21:50:25 [UPDATE] ManagementNumbering Sheet=15 NumberedRows=86 A=3..88 Numbers=1..86
-2026-09-25 21:50:25 [UPDATE] ManagementNumbering BlankGRows=8 A cleared.
-2026-09-25 21:50:25 [INFO] AfterSort G Summary: 1=0 0=86 Blank=8 Other=0
-2026-09-25 21:50:25 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:50:25 [INFO] Completed.
-2026-09-25 21:50:29 [INFO] Start
-2026-09-25 21:50:29 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:50:29 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=16
-2026-09-25 21:50:29 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:50:29 [INFO] Save=False
-2026-09-25 21:50:29 [INFO] Attached to active Excel.Application.
-2026-09-25 21:50:29 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:50:30 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:50:30 [INFO] Target worksheet acquired. Sheet=16
-2026-09-25 21:50:30 [INFO] Worksheet calculation completed.
-2026-09-25 21:50:30 [INFO] DetectedLastRow=65 by Column=B
-2026-09-25 21:50:30 [INFO] BeforeSort G Summary: 1=2 0=61 Blank=0 Other=0
-2026-09-25 21:50:30 [UPDATE] SortApply Sheet=16 Key=G Order=Descending Range=A2:P65
-2026-09-25 21:50:31 [UPDATE] ManagementNumbering Sheet=16 NumberedRows=63 A=3..65 Numbers=1..63
-2026-09-25 21:50:31 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:50:31 [INFO] AfterSort G Summary: 1=2 0=61 Blank=0 Other=0
-2026-09-25 21:50:31 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:50:31 [INFO] Completed.
-2026-09-25 21:50:35 [INFO] Start
-2026-09-25 21:50:35 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:50:35 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=17
-2026-09-25 21:50:35 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:50:35 [INFO] Save=False
-2026-09-25 21:50:35 [INFO] Attached to active Excel.Application.
-2026-09-25 21:50:35 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:50:35 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:50:36 [INFO] Target worksheet acquired. Sheet=17
-2026-09-25 21:50:36 [INFO] Worksheet calculation completed.
-2026-09-25 21:50:36 [INFO] NoDataRows Sheet=17 Column=B DataStartRow=3. Sort/ManagementNumbering skipped.
-2026-09-25 21:50:36 [INFO] Completed. No data rows; worksheet was not changed.
-2026-09-25 21:50:40 [INFO] Start
-2026-09-25 21:50:40 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:50:40 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=18
-2026-09-25 21:50:40 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:50:40 [INFO] Save=False
-2026-09-25 21:50:40 [INFO] Attached to active Excel.Application.
-2026-09-25 21:50:40 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:50:40 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:50:40 [INFO] Target worksheet acquired. Sheet=18
-2026-09-25 21:50:40 [INFO] Worksheet calculation completed.
-2026-09-25 21:50:40 [INFO] DetectedLastRow=1601 by Column=B
-2026-09-25 21:50:41 [INFO] BeforeSort G Summary: 1=0 0=1588 Blank=11 Other=0
-2026-09-25 21:50:41 [UPDATE] SortApply Sheet=18 Key=G Order=Descending Range=A2:P1601
-2026-09-25 21:51:11 [UPDATE] ManagementNumbering Sheet=18 NumberedRows=1588 A=3..1590 Numbers=1..1588
-2026-09-25 21:51:11 [UPDATE] ManagementNumbering BlankGRows=11 A cleared.
-2026-09-25 21:51:13 [INFO] AfterSort G Summary: 1=0 0=1588 Blank=11 Other=0
-2026-09-25 21:51:13 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:51:13 [INFO] Completed.
-2026-09-25 21:51:17 [INFO] Start
-2026-09-25 21:51:17 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:51:17 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=19
-2026-09-25 21:51:17 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:51:17 [INFO] Save=False
-2026-09-25 21:51:17 [INFO] Attached to active Excel.Application.
-2026-09-25 21:51:17 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:51:17 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:51:17 [INFO] Target worksheet acquired. Sheet=19
-2026-09-25 21:51:17 [INFO] Worksheet calculation completed.
-2026-09-25 21:51:17 [INFO] DetectedLastRow=169 by Column=B
-2026-09-25 21:51:17 [INFO] BeforeSort G Summary: 1=43 0=124 Blank=0 Other=0
-2026-09-25 21:51:17 [UPDATE] SortApply Sheet=19 Key=G Order=Descending Range=A2:P169
-2026-09-25 21:51:21 [UPDATE] ManagementNumbering Sheet=19 NumberedRows=167 A=3..169 Numbers=1..167
-2026-09-25 21:51:21 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:51:21 [INFO] AfterSort G Summary: 1=43 0=124 Blank=0 Other=0
-2026-09-25 21:51:21 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:51:21 [INFO] Completed.
-2026-09-25 21:51:25 [INFO] Start
-2026-09-25 21:51:25 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:51:25 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=20
-2026-09-25 21:51:25 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:51:25 [INFO] Save=False
-2026-09-25 21:51:25 [INFO] Attached to active Excel.Application.
-2026-09-25 21:51:25 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:51:25 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:51:25 [INFO] Target worksheet acquired. Sheet=20
-2026-09-25 21:51:25 [INFO] Worksheet calculation completed.
-2026-09-25 21:51:26 [INFO] DetectedLastRow=75 by Column=B
-2026-09-25 21:51:26 [INFO] BeforeSort G Summary: 1=2 0=71 Blank=0 Other=0
-2026-09-25 21:51:26 [UPDATE] SortApply Sheet=20 Key=G Order=Descending Range=A2:P75
-2026-09-25 21:51:27 [UPDATE] ManagementNumbering Sheet=20 NumberedRows=73 A=3..75 Numbers=1..73
-2026-09-25 21:51:27 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:51:27 [INFO] AfterSort G Summary: 1=2 0=71 Blank=0 Other=0
-2026-09-25 21:51:27 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:51:27 [INFO] Completed.
-2026-09-25 21:51:31 [INFO] Start
-2026-09-25 21:51:31 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:51:31 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=21
-2026-09-25 21:51:31 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:51:31 [INFO] Save=False
-2026-09-25 21:51:31 [INFO] Attached to active Excel.Application.
-2026-09-25 21:51:31 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:51:31 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:51:31 [INFO] Target worksheet acquired. Sheet=21
-2026-09-25 21:51:31 [INFO] Worksheet calculation completed.
-2026-09-25 21:51:32 [INFO] DetectedLastRow=304 by Column=B
-2026-09-25 21:51:32 [INFO] BeforeSort G Summary: 1=21 0=257 Blank=24 Other=0
-2026-09-25 21:51:32 [UPDATE] SortApply Sheet=21 Key=G Order=Descending Range=A2:P304
-2026-09-25 21:51:38 [UPDATE] ManagementNumbering Sheet=21 NumberedRows=278 A=3..280 Numbers=1..278
-2026-09-25 21:51:38 [UPDATE] ManagementNumbering BlankGRows=24 A cleared.
-2026-09-25 21:51:38 [INFO] AfterSort G Summary: 1=21 0=257 Blank=24 Other=0
-2026-09-25 21:51:38 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:51:38 [INFO] Completed.
-2026-09-25 21:51:42 [INFO] Start
-2026-09-25 21:51:42 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:51:42 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=22
-2026-09-25 21:51:42 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:51:42 [INFO] Save=False
-2026-09-25 21:51:42 [INFO] Attached to active Excel.Application.
-2026-09-25 21:51:42 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:51:43 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:51:43 [INFO] Target worksheet acquired. Sheet=22
-2026-09-25 21:51:43 [INFO] Worksheet calculation completed.
-2026-09-25 21:51:43 [INFO] DetectedLastRow=38 by Column=B
-2026-09-25 21:51:43 [INFO] BeforeSort G Summary: 1=8 0=28 Blank=0 Other=0
-2026-09-25 21:51:43 [UPDATE] SortApply Sheet=22 Key=G Order=Descending Range=A2:P38
-2026-09-25 21:51:44 [UPDATE] ManagementNumbering Sheet=22 NumberedRows=36 A=3..38 Numbers=1..36
-2026-09-25 21:51:44 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:51:44 [INFO] AfterSort G Summary: 1=8 0=28 Blank=0 Other=0
-2026-09-25 21:51:44 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:51:44 [INFO] Completed.
-2026-09-25 21:51:48 [INFO] Start
-2026-09-25 21:51:48 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:51:48 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=23
-2026-09-25 21:51:48 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:51:48 [INFO] Save=False
-2026-09-25 21:51:48 [INFO] Attached to active Excel.Application.
-2026-09-25 21:51:48 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:51:48 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:51:48 [INFO] Target worksheet acquired. Sheet=23
-2026-09-25 21:51:48 [INFO] Worksheet calculation completed.
-2026-09-25 21:51:48 [INFO] DetectedLastRow=38 by Column=B
-2026-09-25 21:51:48 [INFO] BeforeSort G Summary: 1=3 0=33 Blank=0 Other=0
-2026-09-25 21:51:48 [UPDATE] SortApply Sheet=23 Key=G Order=Descending Range=A2:P38
-2026-09-25 21:51:49 [UPDATE] ManagementNumbering Sheet=23 NumberedRows=36 A=3..38 Numbers=1..36
-2026-09-25 21:51:49 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:51:49 [INFO] AfterSort G Summary: 1=3 0=33 Blank=0 Other=0
-2026-09-25 21:51:49 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:51:49 [INFO] Completed.
-2026-09-25 21:51:53 [INFO] Start
-2026-09-25 21:51:53 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:51:53 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=24
-2026-09-25 21:51:53 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:51:53 [INFO] Save=False
-2026-09-25 21:51:53 [INFO] Attached to active Excel.Application.
-2026-09-25 21:51:53 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:51:53 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:51:53 [INFO] Target worksheet acquired. Sheet=24
-2026-09-25 21:51:53 [INFO] Worksheet calculation completed.
-2026-09-25 21:51:53 [INFO] DetectedLastRow=26 by Column=B
-2026-09-25 21:51:53 [INFO] BeforeSort G Summary: 1=0 0=24 Blank=0 Other=0
-2026-09-25 21:51:53 [UPDATE] SortApply Sheet=24 Key=G Order=Descending Range=A2:P26
-2026-09-25 21:51:54 [UPDATE] ManagementNumbering Sheet=24 NumberedRows=24 A=3..26 Numbers=1..24
-2026-09-25 21:51:54 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:51:54 [INFO] AfterSort G Summary: 1=0 0=24 Blank=0 Other=0
-2026-09-25 21:51:54 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:51:54 [INFO] Completed.
-2026-09-25 21:51:58 [INFO] Start
-2026-09-25 21:51:58 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:51:58 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=25
-2026-09-25 21:51:58 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:51:58 [INFO] Save=False
-2026-09-25 21:51:58 [INFO] Attached to active Excel.Application.
-2026-09-25 21:51:58 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:51:58 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:51:58 [INFO] Target worksheet acquired. Sheet=25
-2026-09-25 21:51:58 [INFO] Worksheet calculation completed.
-2026-09-25 21:51:58 [INFO] DetectedLastRow=104 by Column=B
-2026-09-25 21:51:58 [INFO] BeforeSort G Summary: 1=0 0=67 Blank=35 Other=0
-2026-09-25 21:51:58 [UPDATE] SortApply Sheet=25 Key=G Order=Descending Range=A2:P104
-2026-09-25 21:52:00 [UPDATE] ManagementNumbering Sheet=25 NumberedRows=67 A=3..69 Numbers=1..67
-2026-09-25 21:52:00 [UPDATE] ManagementNumbering BlankGRows=35 A cleared.
-2026-09-25 21:52:00 [INFO] AfterSort G Summary: 1=0 0=67 Blank=35 Other=0
-2026-09-25 21:52:00 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:52:00 [INFO] Completed.
-2026-09-25 21:52:04 [INFO] Start
-2026-09-25 21:52:04 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:52:04 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=26
-2026-09-25 21:52:04 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:52:04 [INFO] Save=False
-2026-09-25 21:52:04 [INFO] Attached to active Excel.Application.
-2026-09-25 21:52:04 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:52:05 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:52:05 [INFO] Target worksheet acquired. Sheet=26
-2026-09-25 21:52:05 [INFO] Worksheet calculation completed.
-2026-09-25 21:52:05 [INFO] DetectedLastRow=4 by Column=B
-2026-09-25 21:52:05 [INFO] BeforeSort G Summary: 1=0 0=2 Blank=0 Other=0
-2026-09-25 21:52:05 [UPDATE] SortApply Sheet=26 Key=G Order=Descending Range=A2:P4
-2026-09-25 21:52:05 [UPDATE] ManagementNumbering Sheet=26 NumberedRows=2 A=3..4 Numbers=1..2
-2026-09-25 21:52:05 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 21:52:05 [INFO] AfterSort G Summary: 1=0 0=2 Blank=0 Other=0
-2026-09-25 21:52:05 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:52:05 [INFO] Completed.
-2026-09-25 21:52:09 [INFO] Start
-2026-09-25 21:52:09 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 21:52:09 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx SheetName=27
-2026-09-25 21:52:09 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 21:52:09 [INFO] Save=False
-2026-09-25 21:52:09 [INFO] Attached to active Excel.Application.
-2026-09-25 21:52:09 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\外注鉄在庫帳.xlsx' normalized='外注鉄在庫帳.xlsx'
-2026-09-25 21:52:09 [INFO] Target workbook acquired. Name=外注鉄在庫帳.xlsx
-2026-09-25 21:52:09 [INFO] Target worksheet acquired. Sheet=27
-2026-09-25 21:52:09 [INFO] Worksheet calculation completed.
-2026-09-25 21:52:09 [INFO] DetectedLastRow=33 by Column=B
-2026-09-25 21:52:09 [INFO] BeforeSort G Summary: 1=0 0=8 Blank=23 Other=0
-2026-09-25 21:52:09 [UPDATE] SortApply Sheet=27 Key=G Order=Descending Range=A2:P33
-2026-09-25 21:52:10 [UPDATE] ManagementNumbering Sheet=27 NumberedRows=8 A=3..10 Numbers=1..8
-2026-09-25 21:52:10 [UPDATE] ManagementNumbering BlankGRows=23 A cleared.
-2026-09-25 21:52:10 [INFO] AfterSort G Summary: 1=0 0=8 Blank=23 Other=0
-2026-09-25 21:52:10 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 21:52:10 [INFO] Completed.
-2026-09-25 22:03:20 [INFO] Start
-2026-09-25 22:03:20 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:03:20 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=1
-2026-09-25 22:03:20 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:03:20 [INFO] Save=False
-2026-09-25 22:03:20 [INFO] Attached to active Excel.Application.
-2026-09-25 22:03:20 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:03:20 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:03:20 [INFO] Target worksheet acquired. Sheet=1
-2026-09-25 22:03:20 [INFO] Worksheet calculation completed.
-2026-09-25 22:03:20 [INFO] DetectedLastRow=7 by Column=B
-2026-09-25 22:03:20 [INFO] BeforeSort G Summary: 1=0 0=5 Blank=0 Other=0
-2026-09-25 22:03:20 [UPDATE] SortApply Sheet=1 Key=G Order=Descending Range=A2:P7
-2026-09-25 22:03:20 [UPDATE] ManagementNumbering Sheet=1 NumberedRows=5 A=3..7 Numbers=1..5
-2026-09-25 22:03:20 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 22:03:20 [INFO] AfterSort G Summary: 1=0 0=5 Blank=0 Other=0
-2026-09-25 22:03:20 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:03:20 [INFO] Completed.
-2026-09-25 22:03:24 [INFO] Start
-2026-09-25 22:03:24 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:03:24 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=2
-2026-09-25 22:03:24 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:03:24 [INFO] Save=False
-2026-09-25 22:03:24 [INFO] Attached to active Excel.Application.
-2026-09-25 22:03:24 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:03:25 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:03:25 [INFO] Target worksheet acquired. Sheet=2
-2026-09-25 22:03:25 [INFO] Worksheet calculation completed.
-2026-09-25 22:03:25 [INFO] DetectedLastRow=128 by Column=B
-2026-09-25 22:03:25 [INFO] BeforeSort G Summary: 1=1 0=70 Blank=55 Other=0
-2026-09-25 22:03:25 [UPDATE] SortApply Sheet=2 Key=G Order=Descending Range=A2:P128
-2026-09-25 22:03:27 [UPDATE] ManagementNumbering Sheet=2 NumberedRows=71 A=3..73 Numbers=1..71
-2026-09-25 22:03:27 [UPDATE] ManagementNumbering BlankGRows=55 A cleared.
-2026-09-25 22:03:27 [INFO] AfterSort G Summary: 1=1 0=70 Blank=55 Other=0
-2026-09-25 22:03:27 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:03:27 [INFO] Completed.
-2026-09-25 22:03:31 [INFO] Start
-2026-09-25 22:03:31 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:03:31 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=3
-2026-09-25 22:03:31 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:03:31 [INFO] Save=False
-2026-09-25 22:03:31 [INFO] Attached to active Excel.Application.
-2026-09-25 22:03:31 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:03:32 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:03:32 [INFO] Target worksheet acquired. Sheet=3
-2026-09-25 22:03:32 [INFO] Worksheet calculation completed.
-2026-09-25 22:03:32 [INFO] DetectedLastRow=338 by Column=B
-2026-09-25 22:03:32 [INFO] BeforeSort G Summary: 1=15 0=244 Blank=77 Other=0
-2026-09-25 22:03:32 [UPDATE] SortApply Sheet=3 Key=G Order=Descending Range=A2:P338
-2026-09-25 22:03:38 [UPDATE] ManagementNumbering Sheet=3 NumberedRows=259 A=3..261 Numbers=1..259
-2026-09-25 22:03:38 [UPDATE] ManagementNumbering BlankGRows=77 A cleared.
-2026-09-25 22:03:39 [INFO] AfterSort G Summary: 1=15 0=244 Blank=77 Other=0
-2026-09-25 22:03:39 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:03:39 [INFO] Completed.
-2026-09-25 22:03:43 [INFO] Start
-2026-09-25 22:03:43 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:03:43 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=4
-2026-09-25 22:03:43 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:03:43 [INFO] Save=False
-2026-09-25 22:03:43 [INFO] Attached to active Excel.Application.
-2026-09-25 22:03:43 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:03:43 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:03:43 [INFO] Target worksheet acquired. Sheet=4
-2026-09-25 22:03:43 [INFO] Worksheet calculation completed.
-2026-09-25 22:03:43 [INFO] DetectedLastRow=110 by Column=B
-2026-09-25 22:03:43 [INFO] BeforeSort G Summary: 1=10 0=88 Blank=10 Other=0
-2026-09-25 22:03:43 [UPDATE] SortApply Sheet=4 Key=G Order=Descending Range=A2:P110
-2026-09-25 22:03:45 [UPDATE] ManagementNumbering Sheet=4 NumberedRows=98 A=3..100 Numbers=1..98
-2026-09-25 22:03:45 [UPDATE] ManagementNumbering BlankGRows=10 A cleared.
-2026-09-25 22:03:45 [INFO] AfterSort G Summary: 1=10 0=88 Blank=10 Other=0
-2026-09-25 22:03:45 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:03:45 [INFO] Completed.
-2026-09-25 22:03:49 [INFO] Start
-2026-09-25 22:03:49 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:03:49 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=5
-2026-09-25 22:03:49 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:03:49 [INFO] Save=False
-2026-09-25 22:03:49 [INFO] Attached to active Excel.Application.
-2026-09-25 22:03:49 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:03:50 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:03:50 [INFO] Target worksheet acquired. Sheet=5
-2026-09-25 22:03:50 [INFO] Worksheet calculation completed.
-2026-09-25 22:03:50 [INFO] DetectedLastRow=19 by Column=B
-2026-09-25 22:03:50 [INFO] BeforeSort G Summary: 1=2 0=15 Blank=0 Other=0
-2026-09-25 22:03:50 [UPDATE] SortApply Sheet=5 Key=G Order=Descending Range=A2:P19
-2026-09-25 22:03:50 [UPDATE] ManagementNumbering Sheet=5 NumberedRows=17 A=3..19 Numbers=1..17
-2026-09-25 22:03:50 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 22:03:50 [INFO] AfterSort G Summary: 1=2 0=15 Blank=0 Other=0
-2026-09-25 22:03:50 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:03:50 [INFO] Completed.
-2026-09-25 22:03:54 [INFO] Start
-2026-09-25 22:03:54 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:03:54 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=6
-2026-09-25 22:03:54 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:03:54 [INFO] Save=False
-2026-09-25 22:03:54 [INFO] Attached to active Excel.Application.
-2026-09-25 22:03:54 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:03:54 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:03:54 [INFO] Target worksheet acquired. Sheet=6
-2026-09-25 22:03:54 [INFO] Worksheet calculation completed.
-2026-09-25 22:03:54 [INFO] DetectedLastRow=45 by Column=B
-2026-09-25 22:03:55 [INFO] BeforeSort G Summary: 1=14 0=26 Blank=3 Other=0
-2026-09-25 22:03:55 [UPDATE] SortApply Sheet=6 Key=G Order=Descending Range=A2:P45
-2026-09-25 22:03:55 [UPDATE] ManagementNumbering Sheet=6 NumberedRows=40 A=3..42 Numbers=1..40
-2026-09-25 22:03:55 [UPDATE] ManagementNumbering BlankGRows=3 A cleared.
-2026-09-25 22:03:56 [INFO] AfterSort G Summary: 1=14 0=26 Blank=3 Other=0
-2026-09-25 22:03:56 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:03:56 [INFO] Completed.
-2026-09-25 22:04:00 [INFO] Start
-2026-09-25 22:04:00 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:04:00 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=7
-2026-09-25 22:04:00 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:04:00 [INFO] Save=False
-2026-09-25 22:04:00 [INFO] Attached to active Excel.Application.
-2026-09-25 22:04:00 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:04:00 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:04:00 [INFO] Target worksheet acquired. Sheet=7
-2026-09-25 22:04:00 [INFO] Worksheet calculation completed.
-2026-09-25 22:04:00 [INFO] DetectedLastRow=66 by Column=B
-2026-09-25 22:04:00 [INFO] BeforeSort G Summary: 1=3 0=60 Blank=1 Other=0
-2026-09-25 22:04:00 [UPDATE] SortApply Sheet=7 Key=G Order=Descending Range=A2:P66
-2026-09-25 22:04:01 [UPDATE] ManagementNumbering Sheet=7 NumberedRows=63 A=3..65 Numbers=1..63
-2026-09-25 22:04:01 [UPDATE] ManagementNumbering BlankGRows=1 A cleared.
-2026-09-25 22:04:01 [INFO] AfterSort G Summary: 1=3 0=60 Blank=1 Other=0
-2026-09-25 22:04:01 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:04:01 [INFO] Completed.
-2026-09-25 22:04:05 [INFO] Start
-2026-09-25 22:04:06 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:04:06 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=8
-2026-09-25 22:04:06 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:04:06 [INFO] Save=False
-2026-09-25 22:04:06 [INFO] Attached to active Excel.Application.
-2026-09-25 22:04:06 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:04:06 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:04:06 [INFO] Target worksheet acquired. Sheet=8
-2026-09-25 22:04:06 [INFO] Worksheet calculation completed.
-2026-09-25 22:04:06 [INFO] DetectedLastRow=135 by Column=B
-2026-09-25 22:04:06 [INFO] BeforeSort G Summary: 1=5 0=128 Blank=0 Other=0
-2026-09-25 22:04:06 [UPDATE] SortApply Sheet=8 Key=G Order=Descending Range=A2:P135
-2026-09-25 22:04:08 [UPDATE] ManagementNumbering Sheet=8 NumberedRows=133 A=3..135 Numbers=1..133
-2026-09-25 22:04:08 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 22:04:09 [INFO] AfterSort G Summary: 1=5 0=128 Blank=0 Other=0
-2026-09-25 22:04:09 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:04:09 [INFO] Completed.
-2026-09-25 22:04:13 [INFO] Start
-2026-09-25 22:04:13 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:04:13 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=9
-2026-09-25 22:04:13 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:04:13 [INFO] Save=False
-2026-09-25 22:04:13 [INFO] Attached to active Excel.Application.
-2026-09-25 22:04:13 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:04:13 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:04:13 [INFO] Target worksheet acquired. Sheet=9
-2026-09-25 22:04:13 [INFO] Worksheet calculation completed.
-2026-09-25 22:04:13 [INFO] DetectedLastRow=42 by Column=B
-2026-09-25 22:04:13 [INFO] BeforeSort G Summary: 1=5 0=18 Blank=17 Other=0
-2026-09-25 22:04:13 [UPDATE] SortApply Sheet=9 Key=G Order=Descending Range=A2:P42
-2026-09-25 22:04:14 [UPDATE] ManagementNumbering Sheet=9 NumberedRows=23 A=3..25 Numbers=1..23
-2026-09-25 22:04:14 [UPDATE] ManagementNumbering BlankGRows=17 A cleared.
-2026-09-25 22:04:14 [INFO] AfterSort G Summary: 1=5 0=18 Blank=17 Other=0
-2026-09-25 22:04:14 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:04:14 [INFO] Completed.
-2026-09-25 22:04:18 [INFO] Start
-2026-09-25 22:04:18 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:04:18 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=10
-2026-09-25 22:04:18 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:04:18 [INFO] Save=False
-2026-09-25 22:04:18 [INFO] Attached to active Excel.Application.
-2026-09-25 22:04:18 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:04:18 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:04:18 [INFO] Target worksheet acquired. Sheet=10
-2026-09-25 22:04:18 [INFO] Worksheet calculation completed.
-2026-09-25 22:04:18 [INFO] DetectedLastRow=28 by Column=B
-2026-09-25 22:04:19 [INFO] BeforeSort G Summary: 1=6 0=20 Blank=0 Other=0
-2026-09-25 22:04:19 [UPDATE] SortApply Sheet=10 Key=G Order=Descending Range=A2:P28
-2026-09-25 22:04:19 [UPDATE] ManagementNumbering Sheet=10 NumberedRows=26 A=3..28 Numbers=1..26
-2026-09-25 22:04:19 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 22:04:19 [INFO] AfterSort G Summary: 1=6 0=20 Blank=0 Other=0
-2026-09-25 22:04:19 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:04:19 [INFO] Completed.
-2026-09-25 22:04:23 [INFO] Start
-2026-09-25 22:04:23 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:04:23 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=11
-2026-09-25 22:04:23 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:04:23 [INFO] Save=False
-2026-09-25 22:04:23 [INFO] Attached to active Excel.Application.
-2026-09-25 22:04:23 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:04:23 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:04:23 [INFO] Target worksheet acquired. Sheet=11
-2026-09-25 22:04:23 [INFO] Worksheet calculation completed.
-2026-09-25 22:04:24 [INFO] DetectedLastRow=86 by Column=B
-2026-09-25 22:04:24 [INFO] BeforeSort G Summary: 1=7 0=76 Blank=1 Other=0
-2026-09-25 22:04:24 [UPDATE] SortApply Sheet=11 Key=G Order=Descending Range=A2:P86
-2026-09-25 22:04:25 [UPDATE] ManagementNumbering Sheet=11 NumberedRows=83 A=3..85 Numbers=1..83
-2026-09-25 22:04:25 [UPDATE] ManagementNumbering BlankGRows=1 A cleared.
-2026-09-25 22:04:25 [INFO] AfterSort G Summary: 1=7 0=76 Blank=1 Other=0
-2026-09-25 22:04:25 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:04:25 [INFO] Completed.
-2026-09-25 22:04:30 [INFO] Start
-2026-09-25 22:04:30 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:04:30 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=12
-2026-09-25 22:04:30 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:04:30 [INFO] Save=False
-2026-09-25 22:04:30 [INFO] Attached to active Excel.Application.
-2026-09-25 22:04:30 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:04:30 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:04:30 [INFO] Target worksheet acquired. Sheet=12
-2026-09-25 22:04:30 [INFO] Worksheet calculation completed.
-2026-09-25 22:04:30 [INFO] DetectedLastRow=28 by Column=B
-2026-09-25 22:04:30 [INFO] BeforeSort G Summary: 1=2 0=17 Blank=7 Other=0
-2026-09-25 22:04:30 [UPDATE] SortApply Sheet=12 Key=G Order=Descending Range=A2:P28
-2026-09-25 22:04:30 [UPDATE] ManagementNumbering Sheet=12 NumberedRows=19 A=3..21 Numbers=1..19
-2026-09-25 22:04:30 [UPDATE] ManagementNumbering BlankGRows=7 A cleared.
-2026-09-25 22:04:30 [INFO] AfterSort G Summary: 1=2 0=17 Blank=7 Other=0
-2026-09-25 22:04:30 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:04:30 [INFO] Completed.
-2026-09-25 22:04:35 [INFO] Start
-2026-09-25 22:04:35 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:04:35 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=13
-2026-09-25 22:04:35 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:04:35 [INFO] Save=False
-2026-09-25 22:04:35 [INFO] Attached to active Excel.Application.
-2026-09-25 22:04:35 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:04:35 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:04:35 [INFO] Target worksheet acquired. Sheet=13
-2026-09-25 22:04:35 [INFO] Worksheet calculation completed.
-2026-09-25 22:04:35 [INFO] DetectedLastRow=56 by Column=B
-2026-09-25 22:04:35 [INFO] BeforeSort G Summary: 1=8 0=44 Blank=2 Other=0
-2026-09-25 22:04:35 [UPDATE] SortApply Sheet=13 Key=G Order=Descending Range=A2:P56
-2026-09-25 22:04:36 [UPDATE] ManagementNumbering Sheet=13 NumberedRows=52 A=3..54 Numbers=1..52
-2026-09-25 22:04:36 [UPDATE] ManagementNumbering BlankGRows=2 A cleared.
-2026-09-25 22:04:36 [INFO] AfterSort G Summary: 1=8 0=44 Blank=2 Other=0
-2026-09-25 22:04:36 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:04:36 [INFO] Completed.
-2026-09-25 22:04:40 [INFO] Start
-2026-09-25 22:04:40 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:04:40 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=14
-2026-09-25 22:04:40 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:04:40 [INFO] Save=False
-2026-09-25 22:04:40 [INFO] Attached to active Excel.Application.
-2026-09-25 22:04:40 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:04:41 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:04:41 [INFO] Target worksheet acquired. Sheet=14
-2026-09-25 22:04:41 [INFO] Worksheet calculation completed.
-2026-09-25 22:04:41 [INFO] DetectedLastRow=101 by Column=B
-2026-09-25 22:04:41 [INFO] BeforeSort G Summary: 1=3 0=96 Blank=0 Other=0
-2026-09-25 22:04:41 [UPDATE] SortApply Sheet=14 Key=G Order=Descending Range=A2:P101
-2026-09-25 22:04:43 [UPDATE] ManagementNumbering Sheet=14 NumberedRows=99 A=3..101 Numbers=1..99
-2026-09-25 22:04:43 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 22:04:43 [INFO] AfterSort G Summary: 1=3 0=96 Blank=0 Other=0
-2026-09-25 22:04:43 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:04:43 [INFO] Completed.
-2026-09-25 22:04:47 [INFO] Start
-2026-09-25 22:04:47 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:04:47 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=15
-2026-09-25 22:04:47 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:04:47 [INFO] Save=False
-2026-09-25 22:04:47 [INFO] Attached to active Excel.Application.
-2026-09-25 22:04:47 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:04:47 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:04:47 [INFO] Target worksheet acquired. Sheet=15
-2026-09-25 22:04:47 [INFO] Worksheet calculation completed.
-2026-09-25 22:04:47 [INFO] DetectedLastRow=21 by Column=B
-2026-09-25 22:04:47 [INFO] BeforeSort G Summary: 1=1 0=18 Blank=0 Other=0
-2026-09-25 22:04:47 [UPDATE] SortApply Sheet=15 Key=G Order=Descending Range=A2:P21
-2026-09-25 22:04:48 [UPDATE] ManagementNumbering Sheet=15 NumberedRows=19 A=3..21 Numbers=1..19
-2026-09-25 22:04:48 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 22:04:48 [INFO] AfterSort G Summary: 1=1 0=18 Blank=0 Other=0
-2026-09-25 22:04:48 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:04:48 [INFO] Completed.
-2026-09-25 22:04:52 [INFO] Start
-2026-09-25 22:04:52 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:04:52 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=16
-2026-09-25 22:04:52 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:04:52 [INFO] Save=False
-2026-09-25 22:04:52 [INFO] Attached to active Excel.Application.
-2026-09-25 22:04:52 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:04:52 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:04:52 [INFO] Target worksheet acquired. Sheet=16
-2026-09-25 22:04:52 [INFO] Worksheet calculation completed.
-2026-09-25 22:04:52 [INFO] DetectedLastRow=88 by Column=B
-2026-09-25 22:04:52 [INFO] BeforeSort G Summary: 1=21 0=65 Blank=0 Other=0
-2026-09-25 22:04:53 [UPDATE] SortApply Sheet=16 Key=G Order=Descending Range=A2:P88
-2026-09-25 22:04:54 [UPDATE] ManagementNumbering Sheet=16 NumberedRows=86 A=3..88 Numbers=1..86
-2026-09-25 22:04:54 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
-2026-09-25 22:04:54 [INFO] AfterSort G Summary: 1=21 0=65 Blank=0 Other=0
-2026-09-25 22:04:54 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:04:54 [INFO] Completed.
-2026-09-25 22:04:58 [INFO] Start
-2026-09-25 22:04:58 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:04:58 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=17
-2026-09-25 22:04:58 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:04:58 [INFO] Save=False
-2026-09-25 22:04:58 [INFO] Attached to active Excel.Application.
-2026-09-25 22:04:58 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:04:59 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:04:59 [INFO] Target worksheet acquired. Sheet=17
-2026-09-25 22:04:59 [INFO] Worksheet calculation completed.
-2026-09-25 22:04:59 [INFO] DetectedLastRow=84 by Column=B
-2026-09-25 22:04:59 [INFO] BeforeSort G Summary: 1=6 0=68 Blank=8 Other=0
-2026-09-25 22:04:59 [UPDATE] SortApply Sheet=17 Key=G Order=Descending Range=A2:P84
-2026-09-25 22:05:00 [UPDATE] ManagementNumbering Sheet=17 NumberedRows=74 A=3..76 Numbers=1..74
-2026-09-25 22:05:00 [UPDATE] ManagementNumbering BlankGRows=8 A cleared.
-2026-09-25 22:05:00 [INFO] AfterSort G Summary: 1=6 0=68 Blank=8 Other=0
-2026-09-25 22:05:00 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:05:00 [INFO] Completed.
-2026-09-25 22:05:05 [INFO] Start
-2026-09-25 22:05:05 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
-2026-09-25 22:05:05 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=18
-2026-09-25 22:05:05 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
-2026-09-25 22:05:05 [INFO] Save=False
-2026-09-25 22:05:05 [INFO] Attached to active Excel.Application.
-2026-09-25 22:05:05 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
-2026-09-25 22:05:05 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
-2026-09-25 22:05:05 [INFO] Target worksheet acquired. Sheet=18
-2026-09-25 22:05:05 [INFO] Worksheet calculation completed.
-2026-09-25 22:05:05 [INFO] DetectedLastRow=38 by Column=B
-2026-09-25 22:05:05 [INFO] BeforeSort G Summary: 1=0 0=7 Blank=29 Other=0
-2026-09-25 22:05:05 [UPDATE] SortApply Sheet=18 Key=G Order=Descending Range=A2:P38
-2026-09-25 22:05:06 [UPDATE] ManagementNumbering Sheet=18 NumberedRows=7 A=3..9 Numbers=1..7
-2026-09-25 22:05:06 [UPDATE] ManagementNumbering BlankGRows=29 A cleared.
-2026-09-25 22:05:06 [INFO] AfterSort G Summary: 1=0 0=7 Blank=29 Other=0
-2026-09-25 22:05:06 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
-2026-09-25 22:05:06 [INFO] Completed.
+﻿2026-09-25 22:40:24 [INFO] Start
+2026-09-25 22:40:24 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:40:24 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=1
+2026-09-25 22:40:24 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:40:24 [INFO] Save=False
+2026-09-25 22:40:24 [INFO] Attached to active Excel.Application.
+2026-09-25 22:40:24 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:40:24 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:40:24 [INFO] Target worksheet acquired. Sheet=1
+2026-09-25 22:40:24 [INFO] Worksheet calculation completed.
+2026-09-25 22:40:24 [INFO] DetectedLastRow=7 by Column=B
+2026-09-25 22:40:24 [INFO] BeforeSort G Summary: 1=0 0=5 Blank=0 Other=0
+2026-09-25 22:40:24 [UPDATE] SortApply Sheet=1 Key=G Order=Descending Range=A2:P7
+2026-09-25 22:40:24 [UPDATE] ManagementNumbering Sheet=1 NumberedRows=5 A=3..7 Numbers=1..5
+2026-09-25 22:40:24 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
+2026-09-25 22:40:24 [INFO] AfterSort G Summary: 1=0 0=5 Blank=0 Other=0
+2026-09-25 22:40:24 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:40:24 [INFO] Completed.
+2026-09-25 22:40:28 [INFO] Start
+2026-09-25 22:40:28 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:40:28 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=2
+2026-09-25 22:40:28 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:40:28 [INFO] Save=False
+2026-09-25 22:40:28 [INFO] Attached to active Excel.Application.
+2026-09-25 22:40:28 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:40:29 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:40:29 [INFO] Target worksheet acquired. Sheet=2
+2026-09-25 22:40:29 [INFO] Worksheet calculation completed.
+2026-09-25 22:40:29 [INFO] DetectedLastRow=128 by Column=B
+2026-09-25 22:40:29 [INFO] BeforeSort G Summary: 1=1 0=70 Blank=55 Other=0
+2026-09-25 22:40:29 [UPDATE] SortApply Sheet=2 Key=G Order=Descending Range=A2:P128
+2026-09-25 22:40:31 [UPDATE] ManagementNumbering Sheet=2 NumberedRows=71 A=3..73 Numbers=1..71
+2026-09-25 22:40:31 [UPDATE] ManagementNumbering BlankGRows=55 A cleared.
+2026-09-25 22:40:31 [INFO] AfterSort G Summary: 1=1 0=70 Blank=55 Other=0
+2026-09-25 22:40:31 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:40:31 [INFO] Completed.
+2026-09-25 22:40:35 [INFO] Start
+2026-09-25 22:40:35 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:40:35 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=3
+2026-09-25 22:40:35 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:40:35 [INFO] Save=False
+2026-09-25 22:40:35 [INFO] Attached to active Excel.Application.
+2026-09-25 22:40:35 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:40:36 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:40:36 [INFO] Target worksheet acquired. Sheet=3
+2026-09-25 22:40:36 [INFO] Worksheet calculation completed.
+2026-09-25 22:40:36 [INFO] DetectedLastRow=338 by Column=B
+2026-09-25 22:40:36 [INFO] BeforeSort G Summary: 1=15 0=244 Blank=77 Other=0
+2026-09-25 22:40:36 [UPDATE] SortApply Sheet=3 Key=G Order=Descending Range=A2:P338
+2026-09-25 22:40:42 [UPDATE] ManagementNumbering Sheet=3 NumberedRows=259 A=3..261 Numbers=1..259
+2026-09-25 22:40:42 [UPDATE] ManagementNumbering BlankGRows=77 A cleared.
+2026-09-25 22:40:43 [INFO] AfterSort G Summary: 1=15 0=244 Blank=77 Other=0
+2026-09-25 22:40:43 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:40:43 [INFO] Completed.
+2026-09-25 22:40:47 [INFO] Start
+2026-09-25 22:40:47 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:40:47 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=4
+2026-09-25 22:40:47 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:40:47 [INFO] Save=False
+2026-09-25 22:40:47 [INFO] Attached to active Excel.Application.
+2026-09-25 22:40:47 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:40:47 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:40:47 [INFO] Target worksheet acquired. Sheet=4
+2026-09-25 22:40:47 [INFO] Worksheet calculation completed.
+2026-09-25 22:40:47 [INFO] DetectedLastRow=110 by Column=B
+2026-09-25 22:40:47 [INFO] BeforeSort G Summary: 1=10 0=88 Blank=10 Other=0
+2026-09-25 22:40:47 [UPDATE] SortApply Sheet=4 Key=G Order=Descending Range=A2:P110
+2026-09-25 22:40:49 [UPDATE] ManagementNumbering Sheet=4 NumberedRows=98 A=3..100 Numbers=1..98
+2026-09-25 22:40:49 [UPDATE] ManagementNumbering BlankGRows=10 A cleared.
+2026-09-25 22:40:49 [INFO] AfterSort G Summary: 1=10 0=88 Blank=10 Other=0
+2026-09-25 22:40:49 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:40:49 [INFO] Completed.
+2026-09-25 22:40:53 [INFO] Start
+2026-09-25 22:40:53 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:40:53 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=5
+2026-09-25 22:40:53 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:40:53 [INFO] Save=False
+2026-09-25 22:40:53 [INFO] Attached to active Excel.Application.
+2026-09-25 22:40:53 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:40:53 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:40:53 [INFO] Target worksheet acquired. Sheet=5
+2026-09-25 22:40:53 [INFO] Worksheet calculation completed.
+2026-09-25 22:40:53 [INFO] DetectedLastRow=19 by Column=B
+2026-09-25 22:40:53 [INFO] BeforeSort G Summary: 1=2 0=15 Blank=0 Other=0
+2026-09-25 22:40:54 [UPDATE] SortApply Sheet=5 Key=G Order=Descending Range=A2:P19
+2026-09-25 22:40:54 [UPDATE] ManagementNumbering Sheet=5 NumberedRows=17 A=3..19 Numbers=1..17
+2026-09-25 22:40:54 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
+2026-09-25 22:40:54 [INFO] AfterSort G Summary: 1=2 0=15 Blank=0 Other=0
+2026-09-25 22:40:54 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:40:54 [INFO] Completed.
+2026-09-25 22:40:58 [INFO] Start
+2026-09-25 22:40:58 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:40:58 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=6
+2026-09-25 22:40:58 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:40:58 [INFO] Save=False
+2026-09-25 22:40:58 [INFO] Attached to active Excel.Application.
+2026-09-25 22:40:58 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:40:58 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:40:58 [INFO] Target worksheet acquired. Sheet=6
+2026-09-25 22:40:58 [INFO] Worksheet calculation completed.
+2026-09-25 22:40:58 [INFO] DetectedLastRow=45 by Column=B
+2026-09-25 22:40:58 [INFO] BeforeSort G Summary: 1=14 0=26 Blank=3 Other=0
+2026-09-25 22:40:58 [UPDATE] SortApply Sheet=6 Key=G Order=Descending Range=A2:P45
+2026-09-25 22:40:59 [UPDATE] ManagementNumbering Sheet=6 NumberedRows=40 A=3..42 Numbers=1..40
+2026-09-25 22:40:59 [UPDATE] ManagementNumbering BlankGRows=3 A cleared.
+2026-09-25 22:40:59 [INFO] AfterSort G Summary: 1=14 0=26 Blank=3 Other=0
+2026-09-25 22:40:59 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:40:59 [INFO] Completed.
+2026-09-25 22:41:03 [INFO] Start
+2026-09-25 22:41:03 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:41:03 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=7
+2026-09-25 22:41:03 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:41:03 [INFO] Save=False
+2026-09-25 22:41:03 [INFO] Attached to active Excel.Application.
+2026-09-25 22:41:03 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:41:03 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:41:03 [INFO] Target worksheet acquired. Sheet=7
+2026-09-25 22:41:03 [INFO] Worksheet calculation completed.
+2026-09-25 22:41:04 [INFO] DetectedLastRow=66 by Column=B
+2026-09-25 22:41:04 [INFO] BeforeSort G Summary: 1=3 0=60 Blank=1 Other=0
+2026-09-25 22:41:04 [UPDATE] SortApply Sheet=7 Key=G Order=Descending Range=A2:P66
+2026-09-25 22:41:05 [UPDATE] ManagementNumbering Sheet=7 NumberedRows=63 A=3..65 Numbers=1..63
+2026-09-25 22:41:05 [UPDATE] ManagementNumbering BlankGRows=1 A cleared.
+2026-09-25 22:41:05 [INFO] AfterSort G Summary: 1=3 0=60 Blank=1 Other=0
+2026-09-25 22:41:05 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:41:05 [INFO] Completed.
+2026-09-25 22:41:09 [INFO] Start
+2026-09-25 22:41:09 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:41:09 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=8
+2026-09-25 22:41:09 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:41:09 [INFO] Save=False
+2026-09-25 22:41:09 [INFO] Attached to active Excel.Application.
+2026-09-25 22:41:09 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:41:09 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:41:09 [INFO] Target worksheet acquired. Sheet=8
+2026-09-25 22:41:09 [INFO] Worksheet calculation completed.
+2026-09-25 22:41:09 [INFO] DetectedLastRow=135 by Column=B
+2026-09-25 22:41:09 [INFO] BeforeSort G Summary: 1=5 0=128 Blank=0 Other=0
+2026-09-25 22:41:09 [UPDATE] SortApply Sheet=8 Key=G Order=Descending Range=A2:P135
+2026-09-25 22:41:12 [UPDATE] ManagementNumbering Sheet=8 NumberedRows=133 A=3..135 Numbers=1..133
+2026-09-25 22:41:12 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
+2026-09-25 22:41:12 [INFO] AfterSort G Summary: 1=5 0=128 Blank=0 Other=0
+2026-09-25 22:41:12 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:41:12 [INFO] Completed.
+2026-09-25 22:41:16 [INFO] Start
+2026-09-25 22:41:16 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:41:16 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=9
+2026-09-25 22:41:16 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:41:16 [INFO] Save=False
+2026-09-25 22:41:16 [INFO] Attached to active Excel.Application.
+2026-09-25 22:41:16 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:41:16 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:41:16 [INFO] Target worksheet acquired. Sheet=9
+2026-09-25 22:41:16 [INFO] Worksheet calculation completed.
+2026-09-25 22:41:16 [INFO] DetectedLastRow=42 by Column=B
+2026-09-25 22:41:16 [INFO] BeforeSort G Summary: 1=5 0=18 Blank=17 Other=0
+2026-09-25 22:41:16 [UPDATE] SortApply Sheet=9 Key=G Order=Descending Range=A2:P42
+2026-09-25 22:41:17 [UPDATE] ManagementNumbering Sheet=9 NumberedRows=23 A=3..25 Numbers=1..23
+2026-09-25 22:41:17 [UPDATE] ManagementNumbering BlankGRows=17 A cleared.
+2026-09-25 22:41:17 [INFO] AfterSort G Summary: 1=5 0=18 Blank=17 Other=0
+2026-09-25 22:41:17 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:41:17 [INFO] Completed.
+2026-09-25 22:41:21 [INFO] Start
+2026-09-25 22:41:21 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:41:21 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=10
+2026-09-25 22:41:21 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:41:21 [INFO] Save=False
+2026-09-25 22:41:21 [INFO] Attached to active Excel.Application.
+2026-09-25 22:41:21 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:41:21 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:41:21 [INFO] Target worksheet acquired. Sheet=10
+2026-09-25 22:41:21 [INFO] Worksheet calculation completed.
+2026-09-25 22:41:21 [INFO] DetectedLastRow=28 by Column=B
+2026-09-25 22:41:22 [INFO] BeforeSort G Summary: 1=6 0=20 Blank=0 Other=0
+2026-09-25 22:41:22 [UPDATE] SortApply Sheet=10 Key=G Order=Descending Range=A2:P28
+2026-09-25 22:41:22 [UPDATE] ManagementNumbering Sheet=10 NumberedRows=26 A=3..28 Numbers=1..26
+2026-09-25 22:41:22 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
+2026-09-25 22:41:22 [INFO] AfterSort G Summary: 1=6 0=20 Blank=0 Other=0
+2026-09-25 22:41:22 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:41:22 [INFO] Completed.
+2026-09-25 22:41:26 [INFO] Start
+2026-09-25 22:41:26 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:41:26 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=11
+2026-09-25 22:41:26 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:41:26 [INFO] Save=False
+2026-09-25 22:41:26 [INFO] Attached to active Excel.Application.
+2026-09-25 22:41:26 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:41:26 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:41:26 [INFO] Target worksheet acquired. Sheet=11
+2026-09-25 22:41:26 [INFO] Worksheet calculation completed.
+2026-09-25 22:41:26 [INFO] DetectedLastRow=86 by Column=B
+2026-09-25 22:41:26 [INFO] BeforeSort G Summary: 1=7 0=76 Blank=1 Other=0
+2026-09-25 22:41:26 [UPDATE] SortApply Sheet=11 Key=G Order=Descending Range=A2:P86
+2026-09-25 22:41:28 [UPDATE] ManagementNumbering Sheet=11 NumberedRows=83 A=3..85 Numbers=1..83
+2026-09-25 22:41:28 [UPDATE] ManagementNumbering BlankGRows=1 A cleared.
+2026-09-25 22:41:28 [INFO] AfterSort G Summary: 1=7 0=76 Blank=1 Other=0
+2026-09-25 22:41:28 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:41:28 [INFO] Completed.
+2026-09-25 22:41:32 [INFO] Start
+2026-09-25 22:41:32 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:41:32 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=12
+2026-09-25 22:41:32 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:41:32 [INFO] Save=False
+2026-09-25 22:41:32 [INFO] Attached to active Excel.Application.
+2026-09-25 22:41:32 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:41:32 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:41:32 [INFO] Target worksheet acquired. Sheet=12
+2026-09-25 22:41:32 [INFO] Worksheet calculation completed.
+2026-09-25 22:41:33 [INFO] DetectedLastRow=28 by Column=B
+2026-09-25 22:41:33 [INFO] BeforeSort G Summary: 1=2 0=17 Blank=7 Other=0
+2026-09-25 22:41:33 [UPDATE] SortApply Sheet=12 Key=G Order=Descending Range=A2:P28
+2026-09-25 22:41:33 [UPDATE] ManagementNumbering Sheet=12 NumberedRows=19 A=3..21 Numbers=1..19
+2026-09-25 22:41:33 [UPDATE] ManagementNumbering BlankGRows=7 A cleared.
+2026-09-25 22:41:33 [INFO] AfterSort G Summary: 1=2 0=17 Blank=7 Other=0
+2026-09-25 22:41:33 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:41:33 [INFO] Completed.
+2026-09-25 22:41:37 [INFO] Start
+2026-09-25 22:41:37 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:41:37 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=13
+2026-09-25 22:41:37 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:41:37 [INFO] Save=False
+2026-09-25 22:41:37 [INFO] Attached to active Excel.Application.
+2026-09-25 22:41:37 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:41:37 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:41:37 [INFO] Target worksheet acquired. Sheet=13
+2026-09-25 22:41:37 [INFO] Worksheet calculation completed.
+2026-09-25 22:41:37 [INFO] DetectedLastRow=56 by Column=B
+2026-09-25 22:41:38 [INFO] BeforeSort G Summary: 1=8 0=44 Blank=2 Other=0
+2026-09-25 22:41:38 [UPDATE] SortApply Sheet=13 Key=G Order=Descending Range=A2:P56
+2026-09-25 22:41:39 [UPDATE] ManagementNumbering Sheet=13 NumberedRows=52 A=3..54 Numbers=1..52
+2026-09-25 22:41:39 [UPDATE] ManagementNumbering BlankGRows=2 A cleared.
+2026-09-25 22:41:39 [INFO] AfterSort G Summary: 1=8 0=44 Blank=2 Other=0
+2026-09-25 22:41:39 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:41:39 [INFO] Completed.
+2026-09-25 22:41:43 [INFO] Start
+2026-09-25 22:41:43 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:41:43 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=14
+2026-09-25 22:41:43 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:41:43 [INFO] Save=False
+2026-09-25 22:41:43 [INFO] Attached to active Excel.Application.
+2026-09-25 22:41:43 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:41:43 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:41:43 [INFO] Target worksheet acquired. Sheet=14
+2026-09-25 22:41:43 [INFO] Worksheet calculation completed.
+2026-09-25 22:41:43 [INFO] DetectedLastRow=101 by Column=B
+2026-09-25 22:41:43 [INFO] BeforeSort G Summary: 1=3 0=96 Blank=0 Other=0
+2026-09-25 22:41:43 [UPDATE] SortApply Sheet=14 Key=G Order=Descending Range=A2:P101
+2026-09-25 22:41:45 [UPDATE] ManagementNumbering Sheet=14 NumberedRows=99 A=3..101 Numbers=1..99
+2026-09-25 22:41:45 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
+2026-09-25 22:41:45 [INFO] AfterSort G Summary: 1=3 0=96 Blank=0 Other=0
+2026-09-25 22:41:45 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:41:45 [INFO] Completed.
+2026-09-25 22:41:49 [INFO] Start
+2026-09-25 22:41:49 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:41:49 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=15
+2026-09-25 22:41:49 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:41:49 [INFO] Save=False
+2026-09-25 22:41:49 [INFO] Attached to active Excel.Application.
+2026-09-25 22:41:49 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:41:49 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:41:49 [INFO] Target worksheet acquired. Sheet=15
+2026-09-25 22:41:49 [INFO] Worksheet calculation completed.
+2026-09-25 22:41:49 [INFO] DetectedLastRow=21 by Column=B
+2026-09-25 22:41:49 [INFO] BeforeSort G Summary: 1=1 0=18 Blank=0 Other=0
+2026-09-25 22:41:49 [UPDATE] SortApply Sheet=15 Key=G Order=Descending Range=A2:P21
+2026-09-25 22:41:50 [UPDATE] ManagementNumbering Sheet=15 NumberedRows=19 A=3..21 Numbers=1..19
+2026-09-25 22:41:50 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
+2026-09-25 22:41:50 [INFO] AfterSort G Summary: 1=1 0=18 Blank=0 Other=0
+2026-09-25 22:41:50 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:41:50 [INFO] Completed.
+2026-09-25 22:41:54 [INFO] Start
+2026-09-25 22:41:54 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:41:54 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=16
+2026-09-25 22:41:54 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:41:54 [INFO] Save=False
+2026-09-25 22:41:54 [INFO] Attached to active Excel.Application.
+2026-09-25 22:41:54 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:41:54 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:41:54 [INFO] Target worksheet acquired. Sheet=16
+2026-09-25 22:41:54 [INFO] Worksheet calculation completed.
+2026-09-25 22:41:54 [INFO] DetectedLastRow=88 by Column=B
+2026-09-25 22:41:54 [INFO] BeforeSort G Summary: 1=21 0=65 Blank=0 Other=0
+2026-09-25 22:41:54 [UPDATE] SortApply Sheet=16 Key=G Order=Descending Range=A2:P88
+2026-09-25 22:41:56 [UPDATE] ManagementNumbering Sheet=16 NumberedRows=86 A=3..88 Numbers=1..86
+2026-09-25 22:41:56 [UPDATE] ManagementNumbering BlankGRows=0 A cleared.
+2026-09-25 22:41:56 [INFO] AfterSort G Summary: 1=21 0=65 Blank=0 Other=0
+2026-09-25 22:41:56 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:41:56 [INFO] Completed.
+2026-09-25 22:42:00 [INFO] Start
+2026-09-25 22:42:00 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:42:00 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=17
+2026-09-25 22:42:00 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:42:00 [INFO] Save=False
+2026-09-25 22:42:00 [INFO] Attached to active Excel.Application.
+2026-09-25 22:42:00 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:42:00 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:42:00 [INFO] Target worksheet acquired. Sheet=17
+2026-09-25 22:42:00 [INFO] Worksheet calculation completed.
+2026-09-25 22:42:00 [INFO] DetectedLastRow=84 by Column=B
+2026-09-25 22:42:00 [INFO] BeforeSort G Summary: 1=6 0=68 Blank=8 Other=0
+2026-09-25 22:42:00 [UPDATE] SortApply Sheet=17 Key=G Order=Descending Range=A2:P84
+2026-09-25 22:42:02 [UPDATE] ManagementNumbering Sheet=17 NumberedRows=74 A=3..76 Numbers=1..74
+2026-09-25 22:42:02 [UPDATE] ManagementNumbering BlankGRows=8 A cleared.
+2026-09-25 22:42:02 [INFO] AfterSort G Summary: 1=6 0=68 Blank=8 Other=0
+2026-09-25 22:42:02 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:42:02 [INFO] Completed.
+2026-09-25 22:42:06 [INFO] Start
+2026-09-25 22:42:06 [INFO] ScriptVersion=2026-09-10-r7-OpenExcel-GSort-RenumberA-EmptySheetSkip
+2026-09-25 22:42:06 [INFO] Mode=Update WorkbookName=C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx SheetName=18
+2026-09-25 22:42:06 [INFO] LastRowColumn=B SortColumn=G Range=A2:P(lastRow)
+2026-09-25 22:42:06 [INFO] Save=False
+2026-09-25 22:42:06 [INFO] Attached to active Excel.Application.
+2026-09-25 22:42:06 [INFO] Workbook lookup requested='C:\Users\RPA-5F\Desktop\在庫帳\成果連絡表（色物）.xlsx' normalized='成果連絡表（色物）.xlsx'
+2026-09-25 22:42:06 [INFO] Target workbook acquired. Name=成果連絡表（色物）.xlsx
+2026-09-25 22:42:06 [INFO] Target worksheet acquired. Sheet=18
+2026-09-25 22:42:06 [INFO] Worksheet calculation completed.
+2026-09-25 22:42:06 [INFO] DetectedLastRow=38 by Column=B
+2026-09-25 22:42:06 [INFO] BeforeSort G Summary: 1=0 0=7 Blank=29 Other=0
+2026-09-25 22:42:06 [UPDATE] SortApply Sheet=18 Key=G Order=Descending Range=A2:P38
+2026-09-25 22:42:07 [UPDATE] ManagementNumbering Sheet=18 NumberedRows=7 A=3..9 Numbers=1..7
+2026-09-25 22:42:07 [UPDATE] ManagementNumbering BlankGRows=29 A cleared.
+2026-09-25 22:42:07 [INFO] AfterSort G Summary: 1=0 0=7 Blank=29 Other=0
+2026-09-25 22:42:07 [INFO] Workbook NOT saved by script. RK-10/Excel側で後続処理・保存してください。
+2026-09-25 22:42:07 [INFO] Completed.
