@@ -1,0 +1,241 @@
+--- ESP32_TC_Bridge_RTOS_Final_Silent_BootMagic_20260907.ino
++++ TCBridge_EvidenceV2.ino
+@@ -1,5 +1,7 @@
+ /*
+   ESP32-S3 TC Bridge RTOS — Final Integrated Build
++  Diagnostic derivative: TCBridge_EvidenceV2
++  Purpose: Second Poll 120s synchronized Silent Evidence over Pi UART
+   =================================================
+   Directory: ESP32_TC_Bridge_RTOS_Final_Silent_BootMagic_20260907
+ 
+@@ -907,6 +909,131 @@
+ #endif // TC_POLL_DIAG_ENABLED
+ 
+ // ======================================================
++// Evidence V2 — synchronized 120 s Silent measurement
++// ======================================================
++// Diagnostic only. USB CDC is NOT used by this mechanism.
++// Pi starts the measurement with E5 1D 53 54 on SerialPi.
++// Core0 owns start/end snapshots. After the end snapshot is fixed,
++// Core1 sends one 124-byte binary result frame on SerialPi.
++// The result transfer is outside the formal 120 s measurement window.
++#define TC_EVIDENCE_TEST_ENABLED 1
++static constexpr uint32_t TC_EVIDENCE_DURATION_MS = 120000UL;
++
++static constexpr uint8_t EVIDENCE_START_MAGIC[4] = {0xE5, 0x1D, 0x53, 0x54};
++static constexpr uint32_t EVIDENCE_START_MAGIC_U32 = 0xE51D5354UL;
++static constexpr uint8_t EVIDENCE_RESULT_MAGIC[4] = {0xE5, 0x1D, 0xE7, 0xC5};
++static constexpr uint8_t EVIDENCE_VERSION = 0x01;
++static constexpr uint8_t EVIDENCE_PAYLOAD_LEN = 116;
++static constexpr size_t EVIDENCE_RESULT_FRAME_LEN = 124;
++static constexpr uint8_t EVIDENCE_COUNTER_COUNT = 14;
++
++struct TcEvidenceSnapshot {
++  uint32_t pollMaxIntervalUs;
++  uint32_t pollOver1000Count;
++  uint32_t c1IsrEdges;
++  uint32_t c1EdgeOverflow;
++  uint32_t c2DecodedBytes;
++  uint32_t c2DecodeErrors;
++  uint32_t c2TimingErrors;
++  uint32_t c2LocalEdgeOverflow;
++  uint32_t c3ValidFrames;
++  uint32_t c3FrameErrors;
++  uint32_t c3SyncMisses;
++  uint32_t c3Resyncs;
++  uint32_t c4QueuedFrames;
++  uint32_t c4QueueDrops;
++};
++
++static TcEvidenceSnapshot gEvidenceStart{};
++static TcEvidenceSnapshot gEvidenceEnd{};
++static uint32_t gEvidenceStartMs = 0;
++static std::atomic<bool> gEvidenceStartRequested{false}; // Core1 -> Core0
++static std::atomic<bool> gEvidenceStarted{false};        // Core0 -> Core1/status
++static std::atomic<bool> gEvidenceReady{false};          // Core0 -> Core1
++
++static void captureEvidenceSnapshot(bool captureStart) {
++  TcEvidenceSnapshot& s = captureStart ? gEvidenceStart : gEvidenceEnd;
++#if TC_POLL_DIAG_ENABLED
++  s.pollMaxIntervalUs = gMaxPollIntervalUs.load();
++  s.pollOver1000Count = gPollOverThresholdCount.load();
++#else
++  s.pollMaxIntervalUs = 0;
++  s.pollOver1000Count = 0;
++#endif
++
++  portENTER_CRITICAL(&c1RingMux);
++  s.c1IsrEdges = c1IsrEdgeCount;
++  s.c1EdgeOverflow = c1EdgeOverflowCount;
++  portEXIT_CRITICAL(&c1RingMux);
++
++  // C2/C3/C4 counters are Core0-owned; snapshots are taken on Core0 only.
++  s.c2DecodedBytes = c2DecodedBytes;
++  s.c2DecodeErrors = c2DecodeErrors;
++  s.c2TimingErrors = c2TimingErrors;
++  s.c2LocalEdgeOverflow = c2LocalEdgeOverflow;
++  s.c3ValidFrames = c3ValidFrames;
++  s.c3FrameErrors = c3FrameErrors;
++  s.c3SyncMisses = c3SyncMisses;
++  s.c3Resyncs = c3Resyncs;
++  s.c4QueuedFrames = c4QueuedFrames;
++  s.c4QueueDrops = c4QueueDrops;
++}
++
++static size_t buildEvidenceResultFrame(uint8_t* out, size_t capacity) {
++  if (!out || capacity < EVIDENCE_RESULT_FRAME_LEN || !gEvidenceReady.load()) {
++    return 0;
++  }
++
++  size_t pos = 0;
++  auto put8 = [&](uint8_t v) { out[pos++] = v; };
++  auto put32le = [&](uint32_t v) {
++    out[pos++] = (uint8_t)(v & 0xFFu);
++    out[pos++] = (uint8_t)((v >> 8) & 0xFFu);
++    out[pos++] = (uint8_t)((v >> 16) & 0xFFu);
++    out[pos++] = (uint8_t)((v >> 24) & 0xFFu);
++  };
++  auto putPair = [&](uint32_t start, uint32_t end) {
++    put32le(start);
++    put32le(end);
++  };
++
++  for (uint8_t b : EVIDENCE_RESULT_MAGIC) put8(b);
++  put8(EVIDENCE_VERSION);
++  put8(EVIDENCE_PAYLOAD_LEN);
++  put32le(TC_EVIDENCE_DURATION_MS);
++
++  // Fixed counter order from Evidence V2 specification.
++  putPair(gEvidenceStart.pollMaxIntervalUs,      gEvidenceEnd.pollMaxIntervalUs);
++  putPair(gEvidenceStart.pollOver1000Count,      gEvidenceEnd.pollOver1000Count);
++  putPair(gEvidenceStart.c1IsrEdges,              gEvidenceEnd.c1IsrEdges);
++  putPair(gEvidenceStart.c1EdgeOverflow,          gEvidenceEnd.c1EdgeOverflow);
++  putPair(gEvidenceStart.c2DecodedBytes,          gEvidenceEnd.c2DecodedBytes);
++  putPair(gEvidenceStart.c2DecodeErrors,          gEvidenceEnd.c2DecodeErrors);
++  putPair(gEvidenceStart.c2TimingErrors,          gEvidenceEnd.c2TimingErrors);
++  putPair(gEvidenceStart.c2LocalEdgeOverflow,     gEvidenceEnd.c2LocalEdgeOverflow);
++  putPair(gEvidenceStart.c3ValidFrames,           gEvidenceEnd.c3ValidFrames);
++  putPair(gEvidenceStart.c3FrameErrors,           gEvidenceEnd.c3FrameErrors);
++  putPair(gEvidenceStart.c3SyncMisses,            gEvidenceEnd.c3SyncMisses);
++  putPair(gEvidenceStart.c3Resyncs,               gEvidenceEnd.c3Resyncs);
++  putPair(gEvidenceStart.c4QueuedFrames,           gEvidenceEnd.c4QueuedFrames);
++  putPair(gEvidenceStart.c4QueueDrops,             gEvidenceEnd.c4QueueDrops);
++
++  // At this point pos must be 122 (MAGIC..PAYLOAD end).
++  if (pos != EVIDENCE_RESULT_FRAME_LEN - 2) return 0;
++  uint16_t sum = 0;
++  for (size_t i = 0; i < pos; ++i) sum = (uint16_t)(sum + out[i]);
++  out[pos++] = (uint8_t)(sum & 0xFFu);
++  out[pos++] = (uint8_t)((sum >> 8) & 0xFFu);
++  return pos;
++}
++
++static_assert(EVIDENCE_PAYLOAD_LEN == (4 + EVIDENCE_COUNTER_COUNT * 2 * 4),
++              "Evidence payload length mismatch");
++static_assert(EVIDENCE_RESULT_FRAME_LEN == (4 + 1 + 1 + EVIDENCE_PAYLOAD_LEN + 2),
++              "Evidence result frame length mismatch");
++
++
++// ======================================================
+ // C1 edge processing time budget (per loop iteration, taskTcBus only)
+ // ------------------------------------------------------
+ // Rationale: TcMainTx.poll() must be revisited well under 1000us in the
+@@ -1006,6 +1133,15 @@
+   uint8_t piCollected = 0;
+   uint8_t piExpectedLen = 0;
+ 
++
++#if TC_EVIDENCE_TEST_ENABLED
++  // Evidence START is recognized only while the normal parser is WAIT_CMD.
++  // Clear this register at parser state boundaries so a MAGIC sequence can
++  // never be assembled across COLLECTING -> WAIT_CMD transitions.
++  uint32_t evidenceStartShiftBuf = 0;
++  bool evidenceResultSent = false;
++#endif
++
+   // Stage5: localPending (Core1-local order-preserving buffer, not a
+   // FreeRTOS queue). Overflow destination when qPiToTc is full. Both
+   // producer and consumer are this task only.
+@@ -1112,6 +1248,14 @@
+       const uint8_t b = static_cast<uint8_t>(SerialPi.read());
+ 
+       if (piState == WAIT_CMD) {
++#if TC_EVIDENCE_TEST_ENABLED
++        evidenceStartShiftBuf = (evidenceStartShiftBuf << 8) | (uint32_t)b;
++        if (evidenceStartShiftBuf == EVIDENCE_START_MAGIC_U32) {
++          // Core1 only requests; Core0 owns the actual start snapshot.
++          gEvidenceStartRequested.store(true);
++          evidenceStartShiftBuf = 0;
++        }
++#endif
+         uint8_t expLen = 0;
+         switch (b) {
+           case 0x01: expLen = tc::PI_LEN_RESET; break; // RESET     12byte
+@@ -1126,6 +1270,9 @@
+           // resynchronize while staying in WAIT_CMD.
+           continue;
+         }
++#if TC_EVIDENCE_TEST_ENABLED
++        evidenceStartShiftBuf = 0;
++#endif
+         piBuf[0] = b;
+         piCollected = 1;
+         piExpectedLen = expLen;
+@@ -1192,6 +1339,9 @@
+       piState = WAIT_CMD;
+       piCollected = 0;
+       piExpectedLen = 0;
++#if TC_EVIDENCE_TEST_ENABLED
++      evidenceStartShiftBuf = 0;
++#endif
+     }
+ 
+     // TC -> Pi
+@@ -1204,6 +1354,23 @@
+         SerialPi.flush();
+       }
+     }
++
++#if TC_EVIDENCE_TEST_ENABLED
++    // RESULT is emitted once, only after Core0 fixed the end snapshot.
++    // This transfer is outside the formal 120 s measurement window.
++    // No other task writes SerialPi, so the 124-byte frame cannot be
++    // interleaved with normal telemetry bytes.
++    if (gEvidenceReady.load() && !evidenceResultSent) {
++      uint8_t evidenceFrame[EVIDENCE_RESULT_FRAME_LEN];
++      const size_t evidenceLen = buildEvidenceResultFrame(
++          evidenceFrame, sizeof(evidenceFrame));
++      if (evidenceLen == EVIDENCE_RESULT_FRAME_LEN) {
++        SerialPi.write(evidenceFrame, evidenceLen);
++        SerialPi.flush();
++        evidenceResultSent = true;
++      }
++    }
++#endif
+ 
+ #if TC_POLL_DIAG_ENABLED
+     // Test-only, Core1-side, low-frequency (1Hz) retrieval of Core0's poll
+@@ -1263,6 +1430,23 @@
+     pollDiagBeforePoll();
+ #endif
+     tcMainTx.poll();
++
++#if TC_EVIDENCE_TEST_ENABLED
++    // Evidence START/END snapshots are Core0-owned. START is request-driven;
++    // critically, END is gated by gEvidenceStarted so ESP uptime alone can
++    // never terminate a measurement that was never started.
++    if (!gEvidenceStarted.load() && gEvidenceStartRequested.load()) {
++      captureEvidenceSnapshot(true);
++      gEvidenceStartMs = millis();
++      gEvidenceStarted.store(true);
++    }
++    if (gEvidenceStarted.load() &&
++        !gEvidenceReady.load() &&
++        (uint32_t)(millis() - gEvidenceStartMs) >= TC_EVIDENCE_DURATION_MS) {
++      captureEvidenceSnapshot(false);
++      gEvidenceReady.store(true);
++    }
++#endif
+ 
+     // --------------------------------------------------------
+     // Step 2/3: consumeDoneFlag() -> fault/recovery/abort completion

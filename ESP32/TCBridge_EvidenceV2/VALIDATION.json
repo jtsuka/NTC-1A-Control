@@ -1,0 +1,23 @@
+{
+  "structural_checks": {
+    "ESP start magic": true,
+    "ESP result magic": true,
+    "ESP payload 116": true,
+    "ESP total 124": true,
+    "ESP start gate": true,
+    "ESP USB debug off": true,
+    "ESP poll diag on": true,
+    "ESP no V1 print function": true,
+    "ESP SerialPi result": true,
+    "Pi start magic": true,
+    "Pi result magic": true,
+    "Pi timeout 150": true,
+    "Spec gate": true
+  },
+  "python_syntax": "PASS",
+  "synthetic_result_frame_len": 124,
+  "synthetic_result_parser": "PASS",
+  "arduino_ide_compile": "NOT_RUN_IN_THIS_ENVIRONMENT",
+  "real_hardware_test": "NOT_RUN",
+  "formal_gate": "HOLD"
+}
