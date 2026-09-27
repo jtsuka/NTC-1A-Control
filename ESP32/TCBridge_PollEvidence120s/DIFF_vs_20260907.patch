@@ -1,0 +1,184 @@
+--- ESP32_TC_Bridge_RTOS_Final_Silent_BootMagic_20260907.ino
++++ TCBridge_PollEvidence120s.ino
+@@ -1,5 +1,6 @@
+ /*
+   ESP32-S3 TC Bridge RTOS — Final Integrated Build
++  Diagnostic derivative: TCBridge_PollEvidence120s (120 s Silent Evidence)
+   =================================================
+   Directory: ESP32_TC_Bridge_RTOS_Final_Silent_BootMagic_20260907
+ 
+@@ -73,6 +74,9 @@
+ #include "tc_packet_phase3.hpp"
+ #include "tc_message.hpp"
+ 
++// Required for Arduino .ino auto-generated function prototypes.
++struct TcEvidenceSnapshot;
++
+ // ======================================================
+ // Silent build switch
+ // ======================================================
+@@ -95,6 +99,17 @@
+ // also enabling USB CDC Serial output (which would itself perturb the
+ // timing being measured). Must be 0 for production freeze.
+ #define TC_POLL_DIAG_ENABLED 1
++
++// ======================================================
++// 120 s Silent Evidence test (diagnostic build only)
++// Base: ESP32_TC_Bridge_RTOS_Final_Silent_BootMagic_20260907
++// During the 120 s window, USB CDC emits nothing.
++// Core0 snapshots counters at start/end; Core1 prints one summary only
++// after the end snapshot is fixed.
++// ======================================================
++#define TC_EVIDENCE_TEST_ENABLED 1
++static constexpr uint32_t TC_EVIDENCE_DURATION_MS = 120000UL;
++
+ 
+ // ======================================================
+ // Pin assignment (unchanged, identical in both source branches)
+@@ -906,6 +921,90 @@
+ }
+ #endif // TC_POLL_DIAG_ENABLED
+ 
++#if TC_EVIDENCE_TEST_ENABLED
++struct TcEvidenceSnapshot {
++  uint32_t pollMaxIntervalUs;
++  uint32_t pollOver1000Count;
++  uint32_t c1IsrEdges;
++  uint32_t c1EdgeOverflow;
++  uint32_t c2DecodedBytes;
++  uint32_t c2DecodeErrors;
++  uint32_t c2TimingErrors;
++  uint32_t c2LocalEdgeOverflow;
++  uint32_t c3ValidFrames;
++  uint32_t c3FrameErrors;
++  uint32_t c3SyncMisses;
++  uint32_t c3Resyncs;
++  uint32_t c4QueuedFrames;
++  uint32_t c4QueueDrops;
++};
++
++static TcEvidenceSnapshot gEvidenceStart{};
++static TcEvidenceSnapshot gEvidenceEnd{};
++static uint32_t gEvidenceStartMs = 0;
++static std::atomic<bool> gEvidenceReady{false};
++static std::atomic<bool> gEvidencePrinted{false};
++
++static void captureEvidenceSnapshot(TcEvidenceSnapshot& s) {
++#if TC_POLL_DIAG_ENABLED
++  s.pollMaxIntervalUs = gMaxPollIntervalUs.load();
++  s.pollOver1000Count = gPollOverThresholdCount.load();
++#else
++  s.pollMaxIntervalUs = 0;
++  s.pollOver1000Count = 0;
++#endif
++
++  portENTER_CRITICAL(&c1RingMux);
++  s.c1IsrEdges = c1IsrEdgeCount;
++  s.c1EdgeOverflow = c1EdgeOverflowCount;
++  portEXIT_CRITICAL(&c1RingMux);
++
++  s.c2DecodedBytes = c2DecodedBytes;
++  s.c2DecodeErrors = c2DecodeErrors;
++  s.c2TimingErrors = c2TimingErrors;
++  s.c2LocalEdgeOverflow = c2LocalEdgeOverflow;
++  s.c3ValidFrames = c3ValidFrames;
++  s.c3FrameErrors = c3FrameErrors;
++  s.c3SyncMisses = c3SyncMisses;
++  s.c3Resyncs = c3Resyncs;
++  s.c4QueuedFrames = c4QueuedFrames;
++  s.c4QueueDrops = c4QueueDrops;
++}
++
++static void printEvidenceSummaryOnce() {
++  if (!gEvidenceReady.load() || gEvidencePrinted.exchange(true)) return;
++
++  const TcEvidenceSnapshot& a = gEvidenceStart;
++  const TcEvidenceSnapshot& b = gEvidenceEnd;
++
++  Serial.println();
++  Serial.println("=== TC SECOND POLL EVIDENCE / 120s SILENT WINDOW ===");
++  Serial.println("NOTE: summary emitted only AFTER end snapshot was fixed.");
++  Serial.print("duration_ms="); Serial.println(TC_EVIDENCE_DURATION_MS);
++  Serial.print("poll_max_start_us="); Serial.println(a.pollMaxIntervalUs);
++  Serial.print("poll_max_end_us="); Serial.println(b.pollMaxIntervalUs);
++  Serial.print("poll_over1000_start="); Serial.println(a.pollOver1000Count);
++  Serial.print("poll_over1000_end="); Serial.println(b.pollOver1000Count);
++  Serial.print("poll_over1000_delta="); Serial.println(b.pollOver1000Count - a.pollOver1000Count);
++  Serial.print("c1_isr_edges_delta="); Serial.println(b.c1IsrEdges - a.c1IsrEdges);
++  Serial.print("c1_edge_overflow_start="); Serial.println(a.c1EdgeOverflow);
++  Serial.print("c1_edge_overflow_end="); Serial.println(b.c1EdgeOverflow);
++  Serial.print("c1_edge_overflow_delta="); Serial.println(b.c1EdgeOverflow - a.c1EdgeOverflow);
++  Serial.print("c2_decoded_bytes_delta="); Serial.println(b.c2DecodedBytes - a.c2DecodedBytes);
++  Serial.print("c2_decode_errors_delta="); Serial.println(b.c2DecodeErrors - a.c2DecodeErrors);
++  Serial.print("c2_timing_errors_delta="); Serial.println(b.c2TimingErrors - a.c2TimingErrors);
++  Serial.print("c2_local_edge_overflow_delta="); Serial.println(b.c2LocalEdgeOverflow - a.c2LocalEdgeOverflow);
++  Serial.print("c3_valid_frames_delta="); Serial.println(b.c3ValidFrames - a.c3ValidFrames);
++  Serial.print("c3_frame_errors_delta="); Serial.println(b.c3FrameErrors - a.c3FrameErrors);
++  Serial.print("c3_sync_misses_delta="); Serial.println(b.c3SyncMisses - a.c3SyncMisses);
++  Serial.print("c3_resyncs_delta="); Serial.println(b.c3Resyncs - a.c3Resyncs);
++  Serial.print("c4_queued_frames_delta="); Serial.println(b.c4QueuedFrames - a.c4QueuedFrames);
++  Serial.print("c4_queue_drops_delta="); Serial.println(b.c4QueueDrops - a.c4QueueDrops);
++  Serial.println("=== END EVIDENCE ===");
++}
++#endif // TC_EVIDENCE_TEST_ENABLED
++
++
+ // ======================================================
+ // C1 edge processing time budget (per loop iteration, taskTcBus only)
+ // ------------------------------------------------------
+@@ -929,7 +1028,8 @@
+ // setup / loop
+ // ======================================================
+ void setup() {
+-#if C4_USB_DEBUG
++#if C4_USB_DEBUG || TC_EVIDENCE_TEST_ENABLED
++  // Evidence build initializes USB CDC but emits nothing during the 120 s window.
+   Serial.begin(115200);
+ #endif
+ 
+@@ -1223,7 +1323,11 @@
+     }
+ #endif
+ 
+-    vTaskDelay(1);
++  #if TC_EVIDENCE_TEST_ENABLED
++    printEvidenceSummaryOnce();
++#endif
++
++  vTaskDelay(1);
+   }
+ }
+ 
+@@ -1240,6 +1344,13 @@
+ 
+   static TcMainTx tcMainTx;
+   tcMainTx.begin(PIN_TC_TX_TRIG);
++
++#if TC_EVIDENCE_TEST_ENABLED
++  // Start of the formal Silent measurement window.
++  captureEvidenceSnapshot(gEvidenceStart);
++  gEvidenceStartMs = millis();
++#endif
++
+ 
+   // SAFE state, held for the lifetime of taskTcBus() (outside the loop).
+   // Owned/mutated by Core0 only; never shared with Core1 or any atomic.
+@@ -1487,7 +1598,17 @@
+     // Step 9/10: idle only if there was truly no work this iteration.
+     // TX busy must NEVER see a vTaskDelay() here.
+     // --------------------------------------------------------
+-    const bool idleThisLoop =
++  
++#if TC_EVIDENCE_TEST_ENABLED
++  // Freeze end evidence before Core1 is allowed to print anything.
++  if (!gEvidenceReady.load() &&
++      (uint32_t)(millis() - gEvidenceStartMs) >= TC_EVIDENCE_DURATION_MS) {
++    captureEvidenceSnapshot(gEvidenceEnd);
++    gEvidenceReady.store(true);
++  }
++#endif
++
++  const bool idleThisLoop =
+         !tcMainTx.busy() &&
+         !c1RingHasPending() &&
+         !piCmdHandled &&
