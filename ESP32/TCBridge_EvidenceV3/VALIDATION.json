@@ -1,0 +1,36 @@
+{
+  "python_syntax_compile": "PASS",
+  "pyserial_runtime_import": "NOT_TESTED in artifact environment; Pi already uses pyserial for V2",
+  "arduino_compile": "NOT_RUN (arduino-cli unavailable in this environment)",
+  "production_packet_rule": "checksum7=sum(payload)&0x7F; USE_LSB=False",
+  "command_packets": {
+    "SEND": "02 00 00 00 00 02",
+    "RESET": "01 00 00 00 00 00 00 00 00 00 00 01",
+    "SENS.ADJ": "03 00 00 00 00 00 00 03"
+  },
+  "esp_structural_checks": {
+    "version_02": true,
+    "payload_196": true,
+    "frame_204": true,
+    "counter_24": true,
+    "busy_poll_split": true,
+    "overrun_snapshot": true,
+    "window_reset": true,
+    "reset_started": true,
+    "send_started": true,
+    "sens_started": true,
+    "done_counter": true,
+    "abort_done_counter": true,
+    "usb_serial_guarded": true,
+    "end_guard_preserved": true
+  },
+  "logger_structural_checks": {
+    "schedule_send_20": true,
+    "schedule_reset_50": true,
+    "schedule_sens_80": true,
+    "checksum7": true,
+    "default_port": true,
+    "version_02": true,
+    "counter_count_24": true
+  }
+}
