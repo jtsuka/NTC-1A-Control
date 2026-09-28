@@ -1,0 +1,24 @@
+﻿Formatter v3.2 OrderNoFilter TEST RESULT
+Date: 2026-09-23 09:20:12
+Input: C:\HPDB\外注課納期管理_NoJOIN想定_全937件_App292_TEST_20260921.csv
+v3.1 : C:\HPDB\Format-KonyuCSV_RFC_yyyyMMdd_v3.1.ps1
+v3.2 : C:\HPDB\Format-KonyuCSV_RFC_yyyyMMdd_v3.2_OrderNoFilter_REVIEW.ps1
+SourceRows: 937
+OrderNoPresent: 327
+OrderNoMissing: 610
+
+T01 PASS : v3.1 Exit=0, v3.2 Exit=0, byte-identical=True
+T02 PASS : 入力=20, 出力=20, Exit=0
+T03 PASS : 期待=327, 出力=327, 除外期待=610, Exit=0
+T04 PASS : 期待=937, 出力=937, Exit=0
+T05 PASS : Exit=1, 出力未作成/0byte=True
+T06 PASS : 列=手配日, 入力=26-09-23, 出力=2026-09-23, Exit=0
+T07 PASS : Exit=0, 出力=1, 商品名修復=True, 手配書番号維持=True
+T08 PASS : NoBOM=True, CRLF=True, RFC全項目quote/roundtrip=True, Exit=0
+T09 PASS : Exit=1, 入力コピー不変=True
+T10 PASS : 入力=937, 再計数あり=327, 空欄=610, 出力=327, Exit=0
+T11 PASS : 入力=2（有効1+全角空白1）, 出力=1, Exit=0
+
+PASS=11
+FAIL=0
+OVERALL=PASS
