@@ -1,0 +1,78 @@
+{
+  "tool": {
+    "name": "tc106_la_analyzer",
+    "version": "1.1.0",
+    "sha256": "fec62c08f841fe44fbf0e167c2e11902b6fa6294b1b1534aea68510267c557b3"
+  },
+  "input": {
+    "path": "preflight.sr",
+    "sha256": "592c0cd6cbb86589659b8cc4a8ce3c3034d5a39e4b390aa5980adc92d8940dbb",
+    "size_bytes": 216020
+  },
+  "container": {
+    "sigrok_version": "0.5.2",
+    "version_file": "2",
+    "samplerate_hz": 1000000.0,
+    "unitsize": 1,
+    "total_probes": 8,
+    "probes": {
+      "D0": 0,
+      "D1": 1
+    },
+    "chunks": 20,
+    "raw_samples": 200000000,
+    "duration_s": 200.0
+  },
+  "channels": {
+    "D0": {
+      "edges": 7142,
+      "rising": 3571,
+      "falling": 3571,
+      "initial_level": 1,
+      "first_edge_ms": 20.072,
+      "last_edge_s": 199.998627,
+      "max_edge_interval_ms": 52.744,
+      "min_edge_interval_ms": 3.275
+    },
+    "D1": {
+      "edges": 7142,
+      "rising": 3571,
+      "falling": 3571,
+      "initial_level": 1,
+      "first_edge_ms": 20.072,
+      "last_edge_s": 199.998627,
+      "max_edge_interval_ms": 52.744,
+      "min_edge_interval_ms": 3.275
+    }
+  },
+  "compare": {
+    "a": "D0",
+    "b": "D1",
+    "edges_a": 7142,
+    "edges_b": 7142,
+    "delta_samples_b_minus_a": {
+      "0": 6611,
+      "1": 531
+    },
+    "max_abs_delta_samples": 1
+  },
+  "direction_b_decode": {
+    "D1": {
+      "frames": 594,
+      "payloads": {
+        "00 00 00 00 00": 594
+      },
+      "sync_misses": 0,
+      "bytes_decoded": 3570,
+      "byte_interval_ms_min_max": [
+        55.969,
+        56.054
+      ],
+      "byte_interval_warnings": 0,
+      "frame_interval_ms_min_max": [
+        335.886,
+        336.223
+      ]
+    }
+  }
+}

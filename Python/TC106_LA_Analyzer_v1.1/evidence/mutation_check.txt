@@ -1,0 +1,31 @@
+TX edge tolerance 165 -> 500 us                                KILLED
+LA-09 upper bound ignores boundary bands                       KILLED
+LA-09 lower bound wrongly widened                              KILLED
+wire correction sign flipped                                   KILLED
+gap threshold 505 -> 5000 ms                                   KILLED
+TX frames never separated (gap = huge)                         KILLED
+offset spread limit 10 -> 1000 ms                              KILLED
+logger start-delay check removed                               KILLED
+post-RESULT margin check removed                               KILLED
+edge-count-mismatch ignored in LA-05                           KILLED
+slot-count (n_obs != n_exp) check removed                      SURVIVED (equivalent mutant: redundant by construction: bytes==template and edge count==template imply identical slot sequence, hence identical n_exp; kept as defence in depth)
+undeclared model treated as PASS path (uses WIRE_CORRECTED)    KILLED
+byte-start (adjacent) spacing check disabled                   KILLED
+byte-start check made cumulative (would gate on LA clock error) KILLED
+boundary margin 10 ms -> 0                                     KILLED
+boundary margin drifts back to 7 ms (spec sync guard)          KILLED
+V3-CMD: exact packet comparison removed                        KILLED
+V3-CMD: checksum7 recomputation removed                        KILLED
+V3-CMD: logger checksum7_ok flag ignored                       KILLED
+V3-CMD: duplicate command allowed                              KILLED
+expected RESET packet changed                                  KILLED
+Direction-B guard threshold 26 ms -> 60 ms                     KILLED
+marker (cmd/data) bit ignored in expected bytes                KILLED
+expected SEND byte changed (F3 -> F4)                          KILLED
+Direction-B footer value changed                               KILLED
+edge extraction: rising/falling search swapped                 KILLED
+chunk boundary: level not carried across chunks                KILLED
+unitsize lane selection ignored                                KILLED
+V3 delta rule: overrun must be 0 -> 5                          KILLED
+
+mutations: 29  killed: 28  survived(blind spots): 0  equivalent: 1

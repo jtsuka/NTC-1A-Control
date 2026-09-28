@@ -1,0 +1,94 @@
+tool: tc106_la_analyzer 1.1.0   sha256: fec62c08f841fe44fbf0e167c2e11902b6fa6294b1b1534aea68510267c557b3
+python: Python 3.12.3
+
+### [1] unittest: unit + small .sr + real 200M preflight .sr + real 9/27 Evidence JSON ###
+test_a_phase_with_edges_in_both_bands_exists (test_tc106_la_analyzer.TestBoundaryBands.test_a_phase_with_edges_in_both_bands_exists) ... ok
+test_tolerance_is_inclusive_and_one_more_fails (test_tc106_la_analyzer.TestBoundaryBands.test_tolerance_is_inclusive_and_one_more_fails) ... ok
+test_truth_is_always_inside_the_band_for_every_phase (test_tc106_la_analyzer.TestBoundaryBands.test_truth_is_always_inside_the_band_for_every_phase)
+Property: the true ESP count never falls outside [E_min, E_max] when ... ok
+test_edge_intervals_ok_but_byte_start_spacing_off_is_caught (test_tc106_la_analyzer.TestClockAndDrift.test_edge_intervals_ok_but_byte_start_spacing_off_is_caught) ... ok
+test_la_clock_error_of_200ppm_does_not_fail_a_good_run (test_tc106_la_analyzer.TestClockAndDrift.test_la_clock_error_of_200ppm_does_not_fail_a_good_run)
+LA sample clock 200 ppm off: all times scale.  Adjacent byte-start ... ok
+test_broken_inputs_are_exit_3_not_1 (test_tc106_la_analyzer.TestEndToEndCLI.test_broken_inputs_are_exit_3_not_1) ... ok
+test_formal_without_model_is_usage_error (test_tc106_la_analyzer.TestEndToEndCLI.test_formal_without_model_is_usage_error) ... ok
+ok
+ok
+test_swapped_channels_do_not_pass (test_tc106_la_analyzer.TestEndToEndCLI.test_swapped_channels_do_not_pass) ... ok
+test_truncated_frame_exit_1 (test_tc106_la_analyzer.TestEndToEndCLI.test_truncated_frame_exit_1) ... ok
+test_tx_probed_at_gate_needs_invert_flag (test_tc106_la_analyzer.TestEndToEndCLI.test_tx_probed_at_gate_needs_invert_flag) ... ok
+test_undeclared_model_exit_2 (test_tc106_la_analyzer.TestEndToEndCLI.test_undeclared_model_exit_2) ... ok
+test_unknown_channel_name_is_exit_3 (test_tc106_la_analyzer.TestEndToEndCLI.test_unknown_channel_name_is_exit_3) ... ok
+test_150s_capture_end_to_end (test_tc106_la_analyzer.TestFullSize.test_150s_capture_end_to_end) ... skipped 'set TC106_FULLSIZE=1'
+test_edge_interval_rule_boundary (test_tc106_la_analyzer.TestGoodRuns.test_edge_interval_rule_boundary) ... ok
+test_good_ts_after_flush_wire_elapsed (test_tc106_la_analyzer.TestGoodRuns.test_good_ts_after_flush_wire_elapsed) ... ok
+test_good_ts_at_write_start (test_tc106_la_analyzer.TestGoodRuns.test_good_ts_at_write_start) ... ok
+test_wrong_model_shows_larger_spread_but_is_reported (test_tc106_la_analyzer.TestGoodRuns.test_wrong_model_shows_larger_spread_but_is_reported) ... ok
+test_capture_too_short_for_post_margin (test_tc106_la_analyzer.TestInjectedFaults.test_capture_too_short_for_post_margin) ... ok
+test_esp_counter_too_high (test_tc106_la_analyzer.TestInjectedFaults.test_esp_counter_too_high) ... ok
+test_esp_counter_too_low (test_tc106_la_analyzer.TestInjectedFaults.test_esp_counter_too_low) ... ok
+test_extra_tx_frame (test_tc106_la_analyzer.TestInjectedFaults.test_extra_tx_frame) ... ok
+test_glitch_inside_frame_is_caught_by_edge_count (test_tc106_la_analyzer.TestInjectedFaults.test_glitch_inside_frame_is_caught_by_edge_count) ... ok
+test_late_edge_300us (test_tc106_la_analyzer.TestInjectedFaults.test_late_edge_300us) ... ok
+test_logger_started_too_late (test_tc106_la_analyzer.TestInjectedFaults.test_logger_started_too_late) ... ok
+test_missing_sens_adj (test_tc106_la_analyzer.TestInjectedFaults.test_missing_sens_adj) ... ok
+test_offset_spread_over_10ms (test_tc106_la_analyzer.TestInjectedFaults.test_offset_spread_over_10ms) ... ok
+test_rx_gap_700ms (test_tc106_la_analyzer.TestInjectedFaults.test_rx_gap_700ms) ... ok
+test_short_glitch_on_tx_line (test_tc106_la_analyzer.TestInjectedFaults.test_short_glitch_on_tx_line) ... ok
+test_truncated_reset (test_tc106_la_analyzer.TestInjectedFaults.test_truncated_reset) ... ok
+test_wrong_byte (test_tc106_la_analyzer.TestInjectedFaults.test_wrong_byte) ... ok
+test_band_width_is_offset_spread_plus_two_margins (test_tc106_la_analyzer.TestMarginPinnedToSpec.test_band_width_is_offset_spread_plus_two_margins) ... ok
+test_constant_is_10_ms (test_tc106_la_analyzer.TestMarginPinnedToSpec.test_constant_is_10_ms) ... ok
+test_end_band_is_start_band_shifted_by_duration (test_tc106_la_analyzer.TestMarginPinnedToSpec.test_end_band_is_start_band_shifted_by_duration) ... ok
+test_report_records_the_margin (test_tc106_la_analyzer.TestMarginPinnedToSpec.test_report_records_the_margin) ... ok
+test_bad_checksum_fails (test_tc106_la_analyzer.TestPiCommandPackets.test_bad_checksum_fails) ... ok
+test_case_and_spacing_are_normalised (test_tc106_la_analyzer.TestPiCommandPackets.test_case_and_spacing_are_normalised) ... ok
+test_duplicate_send_fails (test_tc106_la_analyzer.TestPiCommandPackets.test_duplicate_send_fails) ... ok
+test_good_run_passes (test_tc106_la_analyzer.TestPiCommandPackets.test_good_run_passes) ... ok
+test_logger_flag_lying_is_caught_by_recomputation (test_tc106_la_analyzer.TestPiCommandPackets.test_logger_flag_lying_is_caught_by_recomputation) ... ok
+test_logger_self_check_false_while_bytes_look_right_fails (test_tc106_la_analyzer.TestPiCommandPackets.test_logger_self_check_false_while_bytes_look_right_fails) ... ok
+test_missing_scripted_commands_is_unresolved (test_tc106_la_analyzer.TestPiCommandPackets.test_missing_scripted_commands_is_unresolved) ... ok
+test_nonzero_data_with_valid_checksum_fails (test_tc106_la_analyzer.TestPiCommandPackets.test_nonzero_data_with_valid_checksum_fails) ... ok
+ok
+test_container (test_tc106_la_analyzer.TestRealPreflightFile.test_container) ... ok
+test_d0_d1_delta_histogram (test_tc106_la_analyzer.TestRealPreflightFile.test_d0_d1_delta_histogram) ... ok
+test_edges (test_tc106_la_analyzer.TestRealPreflightFile.test_edges) ... ok
+test_independent_direction_b_decoder_on_real_nano_waveform (test_tc106_la_analyzer.TestRealPreflightFile.test_independent_direction_b_decoder_on_real_nano_waveform) ... ok
+test_edge_exactly_on_chunk_boundary (test_tc106_la_analyzer.TestSrContainer.test_edge_exactly_on_chunk_boundary) ... ok
+test_level_continues_across_chunks_without_false_edge (test_tc106_la_analyzer.TestSrContainer.test_level_continues_across_chunks_without_false_edge) ... ok
+test_samplerate_parsing (test_tc106_la_analyzer.TestSrContainer.test_samplerate_parsing) ... ok
+test_unitsize_2_high_channel (test_tc106_la_analyzer.TestSrContainer.test_unitsize_2_high_channel) ... ok
+test_unknown_channel_is_an_error (test_tc106_la_analyzer.TestSrContainer.test_unknown_channel_is_an_error) ... ok
+test_expected_bytes_are_the_specified_ones (test_tc106_la_analyzer.TestTemplates.test_expected_bytes_are_the_specified_ones) ... ok
+test_last_visible_edge_and_edge_counts (test_tc106_la_analyzer.TestTemplates.test_last_visible_edge_and_edge_counts) ... ok
+test_nominal_lengths (test_tc106_la_analyzer.TestTemplates.test_nominal_lengths) ... ok
+test_all_three_frames_identified_with_exact_bytes (test_tc106_la_analyzer.TestTxFrameDecoder.test_all_three_frames_identified_with_exact_bytes) ... ok
+test_byte_start_spacing_is_42_9ms (test_tc106_la_analyzer.TestTxFrameDecoder.test_byte_start_spacing_is_42_9ms) ... ok
+test_lever_full_frame_length_is_not_used (test_tc106_la_analyzer.TestTxFrameDecoder.test_lever_full_frame_length_is_not_used)
+last visible edge is far shorter than the nominal length; the tool ... ok
+test_formal_requires_120s (test_tc106_la_analyzer.TestUnresolvedNotPass.test_formal_requires_120s) ... ok
+test_model_not_declared (test_tc106_la_analyzer.TestUnresolvedNotPass.test_model_not_declared) ... ok
+test_timeout_json_without_evidence (test_tc106_la_analyzer.TestUnresolvedNotPass.test_timeout_json_without_evidence) ... ok
+
+----------------------------------------------------------------------
+Ran 63 tests in 2.015s
+
+OK (skipped=1)
+
+### [2] full-size 150 s / 150,000,000 samples through the CLI with --formal ###
+
+[fullsize] generate 0.4s, analyze 0.3s, exit=0, samples=150,000,000
+ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.642s
+
+OK
+
+### [3] real inputs that must NOT pass ###
+real .sr (no TX frames) + real 9/27 JSON: exit=1  overall: OVERALL (automated items): HAS_FAIL   [LA-10 is manual]
+V3-01    PASS          magic/version/length/checksum/duration flags=[True, True, True, True, True] version=2 duration_ms=120000
+V3-CMD   PASS          SEND/RESET/SENS.ADJ packets exact + checksum7 valid
+LA-04    FAIL          SEND=0 RESET=0 SENS.ADJ=0 unknown/extra events=1 (required 1/1/1/0)
+real .sr + real 9/28 timeout JSON: exit=1
+V3-01    UNRESOLVED    Evidence RESULT not received in this JSON
+V3-CMD   PASS          SEND/RESET/SENS.ADJ packets exact + checksum7 valid
