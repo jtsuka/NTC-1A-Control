@@ -1,0 +1,129 @@
+--- ProcessSheetRows_20260925_r15_10_REV5_1_2CSV_FIX9_CANDIDATE.ps1
++++ ProcessSheetRows_20260929_r15_10_REV5_1_2CSV_FIX10_BASELINE_GATE_CANDIDATE.ps1
+@@ -342,9 +342,9 @@
+ )
+ Set-StrictMode -Version 2.0
+ $ErrorActionPreference = "Stop"
+ # バージョン管理：改修のたびにこの値を更新する
+-$ScriptVersion = "2026-09-25-r15.10-REV5.1-2CSV-FIX9-CANDIDATE"
++$ScriptVersion = "2026-09-29-r15.10-REV5.1-2CSV-FIX10-BASELINE-GATE-CANDIDATE"
+ $excel = $null
+ $workbook = $null
+ $varExcel = $null
+ $varWorkbook = $null
+@@ -1099,26 +1099,33 @@
+         try{$sheet=$Workbook.Worksheets.Item($SheetName)}
+         catch{$sheet=$Workbook.Worksheets.Add();$sheet.Name=$SheetName;$created=$true}
+         if($created){
+             $headers=@("CandidateKey","Code","SourceType","SourceLabel","DestinationSheet","DestinationRow","RegisteredAt","State","Note")
+-            for($i=0;$i -lt $headers.Count;$i++){$sheet.Cells.Item(2,$i+1).Value2=$headers[$i]}
++            for($i=0;$i -lt $headers.Count;$i++){
++                $hc=$null
++                try{
++                    $hc=$sheet.Cells.Item(2,$i+1)
++                    $hc.NumberFormat="@"
++                    $hc.Value2=[string]$headers[$i]
++                } finally { Release-Com $hc }
++            }
+             $sheet.Cells.Item(1,10).Value2=""
+         }
+         $used=$sheet.UsedRange;$next=[int]$used.Row+[int]$used.Rows.Count
+         if($next -lt 3){$next=3}
+         $added=0
+         foreach($item in $Items){
+             $key=Normalize-NewProductCode $item.CandidateKey
+             if([string]::IsNullOrWhiteSpace($key) -or $existing.Keys.Contains($key)){continue}
+-            $sheet.Cells.Item($next,1).Value2=$key
+-            $sheet.Cells.Item($next,2).Value2=$item.Code
+-            $sheet.Cells.Item($next,3).Value2=$item.SourceType
+-            $sheet.Cells.Item($next,4).Value2=$item.SourceLabel
+-            if($null -ne $item.PSObject.Properties["DestinationSheet"]){$sheet.Cells.Item($next,5).Value2=$item.DestinationSheet}
++            $sheet.Cells.Item($next,1).Value2=[string]$key
++            $sheet.Cells.Item($next,2).Value2=[string]$item.Code
++            $sheet.Cells.Item($next,3).Value2=[string]$item.SourceType
++            $sheet.Cells.Item($next,4).Value2=[string]$item.SourceLabel
++            if($null -ne $item.PSObject.Properties["DestinationSheet"]){$sheet.Cells.Item($next,5).Value2=[string]$item.DestinationSheet}
+             if($null -ne $item.PSObject.Properties["DestinationRow"]){$sheet.Cells.Item($next,6).Value2=[double]$item.DestinationRow}
+             $sheet.Cells.Item($next,7).Value2=[double](Get-Date).ToOADate(); $sheet.Cells.Item($next,7).NumberFormat="yyyy-mm-dd hh:mm:ss"
+-            $sheet.Cells.Item($next,8).Value2=$State
+-            $sheet.Cells.Item($next,9).Value2=$Note
++            $sheet.Cells.Item($next,8).Value2=[string]$State
++            $sheet.Cells.Item($next,9).Value2=[string]$Note
+             [void]$existing.Keys.Add($key);$next++;$added++
+         }
+         return $added
+     } finally { Release-Com $used; Release-Com $sheet }
+@@ -3214,8 +3221,9 @@
+     Write-Log "INFO" ("DiscontinuedTrackingPath={0}" -f $DiscontinuedTrackingPath)
+     Write-Log "INFO" ("SkipFormulaRestore={0}" -f [bool]$SkipFormulaRestore)
+     Write-Log "INFO" ("MaxFormulaSearchRows={0}" -f $MaxFormulaSearchRows)
+     Write-Log "INFO" ("MaxNewProductMoves={0}" -f $MaxNewProductMoves)
++    Write-Log "INFO" ("InitializeNewProductBaseline={0}" -f [bool]$InitializeNewProductBaseline)
+     Write-Log "INFO" ("BackfillMode={0}" -f [bool]$BackfillMode)
+     Write-Log "INFO" ("LogRetentionDays={0}" -f $LogRetentionDays)
+     if ($null -ne $logTrimResult -and $null -ne $logTrimResult.Cutoff) {
+         Write-Log "INFO" ("LogRetention CutoffDate={0:yyyy-MM-dd} RemovedLines={1}" -f $logTrimResult.Cutoff, $logTrimResult.RemovedLines)
+@@ -3739,15 +3747,28 @@
+     $phase3RawCandidates = @()
+     $phase3Preflight = @()
+     $phase3Eligible = @()
+     $phase3CandidateCsvPath = $null
++    $phase3SkipReason = ""
++    $pendingPhase3InstructionCount = 0
++    $twoCsvBaselineNotInitialized = (
++        $newProductFeatureEnabled -and
++        (-not $newProductFeatureError) -and
++        [int]$newProductConfig.DatasetCount -eq 2 -and
++        ($null -eq $historyState -or -not $historyState.BaselineInitialized)
++    )
+     $phase3FeatureEnabled = (
+         $newProductFeatureEnabled -and
+         (-not $newProductFeatureError)
+     )
+-    if ($phase3FeatureEnabled -and [int]$newProductConfig.DatasetCount -eq 2 -and ($null -eq $historyState -or -not $historyState.BaselineInitialized)) {
++    if ($phase3FeatureEnabled -and $twoCsvBaselineNotInitialized) {
++        # Baseline未初期化中でも、人が移動先を入力した事実だけはREAD ONLYで可視化する。
++        $pendingPhase3InstructionCount = @(Get-Phase3StagingCandidates -Workbook $workbook -SheetName $NewCodeSheetName).Count
++        if ($pendingPhase3InstructionCount -gt 0) {
++            Write-Log "WARN" ("Phase3PendingInstructions={0} BaselineInitialized=False Action=SKIP_UNTIL_BASELINE_INITIALIZED" -f $pendingPhase3InstructionCount)
++        }
+         $phase3FeatureEnabled = $false
+-        Write-Log "SKIP" "Phase3: 2CSV Baseline未初期化のためfail-closed SKIPします。"
++        $phase3SkipReason = "2CSV Baseline未初期化"
+     }
+ 
+     if ($phase3FeatureEnabled) {
+         try {
+@@ -3823,9 +3844,14 @@
+             throw "Phase3 preflight failed: $($_.Exception.Message)"
+         }
+     }
+     else {
+-        Write-Log "SKIP" ("Phase3: 新規商品コード機能が無効/ERRORのためPhase3もSKIPします。Enabled={0} FeatureError={1}" -f $newProductFeatureEnabled, $newProductFeatureError)
++        if (-not [string]::IsNullOrWhiteSpace($phase3SkipReason)) {
++            Write-Log "SKIP" ("Phase3: {0} のためfail-closed SKIPします。Enabled={1} FeatureError={2}" -f $phase3SkipReason, $newProductFeatureEnabled, $newProductFeatureError)
++        }
++        else {
++            Write-Log "SKIP" ("Phase3: 新規商品コード機能が無効/ERRORのためPhase3もSKIPします。Enabled={0} FeatureError={1}" -f $newProductFeatureEnabled, $newProductFeatureError)
++        }
+     }
+ 
+     Write-Log "INFO" ("NumericSheets={0}" -f (($sheetNames | Sort-Object {[int]$_}) -join ","))
+     Write-Log "INFO" ("Candidates={0}" -f $candidates.Count)
+@@ -3884,9 +3910,15 @@
+             throw $ex
+         }
+         $baselineInitializationRequested = ($InitializeNewProductBaseline -and $newProductFeatureEnabled -and (-not $newProductFeatureError) -and [int]$newProductConfig.DatasetCount -eq 2)
+         $hasBaselineChanges = ($baselineInitializationRequested -and ($null -eq $historyState -or -not $historyState.BaselineInitialized))
+-        $hasNewProductChanges = ($newProductFeatureEnabled -and (-not $newProductFeatureError) -and ($newProductCandidates.Count -gt 0))
++        # REV5.1設計: Baseline未完了の2CSV通常UpdateではPhase1 staging書込も開始しない。
++        # Auditでの候補検出は維持し、Baseline Initializeは明示スイッチでのみ実行する。
++        $allowNewProductStagingWrite = (-not $twoCsvBaselineNotInitialized)
++        $hasNewProductChanges = ($newProductFeatureEnabled -and (-not $newProductFeatureError) -and ($newProductCandidates.Count -gt 0) -and $allowNewProductStagingWrite)
++        if ($twoCsvBaselineNotInitialized -and (-not $baselineInitializationRequested) -and $newProductCandidates.Count -gt 0) {
++            Write-Log "SKIP" ("NewProductStaging: 2CSV Baseline未初期化のためUpdate書込をSKIPします。CandidateCount={0} Action=InitializeBaselineFirst" -f $newProductCandidates.Count)
++        }
+         $hasPhase3Changes = ($phase3FeatureEnabled -and ($phase3Eligible.Count -gt 0))
+         $hasBaseWorkbookChanges = (($candidates.Count -gt 0) -or ($unitPriceFormulaFixes.Count -gt 0) -or $hasNewProductChanges -or $hasPhase3Changes -or $hasBaselineChanges)
+         $runLegacyGap = ($LegacyGapRepairMode -ne "Off")
+         $runLegacyMFlag = ($LegacyMFlagRepairMode -ne "Off")

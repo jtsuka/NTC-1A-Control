@@ -1,0 +1,206 @@
+=== 外注鉄 2026-09-29 ===
+2026-09-29 02:14:57 [INFO] Start
+2026-09-29 02:14:57 [INFO] ScriptVersion=2026-09-25-r15.10-REV5.1-2CSV-FIX9-CANDIDATE
+2026-09-29 02:14:57 [INFO] Site=外注鉄
+2026-09-29 02:14:57 [INFO] Mode=Update
+2026-09-29 02:14:57 [INFO] MaxNewProductMoves=200
+2026-09-29 02:14:57 [INFO] BackfillMode=False
+2026-09-29 02:15:01 [INFO] SiteConfig loaded. Site=外注鉄 UnitPriceSheet=外注単価 RestoreG=True RestoreI=True RestoreJ=True RestoreK=True RestoreO=True NoOrderEnabled=True NoOrderKeyword=手配不可
+2026-09-29 02:16:12 [PASS] NewProductDatasetConfigValidated DatasetCount=2 MainRange=4000-7999 SubRange=3-3999
+2026-09-29 02:16:29 [INFO] NewProductStaging: 既存「追加新規商品コード」コード数=3888
+2026-09-29 02:17:19 [INFO] NewProductBaselineCandidates=3368 BaselineInitialized=False
+2026-09-29 02:17:19 [INFO] NewProductStaging: ManagedCodes=3206 未管理新規候補=0 バーコード重複候補=0
+2026-09-29 02:17:19 [SKIP] Phase3: 2CSV Baseline未初期化のためfail-closed SKIPします。
+2026-09-29 02:17:19 [SKIP] Phase3: 新規商品コード機能が無効/ERRORのためPhase3もSKIPします。Enabled=True FeatureError=False
+2026-09-29 02:17:21 [INFO] Phase3Candidates Raw=0 Eligible=0 MaxNewProductMoves=200
+2026-09-29 02:17:44 [INFO] LegacyGapPattern Site=外注鉄 Sheet=1 Col=O Samples=10 Mismatches=0 Safe=True
+2026-09-29 02:17:44 [INFO] LegacyGapPattern Site=外注鉄 Sheet=1 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 02:17:44 [WARN] LegacyGapBlock Site=外注鉄 Sheet=1 Rows=3-12 Col=K Action=ManualReview
+2026-09-29 02:17:44 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=1 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 02:17:44 [INFO] LegacyGapPattern Site=外注鉄 Sheet=2 Col=O Samples=34 Mismatches=0 Safe=True
+2026-09-29 02:17:44 [INFO] LegacyGapPattern Site=外注鉄 Sheet=2 Col=K Samples=34 Mismatches=0 Safe=True
+2026-09-29 02:17:45 [INFO] LegacyGapPattern Site=外注鉄 Sheet=3 Col=O Samples=26 Mismatches=0 Safe=True
+2026-09-29 02:17:45 [INFO] LegacyGapPattern Site=外注鉄 Sheet=3 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 02:17:45 [WARN] LegacyGapBlock Site=外注鉄 Sheet=3 Rows=3-28 Col=K Action=ManualReview
+2026-09-29 02:17:45 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=3 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 02:17:47 [INFO] LegacyGapPattern Site=外注鉄 Sheet=5 Col=O Samples=144 Mismatches=0 Safe=True
+2026-09-29 02:17:47 [INFO] LegacyGapPattern Site=外注鉄 Sheet=5 Col=K Samples=144 Mismatches=0 Safe=True
+2026-09-29 02:17:47 [INFO] LegacyGapPattern Site=外注鉄 Sheet=6 Col=O Samples=18 Mismatches=0 Safe=True
+2026-09-29 02:17:47 [INFO] LegacyGapPattern Site=外注鉄 Sheet=6 Col=K Samples=18 Mismatches=0 Safe=True
+2026-09-29 02:17:48 [INFO] LegacyGapPattern Site=外注鉄 Sheet=7 Col=O Samples=34 Mismatches=0 Safe=True
+2026-09-29 02:17:48 [INFO] LegacyGapPattern Site=外注鉄 Sheet=7 Col=K Samples=34 Mismatches=0 Safe=True
+2026-09-29 02:17:48 [INFO] LegacyGapPattern Site=外注鉄 Sheet=8 Col=O Samples=2 Mismatches=0 Safe=False
+2026-09-29 02:17:48 [INFO] LegacyGapPattern Site=外注鉄 Sheet=8 Col=K Samples=2 Mismatches=0 Safe=False
+2026-09-29 02:17:48 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=8 Col=K Reason=PatternUnsafe Samples=2 Mismatches=0
+2026-09-29 02:17:48 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=8 Col=O Reason=PatternUnsafe Samples=2 Mismatches=0
+2026-09-29 02:17:48 [INFO] LegacyGapPattern Site=外注鉄 Sheet=9 Col=O Samples=4 Mismatches=0 Safe=False
+2026-09-29 02:17:48 [INFO] LegacyGapPattern Site=外注鉄 Sheet=9 Col=K Samples=4 Mismatches=0 Safe=False
+2026-09-29 02:17:48 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=9 Col=K Reason=PatternUnsafe Samples=4 Mismatches=0
+2026-09-29 02:17:48 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=9 Col=O Reason=PatternUnsafe Samples=4 Mismatches=0
+2026-09-29 02:17:48 [INFO] LegacyGapPattern Site=外注鉄 Sheet=10 Col=O Samples=5 Mismatches=0 Safe=False
+2026-09-29 02:17:48 [INFO] LegacyGapPattern Site=外注鉄 Sheet=10 Col=K Samples=5 Mismatches=0 Safe=False
+2026-09-29 02:17:48 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=10 Col=K Reason=PatternUnsafe Samples=5 Mismatches=0
+2026-09-29 02:17:48 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=10 Col=O Reason=PatternUnsafe Samples=5 Mismatches=0
+2026-09-29 02:17:49 [INFO] LegacyGapPattern Site=外注鉄 Sheet=11 Col=O Samples=81 Mismatches=0 Safe=True
+2026-09-29 02:17:49 [INFO] LegacyGapPattern Site=外注鉄 Sheet=11 Col=K Samples=81 Mismatches=13 Safe=False
+2026-09-29 02:17:49 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=11 Col=K Reason=PatternUnsafe Samples=81 Mismatches=13
+2026-09-29 02:17:50 [INFO] LegacyGapPattern Site=外注鉄 Sheet=12 Col=O Samples=130 Mismatches=0 Safe=True
+2026-09-29 02:17:50 [INFO] LegacyGapPattern Site=外注鉄 Sheet=12 Col=K Samples=130 Mismatches=0 Safe=True
+2026-09-29 02:17:51 [INFO] LegacyGapPattern Site=外注鉄 Sheet=13 Col=O Samples=105 Mismatches=0 Safe=True
+2026-09-29 02:17:51 [INFO] LegacyGapPattern Site=外注鉄 Sheet=13 Col=K Samples=105 Mismatches=0 Safe=True
+2026-09-29 02:17:53 [INFO] LegacyGapPattern Site=外注鉄 Sheet=14 Col=O Samples=112 Mismatches=0 Safe=True
+2026-09-29 02:17:53 [INFO] LegacyGapPattern Site=外注鉄 Sheet=14 Col=K Samples=112 Mismatches=0 Safe=True
+2026-09-29 02:17:54 [INFO] LegacyGapPattern Site=外注鉄 Sheet=15 Col=O Samples=86 Mismatches=0 Safe=True
+2026-09-29 02:17:54 [INFO] LegacyGapPattern Site=外注鉄 Sheet=15 Col=K Samples=86 Mismatches=0 Safe=True
+2026-09-29 02:17:54 [INFO] LegacyGapPattern Site=外注鉄 Sheet=16 Col=O Samples=63 Mismatches=0 Safe=True
+2026-09-29 02:17:54 [INFO] LegacyGapPattern Site=外注鉄 Sheet=16 Col=K Samples=63 Mismatches=0 Safe=True
+2026-09-29 02:18:12 [INFO] LegacyGapPattern Site=外注鉄 Sheet=18 Col=O Samples=1588 Mismatches=0 Safe=True
+2026-09-29 02:18:12 [INFO] LegacyGapPattern Site=外注鉄 Sheet=18 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 02:18:12 [WARN] LegacyGapBlock Site=外注鉄 Sheet=18 Rows=3-1590 Col=K Action=ManualReview
+2026-09-29 02:18:12 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=18 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 02:18:16 [INFO] LegacyGapPattern Site=外注鉄 Sheet=19 Col=O Samples=167 Mismatches=0 Safe=True
+2026-09-29 02:18:16 [INFO] LegacyGapPattern Site=外注鉄 Sheet=19 Col=K Samples=167 Mismatches=0 Safe=True
+2026-09-29 02:18:17 [INFO] LegacyGapPattern Site=外注鉄 Sheet=20 Col=O Samples=73 Mismatches=0 Safe=True
+2026-09-29 02:18:17 [INFO] LegacyGapPattern Site=外注鉄 Sheet=20 Col=K Samples=73 Mismatches=0 Safe=True
+2026-09-29 02:18:20 [INFO] LegacyGapPattern Site=外注鉄 Sheet=21 Col=O Samples=278 Mismatches=0 Safe=True
+2026-09-29 02:18:20 [INFO] LegacyGapPattern Site=外注鉄 Sheet=21 Col=K Samples=278 Mismatches=0 Safe=True
+2026-09-29 02:18:21 [INFO] LegacyGapPattern Site=外注鉄 Sheet=22 Col=O Samples=36 Mismatches=0 Safe=True
+2026-09-29 02:18:21 [INFO] LegacyGapPattern Site=外注鉄 Sheet=22 Col=K Samples=36 Mismatches=0 Safe=True
+2026-09-29 02:18:21 [INFO] LegacyGapPattern Site=外注鉄 Sheet=23 Col=O Samples=36 Mismatches=0 Safe=True
+2026-09-29 02:18:21 [INFO] LegacyGapPattern Site=外注鉄 Sheet=23 Col=K Samples=36 Mismatches=0 Safe=True
+2026-09-29 02:18:21 [INFO] LegacyGapPattern Site=外注鉄 Sheet=24 Col=O Samples=24 Mismatches=0 Safe=True
+2026-09-29 02:18:21 [INFO] LegacyGapPattern Site=外注鉄 Sheet=24 Col=K Samples=24 Mismatches=0 Safe=True
+2026-09-29 02:18:22 [INFO] LegacyGapPattern Site=外注鉄 Sheet=25 Col=O Samples=67 Mismatches=0 Safe=True
+2026-09-29 02:18:22 [INFO] LegacyGapPattern Site=外注鉄 Sheet=25 Col=K Samples=67 Mismatches=0 Safe=True
+2026-09-29 02:18:22 [INFO] LegacyGapPattern Site=外注鉄 Sheet=26 Col=O Samples=2 Mismatches=0 Safe=False
+2026-09-29 02:18:22 [INFO] LegacyGapPattern Site=外注鉄 Sheet=26 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 02:18:22 [WARN] LegacyGapBlock Site=外注鉄 Sheet=26 Rows=3-4 Col=K Action=ManualReview
+2026-09-29 02:18:22 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=26 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 02:18:22 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=26 Col=O Reason=PatternUnsafe Samples=2 Mismatches=0
+2026-09-29 02:18:23 [INFO] LegacyGapPattern Site=外注鉄 Sheet=27 Col=O Samples=8 Mismatches=0 Safe=False
+2026-09-29 02:18:23 [INFO] LegacyGapPattern Site=外注鉄 Sheet=27 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 02:18:23 [WARN] LegacyGapBlock Site=外注鉄 Sheet=27 Rows=3-10 Col=K Action=ManualReview
+2026-09-29 02:18:23 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=27 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 02:18:23 [WARN] LegacyGapRepairDisabled Site=外注鉄 Sheet=27 Col=O Reason=PatternUnsafe Samples=8 Mismatches=0
+2026-09-29 02:18:23 [INFO] MPolicyPattern Site=外注鉄 Sheet=1 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 02:18:23 [INFO] MPolicyPattern Site=外注鉄 Sheet=2 Policy=UnitPriceFlag Samples=34 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:23 [INFO] MPolicyPattern Site=外注鉄 Sheet=3 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 02:18:23 [INFO] MPolicyPattern Site=外注鉄 Sheet=4 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 02:18:23 [INFO] MPolicyPattern Site=外注鉄 Sheet=5 Policy=Ambiguous Samples=107 Mismatches=5 Candidates=0 Safe=False
+2026-09-29 02:18:23 [INFO] MPolicyPattern Site=外注鉄 Sheet=6 Policy=UnitPriceFlag Samples=15 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:23 [INFO] MPolicyPattern Site=外注鉄 Sheet=7 Policy=UnitPriceFlag Samples=33 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:23 [INFO] MPolicyPattern Site=外注鉄 Sheet=8 Policy=Ambiguous Samples=2 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 02:18:23 [INFO] MPolicyPattern Site=外注鉄 Sheet=9 Policy=Ambiguous Samples=2 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 02:18:23 [INFO] MPolicyPattern Site=外注鉄 Sheet=10 Policy=Ambiguous Samples=5 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 02:18:23 [INFO] MPolicyPattern Site=外注鉄 Sheet=11 Policy=UnitPriceFlag Samples=61 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:23 [INFO] MPolicyPattern Site=外注鉄 Sheet=12 Policy=UnitPriceFlag Samples=50 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:23 [INFO] MPolicyPattern Site=外注鉄 Sheet=13 Policy=UnitPriceFlag Samples=43 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:24 [INFO] MPolicyPattern Site=外注鉄 Sheet=14 Policy=UnitPriceFlag Samples=100 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:24 [INFO] MPolicyPattern Site=外注鉄 Sheet=15 Policy=UnitPriceFlag Samples=54 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:24 [INFO] MPolicyPattern Site=外注鉄 Sheet=16 Policy=UnitPriceFlag Samples=24 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:24 [INFO] MPolicyPattern Site=外注鉄 Sheet=17 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 02:18:25 [INFO] MPolicyPattern Site=外注鉄 Sheet=18 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 02:18:25 [INFO] MPolicyPattern Site=外注鉄 Sheet=19 Policy=UnitPriceFlag Samples=148 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:25 [INFO] MPolicyPattern Site=外注鉄 Sheet=20 Policy=UnitPriceFlag Samples=16 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:25 [INFO] MPolicyPattern Site=外注鉄 Sheet=21 Policy=Ambiguous Samples=126 Mismatches=1 Candidates=0 Safe=False
+2026-09-29 02:18:25 [INFO] MPolicyPattern Site=外注鉄 Sheet=22 Policy=UnitPriceFlag Samples=15 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:25 [INFO] MPolicyPattern Site=外注鉄 Sheet=23 Policy=UnitPriceFlag Samples=16 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:25 [INFO] MPolicyPattern Site=外注鉄 Sheet=24 Policy=UnitPriceFlag Samples=14 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:25 [INFO] MPolicyPattern Site=外注鉄 Sheet=25 Policy=UnitPriceFlag Samples=67 Mismatches=0 Candidates=0 Safe=True
+2026-09-29 02:18:25 [INFO] MPolicyPattern Site=外注鉄 Sheet=26 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 02:18:25 [INFO] MPolicyPattern Site=外注鉄 Sheet=27 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 02:18:27 [INFO] Saved. Updated=1058 UnitPriceIFNAUpdated=0 NewProductAdded=0 Phase3Moved=0 Phase3StagingDeleted=0 LegacyGapRepaired=0 LegacyMFlagRepaired=0 TotalWorkbookChanges=1058
+2026-09-29 02:18:27 [INFO] ElapsedSeconds=210.08
+
+=== 成果連絡表(色物) 2026-09-29 ===
+2026-09-29 03:25:37 [INFO] Start
+2026-09-29 03:25:37 [INFO] ScriptVersion=2026-09-25-r15.10-REV5.1-2CSV-FIX9-CANDIDATE
+2026-09-29 03:25:37 [INFO] Site=成果連絡表(色物)
+2026-09-29 03:25:37 [INFO] Mode=Update
+2026-09-29 03:25:37 [INFO] MaxNewProductMoves=200
+2026-09-29 03:25:37 [INFO] BackfillMode=False
+2026-09-29 03:25:41 [INFO] SiteConfig loaded. Site=成果連絡表(色物) UnitPriceSheet= RestoreG=False RestoreI=False RestoreJ=False RestoreK=False RestoreO=False NoOrderEnabled=True NoOrderKeyword=手配不可
+2026-09-29 03:26:12 [PASS] NewProductDatasetConfigValidated DatasetCount=2 MainRange=4034-8033 SubRange=3-4033
+2026-09-29 03:26:38 [INFO] NewProductStaging: 既存「追加新規商品コード」コード数=5785
+2026-09-29 03:27:28 [INFO] NewProductBaselineCandidates=1265 BaselineInitialized=False
+2026-09-29 03:27:28 [INFO] NewProductStaging: ManagedCodes=1371 未管理新規候補=0 バーコード重複候補=0
+2026-09-29 03:27:28 [SKIP] Phase3: 2CSV Baseline未初期化のためfail-closed SKIPします。
+2026-09-29 03:27:28 [SKIP] Phase3: 新規商品コード機能が無効/ERRORのためPhase3もSKIPします。Enabled=True FeatureError=False
+2026-09-29 03:27:28 [INFO] Phase3Candidates Raw=0 Eligible=0 MaxNewProductMoves=200
+2026-09-29 03:27:34 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=1 Col=O Samples=2 Mismatches=0 Safe=False
+2026-09-29 03:27:34 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=1 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:34 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=1 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:34 [WARN] LegacyGapBlock Site=成果連絡表(色物) Sheet=1 Rows=5-7 Col=O Action=ManualReview
+2026-09-29 03:27:34 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=1 Col=O Reason=PatternUnsafe Samples=2 Mismatches=0
+2026-09-29 03:27:36 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=2 Col=O Samples=71 Mismatches=0 Safe=True
+2026-09-29 03:27:36 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=2 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:36 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=2 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:39 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=3 Col=O Samples=259 Mismatches=0 Safe=True
+2026-09-29 03:27:39 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=3 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:39 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=3 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:41 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=4 Col=O Samples=98 Mismatches=0 Safe=True
+2026-09-29 03:27:41 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=4 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:41 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=4 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:41 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=5 Col=O Samples=17 Mismatches=0 Safe=True
+2026-09-29 03:27:41 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=5 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:41 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=5 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:41 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=6 Col=O Samples=40 Mismatches=0 Safe=True
+2026-09-29 03:27:41 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=6 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:41 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=6 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:42 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=7 Col=O Samples=63 Mismatches=0 Safe=True
+2026-09-29 03:27:42 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=7 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:42 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=7 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:43 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=8 Col=O Samples=133 Mismatches=0 Safe=True
+2026-09-29 03:27:43 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=8 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:43 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=8 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:44 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=9 Col=O Samples=23 Mismatches=0 Safe=True
+2026-09-29 03:27:44 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=9 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:44 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=9 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:44 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=10 Col=O Samples=26 Mismatches=0 Safe=True
+2026-09-29 03:27:44 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=10 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:44 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=10 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:45 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=11 Col=O Samples=82 Mismatches=0 Safe=True
+2026-09-29 03:27:45 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=11 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:45 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=11 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:45 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=12 Col=O Samples=19 Mismatches=0 Safe=True
+2026-09-29 03:27:45 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=12 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:45 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=12 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:46 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=13 Col=O Samples=52 Mismatches=0 Safe=True
+2026-09-29 03:27:46 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=13 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:46 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=13 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:47 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=14 Col=O Samples=99 Mismatches=0 Safe=True
+2026-09-29 03:27:47 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=14 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:47 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=14 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:47 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=15 Col=O Samples=19 Mismatches=0 Safe=True
+2026-09-29 03:27:47 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=15 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:47 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=15 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:48 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=16 Col=O Samples=86 Mismatches=0 Safe=True
+2026-09-29 03:27:48 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=16 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:48 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=16 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:49 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=17 Col=O Samples=74 Mismatches=0 Safe=True
+2026-09-29 03:27:49 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=17 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:49 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=17 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:49 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=18 Col=O Samples=7 Mismatches=0 Safe=False
+2026-09-29 03:27:49 [INFO] LegacyGapPattern Site=成果連絡表(色物) Sheet=18 Col=K Samples=0 Mismatches=0 Safe=False
+2026-09-29 03:27:49 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=18 Col=K Reason=PatternUnsafe Samples=0 Mismatches=0
+2026-09-29 03:27:49 [WARN] LegacyGapRepairDisabled Site=成果連絡表(色物) Sheet=18 Col=O Reason=PatternUnsafe Samples=7 Mismatches=0
+2026-09-29 03:27:49 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=1 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:49 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=2 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=3 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=4 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=5 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=6 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=7 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=8 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=9 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=10 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=11 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=12 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=13 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=14 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=15 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=16 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=17 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:50 [INFO] MPolicyPattern Site=成果連絡表(色物) Sheet=18 Policy=NotApplicable Samples=0 Mismatches=0 Candidates=0 Safe=False
+2026-09-29 03:27:51 [INFO] Saved. Updated=215 UnitPriceIFNAUpdated=0 NewProductAdded=0 Phase3Moved=0 Phase3StagingDeleted=0 LegacyGapRepaired=0 LegacyMFlagRepaired=0 TotalWorkbookChanges=215
+2026-09-29 03:27:51 [INFO] ElapsedSeconds=134.14

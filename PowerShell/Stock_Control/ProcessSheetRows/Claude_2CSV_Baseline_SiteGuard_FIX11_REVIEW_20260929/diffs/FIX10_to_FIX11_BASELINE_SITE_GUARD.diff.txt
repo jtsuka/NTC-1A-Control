@@ -1,0 +1,207 @@
+--- /mnt/data/Claude_2CSV_Baseline_SiteGuard_FIX11_REVIEW_20260929/scripts/source/ProcessSheetRows_20260929_r15_10_REV5_1_2CSV_FIX10_BASELINE_GATE_CANDIDATE.ps1	2026-09-29 11:29:11.981085497 +0000
++++ /mnt/data/Claude_2CSV_Baseline_SiteGuard_FIX11_REVIEW_20260929/scripts/candidate/ProcessSheetRows_20260929_r15_10_REV5_1_2CSV_FIX11_BASELINE_SITE_GUARD_CANDIDATE.ps1	2026-09-29 11:29:11.981272999 +0000
+@@ -46,6 +46,23 @@
+ 
+ <#
+ ===============================================================================
++【2026-09-29 FIX11 CANDIDATE】2CSV Baseline Site Guard / 正式メタ領域復元
++  ・FIX10のBaseline Gate修正はそのまま凍結し、Baseline状態の識別だけを最小追加する。
++  ・REV5/REV5.1設計どおり、2CSVのBaseline完了はHistoryシート K1:L3 の正式メタ情報で判定する。
++      K1=BaselineStatus          / L1=Initialized
++      K2=BaselineInitializedAt   / L2=日時
++      K3=BaselineInitializedSite / L3=SiteName
++  ・BaselineInitialized=True は、正式メタ情報が有効かつ L3 が現在のSiteNameと一致する場合だけ。
++  ・旧J1=BASELINE_INITIALIZEDのみのLegacy markerは信用せず、2CSV新商品機能をfail-closedする。
++  ・正式メタのSiteName不一致、または未初期化Historyに既存CandidateKeyがある場合もfail-closedする。
++  ・Baseline Initialize時はK1:L3を書込み後、同一SiteNameで再読込して検証し、失敗時はSave前throw。
++  ・Baseline候補0件でHistoryシートを新規作成する場合も、A:IヘッダーをFIX9方式で安全に初期化する。
++  ・1CSV、CandidateKey、Main/Sub境界、Phase3 Move本体、staging削除契約は変更しない。
++===============================================================================
++#>
++
++<#
++===============================================================================
+ ProcessSheetRows.ps1  (r15.5：Phase3新規登録J列 IFNA必須化)
+ 
+ 【2026-09-10 r15.5 緊急修正】Phase3で新規登録するJ列（単価式）をIFNA必須化
+@@ -343,7 +360,7 @@
+ Set-StrictMode -Version 2.0
+ $ErrorActionPreference = "Stop"
+ # バージョン管理：改修のたびにこの値を更新する
+-$ScriptVersion = "2026-09-29-r15.10-REV5.1-2CSV-FIX10-BASELINE-GATE-CANDIDATE"
++$ScriptVersion = "2026-09-29-r15.10-REV5.1-2CSV-FIX11-BASELINE-SITE-GUARD-CANDIDATE"
+ $excel = $null
+ $workbook = $null
+ $varExcel = $null
+@@ -1056,25 +1073,73 @@
+ function Get-NewProductHistoryState {
+     param(
+         [Parameter(Mandatory = $true)]$Workbook,
+-        [Parameter(Mandatory = $true)][string]$SheetName
++        [Parameter(Mandatory = $true)][string]$SheetName,
++        [string]$ExpectedSiteName = ""
+     )
+     $keys=New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
+     $sheet=$null;$used=$null
++    $expectedSite=Normalize-NewProductCode $ExpectedSiteName
+     try {
+         try { $sheet=$Workbook.Worksheets.Item($SheetName) }
+-        catch { return [PSCustomObject]@{Exists=$false;BaselineInitialized=$false;Keys=$keys} }
+-        $marker=$null
++        catch {
++            return [PSCustomObject]@{
++                Exists=$false; BaselineInitialized=$false; Keys=$keys
++                BaselineMetadataValid=$false; BaselineInitializedSite=""; BaselineExpectedSite=$expectedSite
++                BaselineSiteMatch=$false; LegacyMarkerPresent=$false; BaselineState="MissingHistorySheet"
++            }
++        }
++
++        $j1=$null;$k1=$null;$l1=$null;$k2=$null;$l2=$null;$k3=$null;$l3=$null
+         try {
+-            $marker=$sheet.Cells.Item(1,10)
+-            $baseline=((Normalize-NewProductCode $marker.Value2) -eq "BASELINE_INITIALIZED")
+-        } finally { Release-Com $marker }
++            $j1=$sheet.Cells.Item(1,10)
++            $k1=$sheet.Cells.Item(1,11); $l1=$sheet.Cells.Item(1,12)
++            $k2=$sheet.Cells.Item(2,11); $l2=$sheet.Cells.Item(2,12)
++            $k3=$sheet.Cells.Item(3,11); $l3=$sheet.Cells.Item(3,12)
++
++            $legacyMarkerPresent=((Normalize-NewProductCode $j1.Value2) -eq "BASELINE_INITIALIZED")
++            $statusLabel=Normalize-NewProductCode $k1.Value2
++            $statusValue=Normalize-NewProductCode $l1.Value2
++            $timeLabel=Normalize-NewProductCode $k2.Value2
++            $timeRaw=$l2.Value2
++            $siteLabel=Normalize-NewProductCode $k3.Value2
++            $initializedSite=Normalize-NewProductCode $l3.Value2
++            $hasTime=(-not [string]::IsNullOrWhiteSpace((Normalize-NewProductCode $timeRaw)))
++
++            $metadataValid=(
++                $statusLabel -eq "BaselineStatus" -and
++                $statusValue -eq "Initialized" -and
++                $timeLabel -eq "BaselineInitializedAt" -and
++                $hasTime -and
++                $siteLabel -eq "BaselineInitializedSite" -and
++                (-not [string]::IsNullOrWhiteSpace($initializedSite))
++            )
++            $siteMatch=(
++                $metadataValid -and
++                (-not [string]::IsNullOrWhiteSpace($expectedSite)) -and
++                ([string]::Equals($initializedSite,$expectedSite,[System.StringComparison]::OrdinalIgnoreCase))
++            )
++            $baseline=($metadataValid -and $siteMatch)
++            $baselineState = if ($baseline) { "InitializedForSite" }
++                elseif ($metadataValid -and -not $siteMatch) { "SiteMismatch" }
++                elseif ($legacyMarkerPresent) { "LegacyMarkerOnly" }
++                else { "NotInitialized" }
++        }
++        finally {
++            Release-Com $l3; Release-Com $k3; Release-Com $l2; Release-Com $k2
++            Release-Com $l1; Release-Com $k1; Release-Com $j1
++        }
++
+         $used=$sheet.UsedRange
+         $last=[int]$used.Row+[int]$used.Rows.Count-1
+         for($r=3;$r -le $last;$r++){
+             $c=$null
+             try{$c=$sheet.Cells.Item($r,1);$k=Normalize-NewProductCode $c.Value2;if(-not [string]::IsNullOrWhiteSpace($k)){[void]$keys.Add($k)}}finally{Release-Com $c}
+         }
+-        return [PSCustomObject]@{Exists=$true;BaselineInitialized=$baseline;Keys=$keys}
++        return [PSCustomObject]@{
++            Exists=$true; BaselineInitialized=$baseline; Keys=$keys
++            BaselineMetadataValid=$metadataValid; BaselineInitializedSite=$initializedSite; BaselineExpectedSite=$expectedSite
++            BaselineSiteMatch=$siteMatch; LegacyMarkerPresent=$legacyMarkerPresent; BaselineState=$baselineState
++        }
+     } finally { Release-Com $used; Release-Com $sheet }
+ }
+ 
+@@ -1132,14 +1197,46 @@
+ }
+ 
+ function Set-NewProductBaselineInitialized {
+-    param([Parameter(Mandatory=$true)]$Workbook,[Parameter(Mandatory=$true)][string]$SheetName)
+-    $sheet=$null
++    param(
++        [Parameter(Mandatory=$true)]$Workbook,
++        [Parameter(Mandatory=$true)][string]$SheetName,
++        [Parameter(Mandatory=$true)][string]$SiteName
++    )
++    $resolvedSite=Normalize-NewProductCode $SiteName
++    if([string]::IsNullOrWhiteSpace($resolvedSite)){throw "Baseline Initialize SiteName is empty."}
++
++    $sheet=$null;$created=$false
++    $j1=$null;$k1=$null;$l1=$null;$k2=$null;$l2=$null;$k3=$null;$l3=$null
+     try {
+         try{$sheet=$Workbook.Worksheets.Item($SheetName)}
+-        catch{$sheet=$Workbook.Worksheets.Add();$sheet.Name=$SheetName}
+-        $sheet.Cells.Item(1,10).Value2="BASELINE_INITIALIZED"
+-        $sheet.Cells.Item(1,11).Value2=[double](Get-Date).ToOADate(); $sheet.Cells.Item(1,11).NumberFormat="yyyy-mm-dd hh:mm:ss"
+-    } finally { Release-Com $sheet }
++        catch{$sheet=$Workbook.Worksheets.Add();$sheet.Name=$SheetName;$created=$true}
++
++        # Baseline候補0件でもHistory schemaを成立させる。
++        if($created){
++            $headers=@("CandidateKey","Code","SourceType","SourceLabel","DestinationSheet","DestinationRow","RegisteredAt","State","Note")
++            for($i=0;$i -lt $headers.Count;$i++){
++                $hc=$null
++                try{
++                    $hc=$sheet.Cells.Item(2,$i+1)
++                    $hc.NumberFormat="@"
++                    $hc.Value2=[string]$headers[$i]
++                } finally { Release-Com $hc }
++            }
++        }
++
++        # Legacy J1 markerは正式判定に使わない。空欄化して旧版へ戻した場合も安全側(False)に倒す。
++        $j1=$sheet.Cells.Item(1,10); $j1.NumberFormat="@"; $j1.Value2=[string]""
++
++        $k1=$sheet.Cells.Item(1,11); $k1.NumberFormat="@"; $k1.Value2=[string]"BaselineStatus"
++        $l1=$sheet.Cells.Item(1,12); $l1.NumberFormat="@"; $l1.Value2=[string]"Initialized"
++        $k2=$sheet.Cells.Item(2,11); $k2.NumberFormat="@"; $k2.Value2=[string]"BaselineInitializedAt"
++        $l2=$sheet.Cells.Item(2,12); $l2.Value2=[double](Get-Date).ToOADate(); $l2.NumberFormat="yyyy-mm-dd hh:mm:ss"
++        $k3=$sheet.Cells.Item(3,11); $k3.NumberFormat="@"; $k3.Value2=[string]"BaselineInitializedSite"
++        $l3=$sheet.Cells.Item(3,12); $l3.NumberFormat="@"; $l3.Value2=[string]$resolvedSite
++    } finally {
++        Release-Com $l3; Release-Com $k3; Release-Com $l2; Release-Com $k2
++        Release-Com $l1; Release-Com $k1; Release-Com $j1; Release-Com $sheet
++    }
+ }
+ 
+ function Get-NewProductConfig {
+@@ -3703,7 +3800,20 @@
+             }
+             Write-Log "PASS" ("NewProductDatasetConfigValidated DatasetCount={0} MainRange={1}-{2} SubRange={3}-{4}" -f $newProductConfig.DatasetCount,$newProductConfig.MainStartRow,$newProductConfig.MainEndRow,$newProductConfig.SubStartRow,$newProductConfig.SubEndRow)
+             $existingNewResult = Get-ExistingNewProductCodes -Workbook $workbook -SheetName $NewCodeSheetName -DatasetCount ([int]$newProductConfig.DatasetCount)
+-            $historyState = Get-NewProductHistoryState -Workbook $workbook -SheetName $NewProductHistorySheetName
++            $historyState = Get-NewProductHistoryState -Workbook $workbook -SheetName $NewProductHistorySheetName -ExpectedSiteName $SiteName
++            if ([int]$newProductConfig.DatasetCount -eq 2 -and $historyState.Exists) {
++                Write-Log "INFO" ("NewProductBaselineState State={0} MetadataValid={1} InitializedSite={2} ExpectedSite={3} SiteMatch={4} LegacyMarkerPresent={5} HistoryKeys={6}" -f
++                    $historyState.BaselineState,$historyState.BaselineMetadataValid,$historyState.BaselineInitializedSite,$historyState.BaselineExpectedSite,$historyState.BaselineSiteMatch,$historyState.LegacyMarkerPresent,$historyState.Keys.Count)
++                if ($historyState.LegacyMarkerPresent -and -not $historyState.BaselineMetadataValid) {
++                    throw "2CSV Baseline legacy marker detected without formal K1:L3 metadata. History sheet=$NewProductHistorySheetName. Manual review/migration required; automatic trust is prohibited."
++                }
++                if ($historyState.BaselineMetadataValid -and -not $historyState.BaselineSiteMatch) {
++                    throw "2CSV Baseline SiteName mismatch. HistorySite=$($historyState.BaselineInitializedSite) CurrentSite=$SiteName. fail-closed."
++                }
++                if ((-not $historyState.BaselineMetadataValid) -and $historyState.Keys.Count -gt 0) {
++                    throw "2CSV History contains CandidateKey rows before formal Baseline metadata is initialized. Keys=$($historyState.Keys.Count). Manual review required; automatic Baseline Initialize is prohibited."
++                }
++            }
+             $knownKeys = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
+             foreach($k in $existingNewResult.Keys){[void]$knownKeys.Add($k)}
+             foreach($k in $historyState.Keys){[void]$knownKeys.Add($k)}
+@@ -4028,8 +4138,13 @@
+             }
+             if ($hasBaselineChanges) {
+                 $baselineAdded = Write-NewProductHistoryRows -Workbook $workbook -SheetName $NewProductHistorySheetName -Items $newProductBaselineCandidates -State "BaselineManaged" -Note "REV5.1 explicit baseline initialization"
+-                Set-NewProductBaselineInitialized -Workbook $workbook -SheetName $NewProductHistorySheetName
+-                Write-Log "UPDATE" ("NewProductBaselineInitialized Added={0}" -f $baselineAdded)
++                Set-NewProductBaselineInitialized -Workbook $workbook -SheetName $NewProductHistorySheetName -SiteName $SiteName
++                $baselineVerify = Get-NewProductHistoryState -Workbook $workbook -SheetName $NewProductHistorySheetName -ExpectedSiteName $SiteName
++                if (-not $baselineVerify.BaselineInitialized) {
++                    throw "Baseline Initialize verification failed. State=$($baselineVerify.BaselineState) MetadataValid=$($baselineVerify.BaselineMetadataValid) InitializedSite=$($baselineVerify.BaselineInitializedSite) ExpectedSite=$SiteName"
++                }
++                Write-Log "PASS" ("NewProductBaselineMetadataVerified Site={0} State={1} HistoryKeys={2}" -f $SiteName,$baselineVerify.BaselineState,$baselineVerify.Keys.Count)
++                Write-Log "UPDATE" ("NewProductBaselineInitialized Added={0} Site={1}" -f $baselineAdded,$SiteName)
+                 # 初期化実行とPhase3 Moveを同一実行で混在させない。
+                 $hasNewProductChanges = $false
+                 $hasPhase3Changes = $false

@@ -1,0 +1,27 @@
+{
+  "外注鉄": {
+    "count": 43,
+    "destinations": {
+      "11": 11,
+      "12": 12,
+      "21": 15,
+      "22": 5
+    },
+    "sources": {
+      "Sub": 43
+    },
+    "history_sheet_exists": false
+  },
+  "成果連絡表_色物": {
+    "count": 24,
+    "destinations": {
+      "1": 11,
+      "3": 12,
+      "6": 1
+    },
+    "sources": {
+      "Sub": 24
+    },
+    "history_sheet_exists": false
+  }
+}
