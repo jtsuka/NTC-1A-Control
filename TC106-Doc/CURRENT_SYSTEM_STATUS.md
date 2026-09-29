@@ -1,7 +1,7 @@
 # TC106 Current System Status
 
-**Updated:** 2026-09-28
-**Repo HEAD at update:** `34351d2ec9de18e8b8dbb7acb5274b3b8ad18efe` (2026-09-28)
+**Updated:** 2026-09-29
+**Repo HEAD reviewed for this update:** `0c2638a8aa1a194d83c87c32b164713ad86141ed` (2026-09-29)
 **Purpose:** The single current-state summary for ChatGPT, Claude, and human developers.
 Read this file first, in every new thread, before reading anything else in `docs/`.
 Long history/rationale lives in `docs/AI_PROJECT_CONTEXT.md`, `docs/TC106_BASELINE.md`,
@@ -93,6 +93,15 @@ Board: XIAO ESP32-S3 sniffer/bridge board, silk `TC106 Snidar ESP32S3 Ver 1.0 20
 | TP6 | (design) `/Pi_Rx_MCU`, on U1 pin D0 = `PIN_PI_TX` (`ESP32 TX -> Pi_Rx_MCU`) | **Corrected 2026-09-28 (was backwards).** Design says ESP→Pi direction: telemetry / Evidence RESULT. **Physical fact not yet checked** — no continuity/voltage measurement on real hardware yet |
 | TP7 | (design) `/Pi_Tx_MCU`, on U1 pin D1 = `PIN_PI_RX` (`Pi_Tx_MCU -> ESP32 RX`) | **Corrected 2026-09-28 (was backwards).** Design says Pi→ESP direction: EVIDENCE_START / SEND / RESET / SENS.ADJ. **Physical fact not yet checked** — no continuity/voltage measurement on real hardware yet |
 | TP8 | (design) `/Nano_MOS_DRAIN`, in `KiCad/ESP32S3_Snifar/ESP32S3_Snifar_3.0.net` | Design fact only, not yet a physical fact. Present in the newer (Ver2.0/3.0-line) KiCad netlist; **absent from `TC106-Doc/ESP32S3_Snifar.net`**, the netlist matching 基板#2 (Ver1.0, silk 2026.03.15) currently on the bench. Consistent with "TP8 is a Ver2.0+ addition, not on 基板#2" — but this is a *design* comparison between two netlist files, not a look at the real board. **Physical confirmation still needed: full board top-down photo + TP8 close-up have not been provided yet.** Do not treat either netlist as settling whether TP8 exists on the physical board in hand |
+
+### JLCPCB order-image evidence for board #1 (2026-09-29)
+
+- Reference image: `TC106-Doc/Hardware/Board_No1_JLCPCB_Order_Ver1_0_20260315.jpg`.
+- The operator identifies this as the **JLCPCB order image for board #1**.
+- In the order render, the silkscreen shows **TP1 through TP7; TP8 is not present**.
+- This is consistent with the older `TC106-Doc/ESP32S3_Snifar.net`, which has no TP8.
+- This image is evidence of the **fabrication/order design for board #1**, not a physical photograph or measurement of the current bench board (#2). Do not silently equate board #1 and board #2.
+- On a board without TP8, observing the equivalent `/Nano_MOS_DRAIN` signal requires using an accessible point on the same net. **The exact physical clamp point remains TBD and must be chosen from the actual board before probing.**
 
 ### JP3 (bench-confirmed, takes priority over schematic pin-number reading)
 
