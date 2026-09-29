@@ -1,7 +1,7 @@
 # TC106 Current System Status
 
 **Updated:** 2026-09-29
-**Repo HEAD reviewed for this update:** `0c2638a8aa1a194d83c87c32b164713ad86141ed` (2026-09-29)
+**Repo HEAD reviewed for this update:** `f230fbb5a6f5640c7a55361812862e6c439b4811` (2026-09-29)
 **Purpose:** The single current-state summary for ChatGPT, Claude, and human developers.
 Read this file first, in every new thread, before reading anything else in `docs/`.
 Long history/rationale lives in `docs/AI_PROJECT_CONTEXT.md`, `docs/TC106_BASELINE.md`,
@@ -62,11 +62,13 @@ not proven byte-for-byte identical in the code body either. **Recommendation: us
 `FROM_ORIGINAL.c` when reading comments for meaning; treat `-UTF8.c` as legacy until the
 residual code diff is explained.**
 
-**⚠ Repo hygiene note:** `ESP32_TC_Bridge_RTOS_Final_Silent_BootMagic_20260907_PollEviden/`
-exists as a top-level folder (not under `ESP32/`). It is the V1 Evidence diagnostic build
-(superseded by Evidence V3; different SHA256 from both files above). Harmless, but move
-it under `ESP32/` or remove it next time the repo is tidied, so a future search doesn't
-pick it up as "the ESP file" by accident.
+**⚠ Repo hygiene note (updated 2026-09-29):** the former top-level
+`ESP32_TC_Bridge_RTOS_Final_Silent_BootMagic_20260907_PollEviden/` folder has been
+removed, so the earlier "ESP32/ outside" issue is resolved. Two similarly named diagnostic
+folders now exist under `ESP32/`: `TCBridge_PollEvidence120s/` and
+`ESP32_TC_Bridge_RTOS_Final_Silent_BootMagic_PollEvidence120s/`. Their INO files are
+different; do **not** assume they are duplicates. Their purpose/lineage should be clarified
+during a future repo tidy-up so a search does not select the wrong diagnostic build.
 
 **⚠ Formal Gate spec docs are not yet in the repo.** `A_TC106_FormalGate_TestSpec_Template_v1.3`
 and `B_TC106_EvidenceV3_Rerun_LA_TestSpec_v1.3` currently exist only as zip attachments
@@ -99,9 +101,13 @@ Board: XIAO ESP32-S3 sniffer/bridge board, silk `TC106 Snidar ESP32S3 Ver 1.0 20
 - Reference image: `TC106-Doc/Hardware/Board_No1_JLCPCB_Order_Ver1_0_20260315.jpg`.
 - The operator identifies this as the **JLCPCB order image for board #1**.
 - In the order render, the silkscreen shows **TP1 through TP7; TP8 is not present**.
+- The same render also shows `TC106 Snidar ESP32S3 Ver 1.0 2026.03.15`, matching the
+  recorded revision/date string for the current bench board (#2). This is strong evidence
+  that board #1 and board #2 are from the **same design revision**; it does **not** by itself
+  prove that they were fabricated in the same manufacturing batch.
 - This is consistent with the older `TC106-Doc/ESP32S3_Snifar.net`, which has no TP8.
 - This image is evidence of the **fabrication/order design for board #1**, not a physical photograph or measurement of the current bench board (#2). Do not silently equate board #1 and board #2.
-- On a board without TP8, observing the equivalent `/Nano_MOS_DRAIN` signal requires using an accessible point on the same net. **The exact physical clamp point remains TBD and must be chosen from the actual board before probing.**
+- On a board without TP8, the equivalent `/Nano_MOS_DRAIN` signal has no dedicated TP8 access point. **The exact physical clamp point on the real board is currently unconfirmed (TBD).**
 
 ### JP3 (bench-confirmed, takes priority over schematic pin-number reading)
 
