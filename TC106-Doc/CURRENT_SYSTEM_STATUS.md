@@ -67,8 +67,14 @@ residual code diff is explained.**
 removed, so the earlier "ESP32/ outside" issue is resolved. Two similarly named diagnostic
 folders now exist under `ESP32/`: `TCBridge_PollEvidence120s/` and
 `ESP32_TC_Bridge_RTOS_Final_Silent_BootMagic_PollEvidence120s/`. Their INO files are
-different; do **not** assume they are duplicates. Their purpose/lineage should be clarified
-during a future repo tidy-up so a search does not select the wrong diagnostic build.
+different; do **not** assume they are duplicates.
+`TCBridge_PollEvidence120s/TCBridge_PollEvidence120s.ino` (sha256 `b597b1c1…`) has been
+identified as the **V1 Evidence diagnostic build analyzed on 2026-09-27**. That run showed
+an approximately 76.1 s Pi-telemetry gap; source review found its blocking-capable USB CDC
+summary print in the same Core1 task loop as the SerialPi drain, so the measurement was
+classified INVALID due to observer-effect risk. It is superseded by Evidence V2/V3, which
+avoid USB result retrieval on the timing-critical DUT path. The sibling folder's provenance
+is still unconfirmed.
 
 **⚠ Formal Gate spec docs are not yet in the repo.** `A_TC106_FormalGate_TestSpec_Template_v1.3`
 and `B_TC106_EvidenceV3_Rerun_LA_TestSpec_v1.3` currently exist only as zip attachments
