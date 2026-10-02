@@ -1,0 +1,12 @@
+{
+  "SwitchedAt": "2026-10-02T16:59:55.3849722+09:00",
+  "DailyScript": "Print-ValueTag_Ship_v0.10.10_P9FIX_CheckLogExt_Alignment_F8FIX_20261002.ps1",
+  "SHA256": "E31EC341C4E2B88DBE0110B05D070DE6CB4D544468F373DD8773A7247C04BBC2",
+  "Backup": "C:\\HPDB\\AI_TEST\\ShipValueTag\\Backups\\DailySwitch-20261002",
+  "Preflight": "PASS",
+  "NextBusinessDay": "2026-10-05",
+  "ScheduledTime": "05:30 JST per saved registered-task.xml",
+  "LiveTaskReadback": "UNAVAILABLE",
+  "ProductionFullContentCertification": "PENDING",
+  "PrintStarted": false
+}
