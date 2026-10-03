@@ -1,7 +1,7 @@
 ﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    RK-10 シナリオログ・認証履歴(License)・任意フォルダーの期限削除 v1.2。
+    RK-10 シナリオログ・認証履歴(License)・任意フォルダーの期限削除 v1.2.1。
 .DESCRIPTION
     作成日時 < (実行PCの今日 - N日) の午前0時 を削除対象とする。
 
@@ -67,7 +67,7 @@ param(
 Set-StrictMode -Version 2.0
 $ErrorActionPreference = 'Stop'
 
-$script:Version = 'v1.2'
+$script:Version = 'v1.2.1'
 $script:LogPath = $null
 $script:ProtectedLicense = $null
 $script:Utf8Bom = New-Object System.Text.UTF8Encoding($true)
@@ -228,10 +228,19 @@ function Remove-OldFolders {
         try {
             $t.Refresh()
             if (-not $t.Exists) { throw '列挙後に対象が消失しました' }
-            if ($t.CreationTime -ge $Cutoff -or
-                ($t.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0 -or
-                ($DeepLinkCheck -and (Test-TreeLink $t.FullName))) {
+            if ($t.CreationTime -ge $Cutoff) {
                 $stat.Skipped++
+                Write-Log ('再確認で作成日時が基準日時以降のためスキップ: {0} (作成日時 {1})' -f $t.FullName, (Format-Dt $t.CreationTime)) 'WARN'
+                continue
+            }
+            if (($t.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+                $stat.Skipped++
+                Write-Log ('再確認でリンク属性が検出されたためスキップ: {0} (Attributes={1})' -f $t.FullName, $t.Attributes) 'WARN'
+                continue
+            }
+            if ($DeepLinkCheck -and (Test-TreeLink $t.FullName)) {
+                $stat.Skipped++
+                Write-Log ('再確認で配下にリンクが検出されたためスキップ: {0}' -f $t.FullName) 'WARN'
                 continue
             }
             if ($DryRun) {
@@ -348,6 +357,7 @@ function Remove-OldFiles {
             if ($t.CreationTime -ge $Cutoff -or
                 ($t.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) {
                 $stat.Skipped++
+                Write-Log ('再確認で対象外になったためスキップ: {0} (作成日時 {1}, Attributes={2})' -f $t.FullName, (Format-Dt $t.CreationTime), $t.Attributes) 'WARN'
                 continue
             }
             if ($DryRun) {
