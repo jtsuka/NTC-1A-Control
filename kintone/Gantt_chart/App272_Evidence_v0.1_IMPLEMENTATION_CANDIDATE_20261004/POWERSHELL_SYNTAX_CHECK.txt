@@ -1,0 +1,3 @@
+PowerShell runtime in this environment: NOT AVAILABLE
+Therefore PowerShell parser/runtime syntax validation has NOT been performed here.
+Windows PowerShell 5.1 parser check and READ ONLY real-machine test are required before production use.
