@@ -710,18 +710,18 @@ function Apply-DerivedFields($override, $row, $fields, $rows) {
             $billing = 0.0
             [void][double]::TryParse([string]$row."183", [ref]$billing)
             if ($billing -gt 0) {
-                $text = "【一式金額 / 請求 : ￥{0:N0}" -f $billing
+                $text = "【一式金額 / 請求 : \{0:N0}" -f $billing
 
                 $via = 0.0
                 [void][double]::TryParse([string]$row."184", [ref]$via)
                 if ($via -gt 0) {
-                    $text += (" / 経由 : ￥{0:N0}" -f $via)
+                    $text += (" / 経由 : \{0:N0}" -f $via)
                 }
 
                 $orderAmount = 0.0
                 [void][double]::TryParse([string]$row."186", [ref]$orderAmount)
                 if ($orderAmount -gt 0) {
-                    $text += ("/ 受注 : ￥{0:N0}" -f $orderAmount)
+                    $text += ("/ 受注 : \{0:N0}" -f $orderAmount)
                 }
 
                 $text += "】"

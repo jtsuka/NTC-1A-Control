@@ -1,5 +1,5 @@
 --- Print-ValueTag_Ship_20261007_FIX.ps1 (修正前・Codex最終版)
-+++ Print-ValueTag_Ship_20261013_LayoutFix.ps1 (最新)
++++ Print-ValueTag_Ship_20261013_LayoutFix_r2.ps1 (最新)
 @@ -155,12 +155,12 @@
          Zoom=59(通常)/Zoom=56(DocuWorks Printerの場合)に合わせて固定値とし、
          従来の自動縮小(scaleX/scaleYのmin)は使わない。
@@ -73,6 +73,28 @@
  $DEPARTMENT_NAMES = @{
      "B1901" = "札幌営業所"
      "B1903" = "仙台営業所"
+@@ -710,18 +710,18 @@
+             $billing = 0.0
+             [void][double]::TryParse([string]$row."183", [ref]$billing)
+             if ($billing -gt 0) {
+-                $text = "【一式金額 / 請求 : ￥{0:N0}" -f $billing
++                $text = "【一式金額 / 請求 : \{0:N0}" -f $billing
+ 
+                 $via = 0.0
+                 [void][double]::TryParse([string]$row."184", [ref]$via)
+                 if ($via -gt 0) {
+-                    $text += (" / 経由 : ￥{0:N0}" -f $via)
++                    $text += (" / 経由 : \{0:N0}" -f $via)
+                 }
+ 
+                 $orderAmount = 0.0
+                 [void][double]::TryParse([string]$row."186", [ref]$orderAmount)
+                 if ($orderAmount -gt 0) {
+-                    $text += ("/ 受注 : ￥{0:N0}" -f $orderAmount)
++                    $text += ("/ 受注 : \{0:N0}" -f $orderAmount)
+                 }
+ 
+                 $text += "】"
 @@ -972,7 +972,7 @@
          }
      }

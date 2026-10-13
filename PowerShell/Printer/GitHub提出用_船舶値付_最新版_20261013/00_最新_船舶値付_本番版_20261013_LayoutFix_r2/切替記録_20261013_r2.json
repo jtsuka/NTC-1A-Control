@@ -1,0 +1,22 @@
+{
+  "Date": "2026-10-13",
+  "EffectiveDate": "2026-10-14",
+  "Status": "SWITCHED_BY_USER_INSTRUCTION",
+  "Reason": "一式金額(AV5)の円記号も原典VBAと同じU+005C(半角¥表示)に揃える。2026-10-13の第1版では、VBA実例が無いと誤認して未変更だった（実際は過去証跡に3件あり）",
+  "NewScript": "C:\\HPDB\\AI_TEST\\ShipValueTag\\Print-ValueTag_Ship_20261013_LayoutFix_r2.ps1",
+  "NewScriptSHA256": "7A1727AB938EA2E8DE66F6B546E4049A582D5CE29D1CF8EDD1B9DAD6576FB6D6",
+  "LayoutConfigSHA256": "C4E7F77B0D38049689953761BA69EC6F6AFEA86FF4C1F173942200BF5681F328",
+  "LayoutConfigChanged": false,
+  "PreviousScript": "Print-ValueTag_Ship_20261013_LayoutFix.ps1",
+  "PreviousScriptSHA256": "7F4DF9AA93C0D372FF78BC6581B1D229E992C79ACE809848EDCBF29DA79B1DC5",
+  "Changes": ["AV5 一式金額の3書式（請求・経由・受注）の円記号を U+FFE5 から U+005C へ"],
+  "VerifiedBy": "C:\\HPDB\\AI_TEST\\ShipValueTag\\Verification\\Regression_20261009_AV5yen\\regression-summary.json",
+  "VerificationResult": "2026-10-09分（27手配、一式金額E269785080を含む）を実印刷し、印字値の差 22→0、AV5はVBAと完全一致。位置・バーコードは第1版と同じ",
+  "PreflightCheckOnly": "OK",
+  "PrintedDuringSwitch": false,
+  "Backup": "C:\\HPDB\\AI_TEST\\ShipValueTag\\Backups\\DailySwitch-20261013-LayoutFix-r2",
+  "Rollback": {
+    "ToFirstLayoutFix": "Backups\\DailySwitch-20261013-LayoutFix-r2\\Restore-Previous.ps1",
+    "To20261007FIX": "Backups\\DailySwitch-20261013-LayoutFix\\Restore-Previous.ps1"
+  }
+}
