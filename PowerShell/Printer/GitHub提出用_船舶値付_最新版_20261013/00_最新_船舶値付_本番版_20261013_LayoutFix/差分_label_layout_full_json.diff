@@ -1,0 +1,348 @@
+--- config/label_layout_full.json (修正前)
++++ config/label_layout_full.json (最新)
+@@ -13235,4 +13235,301 @@
+         "wrap": null
+       }
++    },
++    {
++      "cell": "L4",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "L5",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "L6",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "A10",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "F10",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "O10",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "AW10",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "BO10",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "AW11",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "A12",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "I12",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "N12",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "U12",
++      "value": null,
++      "align": {
++        "h": "right",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "V12",
++      "value": null,
++      "align": {
++        "h": "right",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "Z12",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "AS12",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "AY12",
++      "value": null,
++      "align": {
++        "h": "right",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "BC12",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "BJ12",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "O13",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "V13",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "AI13",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "AS13",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "BC13",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "BJ13",
++      "value": null,
++      "align": {
++        "h": "left",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "A14",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "Y14",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "AI14",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "BC14",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "BJ14",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "A15",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "A16",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
++    },
++    {
++      "cell": "BM16",
++      "value": null,
++      "align": {
++        "h": "center",
++        "v": null,
++        "wrap": null
++      }
+     }
+   ],
+@@ -13791,4 +14088,42 @@
+       "source_field_id": 202
+     }
+-  ]
++  ],
++  "_layoutfix_20261013": {
++    "source": "VBA-runtime-copy.xlsm model sheet (read-only) horizontal alignment",
++    "changed_cells": [
++      "L4",
++      "L5",
++      "L6",
++      "A10",
++      "F10",
++      "O10",
++      "AW10",
++      "BO10",
++      "AW11",
++      "A12",
++      "I12",
++      "N12",
++      "U12",
++      "V12",
++      "Z12",
++      "AS12",
++      "AY12",
++      "BC12",
++      "BJ12",
++      "O13",
++      "V13",
++      "AI13",
++      "AS13",
++      "BC13",
++      "BJ13",
++      "A14",
++      "Y14",
++      "AI14",
++      "BC14",
++      "BJ14",
++      "A15",
++      "A16",
++      "BM16"
++    ]
++  }
+ }

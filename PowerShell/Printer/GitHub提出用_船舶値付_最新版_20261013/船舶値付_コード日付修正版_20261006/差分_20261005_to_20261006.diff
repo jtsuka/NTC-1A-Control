@@ -1,0 +1,40 @@
+--- before.ps1
++++ candidate.ps1
+@@ -581,9 +581,20 @@
+ $script:F8DateReferenceYear = [DateTime]::Now.Year
+ function Convert-F8VbaDateText([string]$Value, [int]$ReferenceYear) {
+     $match = [regex]::Match($Value, '^(?<Month>[0-9]{1,2})月(?<Day>[0-9]{1,2})日$')
+-    if (-not $match.Success) { return $Value }
++    $dateYear = $ReferenceYear
++    $dateDay = 0
++    if ($match.Success) {
++        $dateDay = [int]$match.Groups['Day'].Value
++    } else {
++        # Observed Excel CSV import: ASCII month-year becomes the first day.
++        $match = [regex]::Match($Value, '^(?<Month>[0-9]{1,2})-(?<Year>[0-9]{4})$')
++        if (-not $match.Success) { return $Value }
++        $dateYear = [int]$match.Groups['Year'].Value
++        if ($dateYear -lt 1900) { return $Value }
++        $dateDay = 1
++    }
+     try {
+-        $date = [DateTime]::new($ReferenceYear, [int]$match.Groups['Month'].Value, [int]$match.Groups['Day'].Value)
++        $date = [DateTime]::new($dateYear, [int]$match.Groups['Month'].Value, $dateDay)
+         return $date.ToString('M/d/yyyy', [Globalization.CultureInfo]::InvariantCulture)
+     }
+     catch [ArgumentOutOfRangeException] { return $Value }
+@@ -722,12 +733,12 @@
+     # 得意先番号(F4)・受注先番号(F5)・送り先番号(F6, 納入先番号) は、
+     # CSV(DL)側で数値として書き出される際に先頭ゼロが欠落することがある
+     # (例: 07000014→7000014、00203007→203007。2026/08/10データ 28件中6件で再現確認)。
+-    # 元VBAは常に8桁ゼロ埋めで表示しているため、数値のみ・8桁未満の場合は左ゼロ埋めして復元する。
++    # 原典VBA Process.MakeDataは6桁・7桁だけ8桁へ補う。4桁の部署兼用コードは維持する。
+     # (9999999999のような10桁の特殊コードは対象外)
+     foreach ($cellKey in @("F4", "F5", "F6")) {
+         if ($override.ContainsKey($cellKey)) {
+             $code = $override[$cellKey].Trim()
+-            if ($code -match '^\d+$' -and $code.Length -lt 8) {
++            if ($code -match '^\d+$' -and ($code.Length -eq 6 -or $code.Length -eq 7)) {
+                 $override[$cellKey] = $code.PadLeft(8, '0')
+             }
+         }

@@ -1,0 +1,16 @@
+--- before.ps1
++++ Print-ValueTag_Ship_CsvCompatibility_ZeroMarginFIX_20261007.ps1
+@@ -1088,7 +1088,12 @@
+     $costPrice = 0; [void][double]::TryParse($row."208", [ref]$costPrice)
+     if ($billingPrice -gt 0 -and $costPrice -gt 0) {
+         $margin = ($billingPrice - $costPrice) / $billingPrice * 100
+-        $override["V12"] = "{0:N1}%" -f $margin
++        # VBA PrintableShapes suppresses numeric zero before BODY transfer.
++        if ($margin -eq 0) {
++            $override["V12"] = ""
++        } else {
++            $override["V12"] = "{0:N1}%" -f $margin
++        }
+     }
+ 
+     # Step2 / VBA原典: 原価未入力 / 売価未入力警告。

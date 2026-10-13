@@ -1,0 +1,17 @@
+{
+  "DecisionDate": "2026-10-07",
+  "EffectiveDate": "2026-10-08",
+  "Status": "FORMALLY_ADOPTED_BY_USER",
+  "FormalScript": "C:\\HPDB\\AI_TEST\\ShipValueTag\\Print-ValueTag_Ship_20261007_FIX.ps1",
+  "SHA256": "6A26AAB7D109D8AFCF89B1B28759B036B196CD415280A4C69BE2B0707753435E",
+  "SameBytesAsPrintTestAndClaudeReview": true,
+  "BusinessLogicChangedAtAdoption": false,
+  "Backup": "C:\\HPDB\\AI_TEST\\ShipValueTag\\Backups\\FormalAdoption-20261007",
+  "FullContentCertification": "NOT_EXHAUSTIVELY_CERTIFIED",
+  "OpenItems": [
+    "rare mixed-detail sort cases",
+    "Excel date inference outside tested formats",
+    "individual glyph coverage and currency review"
+  ],
+  "PrintedDuringAdoption": false
+}
