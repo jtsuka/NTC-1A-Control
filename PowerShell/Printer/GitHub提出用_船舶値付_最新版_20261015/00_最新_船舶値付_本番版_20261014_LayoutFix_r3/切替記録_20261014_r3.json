@@ -1,0 +1,8 @@
+{
+ "切替日時": "2026-10-14",
+ "旧": {"名前": "Print-ValueTag_Ship_20261013_LayoutFix_r2.ps1", "SHA256": "7A1727AB938EA2E8DE66F6B546E4049A582D5CE29D1CF8EDD1B9DAD6576FB6D6"},
+ "新": {"名前": "Print-ValueTag_Ship_20261014_LayoutFix_r3.ps1", "SHA256": "C078BB0433E304A61608D3CC04AB776A5CDA659D44ED0B8B0E1FBDCAE5D2B5F3"},
+ "config": "変更なし(label_layout_full.json C4E7F77B…)",
+ "戻し方": "Backups\DailySwitch-20261014-LayoutFix-r3\Restore-Previous.ps1",
+ "根拠": "4日分(10/14,10/09,10/06,10/13)再試験で基準外0件、要目視3件も画像確認で許容内"
+}

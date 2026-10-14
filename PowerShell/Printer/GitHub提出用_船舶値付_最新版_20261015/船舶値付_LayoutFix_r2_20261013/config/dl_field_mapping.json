@@ -1,0 +1,1078 @@
+[
+  {
+    "field_name": "DLデータ項目（システムで不使用)",
+    "dl_col_index": "DLデータ列番号（兼、ID)"
+  },
+  {
+    "field_name": "工場番号",
+    "dl_col_index": 1
+  },
+  {
+    "field_name": "受注番号",
+    "dl_col_index": 2
+  },
+  {
+    "field_name": "受注行番号",
+    "dl_col_index": 3
+  },
+  {
+    "field_name": "受注伝票区分",
+    "dl_col_index": 4
+  },
+  {
+    "field_name": "得意先番号",
+    "dl_col_index": 5
+  },
+  {
+    "field_name": "納入先番号",
+    "dl_col_index": 6
+  },
+  {
+    "field_name": "需要家番号",
+    "dl_col_index": 7
+  },
+  {
+    "field_name": "受注日",
+    "dl_col_index": 8
+  },
+  {
+    "field_name": "最終出荷日",
+    "dl_col_index": 9
+  },
+  {
+    "field_name": "品目番号",
+    "dl_col_index": 10
+  },
+  {
+    "field_name": "品目名",
+    "dl_col_index": 11
+  },
+  {
+    "field_name": "型式",
+    "dl_col_index": 12
+  },
+  {
+    "field_name": "注文番号",
+    "dl_col_index": 13
+  },
+  {
+    "field_name": "製番",
+    "dl_col_index": 14
+  },
+  {
+    "field_name": "品目区分",
+    "dl_col_index": 15
+  },
+  {
+    "field_name": "売上担当者",
+    "dl_col_index": 16
+  },
+  {
+    "field_name": "出荷予定日",
+    "dl_col_index": 17
+  },
+  {
+    "field_name": "納期",
+    "dl_col_index": 18
+  },
+  {
+    "field_name": "受注数",
+    "dl_col_index": 19
+  },
+  {
+    "field_name": "単価単位",
+    "dl_col_index": 20
+  },
+  {
+    "field_name": "単位番号",
+    "dl_col_index": 21
+  },
+  {
+    "field_name": "単位名",
+    "dl_col_index": 22
+  },
+  {
+    "field_name": "引当数",
+    "dl_col_index": 23
+  },
+  {
+    "field_name": "単価",
+    "dl_col_index": 24
+  },
+  {
+    "field_name": "仮単価区分",
+    "dl_col_index": 25
+  },
+  {
+    "field_name": "貿易単価区分",
+    "dl_col_index": 26
+  },
+  {
+    "field_name": "金額",
+    "dl_col_index": 27
+  },
+  {
+    "field_name": "特記事項１",
+    "dl_col_index": 28
+  },
+  {
+    "field_name": "特記事項２",
+    "dl_col_index": 29
+  },
+  {
+    "field_name": "出荷数",
+    "dl_col_index": 30
+  },
+  {
+    "field_name": "完納区分",
+    "dl_col_index": 31
+  },
+  {
+    "field_name": "計画必要数",
+    "dl_col_index": 32
+  },
+  {
+    "field_name": "計画立案済数",
+    "dl_col_index": 33
+  },
+  {
+    "field_name": "生産計画立案日",
+    "dl_col_index": 34
+  },
+  {
+    "field_name": "管理部門",
+    "dl_col_index": 35
+  },
+  {
+    "field_name": "不明項目０１(制御項目のため日本語項目名なし）",
+    "dl_col_index": 36
+  },
+  {
+    "field_name": "照会項目",
+    "dl_col_index": 37
+  },
+  {
+    "field_name": "消費税率",
+    "dl_col_index": 38
+  },
+  {
+    "field_name": "通貨",
+    "dl_col_index": 39
+  },
+  {
+    "field_name": "通貨名",
+    "dl_col_index": 40
+  },
+  {
+    "field_name": "他社品番",
+    "dl_col_index": 41
+  },
+  {
+    "field_name": "他社品名",
+    "dl_col_index": 42
+  },
+  {
+    "field_name": "引当在庫場所",
+    "dl_col_index": 43
+  },
+  {
+    "field_name": "納入先名",
+    "dl_col_index": 44
+  },
+  {
+    "field_name": "郵便番号",
+    "dl_col_index": 45
+  },
+  {
+    "field_name": "住所１",
+    "dl_col_index": 46
+  },
+  {
+    "field_name": "住所２",
+    "dl_col_index": 47
+  },
+  {
+    "field_name": "住所３",
+    "dl_col_index": 48
+  },
+  {
+    "field_name": "電話番号",
+    "dl_col_index": 49
+  },
+  {
+    "field_name": "ＦＡＸ番号",
+    "dl_col_index": 50
+  },
+  {
+    "field_name": "輸送ＬＴ",
+    "dl_col_index": 51
+  },
+  {
+    "field_name": "図番",
+    "dl_col_index": 52
+  },
+  {
+    "field_name": "生産工場",
+    "dl_col_index": 53
+  },
+  {
+    "field_name": "レート",
+    "dl_col_index": 54
+  },
+  {
+    "field_name": "自国通貨名",
+    "dl_col_index": 55
+  },
+  {
+    "field_name": "自国通貨",
+    "dl_col_index": 56
+  },
+  {
+    "field_name": "自国金額",
+    "dl_col_index": 57
+  },
+  {
+    "field_name": "レート区分",
+    "dl_col_index": 58
+  },
+  {
+    "field_name": "単価表示ケタ",
+    "dl_col_index": 59
+  },
+  {
+    "field_name": "金額表示ケタ",
+    "dl_col_index": 60
+  },
+  {
+    "field_name": "自国金額表示ケタ",
+    "dl_col_index": 61
+  },
+  {
+    "field_name": "受注種別",
+    "dl_col_index": 62
+  },
+  {
+    "field_name": "登録日",
+    "dl_col_index": 63
+  },
+  {
+    "field_name": "更新日",
+    "dl_col_index": 64
+  },
+  {
+    "field_name": "販売部門",
+    "dl_col_index": 65
+  },
+  {
+    "field_name": "販売発注部門",
+    "dl_col_index": 66
+  },
+  {
+    "field_name": "販売発注番号",
+    "dl_col_index": 67
+  },
+  {
+    "field_name": "販売発注行番号",
+    "dl_col_index": 68
+  },
+  {
+    "field_name": "販売発注区分",
+    "dl_col_index": 69
+  },
+  {
+    "field_name": "登録日(SYSDATE)",
+    "dl_col_index": 70
+  },
+  {
+    "field_name": "更新日(SYSDATE)",
+    "dl_col_index": 71
+  },
+  {
+    "field_name": "会社コード",
+    "dl_col_index": 72
+  },
+  {
+    "field_name": "受注請書発行区分",
+    "dl_col_index": 73
+  },
+  {
+    "field_name": "受注確認書発行日",
+    "dl_col_index": 74
+  },
+  {
+    "field_name": "データ有効フラグ",
+    "dl_col_index": 75
+  },
+  {
+    "field_name": "ワークフロー区分",
+    "dl_col_index": 76
+  },
+  {
+    "field_name": "ワークフローパターン",
+    "dl_col_index": 77
+  },
+  {
+    "field_name": "フローパターンID",
+    "dl_col_index": 78
+  },
+  {
+    "field_name": "フロー選定条件",
+    "dl_col_index": 79
+  },
+  {
+    "field_name": "承認依頼番号",
+    "dl_col_index": 80
+  },
+  {
+    "field_name": "承認日",
+    "dl_col_index": 81
+  },
+  {
+    "field_name": "品目分類",
+    "dl_col_index": 82
+  },
+  {
+    "field_name": "品目分類名",
+    "dl_col_index": 83
+  },
+  {
+    "field_name": "取扱品目分類１",
+    "dl_col_index": 84
+  },
+  {
+    "field_name": "品目区分１名称",
+    "dl_col_index": 85
+  },
+  {
+    "field_name": "取扱品目分類２",
+    "dl_col_index": 86
+  },
+  {
+    "field_name": "品目区分２名称",
+    "dl_col_index": 87
+  },
+  {
+    "field_name": "取扱品目分類３",
+    "dl_col_index": 88
+  },
+  {
+    "field_name": "品目区分３名称",
+    "dl_col_index": 89
+  },
+  {
+    "field_name": "得意先分類１",
+    "dl_col_index": 90
+  },
+  {
+    "field_name": "得意先種別１名称",
+    "dl_col_index": 91
+  },
+  {
+    "field_name": "得意先分類２",
+    "dl_col_index": 92
+  },
+  {
+    "field_name": "得意先種別２名称",
+    "dl_col_index": 93
+  },
+  {
+    "field_name": "得意先分類３",
+    "dl_col_index": 94
+  },
+  {
+    "field_name": "得意先種別３名称",
+    "dl_col_index": 95
+  },
+  {
+    "field_name": "得意先分類４",
+    "dl_col_index": 96
+  },
+  {
+    "field_name": "得意先種別４名称",
+    "dl_col_index": 97
+  },
+  {
+    "field_name": "取引単位受注数",
+    "dl_col_index": 98
+  },
+  {
+    "field_name": "取引単位コード",
+    "dl_col_index": 99
+  },
+  {
+    "field_name": "取引単位",
+    "dl_col_index": 100
+  },
+  {
+    "field_name": "変換率分子（取引単位）",
+    "dl_col_index": 101
+  },
+  {
+    "field_name": "変換率分母（取引単位）",
+    "dl_col_index": 102
+  },
+  {
+    "field_name": "手配入力区分",
+    "dl_col_index": 103
+  },
+  {
+    "field_name": "版数",
+    "dl_col_index": 104
+  },
+  {
+    "field_name": "手動採番フラグ",
+    "dl_col_index": 105
+  },
+  {
+    "field_name": "請求先名",
+    "dl_col_index": 106
+  },
+  {
+    "field_name": "経由先番号１",
+    "dl_col_index": 107
+  },
+  {
+    "field_name": "経由先名１",
+    "dl_col_index": 108
+  },
+  {
+    "field_name": "経由先番号２",
+    "dl_col_index": 109
+  },
+  {
+    "field_name": "経由先名２",
+    "dl_col_index": 110
+  },
+  {
+    "field_name": "受注先番号",
+    "dl_col_index": 111
+  },
+  {
+    "field_name": "受注先名",
+    "dl_col_index": 112
+  },
+  {
+    "field_name": "経由先番号３",
+    "dl_col_index": 113
+  },
+  {
+    "field_name": "経由先名３",
+    "dl_col_index": 114
+  },
+  {
+    "field_name": "経由営業所番号",
+    "dl_col_index": 115
+  },
+  {
+    "field_name": "責任部門",
+    "dl_col_index": 116
+  },
+  {
+    "field_name": "定価印字区分",
+    "dl_col_index": 117
+  },
+  {
+    "field_name": "受領書発行区分",
+    "dl_col_index": 118
+  },
+  {
+    "field_name": "受注者",
+    "dl_col_index": 119
+  },
+  {
+    "field_name": "前納運送便コード",
+    "dl_col_index": 120
+  },
+  {
+    "field_name": "後納運送便コード",
+    "dl_col_index": 121
+  },
+  {
+    "field_name": "運賃コード",
+    "dl_col_index": 122
+  },
+  {
+    "field_name": "代表荷姿",
+    "dl_col_index": 123
+  },
+  {
+    "field_name": "発注者１",
+    "dl_col_index": 124
+  },
+  {
+    "field_name": "発注者２",
+    "dl_col_index": 125
+  },
+  {
+    "field_name": "発注者３",
+    "dl_col_index": 126
+  },
+  {
+    "field_name": "納期（ヘッダ）",
+    "dl_col_index": 127
+  },
+  {
+    "field_name": "特記事項（ヘッダ）",
+    "dl_col_index": 128
+  },
+  {
+    "field_name": "エンジン機種",
+    "dl_col_index": 129
+  },
+  {
+    "field_name": "KW出力",
+    "dl_col_index": 130
+  },
+  {
+    "field_name": "PS馬力",
+    "dl_col_index": 131
+  },
+  {
+    "field_name": "回転数",
+    "dl_col_index": 132
+  },
+  {
+    "field_name": "減速比",
+    "dl_col_index": 133
+  },
+  {
+    "field_name": "回転方向",
+    "dl_col_index": 134
+  },
+  {
+    "field_name": "クラッチ",
+    "dl_col_index": 135
+  },
+  {
+    "field_name": "基",
+    "dl_col_index": 136
+  },
+  {
+    "field_name": "軸",
+    "dl_col_index": 137
+  },
+  {
+    "field_name": "セット",
+    "dl_col_index": 138
+  },
+  {
+    "field_name": "船種",
+    "dl_col_index": 139
+  },
+  {
+    "field_name": "新船区",
+    "dl_col_index": 140
+  },
+  {
+    "field_name": "船名",
+    "dl_col_index": 141
+  },
+  {
+    "field_name": "船番",
+    "dl_col_index": 142
+  },
+  {
+    "field_name": "船主",
+    "dl_col_index": 143
+  },
+  {
+    "field_name": "造船所",
+    "dl_col_index": 144
+  },
+  {
+    "field_name": "検査",
+    "dl_col_index": 145
+  },
+  {
+    "field_name": "ペラ軸識別CD",
+    "dl_col_index": 146
+  },
+  {
+    "field_name": "回答希望日",
+    "dl_col_index": 147
+  },
+  {
+    "field_name": "回答予定日",
+    "dl_col_index": 148
+  },
+  {
+    "field_name": "回答日",
+    "dl_col_index": 149
+  },
+  {
+    "field_name": "回答者",
+    "dl_col_index": 150
+  },
+  {
+    "field_name": "出図依頼区分",
+    "dl_col_index": 151
+  },
+  {
+    "field_name": "出図依頼内容",
+    "dl_col_index": 152
+  },
+  {
+    "field_name": "出図完了区分",
+    "dl_col_index": 153
+  },
+  {
+    "field_name": "図面_販",
+    "dl_col_index": 154
+  },
+  {
+    "field_name": "図面_承",
+    "dl_col_index": 155
+  },
+  {
+    "field_name": "図面_確",
+    "dl_col_index": 156
+  },
+  {
+    "field_name": "図面_工",
+    "dl_col_index": 157
+  },
+  {
+    "field_name": "図面_振",
+    "dl_col_index": 158
+  },
+  {
+    "field_name": "図面_完",
+    "dl_col_index": 159
+  },
+  {
+    "field_name": "図面_ペ",
+    "dl_col_index": 160
+  },
+  {
+    "field_name": "部署_倉",
+    "dl_col_index": 161
+  },
+  {
+    "field_name": "部署_購",
+    "dl_col_index": 162
+  },
+  {
+    "field_name": "部署_外",
+    "dl_col_index": 163
+  },
+  {
+    "field_name": "部署_大",
+    "dl_col_index": 164
+  },
+  {
+    "field_name": "部署_小",
+    "dl_col_index": 165
+  },
+  {
+    "field_name": "部署_設",
+    "dl_col_index": 166
+  },
+  {
+    "field_name": "部署_検",
+    "dl_col_index": 167
+  },
+  {
+    "field_name": "部署_品",
+    "dl_col_index": 168
+  },
+  {
+    "field_name": "部署_ペ",
+    "dl_col_index": 169
+  },
+  {
+    "field_name": "部署_船",
+    "dl_col_index": 170
+  },
+  {
+    "field_name": "部署_資",
+    "dl_col_index": 171
+  },
+  {
+    "field_name": "部署_井",
+    "dl_col_index": 172
+  },
+  {
+    "field_name": "部署_電",
+    "dl_col_index": 173
+  },
+  {
+    "field_name": "部署_飯",
+    "dl_col_index": 174
+  },
+  {
+    "field_name": "部署_管",
+    "dl_col_index": 175
+  },
+  {
+    "field_name": "部署_出",
+    "dl_col_index": 176
+  },
+  {
+    "field_name": "参照見積番号",
+    "dl_col_index": 177
+  },
+  {
+    "field_name": "参照版数",
+    "dl_col_index": 178
+  },
+  {
+    "field_name": "参照手配書番号",
+    "dl_col_index": 179
+  },
+  {
+    "field_name": "一式計上区分",
+    "dl_col_index": 180
+  },
+  {
+    "field_name": "計上先区分",
+    "dl_col_index": 181
+  },
+  {
+    "field_name": "計上先_手配書番号",
+    "dl_col_index": 182
+  },
+  {
+    "field_name": "請求先_一式金額",
+    "dl_col_index": 183
+  },
+  {
+    "field_name": "経由先１_一式金額",
+    "dl_col_index": 184
+  },
+  {
+    "field_name": "経由先２_一式金額",
+    "dl_col_index": 185
+  },
+  {
+    "field_name": "受注先_一式金額",
+    "dl_col_index": 186
+  },
+  {
+    "field_name": "商品情報",
+    "dl_col_index": 187
+  },
+  {
+    "field_name": "検査番号",
+    "dl_col_index": 188
+  },
+  {
+    "field_name": "納期（明細）",
+    "dl_col_index": 189
+  },
+  {
+    "field_name": "製造日数",
+    "dl_col_index": 190
+  },
+  {
+    "field_name": "加工時間",
+    "dl_col_index": 191
+  },
+  {
+    "field_name": "商談状況",
+    "dl_col_index": 192
+  },
+  {
+    "field_name": "定価存在フラグ",
+    "dl_col_index": 193
+  },
+  {
+    "field_name": "定価",
+    "dl_col_index": 194
+  },
+  {
+    "field_name": "別作表示内容",
+    "dl_col_index": 195
+  },
+  {
+    "field_name": "請求先_仕切率",
+    "dl_col_index": 196
+  },
+  {
+    "field_name": "請求先_単価",
+    "dl_col_index": 197
+  },
+  {
+    "field_name": "請求先_金額",
+    "dl_col_index": 198
+  },
+  {
+    "field_name": "経由先１_仕切率",
+    "dl_col_index": 199
+  },
+  {
+    "field_name": "経由先１_単価",
+    "dl_col_index": 200
+  },
+  {
+    "field_name": "経由先１_金額",
+    "dl_col_index": 201
+  },
+  {
+    "field_name": "経由先２_仕切率",
+    "dl_col_index": 202
+  },
+  {
+    "field_name": "経由先２_単価",
+    "dl_col_index": 203
+  },
+  {
+    "field_name": "経由先２_金額",
+    "dl_col_index": 204
+  },
+  {
+    "field_name": "受注先_仕切率",
+    "dl_col_index": 205
+  },
+  {
+    "field_name": "受注先_単価",
+    "dl_col_index": 206
+  },
+  {
+    "field_name": "受注先_金額",
+    "dl_col_index": 207
+  },
+  {
+    "field_name": "営業原価_単価",
+    "dl_col_index": 208
+  },
+  {
+    "field_name": "営業原価_金額",
+    "dl_col_index": 209
+  },
+  {
+    "field_name": "製造原価_単価",
+    "dl_col_index": 210
+  },
+  {
+    "field_name": "製造原価_金額",
+    "dl_col_index": 211
+  },
+  {
+    "field_name": "経由先３_単価",
+    "dl_col_index": 212
+  },
+  {
+    "field_name": "送り先_単価",
+    "dl_col_index": 213
+  },
+  {
+    "field_name": "手配書発行日",
+    "dl_col_index": 214
+  },
+  {
+    "field_name": "手配書発行日（営業控）",
+    "dl_col_index": 215
+  },
+  {
+    "field_name": "軸径",
+    "dl_col_index": 216
+  },
+  {
+    "field_name": "長さ",
+    "dl_col_index": 217
+  },
+  {
+    "field_name": "厚み",
+    "dl_col_index": 218
+  },
+  {
+    "field_name": "寸法記号",
+    "dl_col_index": 219
+  },
+  {
+    "field_name": "定尺区分",
+    "dl_col_index": 220
+  },
+  {
+    "field_name": "溝区分",
+    "dl_col_index": 221
+  },
+  {
+    "field_name": "プロペラ_ダイヤ",
+    "dl_col_index": 222
+  },
+  {
+    "field_name": "プロペラ_ピッチ",
+    "dl_col_index": 223
+  },
+  {
+    "field_name": "プロペラ_回転方向",
+    "dl_col_index": 224
+  },
+  {
+    "field_name": "プロペラ_形状",
+    "dl_col_index": 225
+  },
+  {
+    "field_name": "プロペラ_材質",
+    "dl_col_index": 226
+  },
+  {
+    "field_name": "プロペラ_翼数",
+    "dl_col_index": 227
+  },
+  {
+    "field_name": "プロペラ_AR",
+    "dl_col_index": 228
+  },
+  {
+    "field_name": "プロペラ_軸径",
+    "dl_col_index": 229
+  },
+  {
+    "field_name": "プロペラ_加工",
+    "dl_col_index": 230
+  },
+  {
+    "field_name": "プロペラ_検査",
+    "dl_col_index": 231
+  },
+  {
+    "field_name": "入力者",
+    "dl_col_index": 232
+  },
+  {
+    "field_name": "粗利率",
+    "dl_col_index": 233
+  },
+  {
+    "field_name": "手配書番号複写フラグ",
+    "dl_col_index": 234
+  },
+  {
+    "field_name": "処理モード",
+    "dl_col_index": 235
+  },
+  {
+    "field_name": "I_SEQ",
+    "dl_col_index": 236
+  },
+  {
+    "field_name": "発注番号",
+    "dl_col_index": 237
+  },
+  {
+    "field_name": "手配担当者",
+    "dl_col_index": 238
+  },
+  {
+    "field_name": "発注先名",
+    "dl_col_index": 239
+  },
+  {
+    "field_name": "出荷番号",
+    "dl_col_index": 240
+  },
+  {
+    "field_name": "受注担当者名",
+    "dl_col_index": 241
+  },
+  {
+    "field_name": "品揃者",
+    "dl_col_index": 242
+  },
+  {
+    "field_name": "梱包者",
+    "dl_col_index": 243
+  },
+  {
+    "field_name": "運送便名",
+    "dl_col_index": 244
+  },
+  {
+    "field_name": "運賃名",
+    "dl_col_index": 245
+  },
+  {
+    "field_name": "発注担当者",
+    "dl_col_index": 246
+  },
+  {
+    "field_name": "得意先締め日",
+    "dl_col_index": 247
+  },
+  {
+    "field_name": "売上担当者",
+    "dl_col_index": 248
+  },
+  {
+    "field_name": "木箱",
+    "dl_col_index": 249
+  },
+  {
+    "field_name": "木枠",
+    "dl_col_index": 250
+  },
+  {
+    "field_name": "段ボール",
+    "dl_col_index": 251
+  },
+  {
+    "field_name": "縄締",
+    "dl_col_index": 252
+  },
+  {
+    "field_name": "パレット",
+    "dl_col_index": 253
+  },
+  {
+    "field_name": "小包",
+    "dl_col_index": 254
+  },
+  {
+    "field_name": "重量",
+    "dl_col_index": 255
+  },
+  {
+    "field_name": "出荷検収日",
+    "dl_col_index": 256
+  },
+  {
+    "field_name": "分納出荷数",
+    "dl_col_index": 257
+  },
+  {
+    "field_name": "出荷登録日(SYSDATE)",
+    "dl_col_index": 258
+  },
+  {
+    "field_name": "出荷更新日(SYSDATE)",
+    "dl_col_index": 259
+  },
+  {
+    "field_name": "得意先ランク",
+    "dl_col_index": 260
+  },
+  {
+    "field_name": "材料ランク",
+    "dl_col_index": 261
+  },
+  {
+    "field_name": "所属部署コード",
+    "dl_col_index": 262
+  },
+  {
+    "field_name": "地区コード",
+    "dl_col_index": 263
+  },
+  {
+    "field_name": "地区名称",
+    "dl_col_index": 264
+  },
+  {
+    "field_name": "県名",
+    "dl_col_index": 265
+  },
+  {
+    "field_name": "作表担当者",
+    "dl_col_index": "不使用"
+  },
+  {
+    "field_name": "処理区分名",
+    "dl_col_index": "不使用"
+  },
+  {
+    "field_name": "オペレーター名",
+    "dl_col_index": "不使用"
+  }
+]

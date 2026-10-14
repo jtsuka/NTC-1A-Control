@@ -1,0 +1,87 @@
+diff --git "a/GitHub\346\217\220\345\207\272\347\224\250_20261015/\350\210\271\350\210\266\345\200\244\344\273\230_LayoutFix_r2_20261013/Print-ValueTag_Ship_20261013_LayoutFix_r2.ps1" "b/GitHub\346\217\220\345\207\272\347\224\250_20261015/00_\346\234\200\346\226\260_\350\210\271\350\210\266\345\200\244\344\273\230_\346\234\254\347\225\252\347\211\210_20261014_LayoutFix_r3/Print-ValueTag_Ship_20261014_LayoutFix_r3.ps1"
+index f35099b..385ae11 100644
+--- "a/GitHub\346\217\220\345\207\272\347\224\250_20261015/\350\210\271\350\210\266\345\200\244\344\273\230_LayoutFix_r2_20261013/Print-ValueTag_Ship_20261013_LayoutFix_r2.ps1"
++++ "b/GitHub\346\217\220\345\207\272\347\224\250_20261015/00_\346\234\200\346\226\260_\350\210\271\350\210\266\345\200\244\344\273\230_\346\234\254\347\225\252\347\211\210_20261014_LayoutFix_r3/Print-ValueTag_Ship_20261014_LayoutFix_r3.ps1"
+@@ -1346,6 +1346,69 @@ function Write-CheckLogCsv {
+     Write-Host "診断: CheckLogを $CheckLogPath に $($script:checkLog.Count) 件出力しました"
+ }
+ 
++# 2026-10-14 r3: 全角・半角カナを含む文字列を、欄からはみ出して文字が欠けないように描画する。
++# 2026-10-14 E266083660 の発注先「住友重機械工業 株式会社 DT-SBU 関西営業部大阪2G」は欄の幅を少し超え、PSでは欄の端で
++# 「2G」や先頭の「住」が切れて印字されなかった（VBAは「2G」まで印字）。
++# ・Excelの送り幅に合わせ、全角は1.0em、半角カナは0.507emの固定幅で1文字ずつ並べる（実測：VBA出力の文字位置）。
++#   em（文字の大きさ）は、フォントの設計情報から、描画先(印刷)のGraphicsの単位で求める。
++# ・並べた全体の幅が欄の幅を超える場合は、欄に収まるよう横幅だけを縮めて描画し、文字が欠けないようにする。
++function Get-ExcelAdvanceFactor([char]$c) {
++    $o = [int]$c
++    if ($o -ge 0xFF61 -and $o -le 0xFF9F) { return 0.507 }  # 半角カナ：0.507em
++    if ($o -gt 0x2000) { return 1.0 }                        # 全角：1.0em
++    return 0
++}
++function Test-NeedsExcelAdvance([string]$text) {
++    foreach ($c in $text.ToCharArray()) { if ((Get-ExcelAdvanceFactor $c) -gt 0) { return $true } }
++    return $false
++}
++function Draw-ExcelText {
++    param($Graphics, [string]$Text, $Font, $Brush, [double]$X0, [double]$X1, [double]$Y, [string]$HAlign)
++    $sf = [System.Drawing.StringFormat]::GenericTypographic.Clone()
++    $sf.FormatFlags = $sf.FormatFlags -bor [System.Drawing.StringFormatFlags]::NoWrap -bor [System.Drawing.StringFormatFlags]::NoClip -bor [System.Drawing.StringFormatFlags]::MeasureTrailingSpaces
++    $ff = $Font.FontFamily
++    $em = $Font.GetHeight($Graphics) * $ff.GetEmHeight($Font.Style) / $ff.GetLineSpacing($Font.Style)   # 文字の大きさ(em)
++    $pad = $em / 6           # 従来の描画(既定の書式)が文字列の前後に入れていた余白(1/6 em)
++    $items = New-Object System.Collections.Generic.List[object]
++    $buf = New-Object System.Text.StringBuilder
++    foreach ($c in $Text.ToCharArray()) {
++        $f = Get-ExcelAdvanceFactor $c
++        if ($f -gt 0) {
++            if ($buf.Length -gt 0) {
++                $t = $buf.ToString(); [void]$buf.Clear()
++                $items.Add(@{ T = $t; W = $Graphics.MeasureString($t, $Font, 100000, $sf).Width })
++            }
++            $items.Add(@{ T = [string]$c; W = ($em * $f) })
++        }
++        else { [void]$buf.Append($c) }
++    }
++    if ($buf.Length -gt 0) {
++        $t = $buf.ToString()
++        $items.Add(@{ T = $t; W = $Graphics.MeasureString($t, $Font, 100000, $sf).Width })
++    }
++    $total = 0.0
++    foreach ($it in $items) { $total += $it.W }
++    $avail = ($X1 - $X0) - 6                      # 欄の幅（左右3ずつの余白を除く）
++    $shrink = 1.0
++    if ($total -gt $avail -and $avail -gt 0) { $shrink = $avail / $total }   # 欄からはみ出す文字列は、欄に収まるよう横幅を縮める
++    if ($HAlign -eq "center") { $x = ($X0 + $X1) / 2 - $total / 2; $anchor = ($X0 + $X1) / 2 }
++    elseif ($HAlign -eq "right") { $x = $X1 - 3 - $pad - $total; $anchor = $X1 - 3 - $pad }
++    else { $x = $X0 + 3 + $pad; $anchor = $x }
++    $state = $null
++    if ($shrink -lt 1.0) {
++        $state = $Graphics.Save()
++        $Graphics.TranslateTransform([single]$anchor, 0)
++        $Graphics.ScaleTransform([single]$shrink, 1)
++        $Graphics.TranslateTransform([single](-$anchor), 0)
++    }
++    foreach ($it in $items) {
++        $Graphics.DrawString($it.T, $Font, $Brush, [single]$x, [single]$Y, $sf)
++        $x += $it.W
++    }
++    if ($null -ne $state) { $Graphics.Restore($state) }
++    $sf.Dispose()
++}
++
+ function Draw-Block {
+     param($Graphics, $Block, $YOffset, $DataOverride, $FontCache, $OffsetX, $OffsetY, $PenHair, $PenThin, $PageNo, $OrderNo, $Area)
+ 
+@@ -1480,7 +1543,11 @@ function Draw-Block {
+                 # 従来は常に左寄せ(x0+3)で、中央/右寄せセルが最大約40mmずれていた。
+                 # 結合セル全体(x0..x1)を基準に配置し、はみ出しはExcelと同様に切らない(NoClip)。
+                 $hAlign = if ($info -and $info.align -and $info.align.h) { [string]$info.align.h } else { "" }
+-                if ($hAlign -eq "center" -or $hAlign -eq "right") {
++                if ((-not $isBarcodeFont) -and (Test-NeedsExcelAdvance ([string]$value))) {
++                    # 全角・半角カナを含む文字列：Excelの文字送り幅に合わせて1文字ずつ並べる（英数字だけの文字列は従来の描画のまま）
++                    Draw-ExcelText -Graphics $Graphics -Text ([string]$value) -Font $font -Brush ([System.Drawing.Brushes]::Black) -X0 $x0 -X1 $x1 -Y ($y0 + 1) -HAlign $hAlign
++                }
++                elseif ($hAlign -eq "center" -or $hAlign -eq "right") {
+                     $sf = New-Object System.Drawing.StringFormat
+                     $sf.FormatFlags = [System.Drawing.StringFormatFlags]::NoWrap -bor [System.Drawing.StringFormatFlags]::NoClip
+                     $sf.Trimming = [System.Drawing.StringTrimming]::None  # 既定(Character)だと幅超過の末尾文字が消える(例:「得Rank=」の「=」)

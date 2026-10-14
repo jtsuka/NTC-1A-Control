@@ -1,0 +1,555 @@
+[
+  {
+    "row": 2,
+    "block": "TOP",
+    "label": "部署名",
+    "target_cell": "B1",
+    "source_field_id": 65
+  },
+  {
+    "row": 3,
+    "block": "GENKAUMU",
+    "label": "原価有無表示 [ID14中止,コード内に]",
+    "target_cell": "H1",
+    "source_field_id": null
+  },
+  {
+    "row": 4,
+    "block": "TOP",
+    "label": "バーコード注番",
+    "target_cell": "M1",
+    "source_field_id": 15
+  },
+  {
+    "row": 5,
+    "block": "TOP",
+    "label": "ページ数表示[システムに依存]",
+    "target_cell": "AH1",
+    "source_field_id": null
+  },
+  {
+    "row": 6,
+    "block": "TOP",
+    "label": "参照作成注番",
+    "target_cell": "AS1",
+    "source_field_id": 179
+  },
+  {
+    "row": 7,
+    "block": "OTHER",
+    "label": "取得ファイル日時",
+    "target_cell": "BF1",
+    "source_field_id": null
+  },
+  {
+    "row": 8,
+    "block": "HEAD",
+    "label": "締め日表示",
+    "target_cell": "A2",
+    "source_field_id": 91
+  },
+  {
+    "row": 9,
+    "block": "HEAD",
+    "label": "得意先ランク",
+    "target_cell": "H2",
+    "source_field_id": 260
+  },
+  {
+    "row": 10,
+    "block": "HEAD",
+    "label": "材料ランク",
+    "target_cell": "H3",
+    "source_field_id": 261
+  },
+  {
+    "row": 11,
+    "block": "HEAD",
+    "label": "注番",
+    "target_cell": "J2",
+    "source_field_id": 7
+  },
+  {
+    "row": 12,
+    "block": "HEAD",
+    "label": "受注者",
+    "target_cell": "R3",
+    "source_field_id": 241
+  },
+  {
+    "row": 13,
+    "block": "HEAD",
+    "label": "担当者",
+    "target_cell": "Z3",
+    "source_field_id": 248
+  },
+  {
+    "row": 14,
+    "block": "HEAD",
+    "label": "責任部門",
+    "target_cell": "AH3",
+    "source_field_id": 116
+  },
+  {
+    "row": 15,
+    "block": "HEAD",
+    "label": "経由営業所",
+    "target_cell": "AM3",
+    "source_field_id": 115
+  },
+  {
+    "row": 16,
+    "block": "HEAD",
+    "label": "一式親番表示",
+    "target_cell": "AL5",
+    "source_field_id": 182
+  },
+  {
+    "row": 17,
+    "block": "HEAD",
+    "label": "一式金額表示",
+    "target_cell": "AV5",
+    "source_field_id": 185
+  },
+  {
+    "row": 18,
+    "block": "HEAD",
+    "label": "手配日",
+    "target_cell": "BE3",
+    "source_field_id": 8
+  },
+  {
+    "row": 19,
+    "block": "HEAD",
+    "label": "売価原価合計表示(ID183中止、いらない",
+    "target_cell": "AR2",
+    "source_field_id": 15
+  },
+  {
+    "row": 20,
+    "block": "HEAD",
+    "label": "手配納期",
+    "target_cell": "BJ3",
+    "source_field_id": 127
+  },
+  {
+    "row": 21,
+    "block": "HEAD",
+    "label": "最終出荷日",
+    "target_cell": "BO3",
+    "source_field_id": 9
+  },
+  {
+    "row": 22,
+    "block": "HEAD",
+    "label": "得意先コード",
+    "target_cell": "F4",
+    "source_field_id": 5
+  },
+  {
+    "row": 23,
+    "block": "HEAD",
+    "label": "得意先名",
+    "target_cell": "L4",
+    "source_field_id": 106
+  },
+  {
+    "row": 24,
+    "block": "HEAD",
+    "label": "経由先コード",
+    "target_cell": "AQ4",
+    "source_field_id": 107
+  },
+  {
+    "row": 25,
+    "block": "HEAD",
+    "label": "経由先名",
+    "target_cell": "AW4",
+    "source_field_id": 108
+  },
+  {
+    "row": 26,
+    "block": "HEAD",
+    "label": "受注先コード",
+    "target_cell": "F5",
+    "source_field_id": 111
+  },
+  {
+    "row": 27,
+    "block": "HEAD",
+    "label": "受注先名",
+    "target_cell": "L5",
+    "source_field_id": 112
+  },
+  {
+    "row": 28,
+    "block": "HEAD",
+    "label": null,
+    "target_cell": "AW5",
+    "source_field_id": null
+  },
+  {
+    "row": 29,
+    "block": "HEAD",
+    "label": "送り先コード",
+    "target_cell": "F6",
+    "source_field_id": 6
+  },
+  {
+    "row": 30,
+    "block": "HEAD",
+    "label": "送り先名",
+    "target_cell": "L6",
+    "source_field_id": 44
+  },
+  {
+    "row": 31,
+    "block": "HEAD",
+    "label": "標準表示",
+    "target_cell": "A7",
+    "source_field_id": 192
+  },
+  {
+    "row": 32,
+    "block": "HEAD",
+    "label": "発注者１",
+    "target_cell": "F8",
+    "source_field_id": 124
+  },
+  {
+    "row": 33,
+    "block": "HEAD",
+    "label": "発注者２",
+    "target_cell": "K8",
+    "source_field_id": 125
+  },
+  {
+    "row": 34,
+    "block": "HEAD",
+    "label": "発注者３",
+    "target_cell": "P8",
+    "source_field_id": 126
+  },
+  {
+    "row": 35,
+    "block": "HEAD",
+    "label": "検査",
+    "target_cell": "U8",
+    "source_field_id": 145
+  },
+  {
+    "row": 36,
+    "block": "HEAD",
+    "label": "船主",
+    "target_cell": "Z8",
+    "source_field_id": 143
+  },
+  {
+    "row": 37,
+    "block": "HEAD",
+    "label": "船名",
+    "target_cell": "AG8",
+    "source_field_id": 141
+  },
+  {
+    "row": 38,
+    "block": "HEAD",
+    "label": "船番",
+    "target_cell": "AP8",
+    "source_field_id": 142
+  },
+  {
+    "row": 39,
+    "block": "HEAD",
+    "label": "造船所",
+    "target_cell": "AW8",
+    "source_field_id": 144
+  },
+  {
+    "row": 40,
+    "block": "HEAD",
+    "label": "運賃",
+    "target_cell": "BE8",
+    "source_field_id": 245
+  },
+  {
+    "row": 41,
+    "block": "HEAD",
+    "label": "前納運送便",
+    "target_cell": "BJ8",
+    "source_field_id": 120
+  },
+  {
+    "row": 42,
+    "block": "HEAD",
+    "label": "後納運送便",
+    "target_cell": "BO8",
+    "source_field_id": 121
+  },
+  {
+    "row": 43,
+    "block": "BODY",
+    "label": null,
+    "target_cell": null,
+    "source_field_id": null
+  },
+  {
+    "row": 44,
+    "block": "BODY",
+    "label": "寸法記号",
+    "target_cell": "K9",
+    "source_field_id": 219
+  },
+  {
+    "row": 45,
+    "block": "BODY",
+    "label": "軸径*長さ*厚み",
+    "target_cell": "P9",
+    "source_field_id": 216
+  },
+  {
+    "row": 46,
+    "block": "BODY",
+    "label": "明細納期[納期と相違の場合のみ]",
+    "target_cell": "AH9",
+    "source_field_id": 18
+  },
+  {
+    "row": 47,
+    "block": "BODY",
+    "label": "出荷明細番号",
+    "target_cell": "AV9",
+    "source_field_id": 240
+  },
+  {
+    "row": 48,
+    "block": "BODY",
+    "label": "定価",
+    "target_cell": "BE9",
+    "source_field_id": 194
+  },
+  {
+    "row": 49,
+    "block": "BODY",
+    "label": "請求仕切り",
+    "target_cell": "BO9",
+    "source_field_id": 196
+  },
+  {
+    "row": 50,
+    "block": "BODY",
+    "label": "手配行番号",
+    "target_cell": "A10",
+    "source_field_id": 3
+  },
+  {
+    "row": 51,
+    "block": "BODY",
+    "label": "仮単価区分",
+    "target_cell": "F10",
+    "source_field_id": 25
+  },
+  {
+    "row": 52,
+    "block": "BODY",
+    "label": "商品名",
+    "target_cell": "O10",
+    "source_field_id": 11
+  },
+  {
+    "row": 53,
+    "block": "BODY",
+    "label": "特記事項1",
+    "target_cell": "AW10",
+    "source_field_id": 28
+  },
+  {
+    "row": 54,
+    "block": "BODY",
+    "label": "経由1仕切り",
+    "target_cell": "BO10",
+    "source_field_id": 199
+  },
+  {
+    "row": 55,
+    "block": "BODY",
+    "label": "商品情報",
+    "target_cell": "M11",
+    "source_field_id": 187
+  },
+  {
+    "row": 56,
+    "block": "BODY",
+    "label": "特記事項2",
+    "target_cell": "AW11",
+    "source_field_id": 29
+  },
+  {
+    "row": 57,
+    "block": "BODY",
+    "label": "受注仕切り",
+    "target_cell": "BO11",
+    "source_field_id": 205
+  },
+  {
+    "row": 58,
+    "block": "BODY",
+    "label": "商品コード",
+    "target_cell": "A12",
+    "source_field_id": 10
+  },
+  {
+    "row": 59,
+    "block": "BODY",
+    "label": "数量",
+    "target_cell": "I12",
+    "source_field_id": 19
+  },
+  {
+    "row": 60,
+    "block": "BODY",
+    "label": "数量単位",
+    "target_cell": "N12",
+    "source_field_id": 22
+  },
+  {
+    "row": 61,
+    "block": "BODY",
+    "label": "粗利率",
+    "target_cell": "V12",
+    "source_field_id": 233
+  },
+  {
+    "row": 62,
+    "block": "BODY",
+    "label": "経由>受注,経由=受注 警告",
+    "target_cell": "AS12",
+    "source_field_id": 32
+  },
+  {
+    "row": 63,
+    "block": "BODY",
+    "label": null,
+    "target_cell": "AY12",
+    "source_field_id": null
+  },
+  {
+    "row": 64,
+    "block": "BODY",
+    "label": null,
+    "target_cell": "BC12",
+    "source_field_id": null
+  },
+  {
+    "row": 65,
+    "block": "BODY",
+    "label": "原価割れ注意",
+    "target_cell": "BJ12",
+    "source_field_id": 12
+  },
+  {
+    "row": 66,
+    "block": "BODY",
+    "label": "分納数表示",
+    "target_cell": "F13",
+    "source_field_id": 257
+  },
+  {
+    "row": 67,
+    "block": "BODY",
+    "label": "請求先単価",
+    "target_cell": "O13",
+    "source_field_id": 197
+  },
+  {
+    "row": 68,
+    "block": "BODY",
+    "label": "請求先合計",
+    "target_cell": "V13",
+    "source_field_id": 198
+  },
+  {
+    "row": 69,
+    "block": "BODY",
+    "label": "経由先1単価",
+    "target_cell": "AI13",
+    "source_field_id": 200
+  },
+  {
+    "row": 70,
+    "block": "BODY",
+    "label": "受注先単価",
+    "target_cell": "AS13",
+    "source_field_id": 206
+  },
+  {
+    "row": 71,
+    "block": "BODY",
+    "label": "営業原価単価",
+    "target_cell": "BC13",
+    "source_field_id": 208
+  },
+  {
+    "row": 72,
+    "block": "BODY",
+    "label": "営業原価合計",
+    "target_cell": "BJ13",
+    "source_field_id": 209
+  },
+  {
+    "row": 73,
+    "block": "BODY",
+    "label": null,
+    "target_cell": "A14",
+    "source_field_id": null
+  },
+  {
+    "row": 74,
+    "block": "BODY",
+    "label": "発注者",
+    "target_cell": "Y14",
+    "source_field_id": 246
+  },
+  {
+    "row": 75,
+    "block": "BODY",
+    "label": "発注先",
+    "target_cell": "AI14",
+    "source_field_id": 239
+  },
+  {
+    "row": 76,
+    "block": "BODY",
+    "label": "発注番号",
+    "target_cell": "BC14",
+    "source_field_id": 237
+  },
+  {
+    "row": 77,
+    "block": "BODY",
+    "label": "製造原価=の表示",
+    "target_cell": "AY12",
+    "source_field_id": 13
+  },
+  {
+    "row": 78,
+    "block": "BODY",
+    "label": "製造原価",
+    "target_cell": "BC12",
+    "source_field_id": 210
+  },
+  {
+    "row": 79,
+    "block": "BODY",
+    "label": "製造原価合計",
+    "target_cell": "BJ12",
+    "source_field_id": 211
+  },
+  {
+    "row": 80,
+    "block": "BODY",
+    "label": "ヤンマー経由仕切り注意表示",
+    "target_cell": "BJ14",
+    "source_field_id": 202
+  }
+]

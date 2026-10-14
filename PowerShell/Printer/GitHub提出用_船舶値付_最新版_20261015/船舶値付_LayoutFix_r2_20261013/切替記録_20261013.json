@@ -1,0 +1,36 @@
+{
+  "Date": "2026-10-13",
+  "EffectiveDate": "2026-10-14",
+  "Status": "SWITCHED_BY_USER_INSTRUCTION",
+  "Scope": "daily run (ShipValueTag-DailyFullTrial) uses root Print-ValueTag*.ps1 and root config",
+  "NewScript": "C:\\HPDB\\AI_TEST\\ShipValueTag\\Print-ValueTag_Ship_20261013_LayoutFix.ps1",
+  "NewScriptSHA256": "7F4DF9AA93C0D372FF78BC6581B1D229E992C79ACE809848EDCBF29DA79B1DC5",
+  "NewLayoutConfig": "C:\\HPDB\\AI_TEST\\ShipValueTag\\config\\label_layout_full.json",
+  "NewLayoutConfigSHA256": "C4E7F77B0D38049689953761BA69EC6F6AFEA86FF4C1F173942200BF5681F328",
+  "SameBytesAsVerifiedCandidate": true,
+  "VerifiedBy": "C:\\HPDB\\AI_TEST\\ShipValueTag\\Verification\\Regression_20261013_yen\\regression-summary.json",
+  "PreviousScript": "Print-ValueTag_Ship_20261007_FIX.ps1",
+  "PreviousScriptSHA256": "6A26AAB7D109D8AFCF89B1B28759B036B196CD415280A4C69BE2B0707753435E",
+  "PreviousLayoutConfigSHA256": "374BDB8E9A45724D40982D650E825C77ACB93E761E4D16E4F3371555ADDA885B",
+  "Backup": "C:\\HPDB\\AI_TEST\\ShipValueTag\\Backups\\DailySwitch-20261013-LayoutFix",
+  "Rollback": "C:\\HPDB\\AI_TEST\\ShipValueTag\\Backups\\DailySwitch-20261013-LayoutFix\\Restore-Previous.ps1",
+  "Changes": [
+    "draw text with template horizontal alignment (center/right) instead of always left",
+    "add 33 cell alignments from original workbook model sheet to label_layout_full.json",
+    "single-page scale/row height/placement reproduce Excel FitToPages output (1-7 details 71%, 8 65%, 9 58%, 10 54%)",
+    "yen sign in V13/BJ13/BJ12 totals changed from U+FFE5 to U+005C as in original VBA"
+  ],
+  "PreflightCheckOnly": "OK",
+  "PrintedDuringSwitch": false,
+  "VerificationResults": {
+    "20261013": "CheckLog values identical to VBA except known AH1 page number and BE9 trailing space; out-of-tolerance 6 (all visually confirmed same position); barcodes 52/52",
+    "20261006": "out-of-tolerance 1880 -> 14 (visually confirmed); 8 and 10 detail orders verified",
+    "20261009": "out-of-tolerance 1240 -> 4 (visually confirmed); CheckLog identical to production"
+  },
+  "OpenItems": [
+    "11+ detail (multi-page, FixedScale) not verified - no such orders in past evidence",
+    "lump-sum (一式金額 AV5) yen sign unchanged (U+FFE5) - no VBA sample found",
+    "PS xdw output no longer contains text layer (barcode string); barcodes print and decode correctly",
+    "BE9 list price trailing space (_) format) not reproduced, within tolerance"
+  ]
+}
