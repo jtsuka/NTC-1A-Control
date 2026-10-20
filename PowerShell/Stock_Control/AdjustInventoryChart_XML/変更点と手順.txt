@@ -1,0 +1,61 @@
+﻿本社 グラフ調整スクリプト r7（当日の確定値の列まで表示）  2026-10-20
+
+■ ファイル
+  旧: AdjustInventoryChart_XML_20260902_r6.ps1   (ScriptVersion 2026-09-02-chart-xml-r6)
+  新: AdjustInventoryChart_XML_20261020_r7.ps1   (ScriptVersion 2026-10-20-chart-xml-r7)
+      SHA256: B0D4A34E30E1C50A56CD889E9935CD56211C202E7604EEC813F86472019DCB32
+  テスト用データ: テスト用データ_昨日10-19夜間実行直後\本社商品在庫日報.xlsx
+      SHA256: 2766F9E4C6BCCAAAF65E9DE65E4CB772D225B6A843CDD4A02BF0B575A98A29BA
+      （昨日10-19の夜間実行の「実行前」ブックに、旧版r6を基準日10-19で適用して再現した、昨日の夜間実行直後の本社ブック。
+        再現の結果は実際の10-19のログと完全に一致: 欠品 X→W、在庫額 T→S、DesiredDate=2026-10-16）
+
+■ 修正の理由
+  「欠品」「在庫額」シートの日付行（37行目）は、当日の日付が2列並ぶ。
+    左の列（在庫額=T、欠品=X）= 夜間に記録した当日の確定値（日付セルが固定値）
+    右の列（在庫額=U、欠品=Y）= ライブ列（日付セルが式 =TODAY()-nn）
+  r6 は「基準日以降の日付の列を全て除外」していたため、当日の確定値の列まで外れ、グラフが前営業日までになっていた。
+  正しい仕様は、除外するのはライブ列だけで、当日の確定値の列は含める。
+
+■ 変更点（3か所）
+  1. 日付セルが式かどうか（HasFormula）を取得する
+  2. 採用する終端: 「日付セルが固定値で、基準日以前の最大の日付」の列（r6は基準日より前）
+  3. 安全確認（fail closed）: 採用範囲内に基準日より後の日付、または式の日付セルが混在していたら停止
+
+■ テストPCでの確認手順（昨日のデータから本社のグラフが修正されることの確認）
+  ※ 本番の \\192.168.0.35\disk\企画室\倉庫 のファイルは使わない。テスト用データをテストPCの任意のフォルダーへコピーして使う。
+     ファイル名は 本社商品在庫日報.xlsx のままにすること（スクリプトがファイル名を確認する）。
+  1. ps1 とテスト用データ（SHA256 を SHA256SUMS.txt と照合）をテストPCへコピーする。Excel でそのブックを開いていないこと。
+  2. 更新前の確認（任意）: Excel でテスト用データを開き、「在庫額」グラフの系列の参照範囲を見る
+       在庫額: =(在庫額!$B$37:$G$37, 在庫額!$I$37:$S$37)  ← 終端 S（10/16）   ※昨日のグラフは10/19が入っていない
+       欠品  : 欠品!$L$37:$W$37                              ← 終端 W
+  3. 監査（変更しない）:
+       powershell.exe -NoProfile -File "<置き場所>\AdjustInventoryChart_XML_20261020_r7.ps1" -WorkbookPath "<置き場所>\本社商品在庫日報.xlsx" -Mode Audit -LogPath "<置き場所>\chart_r7.log"
+     期待: ExitCode=0、ログに
+       Plan Sheet=欠品  CurrentEnd=W DesiredEnd=X DesiredDate=2026-10-19 Changed=True
+       Plan Sheet=在庫額 CurrentEnd=S DesiredEnd=T DesiredDate=2026-10-19 Changed=True
+       Audit complete. ChangeTargets=2. Workbook not modified.
+  4. 更新: 同じコマンドの -Mode Update
+     期待: ExitCode=0、"Patched Sheet=欠品 ... W->X"、"Patched Sheet=在庫額 ... S->T"、"Update complete. ChangedCharts=2"、
+           "Only chart XML entries were changed; all other ZIP entry contents matched SHA-256."、
+           ブックと同じ場所の Backup フォルダに 本社商品在庫日報_ChartBefore_<日時>.xlsx が保存される。
+  5. 更新後の確認: Excel で開き、「在庫額」グラフの終端が T（10/19）、「欠品」グラフの終端が X（10/19）になり、
+     グラフの右端に10/19が表示されること。
+  6. もう一度 -Mode Update を実行 → "No chart change required. Idempotent no-op."（変更なし）。
+  7. （任意）-ReferenceDate 2026-10-19 を付けても結果は同じ。今日(10/20)のブックで実行すれば 在庫額 S→T、欠品 W→X（10/20まで表示）。
+
+■ 隔離環境（このPC）での事前試験の結果
+  ・昨日の夜間実行直後の再現: r6適用が実際の10-19ログと一致（欠品 X→W、在庫額 T→S、DesiredDate=2026-10-16）
+  ・そのテスト用データに r7: 監査 欠品 W→X / 在庫額 S→T（DesiredDate=2026-10-19）、更新 ExitCode=0、更新後の再更新は no-op
+  ・更新後に変わったZIPエントリは xl/charts/chart1.xml と chart2.xml の2つだけ（他101エントリは同一）
+  ・更新後の参照範囲: 在庫額 $B:$G と $I:$T、欠品 $B:$J と $L:$X
+  ・基準日指定なし／-ReferenceDate 2026-10-19 のどちらでも同じ結果
+  ・今日(10/20)の本番ブックのコピー: 在庫額 S→T、欠品 W→X。旧版r6では変更なし（S/Wのまま）
+  ・10-19調整前ブック: r7は変更なし（当日の確定値の列を残す）／基準日 10-19・10-16 の過去日付も正しく判定
+
+■ 実機への反映（人間の判断）
+  RK-10 の呼出先ファイルを r7 に変更する（引数は r6 と同じ）。今日のグラフをすぐ直す場合は、本番ブックに
+  上記の手順3〜4を手動で1回だけ実行できる（実行前に Excel でブックを閉じる）。
+
+■ 注意
+  ・当日の確定値の列がまだ記録されていない時間帯に動かすと、前営業日までになる（従来どおり安全側）。
+  ・ライブ列（日付が式の列）はグラフに含まれない。
