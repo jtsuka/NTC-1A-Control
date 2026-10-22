@@ -1,0 +1,53 @@
+﻿diff --git "a/GitHub\346\217\220\345\207\272\347\224\250_20261015\\00_\346\234\200\346\226\260_\350\210\271\350\210\266\345\200\244\344\273\230_\346\234\254\347\225\252\347\211\210_20261014_LayoutFix_r3\\Print-ValueTag_Ship_20261014_LayoutFix_r3.ps1" "b/GitHub\346\217\220\345\207\272\347\224\250_20261022\\00_\346\234\200\346\226\260_\350\210\271\350\210\266\345\200\244\344\273\230_\346\234\254\347\225\252\347\211\210_20261022_LayoutFix_r4\\Print-ValueTag_Ship_20261022_LayoutFix_r4.ps1"
+index 385ae11..2cc263d 100644
+--- "a/GitHub\346\217\220\345\207\272\347\224\250_20261015\\00_\346\234\200\346\226\260_\350\210\271\350\210\266\345\200\244\344\273\230_\346\234\254\347\225\252\347\211\210_20261014_LayoutFix_r3\\Print-ValueTag_Ship_20261014_LayoutFix_r3.ps1"
++++ "b/GitHub\346\217\220\345\207\272\347\224\250_20261022\\00_\346\234\200\346\226\260_\350\210\271\350\210\266\345\200\244\344\273\230_\346\234\254\347\225\252\347\211\210_20261022_LayoutFix_r4\\Print-ValueTag_Ship_20261022_LayoutFix_r4.ps1"
+@@ -1751,34 +1751,30 @@ else {
+             $marginBounds = $e.MarginBounds
+ 
+             $excelZoom = $null
++            # 2026-10-22 LayoutFix r4: 11明細以上の手配（10明細ごとに複数頁へ分割）も、原典VBAの固定Zoom(DocuWorks 56%／その他59%)を、
++            # 通常頁と同じ「列幅=round(134×Zoom)・行高=round(122.7×Zoom)（600dpi画素）」の実測式で再現する。
++            # 従来は単純な縮小率だったため、行間が約3%狭く、下の明細ほどVBAからずれた（2026-10-22 E26B010640：基準外161件）。
+             if ($lbl.FixedScale) {
+-                # 元VBA STEP_6: row_count > 10 の場合、自動縮小(FitToPagesTall)ではなく
+-                # 固定Zoom(通常59%、DocuWorks Printerのみ56%)を使う。ここでも同じ値を固定適用する。
+-                # ※LayoutFix未検証: 11明細以上の原典出力が過去証跡に無いため従来処理のまま。
+-                $scale = if ($printDoc.PrinterSettings.PrinterName -eq "DocuWorks Printer") { 0.56 } else { 0.59 }
+-                $scaleX = $scale
+-                $scaleY = $scale
+-                $scaledContentWidth = $contentWidthHundredths * $scale
+-                $offsetXHundredths = $marginBounds.Left + [Math]::Max(0, ($marginBounds.Width - $scaledContentWidth) / 2)
++                # 元VBA STEP_6: row_count > 10 の場合は自動縮小(FitToPagesTall)ではなく固定Zoom(通常59%、DocuWorks Printerのみ56%)。
++                $excelZoom = if ($printDoc.PrinterSettings.PrinterName -eq "DocuWorks Printer") { 0.56 } else { 0.59 }
+             }
+             else {
+                 # 2026-10-13 LayoutFix: 原典VBA(Excel FitToPages 1x1)のDocuWorks出力を実測して再現する。
+                 # 2026-10-02〜10-13の全VBA出力で、Zoomは明細数だけで決まり(〜7明細71%/8明細65%/
+                 # 9明細58%/10明細54%)、列幅=round(134×Zoom)、行高=round(122.7×Zoom)
+                 # (いずれも600dpiデバイス画素)、用紙全幅の左右中央・上端0.5cm付近に配置されていた。
+-                # 従来PSは min(scaleX,scaleY) のため、行が約1.7%低く、9明細で約6%大きかった。
+                 $n = @($lbl.BodyRows).Count
+                 $excelZoom = if ($n -le 7) { 0.71 } elseif ($n -eq 8) { 0.65 } elseif ($n -eq 9) { 0.58 } else { 0.54 }
+-                $colDevPx = [Math]::Round(134 * $excelZoom)
+-                $rowDevPx = [Math]::Round(122.7 * $excelZoom)
+-                $psColPx = $TOTAL_W / $MAX_COL
+-                $psRowPx = (YOfRow 2) - (YOfRow 1)
+-                $scaleX = ($colDevPx / 6.0) / $psColPx   # 1/100インチ = 600dpiの6画素
+-                $scaleY = ($rowDevPx / 6.0) / $psRowPx
+-                $scale = $scaleX
+-                $scaledContentWidth = $MAX_COL * $colDevPx / 6.0
+-                $offsetXHundredths = ($e.PageBounds.Width - $scaledContentWidth) / 2 - [double]$e.PageSettings.HardMarginX
+             }
++            $colDevPx = [Math]::Round(134 * $excelZoom)
++            $rowDevPx = [Math]::Round(122.7 * $excelZoom)
++            $psColPx = $TOTAL_W / $MAX_COL
++            $psRowPx = (YOfRow 2) - (YOfRow 1)
++            $scaleX = ($colDevPx / 6.0) / $psColPx   # 1/100インチ = 600dpiの6画素
++            $scaleY = ($rowDevPx / 6.0) / $psRowPx
++            $scale = $scaleX
++            $scaledContentWidth = $MAX_COL * $colDevPx / 6.0
++            $offsetXHundredths = ($e.PageBounds.Width - $scaledContentWidth) / 2 - [double]$e.PageSettings.HardMarginX
+ 
+             $pageKind = if ($lbl.FixedScale) { if ($lbl.IsContinuation) { "分割継続" } else { "分割1枚目" } } else { "通常" }
+             Write-Host "診断: ページ$($script:pageIndex + 1)/$($labels.Count) [$($lbl.OrderNo) / $pageKind]  内容サイズ(px)=${contentWidth}x${contentHeight}  MarginBounds(1/100inch)=$($marginBounds.Width)x$($marginBounds.Height)  縮小率=$([math]::Round($scale,3))  水平オフセット(1/100inch)=$([math]::Round($offsetXHundredths - $marginBounds.Left,1))"
