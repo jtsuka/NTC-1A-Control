@@ -7420,7 +7420,7 @@
 		(descr "Through hole straight socket strip, 1x06, 2.54mm pitch, single row (from Kicad 4.0.7), script generated")
 		(tags "Through hole socket strip THT 1x06 2.54mm single row")
 		(property "Reference" "J2"
-			(at 0 -2.77 180)
+			(at -0.025 15.23 180)
 			(layer "F.SilkS")
 			(uuid "79042fc0-65cc-43b5-b518-3d1168a85333")
 			(effects
@@ -10311,10 +10311,22 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "FOR RaspberyPi UART PORT"
-		(at 35.45 55.09 90)
+	(gr_text "FOR Pi UART"
+		(at 34.65 56.06 0)
 		(layer "F.SilkS")
 		(uuid "999155bf-ccaf-4237-87d9-ea70acab4df0")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "GND         RX  TX"
+		(at 35.84 54.14 90)
+		(layer "F.SilkS")
+		(uuid "919b435e-26d9-458a-bc6b-179e363dcf45")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -10347,7 +10359,7 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "TC106 Snidar ESP32S3\nVer 2.0 2026.10.26"
+	(gr_text "TC106 Snidar ESP32S3\nVer 2.1 2026.10.26"
 		(at 39.5 91.68 90)
 		(layer "F.SilkS")
 		(uuid "9f0ebbf9-980a-46ef-99a1-e92ce0644638")
