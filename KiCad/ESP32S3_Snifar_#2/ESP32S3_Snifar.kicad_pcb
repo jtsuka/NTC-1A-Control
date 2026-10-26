@@ -4520,7 +4520,7 @@
 		(descr "wire loop as test point, loop diameter 2.5mm, hole diameter 1.0mm")
 		(tags "test point wire loop bead")
 		(property "Reference" "TP6"
-			(at -0.04 -2.42 0)
+			(at 0.25 2.45 0)
 			(layer "F.SilkS")
 			(uuid "59a084dd-0f30-41b8-bcdb-65e8009ae71c")
 			(effects
@@ -4642,7 +4642,7 @@
 			(uuid "2068e187-56ed-4213-808b-f5324c257be5")
 		)
 		(fp_text user "${REFERENCE}"
-			(at -0.06 -2.43 0)
+			(at 0.19 2.45 0)
 			(layer "F.Fab")
 			(uuid "cfa52fb2-1528-4ead-9959-bcdfc601380c")
 			(effects
@@ -5461,7 +5461,7 @@
 		(descr "wire loop as test point, loop diameter 2.5mm, hole diameter 1.0mm")
 		(tags "test point wire loop bead")
 		(property "Reference" "TP7"
-			(at 0.09 -2.07 0)
+			(at 0.08 2.48 0)
 			(layer "F.SilkS")
 			(uuid "dd3ef363-2efd-4478-a2dd-d5b44597c5e2")
 			(effects
@@ -5583,7 +5583,7 @@
 			(uuid "58a59f2c-f8ae-488d-a3ce-c53b7e48b6ce")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0.1 -2.09 0)
+			(at 0.08 2.48 0)
 			(layer "F.Fab")
 			(uuid "1615b031-2112-488d-b5bf-e982746d09e5")
 			(effects
