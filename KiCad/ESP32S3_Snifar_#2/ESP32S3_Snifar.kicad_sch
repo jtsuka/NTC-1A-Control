@@ -3633,12 +3633,6 @@
 		(uuid "66d713d3-ae18-4df1-94aa-fc7a8966f3f6")
 	)
 	(junction
-		(at 104.14 55.88)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "7b803bf0-809b-423d-8d2d-6c8d28edebee")
-	)
-	(junction
 		(at 139.7 96.52)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3685,6 +3679,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "cb788f7a-b23e-416f-a9e4-38b0dc3334c8")
+	)
+	(junction
+		(at 78.74 34.29)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ce3d47b6-6c6e-43c6-991e-3d500c9ab85f")
 	)
 	(junction
 		(at 104.14 34.29)
@@ -4428,7 +4428,7 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 34.29) (xy 82.55 34.29)
+			(xy 64.77 34.29) (xy 78.74 34.29)
 		)
 		(stroke
 			(width 0)
@@ -4658,16 +4658,6 @@
 	)
 	(wire
 		(pts
-			(xy 104.14 45.72) (xy 104.14 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c875979c-6617-4a55-8b68-3a24317f23cc")
-	)
-	(wire
-		(pts
 			(xy 167.64 139.7) (xy 212.09 139.7)
 		)
 		(stroke
@@ -4748,6 +4738,16 @@
 	)
 	(wire
 		(pts
+			(xy 78.74 34.29) (xy 82.55 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "df0f9b04-c29d-4c86-887c-5d1a2548c639")
+	)
+	(wire
+		(pts
 			(xy 238.76 30.48) (xy 238.76 40.64)
 		)
 		(stroke
@@ -4788,7 +4788,7 @@
 	)
 	(wire
 		(pts
-			(xy 104.14 55.88) (xy 104.14 69.85)
+			(xy 104.14 45.72) (xy 104.14 69.85)
 		)
 		(stroke
 			(width 0)
@@ -9001,7 +9001,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 104.14 55.88 90)
+		(at 78.74 34.29 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9011,7 +9011,7 @@
 		(dnp no)
 		(uuid "d88b9bb5-a9db-4053-882b-0b93959ca3d5")
 		(property "Reference" "TP1"
-			(at 96.52 64.516 0)
+			(at 81.026 39.878 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9022,7 +9022,7 @@
 			)
 		)
 		(property "Value" "TestPoint"
-			(at 99.06 64.516 0)
+			(at 86.36 41.91 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9033,7 +9033,7 @@
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
-			(at 104.14 50.8 0)
+			(at 73.66 34.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9044,7 +9044,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 104.14 50.8 0)
+			(at 73.66 34.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9055,7 +9055,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 104.14 55.88 0)
+			(at 78.74 34.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

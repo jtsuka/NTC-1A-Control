@@ -8002,11 +8002,11 @@
 	(footprint "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
 		(layer "F.Cu")
 		(uuid "b466b038-e87a-4f40-9206-4b0f589e0c3d")
-		(at 42.53 59.19)
+		(at 65.97 70.85)
 		(descr "wire loop as test point, loop diameter 2.5mm, hole diameter 1.0mm")
 		(tags "test point wire loop bead")
 		(property "Reference" "TP1"
-			(at 0.7 2.5 0)
+			(at 3.25 0.65 0)
 			(layer "F.SilkS")
 			(uuid "35d439bf-c261-478a-bbfc-0f28d70fd080")
 			(effects
@@ -8017,7 +8017,7 @@
 			)
 		)
 		(property "Value" "TestPoint"
-			(at 0 -2.8 0)
+			(at 5.37 -0.96 0)
 			(layer "F.Fab")
 			(uuid "efd7c667-9a9f-49f6-9db8-232bd728bf70")
 			(effects
@@ -8128,7 +8128,7 @@
 			(uuid "981dd2d0-c2eb-4632-8b96-d45a635c7003")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0.7 2.5 0)
+			(at 3.24 0.65 0)
 			(layer "F.Fab")
 			(uuid "7593d8b7-3ca1-4e74-9667-d4f32e54585c")
 			(effects
@@ -8144,7 +8144,7 @@
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "GND")
+			(net "/SIG_5V_LOW_FOR_TC106")
 			(pinfunction "1_1")
 			(pintype "passive")
 			(uuid "2c52647d-73ca-4c81-812c-fc7091a55fd2")
@@ -13220,12 +13220,36 @@
 		(uuid "92d4184d-ec6c-4111-8738-294607c58280")
 	)
 	(segment
+		(start 65.97 72.21)
+		(end 65.97 70.85)
+		(width 0.2)
+		(layer "F.Cu")
+		(net "/SIG_5V_LOW_FOR_TC106")
+		(uuid "0196c11d-e320-45c9-b094-e46a4102436a")
+	)
+	(segment
 		(start 85.74 72.21)
-		(end 37.98 72.21)
+		(end 65.97 72.21)
 		(width 0.2)
 		(layer "F.Cu")
 		(net "/SIG_5V_LOW_FOR_TC106")
 		(uuid "5308200f-4589-4d82-abba-c6b42b1ae9c1")
+	)
+	(segment
+		(start 65.97 70.85)
+		(end 65.89 70.77)
+		(width 0.2)
+		(layer "F.Cu")
+		(net "/SIG_5V_LOW_FOR_TC106")
+		(uuid "72c64822-6db1-489d-acd0-b1bc85b641d7")
+	)
+	(segment
+		(start 65.97 72.21)
+		(end 37.98 72.21)
+		(width 0.2)
+		(layer "F.Cu")
+		(net "/SIG_5V_LOW_FOR_TC106")
+		(uuid "7837be74-a154-4e37-8e08-d85944988704")
 	)
 	(segment
 		(start 37.98 69.365)
