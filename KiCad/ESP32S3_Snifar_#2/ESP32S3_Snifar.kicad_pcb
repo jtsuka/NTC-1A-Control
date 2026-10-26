@@ -10323,7 +10323,7 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "GND         RX  TX"
+	(gr_text "GND         TX  RX"
 		(at 35.84 54.14 90)
 		(layer "F.SilkS")
 		(uuid "919b435e-26d9-458a-bc6b-179e363dcf45")
