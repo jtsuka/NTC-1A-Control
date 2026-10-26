@@ -10335,30 +10335,6 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "Do Not Populate"
-		(at 43.84 46.65 90)
-		(layer "F.SilkS")
-		(uuid "f72f606c-6786-49f9-8ede-ffb8d6544c8e")
-		(effects
-			(font
-				(size 0.8 0.8)
-				(thickness 0.1)
-			)
-			(justify left bottom)
-		)
-	)
-	(gr_text ">"
-		(at 43.89 42.51 0)
-		(layer "F.SilkS")
-		(uuid "bd769d35-7c55-4132-94ed-d2086cd73088")
-		(effects
-			(font
-				(size 1 1)
-				(thickness 0.1)
-			)
-			(justify left bottom)
-		)
-	)
 	(gr_text "TC106 Snidar ESP32S3\nVer 2.1 2026.10.26"
 		(at 39.5 91.68 90)
 		(layer "F.SilkS")
