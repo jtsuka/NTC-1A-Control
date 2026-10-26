@@ -10371,7 +10371,7 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "ESP32S3 TC106 Snifar"
+	(gr_text "From TC Interface Board or Arduino nano every ESP32S3 relay circuit"
 		(at 188.59 190.5 0)
 		(layer "Cmts.User")
 		(uuid "e4c4a6ae-e765-4797-8f91-bb807cd8f991")

@@ -3496,7 +3496,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "From TC Intterface Borad or Arduino nano every ESP32S3 relay circuit"
+	(text "From TC Interface Board or Arduino nano every ESP32S3 relay circuit"
 		(exclude_from_sim no)
 		(at 223.774 189.738 0)
 		(effects
