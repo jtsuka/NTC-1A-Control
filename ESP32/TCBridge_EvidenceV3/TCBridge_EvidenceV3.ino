@@ -1153,7 +1153,7 @@ void setup() {
 
   pinMode(PIN_TC_TX_TRIG, OUTPUT);
   digitalWrite(PIN_TC_TX_TRIG, LOW);  // OC release
-  pinMode(PIN_TC_RX, INPUT_PULLUP);
+  pinMode(PIN_TC_RX, INPUT);
 
   // Direction-B edge-capture interrupt is always enabled (no test-mode gating).
   attachInterrupt(digitalPinToInterrupt(PIN_TC_RX), p11TcRxIsr, CHANGE);
