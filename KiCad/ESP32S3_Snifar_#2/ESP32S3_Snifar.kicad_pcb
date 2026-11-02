@@ -4683,7 +4683,7 @@
 		(descr "Through hole straight pin header, 1x03, 2.54mm pitch, single row")
 		(tags "Through hole pin header THT 1x03 2.54mm single row")
 		(property "Reference" "JP3"
-			(at -2.52 2.67 90)
+			(at 2.86 2.47 90)
 			(layer "F.SilkS")
 			(uuid "3da33f9b-68fa-459e-a9f2-1a72bcb36957")
 			(effects
@@ -9168,7 +9168,7 @@
 			)
 		)
 		(property "Value" "TestPoint"
-			(at 0 -2.8 0)
+			(at -1.805 2.665 0)
 			(layer "F.Fab")
 			(uuid "07cf3a50-aa27-4253-8872-7d3677b91271")
 			(effects
@@ -10264,7 +10264,7 @@
 		(uuid "577403a8-2e04-47f2-8b7d-0d93de81d99c")
 	)
 	(gr_text "MODE TC106"
-		(at 51.45 85.55 0)
+		(at 43.84 87.99 0)
 		(layer "F.SilkS")
 		(uuid "b73e60f5-89e1-4cbc-a20f-11e05c00ca6e")
 		(effects
@@ -10276,7 +10276,7 @@
 		)
 	)
 	(gr_text "MODE Nano"
-		(at 51.74 94.75 0)
+		(at 43.97 91.43 0)
 		(layer "F.SilkS")
 		(uuid "22cdb8dd-9c4f-4f75-a4b0-b790d3df644a")
 		(effects
@@ -10287,8 +10287,8 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "MODE 5V"
-		(at 96.46 38 0)
+	(gr_text "MODE Nano"
+		(at 96.5 39.02 0)
 		(layer "F.SilkS")
 		(uuid "3ce0e310-89bb-4889-bd9a-334aca722288")
 		(effects
@@ -10299,8 +10299,8 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "MODE 5V Low"
-		(at 96.54 43.16 0)
+	(gr_text "MODE TC106"
+		(at 96.57 42.51 0)
 		(layer "F.SilkS")
 		(uuid "4307b7af-abc2-4a99-825e-01d4c0455205")
 		(effects
