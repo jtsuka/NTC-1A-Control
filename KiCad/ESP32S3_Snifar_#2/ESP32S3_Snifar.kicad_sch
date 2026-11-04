@@ -6522,7 +6522,6 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "5f15938e-4bc8-45db-ae86-1869953b1e1f")
 		(property "Reference" "J1"
 			(at 60.325 39.37 0)
@@ -6535,8 +6534,7 @@
 			)
 		)
 		(property "Value" "JST_VH_01_04_B4PS-VH"
-			(at 60.325 41.91 0)
-			(hide yes)
+			(at 52.578 55.118 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
