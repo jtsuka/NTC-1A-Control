@@ -3633,6 +3633,12 @@
 		(uuid "66d713d3-ae18-4df1-94aa-fc7a8966f3f6")
 	)
 	(junction
+		(at 165.1 128.27)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6a978d5b-e37e-43f8-a690-7e291756b138")
+	)
+	(junction
 		(at 139.7 96.52)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4028,6 +4034,16 @@
 	)
 	(wire
 		(pts
+			(xy 165.1 128.27) (xy 200.66 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1dec5e9e-0cb0-4803-975b-c915bc24f59a")
+	)
+	(wire
+		(pts
 			(xy 158.75 116.84) (xy 158.75 128.27)
 		)
 		(stroke
@@ -4078,7 +4094,7 @@
 	)
 	(wire
 		(pts
-			(xy 158.75 128.27) (xy 200.66 128.27)
+			(xy 158.75 128.27) (xy 165.1 128.27)
 		)
 		(stroke
 			(width 0)
@@ -5902,6 +5918,84 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "R10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 165.1 128.27 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "3ead5f08-a50d-41ce-9cf6-3c350455d123")
+		(property "Reference" "TP11"
+			(at 160.274 130.302 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "TestPoint"
+			(at 160.274 132.842 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
+			(at 170.18 128.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 170.18 128.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 165.1 128.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "f7d5e3fb-71cc-46af-beda-91a3b69ecd28")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "TP11")
 					(unit 1)
 				)
 			)
