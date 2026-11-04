@@ -8423,7 +8423,7 @@
 		)
 		(model "${KIPRJMOD}/libs/S4P-VH.STEP"
 			(offset
-				(xyz 6.5 -5 -1.5)
+				(xyz 6 -5 -1.5)
 			)
 			(scale
 				(xyz 1 1 1)
@@ -10900,6 +10900,18 @@
 		(at 96.57 42.51 0)
 		(layer "F.SilkS")
 		(uuid "4307b7af-abc2-4a99-825e-01d4c0455205")
+		(effects
+			(font
+				(size 0.8 0.5)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "TX Raw"
+		(at 116.56 40.41 0)
+		(layer "F.SilkS")
+		(uuid "8b5eca9e-c0ca-42d0-9c1f-7588770f1097")
 		(effects
 			(font
 				(size 0.8 0.5)
