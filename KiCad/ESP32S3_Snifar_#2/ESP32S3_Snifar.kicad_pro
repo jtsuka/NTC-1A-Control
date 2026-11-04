@@ -72,10 +72,6 @@
       "diff_pair_dimensions": [],
       "drc_exclusions": [
         [
-          "lib_footprint_mismatch|37950000|65540000|a6b1a8c6-ccbd-46e1-97e4-a04c1cb5d09e|00000000-0000-0000-0000-000000000000",
-          ""
-        ],
-        [
           "lib_footprint_mismatch|37980000|46745000|a3725e9f-f9ec-4664-8ae1-a46b7d1a3b23|00000000-0000-0000-0000-000000000000",
           ""
         ],

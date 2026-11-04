@@ -6534,7 +6534,7 @@
 				)
 			)
 		)
-		(property "Value" "Conn_01x04_Socket"
+		(property "Value" "JST_VH_01"
 			(at 60.325 41.91 0)
 			(hide yes)
 			(show_name no)
@@ -6545,7 +6545,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
+		(property "Footprint" "Connector_JST:JST_VH_B4PS-VH_1x04_P3.96mm_Horizontal"
 			(at 59.69 49.53 0)
 			(hide yes)
 			(show_name no)
