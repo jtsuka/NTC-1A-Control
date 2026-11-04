@@ -2969,7 +2969,7 @@
 			(uuid "fc5d5799-74bb-4fbf-a54e-d41e5ce5db6d")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0.05 2.47 0)
+			(at -2.03 2.48 0)
 			(layer "F.Fab")
 			(uuid "fa1f88a2-dc8a-4cf8-babd-c736a0d6f809")
 			(effects
@@ -4694,7 +4694,7 @@
 			)
 		)
 		(property "Value" "Jumper_3_Open"
-			(at -5.55 1.77 90)
+			(at -0.59 7.62 0)
 			(layer "F.Fab")
 			(uuid "b528437b-6eb9-48e3-9039-6f172195057d")
 			(effects
@@ -5901,7 +5901,7 @@
 			)
 		)
 		(property "Value" "Jumper_2_Open"
-			(at 2.46 2.56 0)
+			(at -2.18 1.4 0)
 			(layer "F.Fab")
 			(uuid "2cc1324e-dd3b-4a3c-85bc-60493441127d")
 			(effects
@@ -7431,7 +7431,7 @@
 			)
 		)
 		(property "Value" "J2_Pi_01x06_Socket"
-			(at -3.005 7 270)
+			(at -4.545 6.4 270)
 			(layer "F.Fab")
 			(uuid "162090c8-57e3-4768-b9b9-39a8ef8dc244")
 			(effects
@@ -10433,7 +10433,7 @@
 			)
 		)
 		(property "Value" "Jumper_2_Open"
-			(at 2.76 2.11 0)
+			(at -2.43 1.44 0)
 			(layer "F.Fab")
 			(uuid "5dd99f35-a8be-4d07-bd6f-10b303bb60ab")
 			(effects
@@ -10745,18 +10745,6 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "FOR Pi UART"
-		(at 34.65 56.06 0)
-		(layer "F.SilkS")
-		(uuid "999155bf-ccaf-4237-87d9-ea70acab4df0")
-		(effects
-			(font
-				(size 0.8 0.8)
-				(thickness 0.1)
-			)
-			(justify left bottom)
-		)
-	)
 	(gr_text "GND         TX  RX"
 		(at 35.84 54.14 90)
 		(layer "F.SilkS")
@@ -10769,8 +10757,20 @@
 			(justify left bottom)
 		)
 	)
+	(gr_text "FOR Pi UART"
+		(at 41.02 50.1 90)
+		(layer "F.SilkS")
+		(uuid "999155bf-ccaf-4237-87d9-ea70acab4df0")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
 	(gr_text "TC106 Snidar ESP32S3\nVer 2.1 2026.11.04"
-		(at 37.47 74.09 90)
+		(at 37.35 72.61 90)
 		(layer "F.SilkS")
 		(uuid "9f0ebbf9-980a-46ef-99a1-e92ce0644638")
 		(effects
