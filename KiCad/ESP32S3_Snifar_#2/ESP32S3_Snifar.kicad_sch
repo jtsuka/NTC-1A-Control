@@ -3526,7 +3526,7 @@
 		)
 		(uuid "4c0a7f1d-b3e8-4467-9f2d-06cfbfb50f92")
 	)
-	(text "Ver 2.1"
+	(text "Ver 2.2"
 		(exclude_from_sim no)
 		(at 274.828 193.294 0)
 		(effects
@@ -3536,7 +3536,7 @@
 		)
 		(uuid "67920510-6bef-4e2f-a918-4e86b85ba7c9")
 	)
-	(text "2026.10.26"
+	(text "2026.11.04"
 		(exclude_from_sim no)
 		(at 213.106 193.548 0)
 		(effects
@@ -6534,7 +6534,7 @@
 				)
 			)
 		)
-		(property "Value" "JST_VH_01"
+		(property "Value" "JST_VH_01_04_B4PS-VH"
 			(at 60.325 41.91 0)
 			(hide yes)
 			(show_name no)
