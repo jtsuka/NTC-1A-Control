@@ -335,8 +335,8 @@
 				)
 			)
 		)
-		(property "Value" "101"
-			(at 3.69 -2.38 0)
+		(property "Value" "222"
+			(at 2.32 -2.61 0)
 			(layer "F.Fab")
 			(uuid "9cd1fad7-d977-4eec-819c-608e494bd751")
 			(effects
@@ -2706,7 +2706,7 @@
 			)
 		)
 		(property "Value" "TestPoint"
-			(at -0.05 1.975 0)
+			(at -0.08 -4.03 0)
 			(layer "F.Fab")
 			(uuid "8ab3c7e6-dc2f-4202-9935-f3bd64bcd5ce")
 			(effects
