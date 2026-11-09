@@ -6906,7 +6906,7 @@
 				)
 			)
 		)
-		(property "Value" "J2_Pi_01x06_Socket"
+		(property "Value" "J2_Pi_01x06_Socket_Horizontal"
 			(at 234.95 22.86 90)
 			(show_name no)
 			(do_not_autoplace no)
