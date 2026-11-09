@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="#334155"/></marker>
+    <style>
+      text{font-family:"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;fill:#172033}
+      .dim{stroke:#334155;stroke-width:1.5;marker-start:url(#arrow);marker-end:url(#arrow)}
+      .guide{stroke:#94a3b8;stroke-width:1;stroke-dasharray:6 6}
+      .note{font-size:20px}.small{font-size:16px}.label{font-size:22px;font-weight:700}
+    </style>
+  </defs>
+  <rect width="1200" height="820" fill="#f8fafc"/>
+  <text x="60" y="50" class="label">PF24-6-17W 上面：Zero-DISP-7A 表面取付の開口概念図</text>
+  <text x="60" y="80" class="small" fill="#b45309">製作図ではありません。92×84 + 右36×70 mmは「小さめに始める」設計提案で、現物実測後に確定します。</text>
+
+  <!-- Case 240 x 165 at 4 px/mm -->
+  <rect x="120" y="110" width="960" height="660" rx="124" fill="#e7e5e4" stroke="#475569" stroke-width="4"/>
+  <text x="145" y="145" class="note">ケース外形 240 × 165 mm（確定）</text>
+
+  <!-- Six cover bosses: x +/-89.5,0; y +/-52 from center -->
+  <g fill="#fff" stroke="#7c3aed" stroke-width="4">
+    <circle cx="242" cy="232" r="13"/><circle cx="600" cy="232" r="13"/><circle cx="958" cy="232" r="13"/>
+    <circle cx="242" cy="648" r="13"/><circle cx="600" cy="648" r="13"/><circle cx="958" cy="648" r="13"/>
+  </g>
+  <text x="790" y="725" class="small" fill="#6d28d9">紫：上カバー内の6-M2.6ボス（位置は図面値）</text>
+
+  <!-- Display 192.96 x 110.76 -->
+  <rect x="214.1" y="208.5" width="771.8" height="443.0" rx="26" fill="#1e293b" fill-opacity="0.14" stroke="#0f172a" stroke-width="4"/>
+  <text x="236" y="285" class="note">液晶外形 192.96 × 110.76 mm（メーカー確定）</text>
+
+  <!-- Proposed stepped opening: main 92x84 + right 36x70 -->
+  <path d="M416 262 H784 V290 H928 V570 H784 V598 H416 Z" fill="#f59e0b" fill-opacity="0.30" stroke="#d97706" stroke-width="5" stroke-dasharray="13 8"/>
+  <text x="475" y="420" class="label" fill="#9a3412">主開口 92 × 84</text>
+  <text x="796" y="455" class="small" fill="#9a3412">Pi逃げ</text>
+  <text x="796" y="480" class="small" fill="#9a3412">+36 × 70</text>
+  <text x="455" y="535" class="small" fill="#9a3412">角R4～R5、片側0.5～1.0 mmを目安に現物合わせ</text>
+
+  <!-- Centre lines -->
+  <path d="M600 105 V775 M115 440 H1085" class="guide"/>
+
+  <!-- Dimensions -->
+  <path d="M416 680 V720 M784 680 V720 M416 705 H784" class="dim"/>
+  <text x="565" y="700" class="note">92</text>
+  <path d="M784 610 V700 M928 610 V700 M784 675 H928" class="dim"/>
+  <text x="840" y="670" class="note">36</text>
+  <path d="M360 262 H405 M360 598 H405 M380 262 V598" class="dim"/>
+  <text x="325" y="440" class="note" transform="rotate(-90 325 440)">84</text>
+  <path d="M944 290 H995 M944 570 H995 M975 290 V570" class="dim"/>
+  <text x="1010" y="445" class="note" transform="rotate(-90 1010 445)">70</text>
+
+  <g transform="translate(60 790)">
+    <rect width="20" height="20" fill="#f59e0b" fill-opacity="0.45" stroke="#d97706"/><text x="30" y="17" class="small">設計提案（未確定）</text>
+    <rect x="260" width="20" height="20" fill="#1e293b" fill-opacity="0.14" stroke="#0f172a"/><text x="290" y="17" class="small">メーカー確定外形</text>
+    <circle cx="540" cy="10" r="9" fill="#fff" stroke="#7c3aed" stroke-width="3"/><text x="558" y="17" class="small">ケース図面ボス</text>
+  </g>
+</svg>

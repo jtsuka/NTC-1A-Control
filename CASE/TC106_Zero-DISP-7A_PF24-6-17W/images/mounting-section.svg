@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs><style>text{font-family:"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;fill:#172033}.h{font-size:25px;font-weight:700}.t{font-size:20px}.s{font-size:17px}</style></defs>
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="55" y="52" class="h">推奨断面：ガラスに締付荷重を掛けず、背面穴からブラケット固定</text>
+  <text x="55" y="84" class="s" fill="#b45309">模式図。部品厚・ネジ長・ブラケット寸法は現物で決定すること。</text>
+
+  <text x="65" y="145" class="t">ケース外側</text>
+  <rect x="175" y="125" width="820" height="22" rx="6" fill="#27364a"/>
+  <text x="430" y="117" class="t">タッチガラス／液晶（表面）</text>
+  <rect x="220" y="152" width="730" height="10" fill="#fb923c"/>
+  <text x="760" y="190" class="s" fill="#9a3412">0.5～1 mm独立気泡フォーム：周囲のみ</text>
+
+  <!-- case top with central opening -->
+  <path d="M80 220 H350 V252 H850 V220 H1120 V276 H850 V252 H350 V276 H80 Z" fill="#d6d3d1" stroke="#57534e" stroke-width="3"/>
+  <text x="82" y="310" class="t">PF24-6-17W 上カバー</text>
+  <text x="490" y="245" class="s">開口</text>
+
+  <!-- PCB stack -->
+  <rect x="405" y="266" width="390" height="36" rx="4" fill="#1976a9"/>
+  <text x="495" y="291" class="s" fill="#fff">Zero-DISP-7A 背面基板</text>
+  <rect x="680" y="307" width="215" height="30" rx="4" fill="#2f855a"/>
+  <text x="715" y="329" class="s" fill="#fff">Pi Zero WH</text>
+
+  <!-- brackets and screws -->
+  <path d="M292 260 V395 H410 V365 H332 V260 M908 260 V395 H790 V365 H868 V260" fill="none" stroke="#64748b" stroke-width="16" stroke-linejoin="round"/>
+  <path d="M385 252 V368 M815 252 V368" stroke="#334155" stroke-width="8"/>
+  <circle cx="385" cy="289" r="10" fill="#cbd5e1" stroke="#334155" stroke-width="3"/>
+  <circle cx="815" cy="289" r="10" fill="#cbd5e1" stroke="#334155" stroke-width="3"/>
+  <text x="180" y="440" class="t">内側ブリッジ／L字ブラケット</text>
+  <text x="725" y="440" class="t">背面M2.5穴を使用</text>
+
+  <path d="M50 500 H1150" stroke="#94a3b8" stroke-dasharray="8 8"/>
+  <text x="65" y="535" class="t">重要：</text>
+  <text x="145" y="535" class="t">ネジでガラスをケースへ押し付けない。フォームは防振・隙間吸収用で、強い圧縮を掛けない。</text>
+  <text x="65" y="570" class="s">ブラケットと基板の間は樹脂スペーサ／絶縁ワッシャを使用。ネジ先端の底付き、基板配線への接触、コネクタ抜き差し空間を実機で確認。</text>
+</svg>
