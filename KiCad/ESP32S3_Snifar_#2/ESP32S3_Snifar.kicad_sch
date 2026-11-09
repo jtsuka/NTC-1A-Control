@@ -3567,6 +3567,12 @@
 		(uuid "b6a2a288-35d7-49b1-9d51-adf89a79ad41")
 	)
 	(junction
+		(at 236.22 30.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "02467868-65ec-4741-943f-69d01317b3b4")
+	)
+	(junction
 		(at 111.76 34.29)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3643,6 +3649,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8c953f59-114b-408d-8d1d-643bfb73a534")
+	)
+	(junction
+		(at 238.76 30.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "95fdef23-0eca-484a-8e4b-658114ad1444")
 	)
 	(junction
 		(at 138.43 36.83)
@@ -4081,6 +4093,16 @@
 			(type default)
 		)
 		(uuid "25ebb594-e7c0-4032-b54b-f5dd11be8a94")
+	)
+	(wire
+		(pts
+			(xy 238.76 30.48) (xy 238.76 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "27a9bac4-5144-4ad4-8301-7649f56a67c8")
 	)
 	(wire
 		(pts
@@ -4564,6 +4586,16 @@
 	)
 	(wire
 		(pts
+			(xy 236.22 30.48) (xy 236.22 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "af23dc76-de94-40e4-b66a-09ba7315adfd")
+	)
+	(wire
+		(pts
 			(xy 138.43 36.83) (xy 138.43 43.18)
 		)
 		(stroke
@@ -4764,7 +4796,7 @@
 	)
 	(wire
 		(pts
-			(xy 238.76 30.48) (xy 238.76 40.64)
+			(xy 238.76 27.94) (xy 238.76 30.48)
 		)
 		(stroke
 			(width 0)
@@ -4794,7 +4826,7 @@
 	)
 	(wire
 		(pts
-			(xy 236.22 30.48) (xy 236.22 48.26)
+			(xy 236.22 27.94) (xy 236.22 30.48)
 		)
 		(stroke
 			(width 0)
@@ -6854,7 +6886,8 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x06_Socket")
-		(at 233.68 25.4 90)
+		(at 236.22 25.4 270)
+		(mirror x)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6862,7 +6895,6 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "6c5cc979-91c1-48dc-98ab-95fb5f9cb6ec")
 		(property "Reference" "J2"
 			(at 234.95 20.32 90)
@@ -6884,8 +6916,8 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical"
-			(at 233.68 25.4 0)
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal"
+			(at 236.22 25.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6896,7 +6928,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 233.68 25.4 0)
+			(at 236.22 25.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6907,7 +6939,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x06, script generated"
-			(at 233.68 25.4 0)
+			(at 236.22 25.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
