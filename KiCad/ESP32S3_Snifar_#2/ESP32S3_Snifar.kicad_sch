@@ -3884,6 +3884,12 @@
 		(uuid "71b58fd3-f85f-4ff6-825b-e655e60ca418")
 	)
 	(junction
+		(at 204.47 130.81)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7f03a9dd-7323-449b-9c78-61fbe08706ac")
+	)
+	(junction
 		(at 104.14 34.29)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4407,6 +4413,16 @@
 	)
 	(wire
 		(pts
+			(xy 234.95 130.81) (xy 204.47 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "359946e4-ddd2-4379-b1d2-f54e3878c13d")
+	)
+	(wire
+		(pts
 			(xy 198.12 143.51) (xy 191.77 143.51)
 		)
 		(stroke
@@ -4567,6 +4583,16 @@
 	)
 	(wire
 		(pts
+			(xy 234.95 125.73) (xy 234.95 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "50e557b4-0d66-4b48-acbb-61d6398df2d0")
+	)
+	(wire
+		(pts
 			(xy 234.95 115.57) (xy 231.14 115.57)
 		)
 		(stroke
@@ -4634,6 +4660,16 @@
 			(type default)
 		)
 		(uuid "5dbabd4b-0c10-403c-b8f4-80a22229f75b")
+	)
+	(wire
+		(pts
+			(xy 204.47 130.81) (xy 204.47 135.89)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5e3bc7bf-a1ae-4db2-aec2-3bdf4de51cca")
 	)
 	(wire
 		(pts
@@ -4807,7 +4843,7 @@
 	)
 	(wire
 		(pts
-			(xy 204.47 125.73) (xy 204.47 135.89)
+			(xy 204.47 125.73) (xy 204.47 130.81)
 		)
 		(stroke
 			(width 0)
@@ -5683,84 +5719,6 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "#PWR08")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 234.95 125.73 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "1be9a7d7-3dbc-46fa-b08d-c3e84c7e756b")
-		(property "Reference" "#PWR016"
-			(at 234.95 132.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 234.95 130.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 234.95 125.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 234.95 125.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 234.95 125.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "8ae6a164-81e6-4fd3-a58a-98d292181da9")
-		)
-		(instances
-			(project "ESP32S3_Snifar"
-				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "#PWR016")
 					(unit 1)
 				)
 			)
