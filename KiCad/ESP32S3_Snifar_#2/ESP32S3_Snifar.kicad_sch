@@ -2460,7 +2460,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "MOUDLE-SEEEDUINO-XIAO-ESP32S3"
+			(property "Value" "XIAO-ESP32S3"
 				(at 0.6349 15.24 90)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3054,6 +3054,26 @@
 						(effects
 							(font
 								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+			)
+			(symbol "MOUDLE-SEEEDUINO-XIAO-ESP32S3_1_1"
+				(pin input line
+					(at 8.89 16.51 270)
+					(length 2.54)
+					(name "EN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "15"
+						(effects
+							(font
+								(size 1.27 1.27)
 							)
 						)
 					)
@@ -3707,7 +3727,7 @@
 	)
 	(text "Boot Sequence"
 		(exclude_from_sim no)
-		(at 260.604 68.58 0)
+		(at 265.684 107.95 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3822,7 +3842,7 @@
 		(uuid "28ddaf9d-5c20-4f97-a49d-1c5f6eba5821")
 	)
 	(junction
-		(at 251.46 81.28)
+		(at 256.54 120.65)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "315f1b69-ac79-4cf2-9c86-607eb2fb5eac")
@@ -3858,6 +3878,12 @@
 		(uuid "6a978d5b-e37e-43f8-a690-7e291756b138")
 	)
 	(junction
+		(at 219.71 110.49)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "71b58fd3-f85f-4ff6-825b-e655e60ca418")
+	)
+	(junction
 		(at 104.14 34.29)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3870,7 +3896,7 @@
 		(uuid "8c953f59-114b-408d-8d1d-643bfb73a534")
 	)
 	(junction
-		(at 229.87 76.2)
+		(at 234.95 115.57)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "949a6b70-610f-47a8-ad5e-b106d2725929")
@@ -4008,6 +4034,10 @@
 	(no_connect
 		(at 204.47 76.2)
 		(uuid "7f6eec78-e0c9-4541-950b-3aa574113f8f")
+	)
+	(no_connect
+		(at 280.67 118.11)
+		(uuid "8e572a3f-85cb-4dc9-b5f7-e99a8f98fe21")
 	)
 	(no_connect
 		(at 105.41 156.21)
@@ -4187,7 +4217,7 @@
 	)
 	(wire
 		(pts
-			(xy 229.87 76.2) (xy 229.87 78.74)
+			(xy 234.95 115.57) (xy 234.95 118.11)
 		)
 		(stroke
 			(width 0)
@@ -4277,7 +4307,7 @@
 	)
 	(wire
 		(pts
-			(xy 251.46 81.28) (xy 256.54 81.28)
+			(xy 256.54 120.65) (xy 261.62 120.65)
 		)
 		(stroke
 			(width 0)
@@ -4384,6 +4414,16 @@
 			(type default)
 		)
 		(uuid "36a5a472-277b-4e21-aa7c-16c32a2c0c46")
+	)
+	(wire
+		(pts
+			(xy 219.71 110.49) (xy 223.52 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "37308ef3-02ba-4631-9424-15242c6a0c52")
 	)
 	(wire
 		(pts
@@ -4527,6 +4567,16 @@
 	)
 	(wire
 		(pts
+			(xy 234.95 115.57) (xy 231.14 115.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "51693d7a-5b65-4b08-9731-5643e8305138")
+	)
+	(wire
+		(pts
 			(xy 128.27 21.59) (xy 128.27 22.86)
 		)
 		(stroke
@@ -4617,7 +4667,17 @@
 	)
 	(wire
 		(pts
-			(xy 264.16 81.28) (xy 275.59 81.28)
+			(xy 217.17 110.49) (xy 219.71 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6b2e7553-c76f-49a0-b5d1-976b676a4a44")
+	)
+	(wire
+		(pts
+			(xy 269.24 120.65) (xy 280.67 120.65)
 		)
 		(stroke
 			(width 0)
@@ -4667,7 +4727,7 @@
 	)
 	(wire
 		(pts
-			(xy 264.16 76.2) (xy 275.59 76.2)
+			(xy 269.24 115.57) (xy 280.67 115.57)
 		)
 		(stroke
 			(width 0)
@@ -4937,16 +4997,6 @@
 	)
 	(wire
 		(pts
-			(xy 226.06 76.2) (xy 229.87 76.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d14a7bbd-64a8-4945-8a1d-e9c7b064996e")
-	)
-	(wire
-		(pts
 			(xy 154.94 43.18) (xy 165.1 43.18)
 		)
 		(stroke
@@ -4957,7 +5007,7 @@
 	)
 	(wire
 		(pts
-			(xy 229.87 76.2) (xy 238.76 76.2)
+			(xy 234.95 115.57) (xy 243.84 115.57)
 		)
 		(stroke
 			(width 0)
@@ -5137,7 +5187,7 @@
 	)
 	(wire
 		(pts
-			(xy 246.38 81.28) (xy 251.46 81.28)
+			(xy 251.46 120.65) (xy 256.54 120.65)
 		)
 		(stroke
 			(width 0)
@@ -5317,7 +5367,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:2N7000")
-		(at 220.98 76.2 0)
+		(at 226.06 115.57 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -5328,7 +5378,7 @@
 		(dnp no)
 		(uuid "045b6e7a-f4ed-4073-af93-98b73b82ed2c")
 		(property "Reference" "Q4"
-			(at 228.092 71.882 0)
+			(at 233.172 111.252 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5339,7 +5389,7 @@
 			)
 		)
 		(property "Value" "2N7000"
-			(at 228.092 69.342 0)
+			(at 233.172 108.712 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5350,7 +5400,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
-			(at 215.9 78.105 0)
+			(at 220.98 117.475 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5363,7 +5413,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.vishay.com/docs/70226/70226.pdf"
-			(at 215.9 80.01 0)
+			(at 220.98 119.38 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5375,7 +5425,7 @@
 			)
 		)
 		(property "Description" "0.2A Id, 200V Vds, N-Channel MOSFET, 2.6V Logic Level, TO-92"
-			(at 220.98 76.2 0)
+			(at 226.06 115.57 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5405,7 +5455,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 251.46 88.9 0)
+		(at 256.54 128.27 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5416,7 +5466,7 @@
 		(fields_autoplaced yes)
 		(uuid "04e747f9-43bd-4ab7-b177-047b676af8b5")
 		(property "Reference" "#PWR013"
-			(at 251.46 95.25 0)
+			(at 256.54 134.62 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5427,7 +5477,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 251.46 93.98 0)
+			(at 256.54 133.35 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5437,7 +5487,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 251.46 88.9 0)
+			(at 256.54 128.27 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5448,7 +5498,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 251.46 88.9 0)
+			(at 256.54 128.27 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5459,7 +5509,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 251.46 88.9 0)
+			(at 256.54 128.27 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5640,7 +5690,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 229.87 86.36 0)
+		(at 234.95 125.73 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5651,7 +5701,7 @@
 		(fields_autoplaced yes)
 		(uuid "1be9a7d7-3dbc-46fa-b08d-c3e84c7e756b")
 		(property "Reference" "#PWR016"
-			(at 229.87 92.71 0)
+			(at 234.95 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5662,7 +5712,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 229.87 91.44 0)
+			(at 234.95 130.81 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5672,7 +5722,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 229.87 86.36 0)
+			(at 234.95 125.73 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5683,7 +5733,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 229.87 86.36 0)
+			(at 234.95 125.73 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5694,7 +5744,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 229.87 86.36 0)
+			(at 234.95 125.73 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6275,7 +6325,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 229.87 82.55 0)
+		(at 234.95 121.92 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6286,7 +6336,7 @@
 		(fields_autoplaced yes)
 		(uuid "3064a98c-cf6e-4f22-a048-dbd161dfa97d")
 		(property "Reference" "R18"
-			(at 232.41 81.2799 0)
+			(at 237.49 120.6499 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6297,7 +6347,7 @@
 			)
 		)
 		(property "Value" "100k"
-			(at 232.41 83.8199 0)
+			(at 237.49 123.1899 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6308,7 +6358,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 228.092 82.55 90)
+			(at 233.172 121.92 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6319,7 +6369,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 229.87 82.55 0)
+			(at 234.95 121.92 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6330,7 +6380,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 229.87 82.55 0)
+			(at 234.95 121.92 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6752,7 +6802,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 218.44 81.28 0)
+		(at 223.52 120.65 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6763,7 +6813,7 @@
 		(fields_autoplaced yes)
 		(uuid "4dd8a172-9f44-420e-84a3-88efacfb0286")
 		(property "Reference" "#PWR017"
-			(at 218.44 87.63 0)
+			(at 223.52 127 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6774,7 +6824,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 218.44 86.36 0)
+			(at 223.52 125.73 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6784,7 +6834,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 218.44 81.28 0)
+			(at 223.52 120.65 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6795,7 +6845,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 218.44 81.28 0)
+			(at 223.52 120.65 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6806,7 +6856,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 218.44 81.28 0)
+			(at 223.52 120.65 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7164,7 +7214,6 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "5e86bfb3-d39e-484c-b6c3-4a9cd62ca6ec")
 		(property "Reference" "U1"
 			(at 215.9 99.6949 90)
@@ -7178,7 +7227,7 @@
 			)
 		)
 		(property "Value" "XIAO-ESP32S3"
-			(at 215.9 102.2349 90)
+			(at 215.646 96.266 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7263,6 +7312,9 @@
 		)
 		(pin "2"
 			(uuid "3e97ef4b-edc1-4856-a01c-bcdc7e8702d7")
+		)
+		(pin "15"
+			(uuid "3a7e51a3-2d8c-4cfd-8804-3c6078719e68")
 		)
 		(instances
 			(project "ESP32S3_Snifar"
@@ -7441,7 +7493,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 238.76 86.36 0)
+		(at 243.84 125.73 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7452,7 +7504,7 @@
 		(fields_autoplaced yes)
 		(uuid "5fff97f3-289e-4739-bf19-078fce4cbb99")
 		(property "Reference" "#PWR015"
-			(at 238.76 92.71 0)
+			(at 243.84 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7463,7 +7515,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 238.76 91.44 0)
+			(at 243.84 130.81 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7473,7 +7525,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 238.76 86.36 0)
+			(at 243.84 125.73 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7484,7 +7536,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 238.76 86.36 0)
+			(at 243.84 125.73 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7495,7 +7547,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 238.76 86.36 0)
+			(at 243.84 125.73 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7599,7 +7651,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 260.35 81.28 90)
+		(at 265.43 120.65 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7609,7 +7661,7 @@
 		(dnp no)
 		(uuid "6a2b2cc3-feaf-419e-ab50-02af743d26a9")
 		(property "Reference" "R2"
-			(at 260.604 83.566 90)
+			(at 265.684 122.936 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7619,7 +7671,7 @@
 			)
 		)
 		(property "Value" "1k"
-			(at 260.604 86.106 90)
+			(at 265.684 125.476 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7629,7 +7681,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 260.35 83.058 90)
+			(at 265.43 122.428 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7640,7 +7692,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 260.35 81.28 0)
+			(at 265.43 120.65 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7651,7 +7703,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 260.35 81.28 0)
+			(at 265.43 120.65 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8953,7 +9005,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:2N7000")
-		(at 241.3 81.28 0)
+		(at 246.38 120.65 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -8964,7 +9016,7 @@
 		(dnp no)
 		(uuid "a49fc428-522c-46b4-85c1-783685d57e2f")
 		(property "Reference" "Q3"
-			(at 248.412 76.962 0)
+			(at 253.492 116.332 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8975,7 +9027,7 @@
 			)
 		)
 		(property "Value" "2N7000"
-			(at 248.412 74.422 0)
+			(at 253.492 113.792 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8986,7 +9038,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
-			(at 236.22 83.185 0)
+			(at 241.3 122.555 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8999,7 +9051,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.vishay.com/docs/70226/70226.pdf"
-			(at 236.22 85.09 0)
+			(at 241.3 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9011,7 +9063,7 @@
 			)
 		)
 		(property "Description" "0.2A Id, 200V Vds, N-Channel MOSFET, 2.6V Logic Level, TO-92"
-			(at 241.3 81.28 0)
+			(at 246.38 120.65 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9845,7 +9897,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x03")
-		(at 270.51 78.74 180)
+		(at 275.59 118.11 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9855,7 +9907,7 @@
 		(dnp no)
 		(uuid "c68a8d17-ffb9-46c6-b9cd-4f6ec8aefbc8")
 		(property "Reference" "J3"
-			(at 279.146 77.216 90)
+			(at 284.226 116.586 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9866,7 +9918,7 @@
 			)
 		)
 		(property "Value" "Conn_01x03_Pin_Horizontal"
-			(at 279.654 71.882 0)
+			(at 284.734 111.252 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9877,7 +9929,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal"
-			(at 270.51 78.74 0)
+			(at 275.59 118.11 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9888,7 +9940,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 270.51 78.74 0)
+			(at 275.59 118.11 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9899,7 +9951,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 270.51 78.74 0)
+			(at 275.59 118.11 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10167,7 +10219,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 264.16 76.2 270)
+		(at 269.24 115.57 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10178,7 +10230,7 @@
 		(fields_autoplaced yes)
 		(uuid "e7aafc31-c934-41ef-badd-4548cc803b86")
 		(property "Reference" "#PWR014"
-			(at 257.81 76.2 0)
+			(at 262.89 115.57 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10189,7 +10241,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 260.35 76.1999 90)
+			(at 265.43 115.5699 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10200,7 +10252,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 264.16 76.2 0)
+			(at 269.24 115.57 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10211,7 +10263,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 264.16 76.2 0)
+			(at 269.24 115.57 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10222,7 +10274,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 264.16 76.2 0)
+			(at 269.24 115.57 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10563,7 +10615,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 251.46 85.09 0)
+		(at 256.54 124.46 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10574,7 +10626,7 @@
 		(fields_autoplaced yes)
 		(uuid "f46e7f83-a67a-4802-b990-358335083de9")
 		(property "Reference" "R17"
-			(at 254 83.8199 0)
+			(at 259.08 123.1899 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10585,7 +10637,7 @@
 			)
 		)
 		(property "Value" "100k"
-			(at 254 86.3599 0)
+			(at 259.08 125.7299 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10596,7 +10648,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 249.682 85.09 90)
+			(at 254.762 124.46 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10607,7 +10659,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 251.46 85.09 0)
+			(at 256.54 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10618,7 +10670,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 251.46 85.09 0)
+			(at 256.54 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10952,6 +11004,84 @@
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
 					(reference "R12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 219.71 110.49 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ff12a82a-1590-49ab-a80d-fd011f907892")
+		(property "Reference" "TP12"
+			(at 217.932 103.378 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "TestPoint"
+			(at 216.662 105.156 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_2.0x2.0mm"
+			(at 224.79 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 224.79 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 219.71 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "30f41ae3-5333-4772-b6a8-477038f35ea9")
+		)
+		(instances
+			(project "ESP32S3_Snifar"
+				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
+					(reference "TP12")
 					(unit 1)
 				)
 			)
