@@ -5401,6 +5401,16 @@
 		)
 		(uuid "c64bc55b-fc76-444f-a490-f069fe7c054c")
 	)
+	(label "3.3V_Clamp"
+		(at 220.98 130.81 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f02b2a4e-1617-4597-8091-a88369769b64")
+	)
 	(symbol
 		(lib_id "Transistor_FET:2N7000")
 		(at 226.06 115.57 0)
