@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "E:\\Users\\塚田淳一\\Documents\\GitHub\\NTC-1A-Control\\NTC-1A-Control\\KiCad\\ESP32S3_Snifar_#2\\ESP32S3_Snifar.kicad_sch")
-		(date "2026-11-02T11:39:43")
+		(date "2026-11-12T13:08:45")
 		(tool "Eeschema 10.0.5")
 		(sheet
 			(number "1")
@@ -302,7 +302,7 @@
 		)
 		(comp
 			(ref "C3")
-			(value "101")
+			(value "222")
 			(footprint "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm")
 			(description "Unpolarized capacitor")
 			(fields
@@ -664,12 +664,12 @@
 		)
 		(comp
 			(ref "J1")
-			(value "Conn_01x04_Socket")
-			(footprint "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical")
+			(value "JST_VH_01_04_B4PS-VH")
+			(footprint "Connector_JST:JST_VH_B4PS-VH_1x04_P3.96mm_Horizontal")
 			(description "Generic connector, single row, 01x04, script generated")
 			(fields
 				(field
-					(name "Footprint") "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical")
+					(name "Footprint") "Connector_JST:JST_VH_B4PS-VH_1x04_P3.96mm_Horizontal")
 				(field
 					(name "Datasheet")
 				)
@@ -724,12 +724,12 @@
 		)
 		(comp
 			(ref "J2")
-			(value "J2_Pi_01x06_Socket")
-			(footprint "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical")
+			(value "J2_Pi_01x06_Socket_Horizontal")
+			(footprint "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal")
 			(description "Generic connector, single row, 01x06, script generated")
 			(fields
 				(field
-					(name "Footprint") "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical")
+					(name "Footprint") "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal")
 				(field
 					(name "Datasheet")
 				)
@@ -2556,6 +2556,57 @@
 			)
 		)
 		(comp
+			(ref "TP11")
+			(value "TestPoint")
+			(footprint "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm")
+			(description "test point")
+			(fields
+				(field
+					(name "Footprint") "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "test point")
+			)
+			(libsource
+				(lib "Connector")
+				(part "TestPoint")
+				(description "test point")
+			)
+			(property
+				(name "Sheetname")
+				(value "ESP32S3_Snifar")
+			)
+			(property
+				(name "Sheetfile")
+				(value "ESP32S3_Snifar.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "test point tp")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Pin* Test*")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "3ead5f08-a50d-41ce-9cf6-3c350455d123")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+					)
+				)
+			)
+		)
+		(comp
 			(ref "U1")
 			(value "XIAO-ESP32S3")
 			(footprint "MOUDLE-SEEEDUINO-XIAO-ESP32S3:XIAO-ESP32S3-DIP")
@@ -2928,6 +2979,10 @@
 				)
 				(field
 					(name "Description") "Jumper, 3-pole, both open")
+				(field
+					(name "KLC_S5.1") "This is a generic symbol, it has fp-filter, but no default footprint")
+				(field
+					(name "KLC_S3.3") "Graphical-Symbol: thickness is 6mm, fill is background")
 			)
 			(pins
 				(pin
@@ -3366,6 +3421,12 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "TP11")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
 				(ref "U1")
 				(pin "11")
 				(pinfunction "PA6_A10_D10_MOSI_11")
@@ -3444,8 +3505,8 @@
 			(class "Default")
 			(node
 				(ref "J2")
-				(pin "5")
-				(pinfunction "Pin_5_5")
+				(pin "2")
+				(pinfunction "Pin_2_2")
 				(pintype "passive")
 			)
 			(node
@@ -3482,8 +3543,8 @@
 			(class "Default")
 			(node
 				(ref "J2")
-				(pin "4")
-				(pinfunction "Pin_4_4")
+				(pin "3")
+				(pinfunction "Pin_3_3")
 				(pintype "passive")
 			)
 			(node
@@ -3730,8 +3791,8 @@
 			)
 			(node
 				(ref "J2")
-				(pin "1")
-				(pinfunction "Pin_1_1")
+				(pin "6")
+				(pinfunction "Pin_6_6")
 				(pintype "passive")
 			)
 			(node
@@ -4215,34 +4276,34 @@
 		)
 		(net
 			(code "54")
-			(name "unconnected-(J2-Pin_2-Pad2)")
+			(name "unconnected-(J2-Pin_1-Pad1)")
 			(class "Default")
 			(node
 				(ref "J2")
-				(pin "2")
-				(pinfunction "Pin_2_2")
+				(pin "1")
+				(pinfunction "Pin_1_1")
 				(pintype "passive+no_connect")
 			)
 		)
 		(net
 			(code "55")
-			(name "unconnected-(J2-Pin_3-Pad3)")
+			(name "unconnected-(J2-Pin_4-Pad4)")
 			(class "Default")
 			(node
 				(ref "J2")
-				(pin "3")
-				(pinfunction "Pin_3_3")
+				(pin "4")
+				(pinfunction "Pin_4_4")
 				(pintype "passive+no_connect")
 			)
 		)
 		(net
 			(code "56")
-			(name "unconnected-(J2-Pin_6-Pad6)")
+			(name "unconnected-(J2-Pin_5-Pad5)")
 			(class "Default")
 			(node
 				(ref "J2")
-				(pin "6")
-				(pinfunction "Pin_6_6")
+				(pin "5")
+				(pinfunction "Pin_5_5")
 				(pintype "passive+no_connect")
 			)
 		)
