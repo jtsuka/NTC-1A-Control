@@ -7718,7 +7718,7 @@
 				)
 			)
 		)
-		(property "Value" "J2_Pi_01x06_Socket_Horizontal"
+		(property "Value" "J2_Pi_01x06_Pin_Horizontal"
 			(at 234.95 22.86 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7728,7 +7728,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Horizontal"
 			(at 236.22 25.4 0)
 			(hide yes)
 			(show_name no)
