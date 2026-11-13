@@ -5417,7 +5417,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "045b6e7a-f4ed-4073-af93-98b73b82ed2c")
-		(property "Reference" "Q4"
+		(property "Reference" "Q2"
 			(at 233.172 111.252 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5487,7 +5487,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "Q4")
+					(reference "Q2")
 					(unit 1)
 				)
 			)
@@ -7006,7 +7006,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "58aa62ca-bd1f-4ece-a22a-988cd831191e")
-		(property "Reference" "Q2"
+		(property "Reference" "Q1"
 			(at 135.89 102.87 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7076,7 +7076,7 @@
 		(instances
 			(project "ESP32S3_Snifar"
 				(path "/cf212845-0bb0-475f-85e1-3995b86e4bb6"
-					(reference "Q2")
+					(reference "Q1")
 					(unit 1)
 				)
 			)
@@ -9859,7 +9859,8 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x03")
-		(at 275.59 118.11 180)
+		(at 275.59 118.11 0)
+		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9869,7 +9870,7 @@
 		(dnp no)
 		(uuid "c68a8d17-ffb9-46c6-b9cd-4f6ec8aefbc8")
 		(property "Reference" "J3"
-			(at 284.226 116.586 90)
+			(at 284.226 119.634 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9880,7 +9881,7 @@
 			)
 		)
 		(property "Value" "Conn_01x03_Pin_Horizontal"
-			(at 284.734 111.252 0)
+			(at 279.654 110.744 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
