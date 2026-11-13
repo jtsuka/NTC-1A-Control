@@ -13394,7 +13394,7 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "TC106 Snifar ESP32S3\nVer 2.2 2026.11.09"
+	(gr_text "TC106 Snifar ESP32S3\nVer 2.3 2026.11.13"
 		(at 46.3 97.45 0)
 		(layer "F.SilkS")
 		(uuid "68c942fe-56a2-4321-a4ac-4ac2913440b5")
