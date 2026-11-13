@@ -13430,7 +13430,7 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "2026.11.12"
+	(gr_text "2026.11.13"
 		(at 207 193.81 0)
 		(layer "Cmts.User")
 		(uuid "205c9054-e2e4-44d2-a34c-ab0a0479bc0d")
@@ -13442,7 +13442,7 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "Ver2.2"
+	(gr_text "Ver2.3"
 		(at 269.09 193.72 0)
 		(layer "Cmts.User")
 		(uuid "13f334da-af38-4d53-9a18-d9323d09e425")
