@@ -84,11 +84,7 @@
           ""
         ],
         [
-          "silk_over_copper|104749600|65580000|6b8ff316-f0a0-4359-b8d9-88c92ba5708a|a7a25577-20f5-44e8-bf85-2435767d7d69",
-          "ESP32S3のパッドのシルク印刷の為除外"
-        ],
-        [
-          "silk_over_copper|106070400|47800000|27e2b8cf-05e2-444b-bfd0-42525371f87b|60b5b0e7-fccd-4804-9bbc-9f0cd82ac42b",
+          "silk_over_copper|103530400|65580000|6b8ff316-f0a0-4359-b8d9-88c92ba5708a|a7a25577-20f5-44e8-bf85-2435767d7d69",
           ""
         ],
         [
@@ -96,12 +92,16 @@
           ""
         ],
         [
+          "silk_over_copper|107289600|47800000|27e2b8cf-05e2-444b-bfd0-42525371f87b|60b5b0e7-fccd-4804-9bbc-9f0cd82ac42b",
+          ""
+        ],
+        [
           "silk_over_copper|108610400|47800000|27e2b8cf-05e2-444b-bfd0-42525371f87b|cb6205c4-d121-4169-9f6b-a8cf3d1cc406",
           ""
         ],
         [
-          "silk_over_copper|109829600|65580000|6b8ff316-f0a0-4359-b8d9-88c92ba5708a|5ce7a78c-4f4a-4d13-84c7-d511c789bd2d",
-          "ESP32S3のパッドのシルク印刷の為除外"
+          "silk_over_copper|108610400|65580000|6b8ff316-f0a0-4359-b8d9-88c92ba5708a|5ce7a78c-4f4a-4d13-84c7-d511c789bd2d",
+          ""
         ],
         [
           "silk_over_copper|111150400|65580000|6b8ff316-f0a0-4359-b8d9-88c92ba5708a|0d511fa0-a7bb-45be-b5d5-19f0bc320359",
