@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "E:\\Users\\塚田淳一\\Documents\\GitHub\\NTC-1A-Control\\NTC-1A-Control\\KiCad\\ESP32S3_Snifar_#2\\ESP32S3_Snifar.kicad_sch")
-		(date "2026-11-12T13:08:45")
+		(date "2026-11-13T13:15:22")
 		(tool "Eeschema 10.0.5")
 		(sheet
 			(number "1")
@@ -724,12 +724,12 @@
 		)
 		(comp
 			(ref "J2")
-			(value "J2_Pi_01x06_Socket_Horizontal")
-			(footprint "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal")
+			(value "J2_Pi_01x06_Pin_Horizontal")
+			(footprint "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Horizontal")
 			(description "Generic connector, single row, 01x06, script generated")
 			(fields
 				(field
-					(name "Footprint") "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal")
+					(name "Footprint") "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Horizontal")
 				(field
 					(name "Datasheet")
 				)
@@ -738,7 +738,7 @@
 			)
 			(libsource
 				(lib "Connector")
-				(part "Conn_01x06_Socket")
+				(part "Conn_01x06_Pin")
 				(description "Generic connector, single row, 01x06, script generated")
 			)
 			(property
@@ -783,6 +783,63 @@
 						)
 						(pin
 							(num "6")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J3")
+			(value "Conn_01x03_Pin_Horizontal")
+			(footprint "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal")
+			(description "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			(fields
+				(field
+					(name "Footprint") "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(libsource
+				(lib "Connector_Generic")
+				(part "Conn_01x03")
+				(description "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(property
+				(name "Sheetname")
+				(value "ESP32S3_Snifar")
+			)
+			(property
+				(name "Sheetfile")
+				(value "ESP32S3_Snifar.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "connector")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Connector*:*_1x??_*")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "c68a8d17-ffb9-46c6-b9cd-4f6ec8aefbc8")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
 						)
 					)
 				)
@@ -1236,6 +1293,120 @@
 			)
 		)
 		(comp
+			(ref "Q3")
+			(value "2N7000")
+			(footprint "Package_TO_SOT_THT:TO-92_Inline")
+			(datasheet "https://www.vishay.com/docs/70226/70226.pdf")
+			(description "0.2A Id, 200V Vds, N-Channel MOSFET, 2.6V Logic Level, TO-92")
+			(fields
+				(field
+					(name "Footprint") "Package_TO_SOT_THT:TO-92_Inline")
+				(field
+					(name "Datasheet") "https://www.vishay.com/docs/70226/70226.pdf")
+				(field
+					(name "Description") "0.2A Id, 200V Vds, N-Channel MOSFET, 2.6V Logic Level, TO-92")
+			)
+			(libsource
+				(lib "Transistor_FET")
+				(part "2N7000")
+				(description "0.2A Id, 200V Vds, N-Channel MOSFET, 2.6V Logic Level, TO-92")
+			)
+			(property
+				(name "Sheetname")
+				(value "ESP32S3_Snifar")
+			)
+			(property
+				(name "Sheetfile")
+				(value "ESP32S3_Snifar.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "N-Channel MOSFET Logic-Level")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "TO?92*")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "a49fc428-522c-46b4-85c1-783685d57e2f")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "1")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "Q4")
+			(value "2N7000")
+			(footprint "Package_TO_SOT_THT:TO-92_Inline")
+			(datasheet "https://www.vishay.com/docs/70226/70226.pdf")
+			(description "0.2A Id, 200V Vds, N-Channel MOSFET, 2.6V Logic Level, TO-92")
+			(fields
+				(field
+					(name "Footprint") "Package_TO_SOT_THT:TO-92_Inline")
+				(field
+					(name "Datasheet") "https://www.vishay.com/docs/70226/70226.pdf")
+				(field
+					(name "Description") "0.2A Id, 200V Vds, N-Channel MOSFET, 2.6V Logic Level, TO-92")
+			)
+			(libsource
+				(lib "Transistor_FET")
+				(part "2N7000")
+				(description "0.2A Id, 200V Vds, N-Channel MOSFET, 2.6V Logic Level, TO-92")
+			)
+			(property
+				(name "Sheetname")
+				(value "ESP32S3_Snifar")
+			)
+			(property
+				(name "Sheetfile")
+				(value "ESP32S3_Snifar.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "N-Channel MOSFET Logic-Level")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "TO?92*")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "045b6e7a-f4ed-4073-af93-98b73b82ed2c")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "1")
+						)
+					)
+				)
+			)
+		)
+		(comp
 			(ref "R1")
 			(value "1k")
 			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
@@ -1275,6 +1446,60 @@
 				(tstamps "/")
 			)
 			(tstamps "eddbcfda-fbc7-46e2-8496-7b926b4dc399")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R2")
+			(value "1k")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+			(description "Resistor")
+			(fields
+				(field
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Resistor")
+			)
+			(libsource
+				(lib "Device")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Sheetname")
+				(value "ESP32S3_Snifar")
+			)
+			(property
+				(name "Sheetfile")
+				(value "ESP32S3_Snifar.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "6a2b2cc3-feaf-419e-ab50-02af743d26a9")
 			(units
 				(unit
 					(name "A")
@@ -2046,6 +2271,114 @@
 			)
 		)
 		(comp
+			(ref "R17")
+			(value "100k")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+			(description "Resistor")
+			(fields
+				(field
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Resistor")
+			)
+			(libsource
+				(lib "Device")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Sheetname")
+				(value "ESP32S3_Snifar")
+			)
+			(property
+				(name "Sheetfile")
+				(value "ESP32S3_Snifar.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "f46e7f83-a67a-4802-b990-358335083de9")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R18")
+			(value "100k")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+			(description "Resistor")
+			(fields
+				(field
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Resistor")
+			)
+			(libsource
+				(lib "Device")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Sheetname")
+				(value "ESP32S3_Snifar")
+			)
+			(property
+				(name "Sheetfile")
+				(value "ESP32S3_Snifar.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "3064a98c-cf6e-4f22-a048-dbd161dfa97d")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
 			(ref "TP1")
 			(value "TestPoint")
 			(footprint "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm")
@@ -2607,6 +2940,57 @@
 			)
 		)
 		(comp
+			(ref "TP12")
+			(value "TestPoint")
+			(footprint "TestPoint:TestPoint_Pad_2.0x2.0mm")
+			(description "test point")
+			(fields
+				(field
+					(name "Footprint") "TestPoint:TestPoint_Pad_2.0x2.0mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "test point")
+			)
+			(libsource
+				(lib "Connector")
+				(part "TestPoint")
+				(description "test point")
+			)
+			(property
+				(name "Sheetname")
+				(value "ESP32S3_Snifar")
+			)
+			(property
+				(name "Sheetfile")
+				(value "ESP32S3_Snifar.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "test point tp")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Pin* Test*")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "ff12a82a-1590-49ab-a80d-fd011f907892")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+					)
+				)
+			)
+		)
+		(comp
 			(ref "U1")
 			(value "XIAO-ESP32S3")
 			(footprint "MOUDLE-SEEEDUINO-XIAO-ESP32S3:XIAO-ESP32S3-DIP")
@@ -2662,6 +3046,9 @@
 						)
 						(pin
 							(num "7")
+						)
+						(pin
+							(num "15")
 						)
 						(pin
 							(num "14")
@@ -2738,7 +3125,7 @@
 		)
 		(libpart
 			(lib "Connector")
-			(part "Conn_01x06_Socket")
+			(part "Conn_01x06_Pin")
 			(description "Generic connector, single row, 01x06, script generated")
 			(footprints
 				(fp "Connector*:*_1x??_*")
@@ -2747,7 +3134,7 @@
 				(field
 					(name "Reference") "J")
 				(field
-					(name "Value") "Conn_01x06_Socket")
+					(name "Value") "Conn_01x06_Pin")
 				(field
 					(name "Footprint")
 				)
@@ -2816,6 +3203,45 @@
 				(pin
 					(num "1")
 					(name "1")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Connector_Generic")
+			(part "Conn_01x03")
+			(description "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			(footprints
+				(fp "Connector*:*_1x??_*")
+			)
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "Conn_01x03")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "Pin_1")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "Pin_2")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "Pin_3")
 					(type "passive")
 				)
 			)
@@ -3182,7 +3608,7 @@
 				(field
 					(name "Reference") "U1")
 				(field
-					(name "Value") "MOUDLE-SEEEDUINO-XIAO-ESP32S3")
+					(name "Value") "XIAO-ESP32S3")
 				(field
 					(name "Footprint") "MOUDLE-SEEEDUINO-XIAO-ESP32S3:XIAO-ESP32S3-DIP")
 				(field
@@ -3263,6 +3689,11 @@
 					(name "5V")
 					(type "bidirectional")
 				)
+				(pin
+					(num "15")
+					(name "EN")
+					(type "input")
+				)
 			)
 		)
 		(libpart
@@ -3332,6 +3763,10 @@
 			(uri "${KICAD10_SYMBOL_DIR}/Connector.kicad_sym")
 		)
 		(library
+			(logical "Connector_Generic")
+			(uri "${KICAD10_SYMBOL_DIR}/Connector_Generic.kicad_sym")
+		)
+		(library
 			(logical "Device")
 			(uri "${KICAD10_SYMBOL_DIR}/Device.kicad_sym")
 		)
@@ -3384,6 +3819,11 @@
 			(node
 				(ref "R13")
 				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R18")
+				(pin "2")
 				(pintype "passive")
 			)
 			(node
@@ -3505,8 +3945,8 @@
 			(class "Default")
 			(node
 				(ref "J2")
-				(pin "2")
-				(pinfunction "Pin_2_2")
+				(pin "5")
+				(pinfunction "Pin_5_5")
 				(pintype "passive")
 			)
 			(node
@@ -3543,8 +3983,8 @@
 			(class "Default")
 			(node
 				(ref "J2")
-				(pin "3")
-				(pinfunction "Pin_3_3")
+				(pin "4")
+				(pinfunction "Pin_4_4")
 				(pintype "passive")
 			)
 			(node
@@ -3791,12 +4231,30 @@
 			)
 			(node
 				(ref "J2")
-				(pin "6")
-				(pinfunction "Pin_6_6")
+				(pin "1")
+				(pinfunction "Pin_1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J3")
+				(pin "3")
+				(pinfunction "Pin_3_3")
 				(pintype "passive")
 			)
 			(node
 				(ref "Q2")
+				(pin "1")
+				(pinfunction "S_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q3")
+				(pin "1")
+				(pinfunction "S_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q4")
 				(pin "1")
 				(pinfunction "S_1")
 				(pintype "passive")
@@ -3808,6 +4266,11 @@
 			)
 			(node
 				(ref "R13")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R17")
 				(pin "2")
 				(pintype "passive")
 			)
@@ -3842,6 +4305,22 @@
 		)
 		(net
 			(code "19")
+			(name "Net-(J3-Pin_1)")
+			(class "Default")
+			(node
+				(ref "J3")
+				(pin "1")
+				(pinfunction "Pin_1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R2")
+				(pin "2")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "20")
 			(name "Net-(JP1-B)")
 			(class "Default")
 			(node
@@ -3857,7 +4336,7 @@
 			)
 		)
 		(net
-			(code "20")
+			(code "21")
 			(name "Net-(JP3-C)")
 			(class "Default")
 			(node
@@ -3873,7 +4352,7 @@
 			)
 		)
 		(net
-			(code "21")
+			(code "22")
 			(name "Net-(JP4-A)")
 			(class "Default")
 			(node
@@ -3889,7 +4368,7 @@
 			)
 		)
 		(net
-			(code "22")
+			(code "23")
 			(name "Net-(JP4-B)")
 			(class "Default")
 			(node
@@ -3910,7 +4389,7 @@
 			)
 		)
 		(net
-			(code "23")
+			(code "24")
 			(name "Net-(JP5-A)")
 			(class "Default")
 			(node
@@ -3926,7 +4405,7 @@
 			)
 		)
 		(net
-			(code "24")
+			(code "25")
 			(name "Net-(JP6-A)")
 			(class "Default")
 			(node
@@ -3942,7 +4421,7 @@
 			)
 		)
 		(net
-			(code "25")
+			(code "26")
 			(name "Net-(JP6-B)")
 			(class "Default")
 			(node
@@ -3959,7 +4438,73 @@
 			)
 		)
 		(net
-			(code "26")
+			(code "27")
+			(name "Net-(Q3-D)")
+			(class "Default")
+			(node
+				(ref "Q3")
+				(pin "3")
+				(pinfunction "D_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q4")
+				(pin "2")
+				(pinfunction "G_2")
+				(pintype "input")
+			)
+			(node
+				(ref "R18")
+				(pin "1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "28")
+			(name "Net-(Q3-G)")
+			(class "Default")
+			(node
+				(ref "Q3")
+				(pin "2")
+				(pinfunction "G_2")
+				(pintype "input")
+			)
+			(node
+				(ref "R17")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R2")
+				(pin "1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "29")
+			(name "Net-(Q4-D)")
+			(class "Default")
+			(node
+				(ref "Q4")
+				(pin "3")
+				(pinfunction "D_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "TP12")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "15")
+				(pinfunction "EN_15")
+				(pintype "input")
+			)
+		)
+		(net
+			(code "30")
 			(name "Net-(R1-Pad1)")
 			(class "Default")
 			(node
@@ -3974,7 +4519,7 @@
 			)
 		)
 		(net
-			(code "27")
+			(code "31")
 			(name "Net-(R16-Pad2)")
 			(class "Default")
 			(node
@@ -3989,7 +4534,7 @@
 			)
 		)
 		(net
-			(code "28")
+			(code "32")
 			(name "unconnected-(A1-+5V-Pad27)")
 			(class "Default")
 			(node
@@ -4000,7 +4545,7 @@
 			)
 		)
 		(net
-			(code "29")
+			(code "33")
 			(name "unconnected-(A1-3V3-Pad17)")
 			(class "Default")
 			(node
@@ -4011,7 +4556,7 @@
 			)
 		)
 		(net
-			(code "30")
+			(code "34")
 			(name "unconnected-(A1-A0-Pad19)")
 			(class "Default")
 			(node
@@ -4022,7 +4567,7 @@
 			)
 		)
 		(net
-			(code "31")
+			(code "35")
 			(name "unconnected-(A1-A1-Pad20)")
 			(class "Default")
 			(node
@@ -4033,7 +4578,7 @@
 			)
 		)
 		(net
-			(code "32")
+			(code "36")
 			(name "unconnected-(A1-A2-Pad21)")
 			(class "Default")
 			(node
@@ -4044,7 +4589,7 @@
 			)
 		)
 		(net
-			(code "33")
+			(code "37")
 			(name "unconnected-(A1-A3-Pad22)")
 			(class "Default")
 			(node
@@ -4055,7 +4600,7 @@
 			)
 		)
 		(net
-			(code "34")
+			(code "38")
 			(name "unconnected-(A1-A6-Pad25)")
 			(class "Default")
 			(node
@@ -4066,7 +4611,7 @@
 			)
 		)
 		(net
-			(code "35")
+			(code "39")
 			(name "unconnected-(A1-A7-Pad26)")
 			(class "Default")
 			(node
@@ -4077,7 +4622,7 @@
 			)
 		)
 		(net
-			(code "36")
+			(code "40")
 			(name "unconnected-(A1-AREF-Pad18)")
 			(class "Default")
 			(node
@@ -4088,7 +4633,7 @@
 			)
 		)
 		(net
-			(code "37")
+			(code "41")
 			(name "unconnected-(A1-D2-Pad5)")
 			(class "Default")
 			(node
@@ -4099,7 +4644,7 @@
 			)
 		)
 		(net
-			(code "38")
+			(code "42")
 			(name "unconnected-(A1-D3-Pad6)")
 			(class "Default")
 			(node
@@ -4110,7 +4655,7 @@
 			)
 		)
 		(net
-			(code "39")
+			(code "43")
 			(name "unconnected-(A1-D4-Pad7)")
 			(class "Default")
 			(node
@@ -4121,7 +4666,7 @@
 			)
 		)
 		(net
-			(code "40")
+			(code "44")
 			(name "unconnected-(A1-D5-Pad8)")
 			(class "Default")
 			(node
@@ -4132,7 +4677,7 @@
 			)
 		)
 		(net
-			(code "41")
+			(code "45")
 			(name "unconnected-(A1-D6-Pad9)")
 			(class "Default")
 			(node
@@ -4143,7 +4688,7 @@
 			)
 		)
 		(net
-			(code "42")
+			(code "46")
 			(name "unconnected-(A1-D7-Pad10)")
 			(class "Default")
 			(node
@@ -4154,7 +4699,7 @@
 			)
 		)
 		(net
-			(code "43")
+			(code "47")
 			(name "unconnected-(A1-D8-Pad11)")
 			(class "Default")
 			(node
@@ -4165,7 +4710,7 @@
 			)
 		)
 		(net
-			(code "44")
+			(code "48")
 			(name "unconnected-(A1-D9-Pad12)")
 			(class "Default")
 			(node
@@ -4176,7 +4721,7 @@
 			)
 		)
 		(net
-			(code "45")
+			(code "49")
 			(name "unconnected-(A1-MISO-Pad15)")
 			(class "Default")
 			(node
@@ -4187,7 +4732,7 @@
 			)
 		)
 		(net
-			(code "46")
+			(code "50")
 			(name "unconnected-(A1-RX1-Pad2)")
 			(class "Default")
 			(node
@@ -4198,7 +4743,7 @@
 			)
 		)
 		(net
-			(code "47")
+			(code "51")
 			(name "unconnected-(A1-SCK-Pad16)")
 			(class "Default")
 			(node
@@ -4209,7 +4754,7 @@
 			)
 		)
 		(net
-			(code "48")
+			(code "52")
 			(name "unconnected-(A1-SCL{slash}A5-Pad24)")
 			(class "Default")
 			(node
@@ -4220,7 +4765,7 @@
 			)
 		)
 		(net
-			(code "49")
+			(code "53")
 			(name "unconnected-(A1-SDA{slash}A4-Pad23)")
 			(class "Default")
 			(node
@@ -4231,7 +4776,7 @@
 			)
 		)
 		(net
-			(code "50")
+			(code "54")
 			(name "unconnected-(A1-TX1-Pad1)")
 			(class "Default")
 			(node
@@ -4242,7 +4787,7 @@
 			)
 		)
 		(net
-			(code "51")
+			(code "55")
 			(name "unconnected-(A1-VIN-Pad30)")
 			(class "Default")
 			(node
@@ -4253,7 +4798,7 @@
 			)
 		)
 		(net
-			(code "52")
+			(code "56")
 			(name "unconnected-(A1-~{RESET}-Pad3)")
 			(class "Default")
 			(node
@@ -4264,7 +4809,7 @@
 			)
 		)
 		(net
-			(code "53")
+			(code "57")
 			(name "unconnected-(A1-~{RESET}-Pad28)")
 			(class "Default")
 			(node
@@ -4275,40 +4820,51 @@
 			)
 		)
 		(net
-			(code "54")
-			(name "unconnected-(J2-Pin_1-Pad1)")
+			(code "58")
+			(name "unconnected-(J2-Pin_2-Pad2)")
 			(class "Default")
 			(node
 				(ref "J2")
-				(pin "1")
-				(pinfunction "Pin_1_1")
+				(pin "2")
+				(pinfunction "Pin_2_2")
 				(pintype "passive+no_connect")
 			)
 		)
 		(net
-			(code "55")
-			(name "unconnected-(J2-Pin_4-Pad4)")
+			(code "59")
+			(name "unconnected-(J2-Pin_3-Pad3)")
 			(class "Default")
 			(node
 				(ref "J2")
-				(pin "4")
-				(pinfunction "Pin_4_4")
+				(pin "3")
+				(pinfunction "Pin_3_3")
 				(pintype "passive+no_connect")
 			)
 		)
 		(net
-			(code "56")
-			(name "unconnected-(J2-Pin_5-Pad5)")
+			(code "60")
+			(name "unconnected-(J2-Pin_6-Pad6)")
 			(class "Default")
 			(node
 				(ref "J2")
-				(pin "5")
-				(pinfunction "Pin_5_5")
+				(pin "6")
+				(pinfunction "Pin_6_6")
 				(pintype "passive+no_connect")
 			)
 		)
 		(net
-			(code "57")
+			(code "61")
+			(name "unconnected-(J3-Pin_2-Pad2)")
+			(class "Default")
+			(node
+				(ref "J3")
+				(pin "2")
+				(pinfunction "Pin_2_2")
+				(pintype "passive+no_connect")
+			)
+		)
+		(net
+			(code "62")
 			(name "unconnected-(U1-PA5_A9_D9_MISO-Pad10)")
 			(class "Default")
 			(node
@@ -4319,7 +4875,7 @@
 			)
 		)
 		(net
-			(code "58")
+			(code "63")
 			(name "unconnected-(U1-PA7_A8_D8_SCK-Pad9)")
 			(class "Default")
 			(node
@@ -4330,7 +4886,7 @@
 			)
 		)
 		(net
-			(code "59")
+			(code "64")
 			(name "unconnected-(U1-PA8_A4_D4_SDA-Pad5)")
 			(class "Default")
 			(node
@@ -4341,7 +4897,7 @@
 			)
 		)
 		(net
-			(code "60")
+			(code "65")
 			(name "unconnected-(U1-PA9_A5_D5_SCL-Pad6)")
 			(class "Default")
 			(node
@@ -4352,7 +4908,7 @@
 			)
 		)
 		(net
-			(code "61")
+			(code "66")
 			(name "unconnected-(U1-PA10_A2_D2-Pad3)")
 			(class "Default")
 			(node
@@ -4363,7 +4919,7 @@
 			)
 		)
 		(net
-			(code "62")
+			(code "67")
 			(name "unconnected-(U1-PB08_A6_TX-Pad7)")
 			(class "Default")
 			(node
@@ -4374,7 +4930,7 @@
 			)
 		)
 		(net
-			(code "63")
+			(code "68")
 			(name "unconnected-(U1-PB09_D7_RX-Pad8)")
 			(class "Default")
 			(node
