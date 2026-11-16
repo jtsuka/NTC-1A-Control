@@ -5407,7 +5407,7 @@
 		(descr "wire loop as test point, loop diameter 2.5mm, hole diameter 1.0mm")
 		(tags "test point wire loop bead")
 		(property "Reference" "TP6"
-			(at 0.25 2.45 0)
+			(at -0.25 -3.425 0)
 			(layer "F.SilkS")
 			(uuid "59a084dd-0f30-41b8-bcdb-65e8009ae71c")
 			(effects
@@ -5529,7 +5529,7 @@
 			(uuid "2068e187-56ed-4213-808b-f5324c257be5")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0.19 2.45 0)
+			(at -0.25 -3.425 0)
 			(layer "F.Fab")
 			(uuid "cfa52fb2-1528-4ead-9959-bcdfc601380c")
 			(effects
@@ -13301,14 +13301,14 @@
 	(gr_poly
 		(pts
 			(xy 46 48.5) (xy 64 48.5) (xy 64 43.5) (xy 70 43.5) (xy 70 54) (xy 78 54) (xy 78 59) (xy 63.5 59)
-			(xy 63.5 56) (xy 48 56) (xy 48 59) (xy 45 59) (xy 45 61) (xy 40.5 61) (xy 40.5 58) (xy 46 58)
+			(xy 63.5 56) (xy 48 56) (xy 48 59) (xy 45 59) (xy 45 60.5) (xy 44 60.5) (xy 44 58) (xy 46 58)
 		)
 		(stroke
 			(width 0.1)
 			(type dash)
 		)
 		(fill no)
-		(layer "B.SilkS")
+		(layer "F.SilkS")
 		(uuid "6a1932e2-7936-4a2e-83de-e301e210af87")
 	)
 	(gr_rect
@@ -13426,6 +13426,18 @@
 			(font
 				(size 0.8 0.8)
 				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "ESP RST CTR"
+		(at 56.5 50.5 0)
+		(layer "F.SilkS")
+		(uuid "10dd58e9-0d19-480d-91ae-c145df18909b")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
 			)
 			(justify left bottom)
 		)
