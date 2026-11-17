@@ -13382,7 +13382,7 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "GND     EN"
+	(gr_text "GND  ESP-RUN"
 		(at 31 66.24 90)
 		(layer "F.SilkS")
 		(uuid "1ef1b798-35de-4042-ae63-0791c7599248")
@@ -13478,7 +13478,7 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "2026.11.16"
+	(gr_text "2026.11.17"
 		(at 207 193.81 0)
 		(layer "Cmts.User")
 		(uuid "205c9054-e2e4-44d2-a34c-ab0a0479bc0d")
