@@ -4,6 +4,8 @@
 # NTC-1A 1ch メインコントローラ GUI。
 #
 # v3.7 BETA (2026-11-25; BASE = v3.6 BETA, SHA256 cf23e596145e70bd):
+# - 2026-11-26: the REBOOT button was moved one step further down (y 0.09 ->
+#   0.18) so it is not easily hit by mistake next to EXIT. Layout only.
 # - Add a REBOOT button under EXIT. It reboots this Raspberry Pi (the kiosk
 #   host), nothing else: no command is sent to the ESP32 / TC106, and the
 #   ESP32 and TC106 keep running while the Pi restarts.
@@ -382,7 +384,8 @@ buttons.append(Button((0.05, 0.05, 0.15, 0.08), 'SAFE ON',  lambda: send_phase3_
 buttons.append(Button((0.22, 0.05, 0.15, 0.08), 'SAFE OFF', lambda: send_phase3_safe(False)))
 buttons.append(Button((0.85, 0.02, 0.12, 0.06), 'EXIT', lambda: pygame.event.post(pygame.event.Event(pygame.QUIT)), color=(180, 50, 50)))
 # v3.7: reboot this Pi (opens a confirmation dialog; see section 4b).
-buttons.append(Button((0.85, 0.09, 0.12, 0.06), 'REBOOT', lambda: open_reboot_confirm(), color=(190, 110, 40)))
+# Kept well below EXIT (gap ~0.10 of screen height) to avoid mis-taps.
+buttons.append(Button((0.85, 0.18, 0.12, 0.06), 'REBOOT', lambda: open_reboot_confirm(), color=(190, 110, 40)))
 
 pad_layout = [['7','8','9','CLR'],['4','5','6','ENT'],['1','2','3','SEND'],['0','ADJ','RESET','']]
 for r, row in enumerate(pad_layout):
