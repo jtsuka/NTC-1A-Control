@@ -2,6 +2,45 @@
 
 **Purpose:** Preserve important conclusions and, especially, corrections so an AI or developer does not reintroduce superseded interpretations.
 
+## 2026-11-28 — Pi GUI documentation gap, and what the GUI line has decided
+
+### Previous incomplete state
+
+`TC106-Doc/CURRENT_SYSTEM_STATUS.md` §1 listed Pi GUI v2.4 / Pi communication v1.3.4 as the
+only Pi software, and nothing under `docs/` mentioned the GUI beta line, although the tree
+already holds v2.6 and v3.6-v3.9.
+
+### Evidence
+
+- Git tree (`main` @ `9085370`, branch `claude/gui-v3-9-wifi-setup`): GUI v2.6, v3.6 (two
+  files), v3.7, v3.8, v3.9; serial/log modules v3.6-beta.
+- Bench Pi launcher `/home/ntc/start_ntc_gui.sh` starts `ntc_pygame_ui_v3_7_beta.py`
+  (operator-supplied shell output, 2026-11-25 / 26).
+
+### Recorded decisions (none changes the Direction-A/B protocol path)
+
+1. **Label:** the GUI shows **TENS ADC**, not "ACTUAL TENSION" (decided 2026-11-23, v3.6
+   design document §5). It is a 0..1023 ADC count; do not add a gf unit before calibration.
+   Do not reintroduce the old label.
+2. **Operator-support features** requested by the operator, all outside the control path:
+   REBOOT (Pi only, behind a confirmation dialog), WIFI SCAN (read-only), WIFI SETUP (writes
+   only a NetworkManager profile; password never logged). Keep them that way.
+3. **Wi-Fi conclusion for the bench Pi:** the earlier drops are attributed mainly to weak
+   signal (-77 dBm, `tx failed` 5099 → -41 dBm, 0 after moving) — DERIVED, not final.
+
+### Deviation noticed, not decided
+
+The v3.6 plan said the Pi serial / log / GUI modules bump together. v3.7-v3.9 bumped the GUI
+only. Two different `ntc_pygame_ui_v3_6_beta.py` files exist. Both are listed as open items
+(`TC106_UNRESOLVED.md` D1, D2); do not assume either was settled.
+
+### Affected documents
+
+`TC106-Doc/CURRENT_SYSTEM_STATUS.md` (§1 Pi rows, new §7), `docs/TC106_UNRESOLVED.md`
+(Priority D), `docs/AI_PROJECT_CONTEXT.md` (pointer).
+
+---
+
 ## 2026-09-09 — Direction-B topology correction
 
 ### Previous incorrect/insufficient interpretation
