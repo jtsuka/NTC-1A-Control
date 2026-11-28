@@ -160,3 +160,10 @@ logind が再起動を開始し同時に GUI のセッション(session-1.scope)
 タグ規則: `gui-vX.Y.Z-beta`。`-dirty` が付けば未コミット変更あり。
 制約: このセッションからはタグを push できない(プロキシが拒否)。タグは Pi か手元の Git から作る。
 ESP32 側のバージョン報告は未着手(プロトコル変更を伴うため、仕様書→回帰試験の順)。
+
+## 2026-11-28 — tailscale "rebind" at 19:39:00 は Wi-Fi 切替ではなく時計の飛び
+
+旧解釈: 電源断の直前にネットワークが切り替わった可能性。
+新しい証拠: 同じ行に `time jump detected (slept 10m28s)`、`rebind-reason=[time-jumped(10m28s)]`。wlan0 の IP は不変、wpa 切断の記録なし。
+訂正後の結論: 原因は RTC 無しの Pi が NTP で時刻を進められたこと(DERIVED)。CSV 内の時間差は `mono_s` を使う。
+残る未確定: 電源断2回の正確な時刻と原因(バッテリー操作か)、`vcgencmd get_throttled`。

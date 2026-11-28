@@ -86,6 +86,17 @@ the WIFI SETUP button is partly hidden while WIFI SCAN's panel is open (cosmetic
 
 2026-11-28 survey: -77 → about -70 dBm at the original bad spot after raising the router 1 m
 (details: `CURRENT_SYSTEM_STATUS.md` §7.3). Only about 40 minutes without a drop were seen.
+**Evening observation 2026-11-28 (CONFIRMED from ssh output, 2F desk):** -68 dBm, rx 57.7 /
+tx 72.2 Mb/s; connected 840 s, tx 1034 packets, `tx failed` 51 (about 4.9 %; the morning "4" has no
+packet count, so the two are not comparable). The journals of the current and previous boot contain
+**no** wpa/NetworkManager drop events (`CTRL-EVENT-DISCONNECTED`, deauth) — the only "disconnect"
+lines are boot-time state changes. `last -x` shows two abrupt power losses (`crash`, no `shutdown`;
+around 19:27 and 19:39–19:40), most likely battery/relocation handling (HYPOTHESIS), not Wi-Fi: no
+under-voltage message in the journal (the last minutes before a power cut may be missing). Correction:
+the tailscaled "rebind" at 19:39:00 was caused by a **clock jump** (`slept 10m28s`: the Pi has no RTC,
+time starts old and is stepped by NTP), not by a Wi-Fi change — `wlan0` kept 192.168.11.36.
+Use `mono_s`, not `wall_time`, for intervals inside a CSV. **Not yet done:** `vcgencmd get_throttled`,
+a repeat of `tx failed` / `tx packets` after 10 min to get the failure rate trend.
 **Needed:** a day or more of undisturbed running with the Pi fixed in place — count disconnect
 lines with `journalctl --since yesterday | grep -i -E "disconnect|deauth|CTRL-EVENT-DISCONNECTED"`
 and re-read `tx failed`. If drops return: move the router toward the door/hall (next step,
