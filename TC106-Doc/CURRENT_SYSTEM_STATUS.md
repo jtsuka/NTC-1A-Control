@@ -257,7 +257,7 @@ real-machine (TC106 line) result.
 | v3.7 beta | `ntc_pygame_ui_v3_7_beta.py` | `66a05427623de68d` | + REBOOT button with confirmation dialog; SIGTERM/SIGHUP end the GUI like EXIT (log stopped, flushed, `os.sync()`) |
 | v3.8 beta | `ntc_pygame_ui_v3_8_beta.py` | `6fe255d2c88f9453` | + WIFI SCAN: live Wi-Fi link readout (read-only `iw`) |
 | v3.9 beta | `ntc_pygame_ui_v3_9_beta.py` | `abe1e9dd17a4bc2c` | + WIFI SETUP: SSID list + on-screen ANSI keyboard, saves/joins a network with `nmcli`; EXIT / REBOOT / WIFI SCAN / WIFI SETUP evenly spaced (pitch 0.13 of screen height) |
-| v3.9.2 beta | `ntc_pygame_ui_v3_9_2_beta.py` | `743e0738f3491abe` | REBOOT closes the evidence log first (NOTE → stop → `os.sync()` → 0.5 s → reboot command); if refused, a new log part opens and `REBOOT FAILED` is noted. Headless-verified only; real-Pi re-test pending |
+| v3.9.2 beta | `ntc_pygame_ui_v3_9_2_beta.py` | `743e0738f3491abe` | REBOOT closes the evidence log first (NOTE → stop → `os.sync()` → 0.5 s → reboot command); if refused, a new log part opens and `REBOOT FAILED` is noted. Real Pi 2026-11-28: old CSV ends `NOTE,REBOOT` → `STOP` (PASS) |
 | v3.9.1 beta | `ntc_pygame_ui_v3_9_1_beta.py` | `22968d3a6b363444` | Fix only: WIFI SETUP SAVE of a **new** network passed `psk` as `wifi-sec.key-mgmt` (invalid; correct is `wpa-psk`). Found on the real Pi 2026-11-28 ("failed to modify 802-11-wireless-security.key-mgmt"); v3.9's headless test used an `nmcli` stand-in that did not validate values. v3.9 still has the fault — use v3.9.1 |
 
 Supporting modules (unchanged since v3.6): `NTC_1A_serial_comm_v3_6_beta.py`
@@ -383,7 +383,10 @@ its 2026-11-23 status line ("not tested on a real unit"); that line is historica
   "Stopping session-1.scope" (the GUI's tty1 session) at 18:13:22. A SIGTERM sent alone
   (`pkill -TERM`) **does** write `PORT close` + `STOP` (CONFIRMED), so the handler works.
   DERIVED: on reboot the session is stopped before the GUI finishes its shutdown. **Fix in
-  v3.9.2** (log closed before the reboot command); real-Pi re-test pending.
+  v3.9.2** (log closed before the reboot command). **Real-Pi PASS 2026-11-28 (CONFIRMED):** the
+  pre-reboot CSV ends `NOTE,REBOOT` then `STOP` (+ SUMMARY counters), 1 ms apart; a new log starts
+  after the restart. No `PORT close` line precedes `STOP` (by design: the log closes before the
+  port). Not tested on the real Pi: OS refusing the reboot (headless only).
 - The v3.6 plan's Stage B / C results are not recorded in the repo.
 
 ### 7.5 Open items for the Pi side (also in `docs/TC106_UNRESOLVED.md`, Priority D)

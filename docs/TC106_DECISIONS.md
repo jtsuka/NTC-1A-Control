@@ -150,4 +150,5 @@ logind が再起動を開始し同時に GUI のセッション(session-1.scope)
 `PORT close`+`STOP` が書かれる。
 訂正後の結論: ハンドラは正常。再起動時はセッション停止が早く終了処理が間に合わない(DERIVED)。
 → 再起動コマンドの前に NOTE→logger.stop→os.sync→0.5 s 待つ(v3.9.2)。拒否時は新ログを開き REBOOT FAILED。
-残る未確定: 実機での v3.9.2 再試験。
+実機結果: v3.9.2 で旧CSVが `NOTE,REBOOT`→`STOP` で終わることを確認(PASS)。
+残る未確定: OS がリブートを拒否した場合の実機挙動(擬似環境のみ確認)。

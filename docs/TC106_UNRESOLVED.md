@@ -77,9 +77,9 @@ GUI-only bumps (and say so), or re-align the numbers.
 
 Updated 2026-11-28. Confirmed on the real Pi: v3.9.x starts; button layout; WIFI SCAN readout;
 WIFI SETUP list and SAVE of a new network (v3.9.1); REBOOT cancel / reboot / GUI auto-restart;
-`ntc` may run the reboot command. SIGTERM alone writes `STOP`. **Still open:** the pre-reboot CSV
-lacked `STOP` with v3.9.1 — v3.9.2 closes the log first, **real-Pi re-test pending** (expect
-`NOTE,REBOOT` then `STOP` at the end of the old CSV); SAVE of an existing profile; CONNECT NOW;
+`ntc` may run the reboot command. SIGTERM alone writes `STOP`. The pre-reboot CSV
+lacked `STOP` with v3.9.1 — v3.9.2 closes the log first and **passed on the real Pi
+(2026-11-28)**: `NOTE,REBOOT` then `STOP`. **Still open:** OS-refused reboot (headless only); SAVE of an existing profile; CONNECT NOW;
 the WIFI SETUP button is partly hidden while WIFI SCAN's panel is open (cosmetic, v3.9).
 
 ### D8. Wi-Fi stability after the router move (observation pending)
