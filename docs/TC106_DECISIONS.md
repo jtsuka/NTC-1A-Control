@@ -141,3 +141,13 @@ For future corrections include:
 3. corrected decision,
 4. remaining uncertainty,
 5. affected implementation/test documents.
+
+## 2026-11-28 — REBOOT: close the evidence log before the reboot command (v3.9.2)
+
+旧解釈: REBOOT後はSIGTERMでGUIが正常終了し、CSVに `STOP` が残る。
+新しい証拠: 実機v3.9.1で CSV は `NOTE,REBOOT` で終わり `STOP` なし。journalでは 18:13:22 に
+logind が再起動を開始し同時に GUI のセッション(session-1.scope)を停止。`pkill -TERM` 単体では
+`PORT close`+`STOP` が書かれる。
+訂正後の結論: ハンドラは正常。再起動時はセッション停止が早く終了処理が間に合わない(DERIVED)。
+→ 再起動コマンドの前に NOTE→logger.stop→os.sync→0.5 s 待つ(v3.9.2)。拒否時は新ログを開き REBOOT FAILED。
+残る未確定: 実機での v3.9.2 再試験。

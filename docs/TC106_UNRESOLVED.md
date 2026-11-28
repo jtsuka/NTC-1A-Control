@@ -75,10 +75,11 @@ GUI-only bumps (and say so), or re-align the numbers.
 
 ### D3. Real-Pi tests of REBOOT / WIFI SCAN / WIFI SETUP
 
-Updated 2026-11-28. Confirmed on the real Pi: v3.9 starts; button layout; WIFI SCAN readout;
-WIFI SETUP network list (`nmcli` listing works for the kiosk user). **Still open:**
-on-screen keyboard entry, SAVE / CONNECT NOW, and REBOOT completion (the `NOTE,REBOOT` →
-`STOP` CSV lines); whether `ntc` may run `systemctl reboot` (directly or with `sudo -n`);
+Updated 2026-11-28. Confirmed on the real Pi: v3.9.x starts; button layout; WIFI SCAN readout;
+WIFI SETUP list and SAVE of a new network (v3.9.1); REBOOT cancel / reboot / GUI auto-restart;
+`ntc` may run the reboot command. SIGTERM alone writes `STOP`. **Still open:** the pre-reboot CSV
+lacked `STOP` with v3.9.1 — v3.9.2 closes the log first, **real-Pi re-test pending** (expect
+`NOTE,REBOOT` then `STOP` at the end of the old CSV); SAVE of an existing profile; CONNECT NOW;
 the WIFI SETUP button is partly hidden while WIFI SCAN's panel is open (cosmetic, v3.9).
 
 ### D8. Wi-Fi stability after the router move (observation pending)
