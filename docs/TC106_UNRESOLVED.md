@@ -108,7 +108,10 @@ enabled on 2026-11-27 so the next occurrence leaves a record (`journalctl -b -1`
 
 Not decided. Until it is, v2.4 / v1.3.4 remain the formal reference in `CURRENT_SYSTEM_STATUS.md` §1.
 
-### D7. File naming and running-version identification (policy candidate, not decided)
+### D7. File naming and running-version identification (Pi side implemented 2026-11-28; ESP32 side open)
+
+**Status 2026-11-28:** Pi side (item 1 below) implemented in v3.9.3 (PR pending): single file `Python/ntc_pygame_ui.py`, build id on screen / title / log `build=`, old GUI files in `Python/OLD/gui/`, tag scheme `gui-vX.Y.Z-beta`. Real-Pi test pending. Tag `gui-v3.9.2-beta` must be created from the Pi or another Git client (this session cannot push tags). **Still open:** ESP32 version reporting (spec first), consolidation of other version-named files (`NTC_1A_serial_comm_v*`, `ESP32/` sketches, `pi_logger_*`), the launcher script is still not in Git.
+
 
 Observed 2026-11-28: the tree holds many version-named files side by side (e.g. `ntc_pygame_ui_v2_4.py` ... `v3_9_beta.py`, many `ESP32/` sketch folders), and the running version is identified only by file name and the `GUI_REVISION` string.
 
