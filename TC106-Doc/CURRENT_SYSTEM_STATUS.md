@@ -257,6 +257,7 @@ real-machine (TC106 line) result.
 | v3.7 beta | `ntc_pygame_ui_v3_7_beta.py` | `66a05427623de68d` | + REBOOT button with confirmation dialog; SIGTERM/SIGHUP end the GUI like EXIT (log stopped, flushed, `os.sync()`) |
 | v3.8 beta | `ntc_pygame_ui_v3_8_beta.py` | `6fe255d2c88f9453` | + WIFI SCAN: live Wi-Fi link readout (read-only `iw`) |
 | v3.9 beta | `ntc_pygame_ui_v3_9_beta.py` | `abe1e9dd17a4bc2c` | + WIFI SETUP: SSID list + on-screen ANSI keyboard, saves/joins a network with `nmcli`; EXIT / REBOOT / WIFI SCAN / WIFI SETUP evenly spaced (pitch 0.13 of screen height) |
+| v3.9.2 beta | `ntc_pygame_ui_v3_9_2_beta.py` | `743e0738f3491abe` | REBOOT closes the evidence log first (NOTE → stop → `os.sync()` → 0.5 s → reboot command); if refused, a new log part opens and `REBOOT FAILED` is noted. Headless-verified only; real-Pi re-test pending |
 | v3.9.1 beta | `ntc_pygame_ui_v3_9_1_beta.py` | `22968d3a6b363444` | Fix only: WIFI SETUP SAVE of a **new** network passed `psk` as `wifi-sec.key-mgmt` (invalid; correct is `wpa-psk`). Found on the real Pi 2026-11-28 ("failed to modify 802-11-wireless-security.key-mgmt"); v3.9's headless test used an `nmcli` stand-in that did not validate values. v3.9 still has the fault — use v3.9.1 |
 
 Supporting modules (unchanged since v3.6): `NTC_1A_serial_comm_v3_6_beta.py`
@@ -372,13 +373,17 @@ its 2026-11-23 status line ("not tested on a real unit"); that line is historica
   marks the connected one, so `nmcli` listing works for the kiosk user. The list's dBm is the
   percent-to-dBm approximation (about 10-20 dB off the link reading) — use WIFI SCAN for
   strength. While WIFI SCAN's panel is shown, the WIFI SETUP button is partly covered.
-  **SAVE of a new network failed on the real Pi with v3.9** (key-mgmt value; fixed in v3.9.1,
-  headless-verified only, real-Pi re-test pending). **Not yet done on the real Pi:** SAVE with v3.9.1, CONNECT NOW, REBOOT
-  completion. `nmcli dev wifi rescan` over ssh returns "not authorized" (ssh is not an active
+  **SAVE of a new network failed on the real Pi with v3.9** (key-mgmt value); **v3.9.1 SAVE
+  passed on the real Pi 2026-11-28** (CONFIRMED; test profile removed afterwards with `sudo nmcli`).
+  **Not yet done on the real Pi:** SAVE of an existing profile (`modify` path), CONNECT NOW. `nmcli dev wifi rescan` over ssh returns "not authorized" (ssh is not an active
   local session); the GUI's own RESCAN was not found failing.
-- v3.7 REBOOT: the button and the confirmation dialog were seen on the real display
-  (photos 2026-11-26). Whether REBOOT → REBOOT completes a reboot and leaves
-  `NOTE,REBOOT` then `STOP` in the CSV has **not** been confirmed.
+- REBOOT on the real Pi, v3.9.1 (2026-11-28, CONFIRMED): CANCEL returns to the normal screen;
+  REBOOT reboots, the GUI restarts by itself with a new log, and `NOTE,REBOOT` is written. **`STOP`
+  / final `SUMMARY` were missing** from the pre-reboot CSV. Journal: logind started the reboot and
+  "Stopping session-1.scope" (the GUI's tty1 session) at 18:13:22. A SIGTERM sent alone
+  (`pkill -TERM`) **does** write `PORT close` + `STOP` (CONFIRMED), so the handler works.
+  DERIVED: on reboot the session is stopped before the GUI finishes its shutdown. **Fix in
+  v3.9.2** (log closed before the reboot command); real-Pi re-test pending.
 - The v3.6 plan's Stage B / C results are not recorded in the repo.
 
 ### 7.5 Open items for the Pi side (also in `docs/TC106_UNRESOLVED.md`, Priority D)
@@ -386,7 +391,7 @@ its 2026-11-23 status line ("not tested on a real unit"); that line is historica
 1. Two different v3.6 GUI files (7.1). Which one the 2026-11-23 field tests used is not recorded.
 2. The v3.6 plan said all Pi modules bump together; v3.7-v3.9 bumped the GUI only.
 3. `ntc` may or may not be allowed to run `systemctl reboot` / `nmcli` (directly or via
-   `sudo -n`). Real-Pi test of REBOOT, WIFI SCAN, WIFI SETUP is pending.
+   `sudo -n`). REBOOT / WIFI SCAN / WIFI SETUP work on the real Pi (the reboot command is accepted for `ntc`); see §7.4.
 4. `Python/tests/test_rxlog_v3_6_beta_20261123.py` (named in the v3.6 design doc) is not
    in the tree; no tag `pi-gui-v3.6-beta` exists. The launcher script is not in Git.
 5. Pi reboots when the ESP32 is powered (reported during the 2026-11-23 … 25 field
