@@ -257,6 +257,7 @@ real-machine (TC106 line) result.
 | v3.7 beta | `ntc_pygame_ui_v3_7_beta.py` | `66a05427623de68d` | + REBOOT button with confirmation dialog; SIGTERM/SIGHUP end the GUI like EXIT (log stopped, flushed, `os.sync()`) |
 | v3.8 beta | `ntc_pygame_ui_v3_8_beta.py` | `6fe255d2c88f9453` | + WIFI SCAN: live Wi-Fi link readout (read-only `iw`) |
 | v3.9 beta | `ntc_pygame_ui_v3_9_beta.py` | `abe1e9dd17a4bc2c` | + WIFI SETUP: SSID list + on-screen ANSI keyboard, saves/joins a network with `nmcli`; EXIT / REBOOT / WIFI SCAN / WIFI SETUP evenly spaced (pitch 0.13 of screen height) |
+| v3.9.1 beta | `ntc_pygame_ui_v3_9_1_beta.py` | `22968d3a6b363444` | Fix only: WIFI SETUP SAVE of a **new** network passed `psk` as `wifi-sec.key-mgmt` (invalid; correct is `wpa-psk`). Found on the real Pi 2026-11-28 ("failed to modify 802-11-wireless-security.key-mgmt"); v3.9's headless test used an `nmcli` stand-in that did not validate values. v3.9 still has the fault — use v3.9.1 |
 
 Supporting modules (unchanged since v3.6): `NTC_1A_serial_comm_v3_6_beta.py`
 `2da777bced353889`, `NTC_1A_rxlog_v3_6_beta.py` `6a56f879c78b5043`,
@@ -371,7 +372,8 @@ its 2026-11-23 status line ("not tested on a real unit"); that line is historica
   marks the connected one, so `nmcli` listing works for the kiosk user. The list's dBm is the
   percent-to-dBm approximation (about 10-20 dB off the link reading) — use WIFI SCAN for
   strength. While WIFI SCAN's panel is shown, the WIFI SETUP button is partly covered.
-  **Not yet done on the real Pi:** on-screen keyboard entry, SAVE / CONNECT NOW, REBOOT
+  **SAVE of a new network failed on the real Pi with v3.9** (key-mgmt value; fixed in v3.9.1,
+  headless-verified only, real-Pi re-test pending). **Not yet done on the real Pi:** SAVE with v3.9.1, CONNECT NOW, REBOOT
   completion. `nmcli dev wifi rescan` over ssh returns "not authorized" (ssh is not an active
   local session); the GUI's own RESCAN was not found failing.
 - v3.7 REBOOT: the button and the confirmation dialog were seen on the real display
