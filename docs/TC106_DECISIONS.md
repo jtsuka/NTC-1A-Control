@@ -170,3 +170,9 @@ Pi の `start_ntc_gui.sh` は `APP="ntc_pygame_ui.py"`。残る未確定: ESP32 
 新しい証拠: 同じ行に `time jump detected (slept 10m28s)`、`rebind-reason=[time-jumped(10m28s)]`。wlan0 の IP は不変、wpa 切断の記録なし。
 訂正後の結論: 原因は RTC 無しの Pi が NTP で時刻を進められたこと(DERIVED)。CSV 内の時間差は `mono_s` を使う。
 残る未確定: 電源断2回の正確な時刻と原因(バッテリー操作か)、`vcgencmd get_throttled`。
+
+## 2026-11-28 — ESP32 version report: draft spec only (no implementation)
+
+決定: ESP32 ファームのバージョン報告は、Boot Magic の直後に1回だけ送る 12 バイトの VERSION フレーム案(A案)を
+`docs/ESP32_VERSION_REPORT_SPEC.md` にドラフトとして記録。旧 Pi では `rx_legacy` として扱われ、テレメトリに影響しない(コードからの導出、DERIVED)。
+実装はレビューと回帰計画(同ドキュメント §6)の合意後。残る未確定: バイト配置、ファームのタグ名、Arduino IDE でのビルド時埋め込み方法。
