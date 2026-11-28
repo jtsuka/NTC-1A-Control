@@ -176,3 +176,8 @@ Pi の `start_ntc_gui.sh` は `APP="ntc_pygame_ui.py"`。残る未確定: ESP32 
 決定: ESP32 ファームのバージョン報告は、Boot Magic の直後に1回だけ送る 12 バイトの VERSION フレーム案(A案)を
 `docs/ESP32_VERSION_REPORT_SPEC.md` にドラフトとして記録。旧 Pi では `rx_legacy` として扱われ、テレメトリに影響しない(コードからの導出、DERIVED)。
 実装はレビューと回帰計画(同ドキュメント §6)の合意後。残る未確定: バイト配置、ファームのタグ名、Arduino IDE でのビルド時埋め込み方法。
+
+## 2026-11-28 — Pi 起動スクリプトを Git に記録
+
+決定: `/home/ntc/start_ntc_gui.sh` を `Pi/start_ntc_gui.sh` として記録(Git は記録用、実際に動くのは Pi 上のファイル)。秘密情報なしを確認済み。
+残る未確定: 起動時にこのスクリプトを呼ぶ仕組み(autostart / .bash_profile / systemd のどれか)。
