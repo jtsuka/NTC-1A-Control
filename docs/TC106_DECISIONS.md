@@ -2,6 +2,35 @@
 
 **Purpose:** Preserve important conclusions and, especially, corrections so an AI or developer does not reintroduce superseded interpretations.
 
+## 2026-11-28 — Wi-Fi: "second 2.4 GHz access point" was the same router
+
+### Previous interpretation
+
+The WIFI SETUP list showed `IODATA-1a4714-2G` stronger than the connected SSID, so another
+2.4 GHz access point in the house (possible interference, possible better connection target)
+was suspected during the session.
+
+### New evidence
+
+`nmcli` BSSID listing: all entries share the address prefix and differ only in the last byte;
+the operator states the router (Buffalo WSR-5400XE6) was given the old I-O DATA SSID for
+compatibility. The router's wireless settings page confirmed a migrated-settings SSID.
+
+### Corrected conclusion
+
+All visible SSIDs (including the hidden one) come from one router; there is no second access
+point and no sign of a crowded channel. The interference hypothesis is withdrawn. The old
+SSID was disabled by the operator on 2026-11-28; the router then re-selected its 2.4 GHz
+channel (9 → 5, channel setting is "auto"), so channel fixing is not a priority. The list's dBm
+in WIFI SETUP is an approximation from percent; WIFI SCAN's value is the one to compare.
+
+### Remaining unresolved
+
+Day-long stability (`UNRESOLVED.md` D8); whether height or channel contributed more to the
+6-7 dB gain.
+
+---
+
 ## 2026-11-28 — Pi GUI documentation gap, and what the GUI line has decided
 
 ### Previous incomplete state

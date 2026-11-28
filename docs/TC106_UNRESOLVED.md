@@ -75,10 +75,20 @@ GUI-only bumps (and say so), or re-align the numbers.
 
 ### D3. Real-Pi tests of REBOOT / WIFI SCAN / WIFI SETUP
 
-REBOOT dialog seen on the real display; the actual reboot and the `NOTE,REBOOT` → `STOP`
-CSV lines are not confirmed. v3.8 / v3.9 were tested headless with faked `iw` / `nmcli` only.
-**Needed:** whether the user `ntc` can run `systemctl reboot` and `nmcli` (directly or with
-`sudo -n`); touch usability of the button layout (EXIT-REBOOT gap 0.07 of screen height).
+Updated 2026-11-28. Confirmed on the real Pi: v3.9 starts; button layout; WIFI SCAN readout;
+WIFI SETUP network list (`nmcli` listing works for the kiosk user). **Still open:**
+on-screen keyboard entry, SAVE / CONNECT NOW, and REBOOT completion (the `NOTE,REBOOT` →
+`STOP` CSV lines); whether `ntc` may run `systemctl reboot` (directly or with `sudo -n`);
+the WIFI SETUP button is partly hidden while WIFI SCAN's panel is open (cosmetic, v3.9).
+
+### D8. Wi-Fi stability after the router move (observation pending)
+
+2026-11-28 survey: -77 → about -70 dBm at the original bad spot after raising the router 1 m
+(details: `CURRENT_SYSTEM_STATUS.md` §7.3). Only about 40 minutes without a drop were seen.
+**Needed:** a day or more of undisturbed running with the Pi fixed in place — count disconnect
+lines with `journalctl --since yesterday | grep -i -E "disconnect|deauth|CTRL-EVENT-DISCONNECTED"`
+and re-read `tx failed`. If drops return: move the router toward the door/hall (next step,
+not tried), then consider an EasyMesh-compatible repeater (model compatibility **not checked**).
 
 ### D4. Missing or Pi-local artifacts
 
