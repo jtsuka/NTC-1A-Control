@@ -105,7 +105,7 @@ not tried), then consider an EasyMesh-compatible repeater (model compatibility *
 ### D4. Missing or Pi-local artifacts
 
 `Python/tests/test_rxlog_v3_6_beta_20261123.py` (named in the v3.6 design document) is not in
-the tree; no `pi-gui-v3.6-beta` tag exists; `/home/ntc/start_ntc_gui.sh` is **now recorded in Git as `Pi/start_ntc_gui.sh` (2026-11-28; how it is started at boot is still unrecorded)**;
+the tree; no `pi-gui-v3.6-beta` tag exists; `/home/ntc/start_ntc_gui.sh` is **now recorded in Git as `Pi/start_ntc_gui.sh` (2026-11-28), with its boot chain: tty1 autologin → `~/.bash_profile` → script; see `Pi/README.md`**;
 Stage B / C results of the v3.6 test plan are not recorded.
 
 ### D5. Pi restarts when the ESP32 is powered
