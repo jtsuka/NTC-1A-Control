@@ -1,7 +1,7 @@
 # TC106 Current System Status
 
-**Updated:** 2026-09-29
-**Repo HEAD reviewed for this update:** `f230fbb5a6f5640c7a55361812862e6c439b4811` (2026-09-29)
+**Updated:** 2026-11-28 — **only the Pi rows of §1 and the new §7**. Sections 1 (other rows) to 6 are still as of 2026-09-29 and were not re-verified.
+**Repo HEAD reviewed:** `f230fbb5a6f5640c7a55361812862e6c439b4811` (2026-09-29) for §§1 (non-Pi rows)-6; `9085370` (`main`, 2026-11-26) plus branch `claude/gui-v3-9-wifi-setup` (2026-11-28) for the Pi rows and §7.
 **Purpose:** The single current-state summary for ChatGPT, Claude, and human developers.
 Read this file first, in every new thread, before reading anything else in `docs/`.
 Long history/rationale lives in `docs/AI_PROJECT_CONTEXT.md`, `docs/TC106_BASELINE.md`,
@@ -35,8 +35,14 @@ mixes two different kinds of truth; keep them separate (full statement in §6):
 | ESP32-S3 Evidence V3 (diagnostic-only; not production) | `ESP32/TCBridge_EvidenceV3/TCBridge_EvidenceV3.ino` | `17a5bcb94aba…` |
 | Nano Every — Direction-B source (zero data) | `ArduinoNanoEvery/NanoEvery_TCEmulator_V2_8_Original250201/NanoEvery_TCEmulator_V2_8_Original250201.ino` | `44e94e2c7da4…` |
 | Nano Every — Direction-B source (known non-zero: len=10523, tension=37) | `ArduinoNanoEvery/NanoEvery_TCEmulator_V2_8_Step4D_NonZeroE2E_20260901/NanoEvery_TCEmulator_V2_8_Step4D_NonZeroE2E_20260901.ino` | `73cea68abeaa…` |
-| Pi communication module | `Python/NTC_1A_serial_comm_v1_3_4.py` | `c87335a60a40…` |
-| Pi GUI | `Python/ntc_pygame_ui_v2_4.py` | `3d08b3c8443e…` |
+| Pi communication module — formal/production reference | `Python/NTC_1A_serial_comm_v1_3_4.py` | `c87335a60a40…` |
+| Pi GUI — formal/production reference | `Python/ntc_pygame_ui_v2_4.py` | `3d08b3c8443e…` |
+| Pi communication module — v3.6 beta (current beta line) | `Python/NTC_1A_serial_comm_v3_6_beta.py` | `2da777bced35…` |
+| Pi RX/TX evidence logger — v3.6 beta | `Python/NTC_1A_rxlog_v3_6_beta.py` | `6a56f879c78b…` |
+| Pi GUI — v3.7 beta (what the bench Pi starts; see §7) | `Python/ntc_pygame_ui_v3_7_beta.py` | `66a05427623d…` |
+| Pi GUI — v3.8 beta / v3.9 beta (on branch `claude/gui-v3-9-wifi-setup` until merged) | `Python/ntc_pygame_ui_v3_8_beta.py` / `Python/ntc_pygame_ui_v3_9_beta.py` | `6fe255d2c88f…` / `abe1e9dd17a4…` |
+
+*The v3.x Pi files are BETA / not production; the v2.4 / v1.3.4 rows stay the formal reference until a promotion is decided (§7.5). Full Pi GUI history: §7.*
 | Pi Evidence V3 logger | `Python/pi_logger_evidence_v3.py` | `387f8472f40c…` |
 | LA analyzer (independent, Formal Gate) | `Python/TC106_LA_Analyzer_v1.1/tc106_la_analyzer.py` v1.1.0 | `fec62c08f841…` (full hash: `…6a294b1b1534aea68510267c557b3`) |
 
@@ -226,3 +232,122 @@ Do not skip to wiring changes from memory. If in doubt about a pin, re-open
   final authority on current wiring or which file is current — GitHub is, for design;
   the bench is, for physical fact. This file records both, dated, so a new thread does
   not have to re-derive either.
+
+---
+
+## 7. Pi GUI and Pi unit — current state (added 2026-11-28)
+
+**Scope and limits of this section.** Written from the 2026-11-23 … 2026-11-28 work
+sessions. It was added because §1 still listed GUI v2.4 as the only Pi GUI while the
+tree already holds v2.6 and v3.6–v3.9 beta. Only this section and the Pi rows of §1 were
+updated on 2026-11-28; every other section is still as of 2026-09-29 and was **not**
+re-verified. Items are tagged CONFIRMED / DERIVED / HYPOTHESIS / UNRESOLVED. Pi-unit
+facts (7.3) are bench facts about one device, not design facts. Nothing here claims a
+real-machine (TC106 line) result.
+
+### 7.1 Pi GUI version line (CONFIRMED from the Git tree)
+
+| Version | File (under `Python/`) | SHA256 (first 16) | Notes |
+|---|---|---|---|
+| v2.4 | `ntc_pygame_ui_v2_4.py` | `3d08b3c8443e3430` | Formal/production reference (§1). Not replaced |
+| v2.5 beta | `ntc_pygame_ui_v2_5_beta.py` | `2ec31aa112887b52` (value recorded in the v3.6 design doc) | 0..1023 tension display |
+| v2.6 | `ntc_pygame_ui_v2_6.py` | `e4b199fe8064d3ed` | 2026-11-04. Adds startup serial-port auto-selection: first USB tty (`/dev/ttyACM*`, then `/dev/ttyUSB*`), `--port` wins, else `/dev/serial0` |
+| v3.6 beta (top level) | `ntc_pygame_ui_v3_6_beta.py` | `cf23e596145e70bd` | **BASE = v2.6** (keeps the USB auto-selection). The v3.7+ files below are based on this one |
+| v3.6 beta (archive copy) | `ntc_pi_gui_v3_6_beta_all_20261123/ntc_pygame_ui_v3_6_beta.py` | `a472268dd57db880` | **BASE = v2.5 beta.** This is the hash the v3.6 design document records. **Different file from the top-level v3.6 (115 differing lines, header/base only seen so far)** — see 7.5 |
+| v3.7 beta | `ntc_pygame_ui_v3_7_beta.py` | `66a05427623de68d` | + REBOOT button with confirmation dialog; SIGTERM/SIGHUP end the GUI like EXIT (log stopped, flushed, `os.sync()`) |
+| v3.8 beta | `ntc_pygame_ui_v3_8_beta.py` | `6fe255d2c88f9453` | + WIFI SCAN: live Wi-Fi link readout (read-only `iw`) |
+| v3.9 beta | `ntc_pygame_ui_v3_9_beta.py` | `abe1e9dd17a4bc2c` | + WIFI SETUP: SSID list + on-screen ANSI keyboard, saves/joins a network with `nmcli`; EXIT / REBOOT / WIFI SCAN / WIFI SETUP evenly spaced (pitch 0.13 of screen height) |
+
+Supporting modules (unchanged since v3.6): `NTC_1A_serial_comm_v3_6_beta.py`
+`2da777bced353889`, `NTC_1A_rxlog_v3_6_beta.py` `6a56f879c78b5043`,
+`NTC_1A_utils.py` `3ee33c5bb5a5ac43`. The two v3.6 modules are byte-identical to the copies
+in `ntc_pi_gui_v3_6_beta_all_20261123/`. The ESP32 production firmware is unchanged by any of this.
+
+v3.8 / v3.9 were first committed on branch `claude/gui-v3-9-wifi-setup`
+(commit `6e0f508`, 2026-11-28) and are on `main` only after that branch is merged.
+
+**None of v3.6 … v3.9 is production.** All are BETA. The v3.6 design document
+(`Python/ntc_pi_gui_v3_6_beta_all_20261123/TC106_Pi_GUI_v3_6_Beta_RxLog_20261123.md`) keeps
+its 2026-11-23 status line ("not tested on a real unit"); that line is historical.
+
+### 7.2 What the GUI shows and does (CONFIRMED: code + bench photo 2026-11-26)
+
+- Fields: SET TENSION, SET LENGTH, SET COUNT (editable); **TENS ADC**, WIND LENGTH,
+  RX STATUS (read-only). Keypad: 0-9, CLR, ENT, SEND, ADJ, RESET; SAFE ON/OFF; port
+  selector; RUN / STOP / MARK note buttons; `LOG n` indicator.
+- **TENS ADC** is the TC106's 16-sample ADC average, 10-bit count 0..1023, not zero-
+  corrected, **not a force in gf**. The old label "ACTUAL TENSION" was retired on 2026-11-23.
+  Do not add a unit before calibration evidence exists (see `docs/TC106_UNRESOLVED.md` B3).
+- RX STATUS: WAIT / OK / LOST; LOST after 2.0 s without a valid Direction-B frame
+  (`TELEMETRY_LOST_TIMEOUT_SEC`, serial module).
+- Evidence log (v3.6+): `~/ntc_logs/rxlog_*.csv` (raw bytes, Direction-B frames, status
+  changes, TX, operator notes). Details: the v3.6 design document.
+- Operator-support features added after v3.6, none of which touches the Direction-A/B
+  control or telemetry path:
+  - **REBOOT** (v3.7): opens a 10 s confirmation dialog; on accept runs
+    `systemctl reboot --no-ask-password`, else `sudo -n systemctl reboot ...`; refusal is
+    shown on screen. Affects only the Pi; the ESP32 and TC106 keep running.
+  - **WIFI SCAN** (v3.8): once per second runs `iw dev wlan0 link` and `station dump`
+    in a background thread, only while switched on. Shows signal (dBm) with a rough
+    GOOD / FAIR / WEAK / BAD label (>= -60 / -70 / -80 dBm; a project guide, not a
+    standard), SSID, frequency, rx/tx bitrate, min..max, and tx-failed since start.
+  - **WIFI SETUP** (v3.9): full-screen page. SSID list from `nmcli` (2.4 GHz only,
+    strongest first) or typed by hand; password on an on-screen ANSI keyboard (masked,
+    SHOW toggle). SAVE stores a NetworkManager profile only; CONNECT NOW stores and
+    switches (the current connection and any ssh session drop). `nmcli` is retried once
+    with `sudo -n` if refused for privilege. The password is passed to `nmcli` as an
+    argument, never logged, cleared on close; the page closes itself after 180 s idle.
+    Limits: ASCII only, 2.4 GHz only, WPA/WPA2/WPA3-personal and open networks only.
+
+### 7.3 Bench Pi unit (CONFIRMED from Pi shell output supplied by the operator)
+
+- Raspberry Pi Zero 2 W with a 7-inch touch display (see
+  `TC106-Doc/RaspberryPiZero_7inch_WAVESHARE-24693_Confirmed_20261024.md`). ESP32 on
+  USB serial (`/dev/ttyUSB0` in the 2026-11-26 photo).
+- Repo clone: `/home/ntc/NTC-1A-Control` (updated with `git pull`). GUI launcher:
+  `/home/ntc/start_ntc_gui.sh` (**Pi-local, not in Git**): `cd` to the repo's `Python/`
+  folder and `exec` the venv Python `/home/ntc/kivy-venv/bin/python3` on `APP=...`; log
+  `/home/ntc/ntc_gui.log`. On 2026-11-25 `APP` was changed from v3.6 to
+  `ntc_pygame_ui_v3_7_beta.py` (backups `~/start_ntc_gui.sh.bak-20261123` / `.bak-20261125`).
+  The tty1 auto-login → `~/.bash_profile` → launcher chain was set up by the operator and
+  is **not re-verified here**. To move to v3.9: pull, then change `APP` and reboot.
+- Network manager is NetworkManager. `iw dev wlan0 link` / `station dump` work as the
+  normal user; `iw ... scan` needed `sudo`.
+- **Wi-Fi measurements (2.4 GHz, ch 9):** at the first location -77 dBm, rx 2.0 Mbit/s,
+  `tx failed` 5099 (2026-11-26 20:05). After moving the Pi next to the router: -41 dBm,
+  72.2 Mbit/s, `tx failed` 0 (2026-11-26 21:32). From the 2026-11-27 04:40 boot to 21:00 the
+  journal shows no disconnect/deauth/under-voltage; `get_throttled=0x0`. Reading: weak signal
+  was the main cause of the earlier drops — **DERIVED**; needs a longer observation, and
+  the period before 2026-11-27 04:40 left no log (the journal was volatile).
+- **journald:** `/etc/systemd/journald.conf` had `Storage=volatile`. Changed to
+  `Storage=persistent` on 2026-11-27, with `SystemMaxUse=50M` in
+  `/etc/systemd/journald.conf.d/size.conf`; backup `journald.conf.bak-20261127`. Logs
+  now survive a reboot, from that change onward.
+- The Wi-Fi network name, addresses and passwords are deliberately **not** recorded in
+  this repo.
+
+### 7.4 Test status (be exact about what was and was not run)
+
+- v3.8 / v3.9 were tested **headless only** (SDL dummy driver, faked `iw` / `nmcli`,
+  screen sizes 1024x600 and 800x480): layout without overlap, list parsing (2.4 GHz only,
+  duplicates merged, `:` in SSID, 802.1X/WEP refused), keyboard typing (no double typing
+  on a touch+mouse event pair), short-password refusal, SAVE / CONNECT NOW command
+  sequences, `sudo -n` fallback, idle close, password absent from stdout and from error
+  text. **No real-Pi run of v3.8 or v3.9 has been done.**
+- v3.7 REBOOT: the button and the confirmation dialog were seen on the real display
+  (photos 2026-11-26). Whether REBOOT → REBOOT completes a reboot and leaves
+  `NOTE,REBOOT` then `STOP` in the CSV has **not** been confirmed.
+- The v3.6 plan's Stage B / C results are not recorded in the repo.
+
+### 7.5 Open items for the Pi side (also in `docs/TC106_UNRESOLVED.md`, Priority D)
+
+1. Two different v3.6 GUI files (7.1). Which one the 2026-11-23 field tests used is not recorded.
+2. The v3.6 plan said all Pi modules bump together; v3.7-v3.9 bumped the GUI only.
+3. `ntc` may or may not be allowed to run `systemctl reboot` / `nmcli` (directly or via
+   `sudo -n`). Real-Pi test of REBOOT, WIFI SCAN, WIFI SETUP is pending.
+4. `Python/tests/test_rxlog_v3_6_beta_20261123.py` (named in the v3.6 design doc) is not
+   in the tree; no tag `pi-gui-v3.6-beta` exists. The launcher script is not in Git.
+5. Pi reboots when the ESP32 is powered (reported during the 2026-11-23 … 25 field
+   tests; cause not found). Field-test record is in Notion, outside Git.
+6. Promotion of any v3.x beta to production is not decided; §1 keeps v2.4 / v1.3.4 as the
+   formal reference.

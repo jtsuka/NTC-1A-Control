@@ -1,6 +1,6 @@
 # TC106 Unresolved Items
 
-**Updated:** 2026-09-09  
+**Updated:** 2026-11-28 (Priority D added; Priorities A-C as of 2026-09-09, not re-reviewed)  
 **Rule:** Do not promote an item in this file to fact without source or measurement evidence.
 
 ## Priority A — physical machine confirmation
@@ -54,6 +54,48 @@ Source proves an executable received wound-length display path. Verify what the 
 ### C2. Historical purpose of dead display modes
 
 `disp_ten` and `disp_len` dedicated modes appear dead. Their historical intended use is not established. Do not infer history from completed-looking dead code alone.
+
+## Priority D — Pi GUI and Pi unit (added 2026-11-28)
+
+State and evidence: `TC106-Doc/CURRENT_SYSTEM_STATUS.md` §7.
+
+### D1. Two different v3.6 GUI files
+
+`Python/ntc_pygame_ui_v3_6_beta.py` (`cf23e596145e70bd`, BASE v2.6, USB auto-selection) and
+`Python/ntc_pi_gui_v3_6_beta_all_20261123/ntc_pygame_ui_v3_6_beta.py` (`a472268dd57db880`,
+BASE v2.5 beta, the hash recorded in the v3.6 design document) differ. v3.7-v3.9 are built on
+the first. **Needed:** which one the 2026-11-23 field tests ran; whether the design document
+should be corrected or the archive copy marked superseded.
+
+### D2. Pi software revision numbering
+
+The v3.6 plan (§3.1) says all Pi modules bump to the same number together. v3.7-v3.9 changed
+the GUI only; the serial and log modules are still v3.6-beta and unchanged. **Decide:** keep
+GUI-only bumps (and say so), or re-align the numbers.
+
+### D3. Real-Pi tests of REBOOT / WIFI SCAN / WIFI SETUP
+
+REBOOT dialog seen on the real display; the actual reboot and the `NOTE,REBOOT` → `STOP`
+CSV lines are not confirmed. v3.8 / v3.9 were tested headless with faked `iw` / `nmcli` only.
+**Needed:** whether the user `ntc` can run `systemctl reboot` and `nmcli` (directly or with
+`sudo -n`); touch usability of the button layout (EXIT-REBOOT gap 0.07 of screen height).
+
+### D4. Missing or Pi-local artifacts
+
+`Python/tests/test_rxlog_v3_6_beta_20261123.py` (named in the v3.6 design document) is not in
+the tree; no `pi-gui-v3.6-beta` tag exists; `/home/ntc/start_ntc_gui.sh` is not in Git;
+Stage B / C results of the v3.6 test plan are not recorded.
+
+### D5. Pi restarts when the ESP32 is powered
+
+Reported during the 2026-11-23 … 25 field tests; cause not found (power-supply sharing and
+ground sharing are candidates only — HYPOTHESIS). Wi-Fi drops were separately traced mainly to
+weak signal (DERIVED, `CURRENT_SYSTEM_STATUS.md` §7.3); persistent journald logging was
+enabled on 2026-11-27 so the next occurrence leaves a record (`journalctl -b -1`).
+
+### D6. Promotion of a v3.x beta to production
+
+Not decided. Until it is, v2.4 / v1.3.4 remain the formal reference in `CURRENT_SYSTEM_STATUS.md` §1.
 
 ## Closure format
 

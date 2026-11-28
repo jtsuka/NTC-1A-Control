@@ -79,6 +79,14 @@ In the discovered `Disp_set` path, `windlen2_0` is selected under the relevant s
 - RX timeout LOST -> resume OK: PASS
 - SEND / RESET / ADJ coexistence in emulator environment: PASS
 
+## Pi GUI — pointer (added 2026-11-28)
+
+The rest of this file is as of 2026-09-09. The Pi GUI has moved on: GUI v3.6-v3.9 beta exist
+(evidence logging, REBOOT, WIFI SCAN, WIFI SETUP); the bench Pi starts v3.7; none is
+production (v2.4 stays the formal reference). The TENS ADC value is an ADC count, not gf.
+Current Pi state, file hashes, test status and open items:
+`TC106-Doc/CURRENT_SYSTEM_STATUS.md` §7 and `docs/TC106_UNRESOLVED.md` Priority D.
+
 ## Current investigation discipline
 
 When answering a new TC106 question:
