@@ -97,6 +97,20 @@ enabled on 2026-11-27 so the next occurrence leaves a record (`journalctl -b -1`
 
 Not decided. Until it is, v2.4 / v1.3.4 remain the formal reference in `CURRENT_SYSTEM_STATUS.md` §1.
 
+### D7. File naming and running-version identification (policy candidate, not decided)
+
+Observed 2026-11-28: the tree holds many version-named files side by side (e.g. `ntc_pygame_ui_v2_4.py` ... `v3_9_beta.py`, many `ESP32/` sketch folders), and the running version is identified only by file name and the `GUI_REVISION` string.
+
+Direction proposed by the operator (RCS-style `$Revision$` idea): keep **one** file name per component; take the version from Git instead of the file name; make the running version visible at run time, **including the ESP32 firmware**.
+
+Candidate approach (DERIVED from how Git works; nothing implemented, nothing tested):
+
+1. Pi / GUI: one file name; at start-up the GUI reads `git describe --tags --dirty` from its own clone, shows it small in a screen corner, and writes it into the evidence-log header. (Git does not expand `$Revision$`; `ident` gives only a blob hash.)
+2. ESP32: no Git on the device, so the version string must be embedded at build time. Report it to the Pi once at boot, next to the existing Boot Magic (`DE AD BE EF 01 7F`), in a form that cannot be confused with a Direction-B 6-byte frame; or add a query command. **Either option changes the Pi/ESP32 serial protocol and needs a written spec and a regression run first.**
+3. Order: Pi side first (no protocol change) → ESP32 spec → ESP32 file consolidation. Start only after the real-Pi checks in D3 are finished.
+
+Open points: the tag naming scheme; what to do with the existing version-named files (Pi `start_ntc_gui.sh`, hashes recorded in `CURRENT_SYSTEM_STATUS.md` §7 and the v3.6 design document all depend on the current names); how the ESP32 build gets the string (Arduino IDE has no pre-build hook by default).
+
 ## Closure format
 
 When closing an item, record the evidence and conclusion in `TC106_DECISIONS.md`, then update `TC106_BASELINE.md` and this file in the same change set when practical.
