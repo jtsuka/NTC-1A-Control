@@ -160,6 +160,9 @@ logind が再起動を開始し同時に GUI のセッション(session-1.scope)
 タグ規則: `gui-vX.Y.Z-beta`。`-dirty` が付けば未コミット変更あり。
 制約: このセッションからはタグを push できない(プロキシが拒否)。タグは Pi か手元の Git から作る。
 ESP32 側のバージョン報告は未着手(プロトコル変更を伴うため、仕様書→回帰試験の順)。
+実機結果(2026-11-28): 画面左下・ログ START の `build=`・Pi 上の `git describe` が一致(`gui-v3.9.2-beta-2-g87265d4`、-dirty なし)。
+Pi の `start_ntc_gui.sh` は `APP="ntc_pygame_ui.py"`。残る未確定: ESP32 側バージョン報告、他の版名ファイルの整理、起動スクリプトの Git 管理。
+
 
 ## 2026-11-28 — tailscale "rebind" at 19:39:00 は Wi-Fi 切替ではなく時計の飛び
 
