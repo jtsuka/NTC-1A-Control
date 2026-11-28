@@ -152,3 +152,11 @@ logind が再起動を開始し同時に GUI のセッション(session-1.scope)
 → 再起動コマンドの前に NOTE→logger.stop→os.sync→0.5 s 待つ(v3.9.2)。拒否時は新ログを開き REBOOT FAILED。
 実機結果: v3.9.2 で旧CSVが `NOTE,REBOOT`→`STOP` で終わることを確認(PASS)。
 残る未確定: OS がリブートを拒否した場合の実機挙動(擬似環境のみ確認)。
+
+## 2026-11-28 — D7 Pi side: single GUI file name + build id (v3.9.3)
+
+決定: GUI のファイル名は `Python/ntc_pygame_ui.py` の1本にし、動作中のリビジョンは `git describe --tags --always --dirty`
+(画面左下・ウィンドウタイトル・ログ START 行の `build=`)で識別する。旧版 v3.6–v3.9.1 は `Python/OLD/gui/` へ移動(履歴は Git に残る)。
+タグ規則: `gui-vX.Y.Z-beta`。`-dirty` が付けば未コミット変更あり。
+制約: このセッションからはタグを push できない(プロキシが拒否)。タグは Pi か手元の Git から作る。
+ESP32 側のバージョン報告は未着手(プロトコル変更を伴うため、仕様書→回帰試験の順)。

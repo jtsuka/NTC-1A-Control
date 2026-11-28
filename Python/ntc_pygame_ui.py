@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# ntc_pygame_ui_v3_9_2_beta.py
+# ntc_pygame_ui.py  (single file name from v3.9.3; versions are Git tags, see below)
 # NTC-1A 1ch メインコントローラ GUI。
+#
+# v3.9.3 BETA (2026-11-28; BASE = v3.9.2 BETA, tag gui-v3.9.2-beta):
+# - The GUI is now ONE file, ntc_pygame_ui.py. Which revision runs is shown by the
+#   build id = `git describe --tags --always --dirty` (small text, bottom-left;
+#   also in the log START line as build=...). No behaviour change otherwise.
+#   Older GUI files are in Python/OLD/gui/ (history stays in Git).
 #
 # v3.9.2 BETA (2026-11-28; BASE = v3.9.1 BETA, SHA256 prefix 22968d3a6b363444):
 # - REBOOT: close the evidence log BEFORE asking the OS to reboot. On the real
@@ -151,8 +157,24 @@ from NTC_1A_serial_comm_v3_6_beta import (
     send_raw_hex,
 )
 
-GUI_REVISION = "v3.9.2-beta"
-GUI_BASE = "v3.9.1-beta"
+GUI_REVISION = "v3.9.3-beta"
+GUI_BASE = "v3.9.2-beta"
+
+
+def get_build_id():
+    """`git describe --tags --always --dirty` of the checkout this file lives in.
+    'nogit' when git or the repository is unavailable (never raises)."""
+    try:
+        r = subprocess.run(['git', '-C', os.path.dirname(os.path.abspath(__file__)),
+                            'describe', '--tags', '--always', '--dirty'],
+                           stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=3)
+        out = (r.stdout or '').strip()
+        return out if r.returncode == 0 and out else 'nogit'
+    except Exception:
+        return 'nogit'
+
+
+BUILD_ID = get_build_id()
 
 # ==========================================
 # 0. 起動オプション
@@ -241,7 +263,7 @@ def start_logger():
     try:
         logger = rxlog.RxLogger(
             log_dir=args.log_dir,
-            meta={"gui": GUI_REVISION, "base": GUI_BASE, "comm": comm.REVISION,
+            meta={"gui": GUI_REVISION, "build": BUILD_ID, "base": GUI_BASE, "comm": comm.REVISION,
                   "port": STARTUP_PORT, "port_src": STARTUP_PORT_SRC,
                   "mode": 'TEST' if TEST_MODE_ENABLED else 'NORMAL'},
             get_status=lambda: get_telemetry()["rx_status"],
@@ -269,7 +291,7 @@ pygame.init()
 info = pygame.display.Info()
 SCREEN_W, SCREEN_H = info.current_w, info.current_h
 screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
-pygame.display.set_caption("NTC-1A Main Controller UI v3.9.1 BETA")
+pygame.display.set_caption(f"NTC-1A Main Controller UI {GUI_REVISION} ({BUILD_ID})")
 
 FONT_SIZE = int(SCREEN_H * 0.05)
 font = pygame.font.Font(None, FONT_SIZE)
@@ -1437,6 +1459,8 @@ try:
         screen.fill((30,30,35))
         for b in buttons:
             b.draw(screen)
+        _bt = tiny_font.render(f'{GUI_REVISION}  {BUILD_ID}', True, (110, 110, 120))
+        screen.blit(_bt, (6, SCREEN_H - _bt.get_height() - 3))
 
         current_key = editable_field_keys[current_editable_index]
 
