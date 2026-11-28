@@ -1,0 +1,5 @@
+# NTC-1A kiosk autostart
+# Only on the physical tty1 console
+if [[ -z "${SSH_CONNECTION:-}" && "$(tty)" == "/dev/tty1" ]]; then
+    /home/ntc/start_ntc_gui.sh
+fi

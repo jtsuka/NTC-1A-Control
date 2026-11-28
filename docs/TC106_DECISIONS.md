@@ -181,3 +181,8 @@ Pi の `start_ntc_gui.sh` は `APP="ntc_pygame_ui.py"`。残る未確定: ESP32 
 
 決定: `/home/ntc/start_ntc_gui.sh` を `Pi/start_ntc_gui.sh` として記録(Git は記録用、実際に動くのは Pi 上のファイル)。秘密情報なしを確認済み。
 残る未確定: 起動時にこのスクリプトを呼ぶ仕組み(autostart / .bash_profile / systemd のどれか)。
+
+## 2026-11-28 — Pi の起動経路を記録
+
+事実(実機、CONFIRMED): getty@tty1 の override で ntc を自動ログイン → `~/.bash_profile` が「SSH でなく tty1 のとき」だけ `start_ntc_gui.sh` を実行 → GUI。
+autostart / systemd の GUI ユニットは無い。コピーは `Pi/` 以下。残る未確定: GUI 終了時に getty が再ログインして再起動する挙動の実機確認(導出のみ)。
