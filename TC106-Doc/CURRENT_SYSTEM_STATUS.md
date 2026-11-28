@@ -319,6 +319,35 @@ its 2026-11-23 status line ("not tested on a real unit"); that line is historica
   journal shows no disconnect/deauth/under-voltage; `get_throttled=0x0`. Reading: weak signal
   was the main cause of the earlier drops — **DERIVED**; needs a longer observation, and
   the period before 2026-11-27 04:40 left no log (the journal was volatile).
+- **Wi-Fi survey and improvement, 2026-11-28 (CONFIRMED = values read from the Pi / GUI):**
+  - Setup: home router Buffalo WSR-5400XE6 (fw 1.15), 2.4 GHz, 20 MHz, channel *auto*; router
+    on the 1st floor (bedroom), originally on the floor in the corner farthest from the door.
+    Pi on battery, same orientation, 30 readings 2 s apart (`iw dev wlan0 link`).
+  - Before any change (GUI WIFI SCAN, one reading each): 1F neighbouring room (living) -75 dBm;
+    2F stair landing -78 dBm; 2F development workroom -77 dBm (the place where the daytime drop
+    happened). Angle test (Pi turned in 90-degree steps, 2F desk): never better than -70 dBm,
+    i.e. **orientation does not matter**; the loss appears as soon as the Pi leaves the
+    bedroom (-41 dBm there) — DERIVED.
+  - Router raised by about 1 m, nothing else changed (the router also re-selected its channel,
+    9 -> 5, when its wireless was restarted earlier that day — see Decisions 2026-11-28 Wi-Fi):
+    1F living avg -74.3 (min -76, max -73), tx 72.2 / rx 57.7 Mbit/s, `tx failed` 0 →
+    avg **-67.8** (-68..-67), 72.2 / 52.0, `tx failed` 2. 2F workroom, original spot and
+    orientation: before -77 dBm, rx 2.0 Mbit/s, `tx failed` 5099 (2026-11-26) → avg
+    **-69.9** (-71..-68), 72.2 / 57.7 Mbit/s, `tx failed` 4 and not rising over 4 minutes.
+  - Improvement about 6-7 dB; target of the survey was better than -70 dBm (a project guide,
+    not a standard) — reached, with little margin. The height change and the channel change
+    happened together, so their shares are not separated (DERIVED: height is the main cause).
+  - Journal, same day (current boot): 67 disconnect/deauth lines, all in four bursts that
+    match boot (12:37), carrying the Pi between rooms (13:15, 13:39) and a router wireless
+    restart (13:31). **No line from 13:40 to 14:21**, which covers the router lift and both
+    2F measurements. A day or more of undisturbed running is **not yet observed**
+    (UNRESOLVED, `docs/TC106_UNRESOLVED.md` D8).
+  - No other access point is visible near the router: the four BSSIDs seen share the same
+    address prefix and belong to one router (a primary SSID, a WPA3 SSID, a hidden SSID and an
+    old-router compatibility SSID, which the operator has since disabled). Nothing indicated
+    channel interference.
+  - Winding operation does not depend on Wi-Fi (the GUI runs on the Pi and talks to the ESP32
+    over USB serial) — DERIVED. Wi-Fi matters for ssh, log retrieval and Tailscale only.
 - **journald:** `/etc/systemd/journald.conf` had `Storage=volatile`. Changed to
   `Storage=persistent` on 2026-11-27, with `SystemMaxUse=50M` in
   `/etc/systemd/journald.conf.d/size.conf`; backup `journald.conf.bak-20261127`. Logs
@@ -333,7 +362,18 @@ its 2026-11-23 status line ("not tested on a real unit"); that line is historica
   duplicates merged, `:` in SSID, 802.1X/WEP refused), keyboard typing (no double typing
   on a touch+mouse event pair), short-password refusal, SAVE / CONNECT NOW command
   sequences, `sudo -n` fallback, idle close, password absent from stdout and from error
-  text. **No real-Pi run of v3.8 or v3.9 has been done.**
+  text.
+- **Real-Pi checks of v3.9 (2026-11-28, photos and shell output):** launched as
+  `ntc_pygame_ui_v3_9_beta.py` with no traceback in the log; the four right-hand buttons are
+  evenly spaced and do not touch the keypad; WIFI SCAN shows dBm / quality / SSID /
+  frequency / bit rates / range / `tx failed` and its values agree with `iw` (CONFIRMED);
+  WIFI SETUP lists the 2.4 GHz networks (3 rows; the hidden SSID is dropped by design) and
+  marks the connected one, so `nmcli` listing works for the kiosk user. The list's dBm is the
+  percent-to-dBm approximation (about 10-20 dB off the link reading) — use WIFI SCAN for
+  strength. While WIFI SCAN's panel is shown, the WIFI SETUP button is partly covered.
+  **Not yet done on the real Pi:** on-screen keyboard entry, SAVE / CONNECT NOW, REBOOT
+  completion. `nmcli dev wifi rescan` over ssh returns "not authorized" (ssh is not an active
+  local session); the GUI's own RESCAN was not found failing.
 - v3.7 REBOOT: the button and the confirmation dialog were seen on the real display
   (photos 2026-11-26). Whether REBOOT → REBOOT completes a reboot and leaves
   `NOTE,REBOOT` then `STOP` in the CSV has **not** been confirmed.
